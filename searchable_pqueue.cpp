@@ -3,14 +3,12 @@
 //
 
 #include "searchable_pqueue.h"
-#include <vector>
-#include "astar.h"
+#include "Node.h"
 
-astar::Node *searchable_pqueue::search(const int x, const int y) const  {
-    auto cont = this->c;
-    for (const astar::Node &n : cont) {
-        if (n.x == x && n.y == y) {
-            return const_cast<astar::Node *>(&n);
+Node *searchable_pqueue::search(const int index) const  {
+    for (const Node &n : this->c) {
+        if (n.index == index) {
+            return const_cast<Node *>(&n);
         }
     }
     return nullptr;

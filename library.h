@@ -1,6 +1,6 @@
-#ifndef TFE_MAPF_LIBRARY_H
-#define TFE_MAPF_LIBRARY_H
+#ifndef MAPF_REBORN_LIBRARY_H
+#define MAPF_REBORN_LIBRARY_H
 
 void hello();
 
-#endif //TFE_MAPF_LIBRARY_H
+#endif //MAPF_REBORN_LIBRARY_H

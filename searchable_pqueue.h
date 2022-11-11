@@ -4,16 +4,17 @@
 
 #ifndef TFE_MAPF_SEARCHABLE_PQUEUE_H
 #define TFE_MAPF_SEARCHABLE_PQUEUE_H
-#include "astar.h"
+#include "astar_single.h"
 #include <queue>
 #include <vector>
+#include "Node.h"
 
 class searchable_pqueue : public std::priority_queue<
-        astar::Node,
-        std::vector<astar::Node>,
-        astar::compare_heuristic> {
+        Node,
+        std::vector<Node>,
+        Node::compare_heuristic> {
 public:
-    astar::Node* search(int, int) const;
+    Node* search(int) const;
 };
 
 
