@@ -41,7 +41,7 @@ void Graph::print(int num) {
     cout << res.str();
 }
 
-vector<int> Graph::getneighbors(int index) {
+vector<int> Graph::getneighbors(int index) const {
     if (index > N) return {};
     return adjlists[index];
 }

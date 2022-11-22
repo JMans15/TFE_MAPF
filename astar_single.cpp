@@ -2,6 +2,8 @@
 // Created by mansj on 10/11/22.
 //
 
+// PAS UTILISÉ DANS LA VERSION MULTI-AGENT
+
 #include "astar_single.h"
 #include "searchable_pqueue.h"
 #include <vector>

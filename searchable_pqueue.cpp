@@ -2,6 +2,8 @@
 // Created by mansj on 9/11/22.
 //
 
+// PAS UTILISÉ DANS LA VERSION MULTI-AGENT
+
 #include "searchable_pqueue.h"
 #include "Node.h"
 

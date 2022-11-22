@@ -1,11 +1,44 @@
 //
-// Created by mansj on 10/11/22.
+// Created by Arthur Mahy on 09/11/2022.
 //
 
 #include "Node.h"
 
-Node::Node(int index, int cost, double heuristic) :
-    cost(cost), index(index), heuristic(heuristic) {}
+#include <utility>
 
-Node::Node(int index) :
-    cost(0), index(index), heuristic(0) {}
+Node::Node(State m_state) : state(std::move(m_state)) {
+    parent = nullptr;
+    action = "";
+    gn = 0;
+}
+
+Node::Node(State m_state, const Node& m_parent, string m_action, int m_gn) : state(std::move(m_state)) {
+    parent = new Node(m_parent);
+    action = std::move(m_action);
+    gn = m_gn;
+}
+
+Node::~Node() {
+    //if (parent != nullptr){
+        // delete parent;
+    //}
+}
+
+vector<string> Node::getPath() {
+    vector<string> path;
+    Node* node = this;
+    while (node->parent != nullptr){
+        path.push_back(node->action);
+        node = node->parent;
+    }
+    reverse(path.begin(), path.end());
+    return path;
+}
+
+State Node::getState() {
+    return state;
+}
+
+int Node::getGn() const {
+    return gn;
+}

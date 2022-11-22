@@ -2,6 +2,8 @@
 // Created by mansj on 9/11/22.
 //
 
+// PAS UTILISÉ DANS LA VERSION MULTI-AGENT
+
 #ifndef TFE_MAPF_SEARCHABLE_PQUEUE_H
 #define TFE_MAPF_SEARCHABLE_PQUEUE_H
 #include "astar_single.h"

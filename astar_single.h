@@ -2,6 +2,8 @@
 // Created by mansj on 10/11/22.
 //
 
+// PAS UTILISÉ DANS LA VERSION MULTI-AGENT
+
 #ifndef MAPF_REBORN_ASTAR_SINGLE_H
 #define MAPF_REBORN_ASTAR_SINGLE_H
 

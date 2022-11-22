@@ -21,7 +21,7 @@ public:
 public:
     explicit Graph(int N);
     void add_edge(int from, int to);
-    vector<int> getneighbors(int index);
+    vector<int> getneighbors(int index) const;
     void print();
     void print(int num);
 };

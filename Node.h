@@ -1,23 +1,37 @@
 //
-// Created by mansj on 10/11/22.
+// Created by Arthur Mahy on 09/11/2022.
 //
 
-#ifndef MAPF_REBORN_NODE_H
-#define MAPF_REBORN_NODE_H
+#ifndef TFE_MAPF_NODE_H
+#define TFE_MAPF_NODE_H
+
+#include "State.h"
+#include <vector>
+#include <string>
+using namespace std;
 
 
 class Node {
 public:
-    int cost, index;
-    double heuristic;
-    Node(int index, int cost, double heuristic);
-    explicit Node(int index);
-    struct compare_heuristic {
-        bool operator()(Node const& a, Node const& b) {
-            return a.heuristic < b.heuristic;
-        }
-    };
+
+    explicit Node(State m_state);
+    Node(State m_state, const Node& m_parent, string m_action, int m_gn); //Constructeur surchargé
+    ~Node(); //Destructeur
+    vector<string> getPath();
+    State getState();
+    int getGn() const;
+    // 2 nodes are equal if they have the same state
+    bool operator== (Node other) const
+    {
+        return other.getState()==state;
+    }
+
+private:
+    State state; // state of the node
+    string action; // action to get to this node
+    Node* parent; // parent node
+    int gn; // path cost g(n)
 };
 
 
-#endif //MAPF_REBORN_NODE_H
+#endif //TFE_MAPF_NODE_H

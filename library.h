@@ -1,6 +1,11 @@
-#ifndef MAPF_REBORN_LIBRARY_H
-#define MAPF_REBORN_LIBRARY_H
+#ifndef TFE_MAPF_LIBRARY_H
+#define TFE_MAPF_LIBRARY_H
 
-void hello();
+#include "Problem.h"
+#include <vector>
+#include "State.h"
+using namespace std;
 
-#endif //MAPF_REBORN_LIBRARY_H
+vector<string> aStarSearch(const Problem& problem, const function<int(State, Problem)>& heuristic);
+
+#endif //TFE_MAPF_LIBRARY_H
