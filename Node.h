@@ -19,6 +19,8 @@ public:
     ~Node(); //Destructeur
     vector<string> getPath();
     State getState();
+    string getAction() const;
+    Node* getParent() const;
     int getGn() const;
     // 2 nodes are equal if they have the same state
     bool operator== (Node other) const

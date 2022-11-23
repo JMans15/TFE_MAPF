@@ -19,10 +19,8 @@ int main() {
     targets.push_back(6);
     targets.push_back(1);
     Problem problem = Problem(g, starts, targets, "Fuel");
-    vector<string> path = aStarSearch(problem);
-    for (const string& action: path){
-        std::cout << action << std::endl;
-    }
+    Solution solution = aStarSearch(problem);
+    solution.print();
 
     // TEST 2
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/AssignmentIACourse.map");
@@ -31,10 +29,8 @@ int main() {
     vector<int> targets;
     targets.push_back(17);
     Problem problem = Problem(g, starts, targets, "Fuel");
-    vector<string> path = aStarSearch(problem);
-    for (const string& action: path){
-        std::cout << action << std::endl;
-    }*/
+    Solution solution = aStarSearch(problem);
+    solution.print();*/
 
     // TEST 3
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/empty-4-4.map");
@@ -45,10 +41,8 @@ int main() {
     targets.push_back(3);
     targets.push_back(0);
     Problem problem = Problem(g, starts, targets, "Makespan");
-    vector<string> path = aStarSearch(problem);
-    for (const string& action: path){
-        std::cout << action << std::endl;
-    }*/
+    Solution solution = aStarSearch(problem);
+    solution.print();*/
 
     // TEST 4
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/AssignmentIACourse.map");
@@ -59,10 +53,8 @@ int main() {
     targets.push_back(17);
     targets.push_back(20);
     Problem problem = Problem(g, starts, targets, "Fuel");
-    vector<string> path = aStarSearch(problem);
-    for (const string& action: path){
-        std::cout << action << std::endl;
-    }*/
+    Solution solution = aStarSearch(problem);
+    solution.print();*/
 
     // TEST 5
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/Berlin_1_256.map");
@@ -71,8 +63,6 @@ int main() {
     vector<int> targets;
     targets.push_back(256*256-1);
     Problem problem = Problem(g, starts, targets, "Fuel");
-    vector<string> path = aStarSearch(problem);
-    for (const string& action: path){
-        std::cout << action << std::endl;
-    }*/
+    Solution solution = aStarSearch(problem);
+    solution.print();*/
 }

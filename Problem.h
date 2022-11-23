@@ -10,6 +10,8 @@
 #include <vector>
 #include <iostream>
 #include "Graph.h"
+#include "Solution.h"
+#include "Node.h"
 using namespace std;
 typedef tuple<State, string, int> Triple;
 
@@ -29,6 +31,7 @@ public:
     string getObjFunction() const;
     static int SICheuristic(State state, const Problem& problem);
     static int MICheuristic(State state, const Problem& problem);
+    Solution retrieveSolution(int numberOfVisitedStates, Node node) const ;
 
 private:
     Graph graph;

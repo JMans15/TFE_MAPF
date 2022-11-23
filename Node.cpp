@@ -27,7 +27,6 @@ Node::~Node() {
 vector<string> Node::getPath() {
     vector<string> path;
     Node* node = this;
-    // node->getState().makeStandard(); DOESN'T WORK LIKE THAT HAVE TO CHANGE
     while (node->parent != nullptr){
         path.push_back(node->action);
         node = node->parent;
@@ -38,6 +37,14 @@ vector<string> Node::getPath() {
 
 State Node::getState() {
     return state;
+}
+
+string Node::getAction() const {
+    return action;
+}
+
+Node *Node::getParent() const {
+    return parent;
 }
 
 int Node::getGn() const {

@@ -105,7 +105,6 @@ vector<Triple> Problem::getSuccessors(State state) const {
     for (int j : graph.getneighbors(positions[agentToAssign])){
         vector<int> newpositions(positions);
         newpositions[agentToAssign] = j;
-        // if (notAlreadyOccupiedPosition(j, positions, agentToAssign)){
         if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state.getPrePositions())){
             string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" goes from position "+to_string(positions[agentToAssign])+" to position "+to_string(j);
             successors.emplace_back(State(newpositions, nextT, nextAgentToAssign, isStandard, positions), action, costMovement);
@@ -160,4 +159,26 @@ int Problem::MICheuristic(State state, const Problem& problem){
         Max = max(Max, distance(positions[i], problem.getTargets()[i], problem.getGraph().getWidth())-1);
     }
     return Max;
+}
+
+Solution Problem::retrieveSolution(int numberOfVisitedStates, Node node) const {
+    vector<vector<int>> positionsAtTime;
+    vector<string> stringPath;
+    int cost = node.getGn();
+    Node* currentnode = &node;
+    int numberOfTimesteps = node.getState().getTimestep();
+    // node->getState().makeStandard(); DOESN'T WORK LIKE THAT HAVE TO CHANGE
+    int oldT = numberOfTimesteps+1;
+    while (currentnode->getParent() != nullptr){
+        stringPath.push_back(currentnode->getAction());
+        if (oldT!=currentnode->getState().getTimestep()){
+            positionsAtTime.push_back(currentnode->getState().getPositions());
+        }
+        oldT = currentnode->getState().getTimestep();
+        currentnode = currentnode->getParent();
+    }
+    positionsAtTime.push_back(starts);
+    reverse(positionsAtTime.begin(), positionsAtTime.end());
+    reverse(stringPath.begin(), stringPath.end());
+    return {stringPath, cost, obj_function, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
 }

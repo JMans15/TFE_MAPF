@@ -17,7 +17,7 @@ struct CompareF
     }
 };
 
-vector<string> aStarSearch(const Problem& problem){
+Solution aStarSearch(const Problem& problem){
     cout << "===== Search ====" << endl;
     function<int(State, Problem)> heuristic;
     if (problem.getObjFunction()=="SumOfCosts" or problem.getObjFunction()=="Fuel"){
@@ -42,9 +42,7 @@ vector<string> aStarSearch(const Problem& problem){
         }
         numberOfVisitedStates += 1;
         if (problem.isGoalState(node.getState())){
-            cout << numberOfVisitedStates << " visited states (goal tested)" << endl;
-            cout << "Cost of the solution = " << node.getGn() << " (" << problem.getObjFunction() << " cost)" << endl;
-            return node.getPath();
+            return problem.retrieveSolution(numberOfVisitedStates, node);
         }
         explored.insert(node.getState());
         vector<Triple> successors = problem.getSuccessors(node.getState());
