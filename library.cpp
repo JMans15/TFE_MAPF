@@ -17,12 +17,21 @@ struct CompareF
     }
 };
 
-vector<string> aStarSearch(const Problem& problem, const function<int(State, Problem)>& heuristic){
+vector<string> aStarSearch(const Problem& problem){
+    cout << "===== Search ====" << endl;
+    function<int(State, Problem)> heuristic;
+    if (problem.getObjFunction()=="SumOfCosts" or problem.getObjFunction()=="Fuel"){
+        cout << "The used heuristic will be the Sum Of Individual Costs." << endl;
+        heuristic = Problem::SICheuristic;
+    } else { // problem.getObjFunction()=="Makespan"
+        cout << "The used heuristic will be the Maximum Individual Cost." << endl;
+        heuristic = Problem::MICheuristic;
+    }
     cout << "Beginning the A* search. " << endl;
     State s = problem.getStartState();
     priority_queue<Tuple, vector<Tuple>, CompareF> fringe;
     fringe.emplace(0+heuristic(s, problem), Node(s));
-    set<State> explored;
+    set<State> explored;  // the closed list
     int numberOfVisitedStates = 0;
     while (!fringe.empty()){
         Tuple tuplee = fringe.top();
@@ -33,8 +42,8 @@ vector<string> aStarSearch(const Problem& problem, const function<int(State, Pro
         }
         numberOfVisitedStates += 1;
         if (problem.isGoalState(node.getState())){
-            cout << numberOfVisitedStates << " visited states" << endl;
-            cout << "Cost of the solution = " << node.getGn() << endl;
+            cout << numberOfVisitedStates << " visited states (goal tested)" << endl;
+            cout << "Cost of the solution = " << node.getGn() << " (" << problem.getObjFunction() << " cost)" << endl;
             return node.getPath();
         }
         explored.insert(node.getState());
@@ -49,5 +58,6 @@ vector<string> aStarSearch(const Problem& problem, const function<int(State, Pro
             }
         }
     }
+    cout << "No path has been found." << endl;
     return {};
 }

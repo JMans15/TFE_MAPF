@@ -11,7 +11,7 @@ using std::endl;
 using std::cout;
 using std::min;
 
-Graph::Graph(int N) : E(0), N(N) {
+Graph::Graph(int N, int Width) : E(0), N(N), width(Width) {
     adjlists = new vector<int>[N];
 }
 
@@ -48,4 +48,8 @@ vector<int> Graph::getneighbors(int index) const {
 
 int Graph::getN() const {
     return N;
+}
+
+int Graph::getWidth() const {
+    return width;
 }

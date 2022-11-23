@@ -14,12 +14,13 @@ using std::vector;
 class Graph {
 private:
     vector<int> *adjlists;
-    int N, E;
+    int N, E, width;
 public:
     int getN() const;
+    int getWidth() const;
 
 public:
-    explicit Graph(int N);
+    Graph(int N, int Width);
     void add_edge(int from, int to);
     vector<int> getneighbors(int index) const;
     void print();

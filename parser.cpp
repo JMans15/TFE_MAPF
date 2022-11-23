@@ -74,7 +74,7 @@ Graph parser::parse(string filename) {
     */
     //endregion
 
-    Graph result(width*height);
+    Graph result(width*height, width);
     for (int l = 0; l < height; l++) {
         for (int c = 0; c < width; c++) {
             if (lines[l][c] != '.') continue;

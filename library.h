@@ -6,6 +6,6 @@
 #include "State.h"
 using namespace std;
 
-vector<string> aStarSearch(const Problem& problem, const function<int(State, Problem)>& heuristic);
+vector<string> aStarSearch(const Problem& problem);
 
 #endif //TFE_MAPF_LIBRARY_H

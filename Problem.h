@@ -16,7 +16,7 @@ typedef tuple<State, string, int> Triple;
 class Problem {
 public:
 
-    Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets);
+    Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function);
     State getStartState() const; // Returns the start state for the search problem.
     bool isGoalState(State state) const; // Returns True if and only if the state is a valid goal state.
     vector<Triple> getSuccessors(State state) const;
@@ -26,15 +26,16 @@ public:
         the incremental cost of expanding to that successor. */
     Graph getGraph() const;
     vector<int> getTargets() const;
-    // void getCostOfActions(actions) const;
-    /* This method returns the total cost of a particular sequence of actions.
-        The sequence must be composed of legal moves.*/
+    string getObjFunction() const;
+    static int SICheuristic(State state, const Problem& problem);
+    static int MICheuristic(State state, const Problem& problem);
 
 private:
     Graph graph;
     vector<int> starts;
     vector<int> targets;
     int numberOfAgents;
+    string obj_function;
 };
 
 

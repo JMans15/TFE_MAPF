@@ -46,7 +46,7 @@ int astar_single::shortest_path(Graph g, int target, int start) {
             isinopenwithlowercost = found != nullptr && found->cost < n.cost;
             if (!(isinclosed || isinopenwithlowercost)) {
                 openlist.push(Node(neighbor, n.cost + 1, n.cost + 1
-                                                         + distance(neighbor, target, g.getN())));
+                                                         + distance(neighbor, target, g.getWidth())));
             }
         }
         closedset.insert(n.index);
