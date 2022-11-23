@@ -13,7 +13,7 @@ class State {
 
 public:
 
-    State(vector<int> m_positions, int m_timestep, int m_agentToAssign);
+    State(vector<int> m_positions, int m_timestep, int m_agentToAssignbool, bool m_standard, vector<int> m_prePositions);
 
     bool operator== (State other) const
     {
@@ -37,13 +37,18 @@ public:
     }
 
     vector<int> getPositions();
+    vector<int> getPrePositions();
     int getTimestep() const;
     int getAgentToAssign() const;
+    bool isStandard() const;
+    void makeStandard();
 
 private:
     vector<int> positions;
+    vector<int> prePositions; // positions and prePositions are equal at standard nodes (when all agents have been assigned)
     int timestep;
     int agentToAssign;
+    bool standard;
 };
 
 

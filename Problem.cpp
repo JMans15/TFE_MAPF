@@ -37,7 +37,7 @@ Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, str
 }
 
 State Problem::getStartState() const {
-    return {starts,0,0};
+    return {starts,0,0,true,starts};
 }
 
 bool Problem::isGoalState(State state) const {
@@ -45,9 +45,19 @@ bool Problem::isGoalState(State state) const {
 }
 
 // Returns true if position is not already occupied by assigned agents
-bool notAlreadyOccupied(int position, vector<int> positions, int agentToAssign){
+bool notAlreadyOccupiedPosition(int position, vector<int> positions, int agentToAssign){
     for (int i = 0; i < agentToAssign; i++){
         if (positions[i]==position){
+            return false;
+        }
+    }
+    return true;
+}
+
+// Returns true if the edge (position, positions[agentToAssign]) is not already occupied by assigned agents
+bool notAlreadyOccupiedEdge(int position, vector<int> positions, int agentToAssign, vector<int> prePositions){
+    for (int i = 0; i < agentToAssign; i++){
+        if (prePositions[i]==position and positions[i]==positions[agentToAssign]){
             return false;
         }
     }
@@ -64,6 +74,7 @@ vector<Triple> Problem::getSuccessors(State state) const {
     int nextT;
     int costMovement;
     int costWait;
+    bool isStandard;
     if (obj_function=="Fuel"){
         costMovement = 1;
         costWait = 0;
@@ -86,20 +97,23 @@ vector<Triple> Problem::getSuccessors(State state) const {
     }
     if (agentToAssign==numberOfAgents-1){
         nextAgentToAssign = 0;
+        isStandard = true;
     } else {
         nextAgentToAssign = agentToAssign+1;
+        isStandard = false;
     }
     for (int j : graph.getneighbors(positions[agentToAssign])){
         vector<int> newpositions(positions);
         newpositions[agentToAssign] = j;
-        if (notAlreadyOccupied(j, positions, agentToAssign)){
+        // if (notAlreadyOccupiedPosition(j, positions, agentToAssign)){
+        if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state.getPrePositions())){
             string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" goes from position "+to_string(positions[agentToAssign])+" to position "+to_string(j);
-            successors.emplace_back(State(newpositions, nextT, nextAgentToAssign), action, costMovement);
+            successors.emplace_back(State(newpositions, nextT, nextAgentToAssign, isStandard, positions), action, costMovement);
         }
     }
-    if (notAlreadyOccupied(positions[agentToAssign], positions, agentToAssign)){
+    if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)){
         string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
-        successors.emplace_back(State(positions, nextT, nextAgentToAssign), action, costWait);
+        successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions), action, costWait);
     }
     return successors;
 }
@@ -116,6 +130,8 @@ string Problem::getObjFunction() const {
     return obj_function;
 }
 
+
+// Returns the Manhattan distance between position a and position b
 int distance(int a, int b, int width) {
     int ax, ay, bx, by;
     ax = (int) a / width; ay = a % width;
