@@ -1,6 +1,6 @@
 # TFE_MAPF
 
-## Files *.cpp and c.h
+## Files *.cpp and *.h
 <ul>
 <li> Parser: Takes a map file and returns a Graph instance. </li>
 <li> Graph: Represents a graph with adjacency lists. </li>
