@@ -13,7 +13,7 @@ class State {
 
 public:
 
-    State(vector<int> m_positions, int m_timestep, int m_agentToAssignbool, bool m_standard, vector<int> m_prePositions);
+    State(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions);
 
     bool operator== (State other) const
     {
@@ -52,11 +52,25 @@ public:
     void makeStandard();
 
 private:
+
+    // The positions of every agent in this state.
+    // positions[:agentToAssign] are the assigned positions.
+    // positions[agentToAssign:] are the not yet assigned positions.
+    // positions[agentToAssign] is not yet assigned but will be in the successor state.
     vector<int> positions;
-    vector<int> prePositions; // positions and prePositions are equal at standard nodes (when all agents have been assigned)
-    int timestep;
     int agentToAssign;
+
+    // the timestep of this state
+    int timestep;
+
+    // A state is standard or regular when all agents have been assigned.
+    // When a state is not standard, it is intermediate. (Operator Decomposition)
     bool standard;
+
+    // prePositions is the positions of the last standard state.
+    // positions and prePositions are equal at standard states (when all agents have been assigned).
+    // prePositions is just needed to avoid Edge Conflict (implemented in the getSuccessors function).
+    vector<int> prePositions;
 };
 
 

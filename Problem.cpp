@@ -107,6 +107,8 @@ vector<Triple> Problem::getSuccessors(State state) const {
         costWait = 0;
     } else if (obj_function=="Makespan"){
         if (agentToAssign==0){
+            // we are assigning a position to the first agent,
+            // we know that we will need another timestep
             costMovement = 1;
             costWait = 1;
         } else {
@@ -123,6 +125,8 @@ vector<Triple> Problem::getSuccessors(State state) const {
         nextT = t;
     }
     if (agentToAssign==numberOfAgents-1){
+        // we are assigning a position to the last agent,
+        // the next state will be standard
         nextAgentToAssign = 0;
         isStandard = true;
     } else {
@@ -165,7 +169,6 @@ int distance(int a, int b, int width) {
     return abs(ax-bx) + abs(ay-by);
 }
 
-// Sum of Individual Costs heuristic (for SumOfCosts and Fuel objective functions)
 int Problem::SICheuristic(State state, const Problem& problem){
     int sum = 0;
     vector<int> positions = state.getPositions();
@@ -175,7 +178,6 @@ int Problem::SICheuristic(State state, const Problem& problem){
     return sum;
 }
 
-// Maximum Individual Cost heuristic (for Makespan objective function)
 int Problem::MICheuristic(State state, const Problem& problem){
     int Max = 0;
     vector<int> positions = state.getPositions();
@@ -194,7 +196,6 @@ Solution Problem::retrieveSolution(int numberOfVisitedStates, Node node) const {
     int cost = node.getGn();
     Node* currentnode = &node;
     int numberOfTimesteps = node.getState().getTimestep();
-    // node->getState().makeStandard(); DOESN'T WORK LIKE THAT HAVE TO CHANGE
     int oldT = numberOfTimesteps+1;
     while (currentnode->getParent() != nullptr){
         stringPath.push_back(currentnode->getAction());

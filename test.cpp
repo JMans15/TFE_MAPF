@@ -17,7 +17,7 @@ int main() {
     vector<int> targets;
     targets.push_back(6);
     targets.push_back(1);
-    Problem problem = Problem(g, starts, targets, "Fuel");
+    Problem problem = Problem(g, starts, targets, "Makespan");
     Solution solution = aStarSearch(problem);
     solution.print();
 

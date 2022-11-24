@@ -3,7 +3,6 @@
 //
 
 #include "State.h"
-
 #include <utility>
 
 State::State(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions) {

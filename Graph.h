@@ -15,12 +15,11 @@ class Graph {
 private:
     vector<int> *adjlists;
     int N, E, width;
-public:
-    int getN() const;
-    int getWidth() const;
 
 public:
     Graph(int N, int Width);
+    int getN() const;
+    int getWidth() const;
     void add_edge(int from, int to);
     vector<int> getneighbors(int index) const;
     void print();
