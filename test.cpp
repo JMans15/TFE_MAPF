@@ -7,10 +7,10 @@
 #include <vector>
 
 int main() {
-    //Graph g = parser::parse("/home/mansj/CLionProjects/MAPF_REBORN/Benchmarks/Berlin_1_256.map");
+    Graph g = parser::parse("/home/mansj/CLionProjects/TFE_MAPF/Benchmarks/map_empty_4x4.map");
 
     // TEST 1
-    Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/empty-4-4.map");
+    //Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/empty-4-4.map");
     vector<int> starts;
     starts.push_back(4);
     starts.push_back(9);

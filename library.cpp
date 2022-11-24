@@ -5,6 +5,7 @@
 #include <queue>
 #include <tuple>
 #include <set>
+#include <functional>
 
 typedef tuple<int, Node> Tuple;
 typedef tuple<State, string, int> Triple;

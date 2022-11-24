@@ -4,6 +4,7 @@
 
 #include "Problem.h"
 
+#include <bits/stdc++.h>
 #include <utility>
 
 Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function, const vector<Constraint>& m_setOfConstraints) : graph(m_graph) {
