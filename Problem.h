@@ -12,13 +12,15 @@
 #include "Graph.h"
 #include "Solution.h"
 #include "Node.h"
+#include "map"
 using namespace std;
 typedef tuple<State, string, int> Triple;
+typedef tuple<int, int, int> Constraint; // agent, position, time
 
 class Problem {
 public:
 
-    Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function);
+    Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function="Fuel", const vector<Constraint>& m_setOfConstraints = vector<Constraint>());
     State getStartState() const; // Returns the start state for the search problem.
     bool isGoalState(State state) const; // Returns True if and only if the state is a valid goal state.
     vector<Triple> getSuccessors(State state) const;
@@ -39,6 +41,8 @@ private:
     vector<int> targets;
     int numberOfAgents;
     string obj_function;
+    vector<Constraint> setOfConstraints;
+    map<int, map<int, vector<int>>> setOfConstraintsMap;
 };
 
 

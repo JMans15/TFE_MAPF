@@ -25,6 +25,10 @@ public:
                 return false;
             }
         }
+        /*
+        if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
+            return false;
+        }*/
         return true;
     }
 
@@ -33,6 +37,10 @@ public:
         if (agentToAssign!=other.agentToAssign){
             return agentToAssign<other.agentToAssign;
         }
+        /*
+        if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
+            return timestep<other.timestep;
+        }*/
         return positions<other.positions;
     }
 

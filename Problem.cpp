@@ -6,7 +6,7 @@
 
 #include <utility>
 
-Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function) : graph(m_graph) {
+Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function, const vector<Constraint>& m_setOfConstraints) : graph(m_graph) {
     starts = std::move(m_starts);
     targets = std::move(m_targets);
     numberOfAgents = starts.size();
@@ -31,6 +31,18 @@ Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, str
         cout << " - Agent " << i << " : " << targets[i] << endl;
         if (graph.getneighbors(targets[i]).empty()){
             cout << "   The target position of agent "<< i << " is unreachable." << endl;
+        }
+    }
+    setOfConstraints = m_setOfConstraints;
+    if (not setOfConstraints.empty()){
+        cout << "The problem has the following constraints :" << endl;
+        for (int i = 0; i < setOfConstraints.size(); i++){
+            Constraint constraint = setOfConstraints[i];
+            int agent = get<0>(constraint);
+            int position = get<1>(constraint);
+            int time = get<2>(constraint);
+            setOfConstraintsMap[agent][time].push_back(position);
+            cout << "   (" << agent << ", " << position << ", " << time << ")" << endl;
         }
     }
     cout << "=================" << endl;
@@ -59,6 +71,21 @@ bool notAlreadyOccupiedEdge(int position, vector<int> positions, int agentToAssi
     for (int i = 0; i < agentToAssign; i++){
         if (prePositions[i]==position and positions[i]==positions[agentToAssign]){
             return false;
+        }
+    }
+    return true;
+}
+
+// Returns true if agent is allowed to be at position at time (according to the set of constraints of the problem)
+bool NotInForbiddenPositions(int position, int agent, int time, map<int, map<int, vector<int>>> setOfConstraintsMap){
+    if (setOfConstraintsMap.count(agent)){
+        if (setOfConstraintsMap[agent].count(time)){
+            vector<int> v = setOfConstraintsMap[agent][time];
+            if (std::find(v.begin(), v.end(), position) != v.end()){
+                return false;
+            } else {
+                return true;
+            }
         }
     }
     return true;
@@ -105,12 +132,12 @@ vector<Triple> Problem::getSuccessors(State state) const {
     for (int j : graph.getneighbors(positions[agentToAssign])){
         vector<int> newpositions(positions);
         newpositions[agentToAssign] = j;
-        if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state.getPrePositions())){
+        if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state.getPrePositions()) && NotInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
             string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" goes from position "+to_string(positions[agentToAssign])+" to position "+to_string(j);
             successors.emplace_back(State(newpositions, nextT, nextAgentToAssign, isStandard, positions), action, costMovement);
         }
     }
-    if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)){
+    if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
         string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
         successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions), action, costWait);
     }

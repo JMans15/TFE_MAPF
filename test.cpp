@@ -4,7 +4,6 @@
 
 #include "library.h"
 #include "parser.h"
-#include <iostream>
 #include <vector>
 
 int main() {
@@ -63,6 +62,16 @@ int main() {
     vector<int> targets;
     targets.push_back(256*256-1);
     Problem problem = Problem(g, starts, targets, "Fuel");
+    Solution solution = aStarSearch(problem);
+    solution.print();*/
+
+    // TEST 6
+    /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/empty-4-4.map");
+    vector<int> starts;
+    starts.push_back(4);
+    vector<int> targets;
+    targets.push_back(6);
+    Problem problem = Problem(g, starts, targets, "Fuel", vector<Constraint>{Constraint(0,5,1)});
     Solution solution = aStarSearch(problem);
     solution.print();*/
 }
