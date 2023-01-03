@@ -21,19 +21,26 @@ public:
     void print();
 
 private:
+
     // Cost of the solution
     int cost;
+
     // Objective function : "Fuel", "Makespan" or "SumOfCosts"
     string obj_function;
+
     // The number of visited (goal tested) states.
     int numberOfVisitedStates;
+
     // The number of needed timesteps from all agents to reach their target position
     int numberOfTimesteps;
+
     // Matrix of size numberOfTimesteps X numberOfAgents
     // positionsAtTime[t][a] is the position of agent a at time t in this solution
     vector<vector<int>> positionsAtTime;
+
     // Contains a path explained in English with string
     vector<string> stringPath;
+
     // true if this solution contains a path
     bool foundpath;
 };

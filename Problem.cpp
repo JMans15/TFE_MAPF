@@ -4,7 +4,7 @@
 
 #include "Problem.h"
 
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 #include <utility>
 
 Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function, const vector<Constraint>& m_setOfConstraints) : graph(m_graph) {
@@ -23,14 +23,14 @@ Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, str
     cout << "Start position of each agent :" << endl;
     for (int i = 0; i < numberOfAgents; i++){
         cout << " - Agent " << i << " : " << starts[i] << endl;
-        if (graph.getneighbors(starts[i]).empty()){
+        if (graph.getNeighbors(starts[i]).empty()){
             cout << "   The start position of agent "<< i << " is unreachable." << endl;
         }
     }
     cout << "Target position of each agent :" << endl;
     for (int i = 0; i < numberOfAgents; i++){
         cout << " - Agent " << i << " : " << targets[i] << endl;
-        if (graph.getneighbors(targets[i]).empty()){
+        if (graph.getNeighbors(targets[i]).empty()){
             cout << "   The target position of agent "<< i << " is unreachable." << endl;
         }
     }
@@ -118,7 +118,6 @@ vector<Triple> Problem::getSuccessors(State state) const {
         }
     } else { // obj_function=="SumOfCosts"
         costMovement = 1;
-        costWait = 1; // here we should put costWait = O when the agent is at his target position and won't move anymore
     }
     if (agentToAssign==0){
         nextT = t+1;
@@ -134,17 +133,71 @@ vector<Triple> Problem::getSuccessors(State state) const {
         nextAgentToAssign = agentToAssign+1;
         isStandard = false;
     }
-    for (int j : graph.getneighbors(positions[agentToAssign])){
-        vector<int> newpositions(positions);
-        newpositions[agentToAssign] = j;
-        if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state.getPrePositions()) && NotInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
-            string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" goes from position "+to_string(positions[agentToAssign])+" to position "+to_string(j);
-            successors.emplace_back(State(newpositions, nextT, nextAgentToAssign, isStandard, positions), action, costMovement);
+
+    if (obj_function!="SumOfCosts"){
+
+        // Move
+        for (int j : graph.getNeighbors(positions[agentToAssign])){
+            vector<int> newpositions(positions);
+            newpositions[agentToAssign] = j;
+            if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state.getPrePositions()) && NotInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
+                string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" goes from position "+to_string(positions[agentToAssign])+" to position "+to_string(j);
+                successors.emplace_back(State(newpositions, nextT, nextAgentToAssign, isStandard, positions), action, costMovement);
+            }
         }
-    }
-    if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
-        string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
-        successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions), action, costWait);
+
+        // Wait
+        if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+            string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
+            successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions), action, costWait);
+        }
+
+    } else { // obj_function=="SumOfCosts"
+        vector<int> cannotMove = state.getCannotMove();
+        if (state.canMove(agentToAssign)){ // agentToAssign is allowed to move
+
+            // Move
+            for (int j : graph.getNeighbors(positions[agentToAssign])){
+                vector<int> newpositions(positions);
+                newpositions[agentToAssign] = j;
+                if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state.getPrePositions()) && NotInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
+                    string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" goes from position "+to_string(positions[agentToAssign])+" to position "+to_string(j);
+                    successors.emplace_back(State(newpositions, nextT, nextAgentToAssign, isStandard, positions, cannotMove), action, costMovement);
+                }
+            }
+
+            // Wait
+            if (positions[agentToAssign]!=targets[agentToAssign]){ // agentToAssign not at his target position
+                costWait = 1;
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+                    string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
+                    successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove), action, costWait);
+                }
+            } else { // agentToAssign is at his target position
+                // agentToAssign can still move in the future
+                costWait = 1;
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+                    string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
+                    successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove), action, costWait);
+                }
+
+                // we are forcing agentToAssign to not move in the future
+                costWait = 0;
+                cannotMove.push_back(agentToAssign);
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+                    string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
+                    successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove), action, costWait);
+                }
+            }
+
+
+        } else { // agentToAssign is not allowed to move
+            costWait = 0;
+            if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+                string action = "Between time "+ to_string(nextT-1)+" and time "+to_string(nextT)+", agent "+to_string(agentToAssign)+" waits at position "+to_string(positions[agentToAssign]);
+                successors.emplace_back(State(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove), action, costWait);
+            }
+        }
     }
     return successors;
 }

@@ -15,7 +15,7 @@ Graph::Graph(int N, int Width) : E(0), N(N), width(Width) {
     adjlists = new vector<int>[N];
 }
 
-void Graph::add_edge(int from, int to) {
+void Graph::addEdge(int from, int to) {
     adjlists[from].push_back(to);
     adjlists[to].push_back(from);
     E++;
@@ -41,7 +41,7 @@ void Graph::print(int num) {
     cout << res.str();
 }
 
-vector<int> Graph::getneighbors(int index) const {
+vector<int> Graph::getNeighbors(int index) const {
     if (index > N) return {};
     return adjlists[index];
 }

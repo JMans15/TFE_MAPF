@@ -31,8 +31,7 @@ vector<string> Node::getPath() {
         path.push_back(node->action);
         node = node->parent;
     }
-    // TODO: Figure this out
-    //reverse(path.begin(), path.end());
+    reverse(path.begin(), path.end());
     return path;
 }
 

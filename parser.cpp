@@ -80,10 +80,10 @@ Graph parser::parse(string filename) {
             if (lines[l][c] != '.') continue;
             // S
             if (l < height-1 && lines[l+1][c] == '.')
-                result.add_edge(tocellno(l+1, c, width), tocellno(l, c, width));
+                result.addEdge(tocellno(l+1, c, width), tocellno(l, c, width));
             // E
             if (c < width-1 && lines[l][c+1] == '.')
-                result.add_edge(tocellno(l, c+1, width), tocellno(l, c, width));
+                result.addEdge(tocellno(l, c+1, width), tocellno(l, c, width));
         }
     }
 #ifdef DEBUG

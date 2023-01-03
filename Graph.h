@@ -20,8 +20,8 @@ public:
     Graph(int N, int Width);
     int getN() const;
     int getWidth() const;
-    void add_edge(int from, int to);
-    vector<int> getneighbors(int index) const;
+    void addEdge(int from, int to);
+    vector<int> getNeighbors(int index) const;
     void print();
     void print(int num);
 };

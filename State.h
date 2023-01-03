@@ -13,7 +13,7 @@ class State {
 
 public:
 
-    State(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions);
+    State(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions, const vector<int>& m_cannotMove = vector<int>());
 
     bool operator== (State other) const
     {
@@ -25,8 +25,7 @@ public:
                 return false;
             }
         }
-        /*
-        if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
+        /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
             return false;
         }*/
         return true;
@@ -37,8 +36,7 @@ public:
         if (agentToAssign!=other.agentToAssign){
             return agentToAssign<other.agentToAssign;
         }
-        /*
-        if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
+        /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
             return timestep<other.timestep;
         }*/
         return positions<other.positions;
@@ -50,6 +48,8 @@ public:
     int getAgentToAssign() const;
     bool isStandard() const;
     void makeStandard();
+    vector<int> getCannotMove();
+    bool canMove(int agent);
 
 private:
 
@@ -71,6 +71,10 @@ private:
     // positions and prePositions are equal at standard states (when all agents have been assigned).
     // prePositions is just needed to avoid Edge Conflict (implemented in the getSuccessors function).
     vector<int> prePositions;
+
+    // list of agents which are at their target positions
+    // and cannot move anymore (for the SumOfCosts objective function)
+    vector<int> cannotMove;
 };
 
 

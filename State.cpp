@@ -5,7 +5,7 @@
 #include "State.h"
 #include <utility>
 
-State::State(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions) {
+State::State(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions, const vector<int>& m_cannotMove) {
     positions = std::move(m_positions);
     timestep = m_timestep;
     agentToAssign = m_agentToAssign;
@@ -15,6 +15,7 @@ State::State(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool 
     } else {
         prePositions = std::move(m_prePositions);
     }
+    cannotMove = m_cannotMove;
 }
 
 vector<int> State::getPositions() {
@@ -39,4 +40,12 @@ bool State::isStandard() const {
 
 void State::makeStandard() {
     standard = true;
+}
+
+vector<int> State::getCannotMove() {
+    return cannotMove;
+}
+
+bool State::canMove(int agent) {
+    return not (std::find(cannotMove.begin(), cannotMove.end(), agent) != cannotMove.end());
 }
