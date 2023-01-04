@@ -14,7 +14,7 @@
 #include "Node.h"
 #include "map"
 using namespace std;
-typedef tuple<State, string, int> Triple;
+typedef tuple<State, int> Double;
 typedef tuple<int, int, int> Constraint; // agent, position, time
 
 class Problem {
@@ -30,12 +30,11 @@ public:
     // Returns True if the state is a valid goal state
     bool isGoalState(State state) const;
 
-    // For a given state, getSuccessors returns a list of triples (successor, action, stepcost)
+    // For a given state, getSuccessors returns a list of doubles (successor, stepcost)
     // where successor is a successor state to the current state
-    // action is a string describing the action to from state to successor
     // stepcost is the cost to go from state to successor
     // Extends state thanks to Operator Decomposition
-    vector<Triple> getSuccessors(State state) const;
+    vector<Double> getSuccessors(State state) const;
 
     // Sum of Individual Costs heuristic (for SumOfCosts and Fuel objective functions)
     static int SICheuristic(State state, const Problem& problem);
@@ -43,10 +42,8 @@ public:
     // Maximum Individual Cost heuristic (for Makespan objective function)
     static int MICheuristic(State state, const Problem& problem);
 
-    // retrieveSolution is needed at the end of an A* search to retrieve the solution path from node
-    Solution retrieveSolution(int numberOfVisitedStates, Node node) const ;
-
     Graph getGraph() const;
+    vector<int> getStarts() const;
     vector<int> getTargets() const;
     string getObjFunction() const;
 

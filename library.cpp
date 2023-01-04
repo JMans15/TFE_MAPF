@@ -18,6 +18,24 @@ struct CompareF
     }
 };
 
+Solution retrieveSolution(int numberOfVisitedStates, Node node, const Problem& problem) {
+    vector<vector<int>> positionsAtTime;
+    int cost = node.getGn();
+    Node* currentnode = &node;
+    int numberOfTimesteps = node.getState().getTimestep();
+    int oldT = numberOfTimesteps+1;
+    while (currentnode->getParent() != nullptr){
+        if (oldT!=currentnode->getState().getTimestep()){
+            positionsAtTime.push_back(currentnode->getState().getPositions());
+        }
+        oldT = currentnode->getState().getTimestep();
+        currentnode = currentnode->getParent();
+    }
+    positionsAtTime.push_back(problem.getStarts());
+    reverse(positionsAtTime.begin(), positionsAtTime.end());
+    return {cost, problem.getObjFunction(), numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
+}
+
 Solution aStarSearch(const Problem& problem){
     cout << "===== Search ====" << endl;
     function<int(State, Problem)> heuristic;
@@ -43,14 +61,13 @@ Solution aStarSearch(const Problem& problem){
         }
         numberOfVisitedStates += 1;
         if (problem.isGoalState(node.getState())){
-            return problem.retrieveSolution(numberOfVisitedStates, node);
+            return retrieveSolution(numberOfVisitedStates, node, problem);
         }
         explored.insert(node.getState());
-        vector<Triple> successors = problem.getSuccessors(node.getState());
+        vector<Double> successors = problem.getSuccessors(node.getState());
         for (auto & successor : successors){
             State child = get<0>(successor);
-            string action = get<1>(successor);
-            int cost = get<2>(successor);
+            int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
             if (explored.count(child)==0){
                 fringe.emplace(newnode.getGn()+heuristic(child,problem),newnode);
