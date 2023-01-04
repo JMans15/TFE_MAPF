@@ -7,19 +7,25 @@
 // #include <bits/stdc++.h>
 #include <utility>
 
-Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, string m_obj_function, const vector<Constraint>& m_setOfConstraints) : graph(m_graph) {
+Problem::Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets, ObjectiveFunction m_obj_function, const vector<Constraint>& m_setOfConstraints) : graph(m_graph) {
     starts = std::move(m_starts);
     targets = std::move(m_targets);
     numberOfAgents = starts.size();
     cout << "==== Problem ====" << endl;
     cout << "Number of agents : " << numberOfAgents << endl;
-    obj_function = std::move(m_obj_function);
-    if (obj_function!="SumOfCosts" and obj_function!="Makespan" and obj_function!="Fuel"){
+    obj_function = m_obj_function;
+    if (obj_function!=SumOfCosts and obj_function!=Makespan and obj_function!=Fuel){
         cout << "The input for the objective function is not correct." << endl;
         cout << "So, the default objective function will be applied." << endl;
-        obj_function = "Fuel";
+        obj_function = Fuel;
     }
-    cout << "Objective function : " << obj_function << endl;
+    if (obj_function==SumOfCosts){
+        cout << "Objective function : SumOfCosts" << endl;
+    } else if (obj_function==Makespan){
+        cout << "Objective function : Makespan" << endl;
+    } else {
+        cout << "Objective function : Fuel" << endl;
+    }
     cout << "Start position of each agent :" << endl;
     for (int i = 0; i < numberOfAgents; i++){
         cout << " - Agent " << i << " : " << starts[i] << endl;
@@ -103,10 +109,10 @@ vector<Double> Problem::getSuccessors(State state) const {
     int costMovement;
     int costWait;
     bool isStandard;
-    if (obj_function=="Fuel"){
+    if (obj_function==Fuel){
         costMovement = 1;
         costWait = 0;
-    } else if (obj_function=="Makespan"){
+    } else if (obj_function==Makespan){
         if (agentToAssign==0){
             // we are assigning a position to the first agent,
             // we know that we will need another timestep
@@ -134,7 +140,7 @@ vector<Double> Problem::getSuccessors(State state) const {
         isStandard = false;
     }
 
-    if (obj_function!="SumOfCosts"){
+    if (obj_function!=SumOfCosts){
 
         // Move
         for (int j : graph.getNeighbors(positions[agentToAssign])){
@@ -207,7 +213,7 @@ vector<int> Problem::getTargets() const {
     return targets;
 }
 
-string Problem::getObjFunction() const {
+ObjectiveFunction Problem::getObjFunction() const {
     return obj_function;
 }
 

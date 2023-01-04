@@ -16,13 +16,16 @@
 using namespace std;
 typedef tuple<State, int> Double;
 typedef tuple<int, int, int> Constraint; // agent, position, time
+enum ObjectiveFunction {
+    Fuel, Makespan, SumOfCosts
+};
 
 class Problem {
 public:
 
     // Constructor
     Problem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
-            string m_obj_function="Fuel", const vector<Constraint>& m_setOfConstraints = vector<Constraint>());
+            ObjectiveFunction m_obj_function=Fuel, const vector<Constraint>& m_setOfConstraints = vector<Constraint>());
 
     // Returns the start state for the search problem
     State getStartState() const;
@@ -45,7 +48,7 @@ public:
     Graph getGraph() const;
     vector<int> getStarts() const;
     vector<int> getTargets() const;
-    string getObjFunction() const;
+    ObjectiveFunction getObjFunction() const;
 
 private:
 
@@ -59,11 +62,11 @@ private:
     vector<int> targets;
     int numberOfAgents;
 
-    // The objective function to minimize : "Fuel" or "Makespan" or "SumOfCosts"
+    // The objective function to minimize : Fuel or Makespan or SumOfCosts
     // - Fuel : Total amount of distance traveled by all agents
     // - Makespan : Total time for the last agent to reach its goal
     // - SumOfCosts : The sum of the time steps required for every agent to reach its goal
-    string obj_function;
+    ObjectiveFunction obj_function;
 
     // list of constraints like (a, p, t) meaning agent a can't be at position p at time t
     vector<Constraint> setOfConstraints;

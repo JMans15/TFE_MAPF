@@ -11,7 +11,8 @@ using namespace std;
 class Solution {
 public:
     Solution();
-    Solution(int m_cost, string m_obj_function, int m_numberOfVisitedStates, int m_numberOfTimesteps, vector<vector<int>> m_positionsAtTime);
+    Solution(int m_cost, int m_numberOfVisitedStates, int m_numberOfTimesteps, vector<vector<int>> m_positionsAtTime);
+
     int getCost() const;
     int getNumberOfVisitedStates() const;
     int getNumberOfTimesteps() const;
@@ -23,9 +24,6 @@ private:
 
     // Cost of the solution
     int cost;
-
-    // Objective function : "Fuel", "Makespan" or "SumOfCosts"
-    string obj_function;
 
     // The number of visited (goal tested) states.
     int numberOfVisitedStates;

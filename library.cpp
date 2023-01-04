@@ -8,7 +8,6 @@
 #include <functional>
 
 typedef tuple<int, Node> Tuple;
-typedef tuple<State, string, int> Triple;
 
 struct CompareF
 {
@@ -33,16 +32,16 @@ Solution retrieveSolution(int numberOfVisitedStates, Node node, const Problem& p
     }
     positionsAtTime.push_back(problem.getStarts());
     reverse(positionsAtTime.begin(), positionsAtTime.end());
-    return {cost, problem.getObjFunction(), numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
+    return {cost, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
 }
 
 Solution aStarSearch(const Problem& problem){
     cout << "===== Search ====" << endl;
     function<int(State, Problem)> heuristic;
-    if (problem.getObjFunction()=="SumOfCosts" or problem.getObjFunction()=="Fuel"){
+    if (problem.getObjFunction()==SumOfCosts or problem.getObjFunction()==Fuel){
         cout << "The used heuristic will be the Sum Of Individual Costs." << endl;
         heuristic = Problem::SICheuristic;
-    } else { // problem.getObjFunction()=="Makespan"
+    } else { // problem.getObjFunction()==Makespan
         cout << "The used heuristic will be the Maximum Individual Cost." << endl;
         heuristic = Problem::MICheuristic;
     }

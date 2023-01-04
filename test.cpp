@@ -15,7 +15,7 @@ int main() {
     starts.push_back(7);
     vector<int> targets;
     targets.push_back(17);
-    Problem problem = Problem(g, starts, targets, "Fuel");
+    Problem problem = Problem(g, starts, targets, Fuel);
     Solution solution = aStarSearch(problem);
     // cost = 18, numberOfVisitedStates = 27
     solution.print();*/
@@ -26,7 +26,7 @@ int main() {
     starts.push_back(1);
     vector<int> targets;
     targets.push_back(256*256-1);
-    Problem problem = Problem(g, starts, targets, "SumOfCosts");
+    Problem problem = Problem(g, starts, targets, SumOfCosts);
     Solution solution = aStarSearch(problem);
     // cost = 509
     solution.print();*/
@@ -39,7 +39,7 @@ int main() {
     vector<int> targets;
     targets.push_back(6);
     targets.push_back(1);
-    Problem problem = Problem(g, starts, targets, "SumOfCosts");
+    Problem problem = Problem(g, starts, targets, SumOfCosts);
     Solution solution = aStarSearch(problem);
     // makespan cost = 3, fuel cost = 4,  sumofcosts cost = 5
     solution.print();*/
@@ -52,7 +52,7 @@ int main() {
     vector<int> targets;
     targets.push_back(3);
     targets.push_back(0);
-    Problem problem = Problem(g, starts, targets, "SumOfCosts");
+    Problem problem = Problem(g, starts, targets, SumOfCosts);
     Solution solution = aStarSearch(problem);
     // makespan cost = 5, fuel cost = 8,  sumofcosts cost = 8
     solution.print();*/
@@ -65,7 +65,7 @@ int main() {
     vector<int> targets;
     targets.push_back(17);
     targets.push_back(20);
-    Problem problem = Problem(g, starts, targets, "SumOfCosts");
+    Problem problem = Problem(g, starts, targets, SumOfCosts);
     Solution solution = aStarSearch(problem);
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
     solution.print();
@@ -76,7 +76,7 @@ int main() {
     starts.push_back(4);
     vector<int> targets;
     targets.push_back(6);
-    Problem problem = Problem(g, starts, targets, "SumOfCosts", vector<Constraint>{Constraint(0,5,1)});
+    Problem problem = Problem(g, starts, targets, SumOfCosts, vector<Constraint>{Constraint(0,5,1)});
     Solution solution = aStarSearch(problem);
     // makespan cost = 3, fuel cost = 2,  sumofcosts cost = 3 (if 2 states are equal if same positions and same time)
     // makespan cost = 4, fuel cost = 4,  sumofcosts cost = 4 (if 2 states are equal if same positions) (SOUCIS HERE)

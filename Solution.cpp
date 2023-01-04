@@ -11,11 +11,10 @@ Solution::Solution() {
     foundpath = false;
 }
 
-Solution::Solution(int m_cost, string m_obj_function, int m_numberOfVisitedStates,
+Solution::Solution(int m_cost, int m_numberOfVisitedStates,
                    int m_numberOfTimesteps, vector<vector<int>> m_positionsAtTime) {
     foundpath = true;
     cost = m_cost;
-    obj_function = std::move(m_obj_function);
     numberOfVisitedStates = m_numberOfVisitedStates;
     numberOfTimesteps = m_numberOfTimesteps;
     positionsAtTime = std::move(m_positionsAtTime);
@@ -49,7 +48,7 @@ void Solution::print() {
     cout << " " << endl;
     cout << "A solution has been found!" << endl;
     cout << numberOfVisitedStates << " visited states (goal tested)" << endl;
-    cout << "Cost of the solution = " << cost << " (" << obj_function << " cost)" << endl;
+    cout << "Cost of the solution = " << cost << endl;
     cout << " " << endl;
     cout << " -> Position of every agent at each time : " << endl;
     for (int t = 0; t < numberOfTimesteps; t++){
