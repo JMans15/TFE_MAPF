@@ -11,8 +11,7 @@ using namespace std;
 class Solution {
 public:
     Solution();
-    Solution(vector<string> m_stringPath, int m_cost, string m_obj_function, int m_numberOfVisitedStates, int m_numberOfTimesteps, vector<vector<int>> m_positionsAtTime);
-    vector<string> getStringPath();
+    Solution(int m_cost, string m_obj_function, int m_numberOfVisitedStates, int m_numberOfTimesteps, vector<vector<int>> m_positionsAtTime);
     int getCost() const;
     int getNumberOfVisitedStates() const;
     int getNumberOfTimesteps() const;
@@ -37,9 +36,6 @@ private:
     // Matrix of size numberOfTimesteps X numberOfAgents
     // positionsAtTime[t][a] is the position of agent a at time t in this solution
     vector<vector<int>> positionsAtTime;
-
-    // Contains a path explained in English with string
-    vector<string> stringPath;
 
     // true if this solution contains a path
     bool foundpath;

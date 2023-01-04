@@ -51,7 +51,7 @@ Solution aStarSearch(const Problem& problem){
             State child = get<0>(successor);
             string action = get<1>(successor);
             int cost = get<2>(successor);
-            Node newnode(child, node, action, node.getGn()+cost);
+            Node newnode(child, node, node.getGn()+cost);
             if (explored.count(child)==0){
                 fringe.emplace(newnode.getGn()+heuristic(child,problem),newnode);
             }

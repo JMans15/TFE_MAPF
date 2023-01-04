@@ -246,13 +246,11 @@ int Problem::MICheuristic(State state, const Problem& problem){
 
 Solution Problem::retrieveSolution(int numberOfVisitedStates, Node node) const {
     vector<vector<int>> positionsAtTime;
-    vector<string> stringPath;
     int cost = node.getGn();
     Node* currentnode = &node;
     int numberOfTimesteps = node.getState().getTimestep();
     int oldT = numberOfTimesteps+1;
     while (currentnode->getParent() != nullptr){
-        stringPath.push_back(currentnode->getAction());
         if (oldT!=currentnode->getState().getTimestep()){
             positionsAtTime.push_back(currentnode->getState().getPositions());
         }
@@ -261,6 +259,5 @@ Solution Problem::retrieveSolution(int numberOfVisitedStates, Node node) const {
     }
     positionsAtTime.push_back(starts);
     reverse(positionsAtTime.begin(), positionsAtTime.end());
-    reverse(stringPath.begin(), stringPath.end());
-    return {stringPath, cost, obj_function, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
+    return {cost, obj_function, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
 }
