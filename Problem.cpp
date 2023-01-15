@@ -216,33 +216,3 @@ vector<int> Problem::getTargets() const {
 ObjectiveFunction Problem::getObjFunction() const {
     return obj_function;
 }
-
-
-// Returns the Manhattan distance between position a and position b
-int distance(int a, int b, int width) {
-    int ax, ay, bx, by;
-    ax = (int) a / width; ay = a % width;
-    bx = (int) b / width; by = b % width;
-    return abs(ax-bx) + abs(ay-by);
-}
-
-int Problem::SICheuristic(State state, const Problem& problem){
-    int sum = 0;
-    vector<int> positions = state.getPositions();
-    for (int i = 0; i < positions.size(); i++){
-        sum += distance(positions[i], problem.getTargets()[i], problem.getGraph().getWidth());
-    }
-    return sum;
-}
-
-int Problem::MICheuristic(State state, const Problem& problem){
-    int Max = 0;
-    vector<int> positions = state.getPositions();
-    for (int i = 0; i < state.getAgentToAssign(); i++){
-        Max = max(Max, distance(positions[i], problem.getTargets()[i], problem.getGraph().getWidth()));
-    }
-    for (int i = state.getAgentToAssign(); i < positions.size(); i++){
-        Max = max(Max, distance(positions[i], problem.getTargets()[i], problem.getGraph().getWidth())-1);
-    }
-    return Max;
-}

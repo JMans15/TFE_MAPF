@@ -12,6 +12,7 @@
 #include "Graph.h"
 #include "Solution.h"
 #include "Node.h"
+#include "Heuristic.h"
 #include "map"
 using namespace std;
 typedef tuple<State, int> Double;
@@ -38,12 +39,6 @@ public:
     // stepcost is the cost to go from state to successor
     // Extends state thanks to Operator Decomposition
     vector<Double> getSuccessors(State state) const;
-
-    // Sum of Individual Costs heuristic (for SumOfCosts and Fuel objective functions)
-    static int SICheuristic(State state, const Problem& problem);
-
-    // Maximum Individual Cost heuristic (for Makespan objective function)
-    static int MICheuristic(State state, const Problem& problem);
 
     Graph getGraph() const;
     vector<int> getStarts() const;

@@ -1,5 +1,4 @@
 #include "library.h"
-#include "Node.h"
 
 #include <iostream>
 #include <queue>
@@ -17,7 +16,7 @@ struct CompareF
     }
 };
 
-Solution retrieveSolution(int numberOfVisitedStates, Node node, const Problem& problem) {
+Solution retrieveSolution(int numberOfVisitedStates, Node node) {
     vector<vector<int>> positionsAtTime;
     int cost = node.getGn();
     Node* currentnode = &node;
@@ -30,25 +29,27 @@ Solution retrieveSolution(int numberOfVisitedStates, Node node, const Problem& p
         oldT = currentnode->getState().getTimestep();
         currentnode = currentnode->getParent();
     }
-    positionsAtTime.push_back(problem.getStarts());
+    positionsAtTime.push_back(currentnode->getState().getPositions());
     reverse(positionsAtTime.begin(), positionsAtTime.end());
     return {cost, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
 }
 
-Solution aStarSearch(const Problem& problem){
+Solution aStarSearch(const Problem& problem, TypeOfHeuristic typeOfHeuristic){
     cout << "===== Search ====" << endl;
-    function<int(State, Problem)> heuristic;
-    if (problem.getObjFunction()==SumOfCosts or problem.getObjFunction()==Fuel){
-        cout << "The used heuristic will be the Sum Of Individual Costs." << endl;
-        heuristic = Problem::SICheuristic;
-    } else { // problem.getObjFunction()==Makespan
-        cout << "The used heuristic will be the Maximum Individual Cost." << endl;
-        heuristic = Problem::MICheuristic;
+    Heuristic* heuristic;
+    MICheuristic mic = MICheuristic(problem.getTargets(), problem.getGraph().getWidth());
+    SICheuristic sic = SICheuristic(problem.getTargets(), problem.getGraph().getWidth());
+    if (typeOfHeuristic==MIC){
+        cout << "The used heuristic will be the Maximum Individual Cost (Manhattan distance)." << endl;
+        heuristic = &mic;
+    } else {
+        cout << "The used heuristic will be the Sum Of Individual Costs (Manhattan distance)." << endl;
+        heuristic = &sic;
     }
     cout << "Beginning the A* search. " << endl;
     State s = problem.getStartState();
     priority_queue<Tuple, vector<Tuple>, CompareF> fringe;
-    fringe.emplace(0+heuristic(s, problem), Node(s));
+    fringe.emplace(0+heuristic->heuristicFunction(s), Node(s));
     set<State> explored;  // the closed list
     int numberOfVisitedStates = 0;
     while (!fringe.empty()){
@@ -60,7 +61,7 @@ Solution aStarSearch(const Problem& problem){
         }
         numberOfVisitedStates += 1;
         if (problem.isGoalState(node.getState())){
-            return retrieveSolution(numberOfVisitedStates, node, problem);
+            return retrieveSolution(numberOfVisitedStates, node);
         }
         explored.insert(node.getState());
         vector<Double> successors = problem.getSuccessors(node.getState());
@@ -69,7 +70,7 @@ Solution aStarSearch(const Problem& problem){
             int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
             if (explored.count(child)==0){
-                fringe.emplace(newnode.getGn()+heuristic(child,problem),newnode);
+                fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
             }
         }
     }
