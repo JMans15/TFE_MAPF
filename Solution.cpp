@@ -45,24 +45,26 @@ vector<int> Solution::getPathOfAgent(int i) {
 }
 
 void Solution::print() {
-    cout << " " << endl;
-    cout << "A solution has been found!" << endl;
-    cout << numberOfVisitedStates << " visited states (goal tested)" << endl;
-    cout << "Cost of the solution = " << cost << endl;
-    cout << " " << endl;
-    cout << " -> Position of every agent at each time : " << endl;
-    for (int t = 0; t < numberOfTimesteps; t++){
-        cout << " -- Time " << t << " : " << endl;
-        for (int i = 0; i < positionsAtTime[t].size(); i++){
-            cout << " --- Agent " << i << " : position " << positionsAtTime[t][i] << endl;
-        }
-    }
-    cout << " " << endl;
-    cout << " -> Path of each agent : " << endl;
-    for (int i = 0; i < positionsAtTime[0].size(); i++){
-        cout << " -- Agent " << i << " : " << endl;
+    if (foundpath){
+        cout << " " << endl;
+        cout << "A solution has been found!" << endl;
+        cout << numberOfVisitedStates << " visited states (goal tested)" << endl;
+        cout << "Cost of the solution = " << cost << endl;
+        cout << " " << endl;
+        cout << " -> Position of every agent at each time : " << endl;
         for (int t = 0; t < numberOfTimesteps; t++){
-            cout << " --- Time " << t << " : position " << positionsAtTime[t][i] << endl;
+            cout << " -- Time " << t << " : " << endl;
+            for (int i = 0; i < positionsAtTime[t].size(); i++){
+                cout << " --- Agent " << i << " : position " << positionsAtTime[t][i] << endl;
+            }
+        }
+        cout << " " << endl;
+        cout << " -> Path of each agent : " << endl;
+        for (int i = 0; i < positionsAtTime[0].size(); i++){
+            cout << " -- Agent " << i << " : " << endl;
+            for (int t = 0; t < numberOfTimesteps; t++){
+                cout << " --- Time " << t << " : position " << positionsAtTime[t][i] << endl;
+            }
         }
     }
 }

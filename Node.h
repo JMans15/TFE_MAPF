@@ -14,20 +14,21 @@ using namespace std;
 class Node {
 public:
 
-    explicit Node(State m_state);
-    Node(State m_state, const Node& m_parent, int m_gn); //Constructeur surchargé
+    explicit Node(State* m_state);
+    Node(State* m_state, const Node& m_parent, int m_gn); //Constructeur surchargé
     ~Node(); //Destructeur
-    State getState();
+    State* getState();
     Node* getParent() const;
     int getGn() const;
+    /*
     // 2 nodes are equal if they have the same state
     bool operator== (Node other) const
     {
-        return other.getState()==state;
-    }
+        return *other.getState()==*state;
+    }*/
 
 private:
-    State state; // state of the node
+    State* state; // state of the node
     Node* parent; // parent node
     int gn; // path cost g(n)
 };

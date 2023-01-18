@@ -6,12 +6,14 @@
 
 #include <utility>
 
-Node::Node(State m_state) : state(std::move(m_state)) {
+Node::Node(State* m_state) {
+    state = m_state;
     parent = nullptr;
     gn = 0;
 }
 
-Node::Node(State m_state, const Node& m_parent, int m_gn) : state(std::move(m_state)) {
+Node::Node(State* m_state, const Node& m_parent, int m_gn) {
+    state = m_state;
     parent = new Node(m_parent);
     gn = m_gn;
 }
@@ -22,7 +24,7 @@ Node::~Node() {
     //}
 }
 
-State Node::getState() {
+State* Node::getState() {
     return state;
 }
 

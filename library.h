@@ -7,6 +7,6 @@
 #include "Solution.h"
 using namespace std;
 
-Solution aStarSearch(const Problem& problem, TypeOfHeuristic typeOfHeuristic);
+Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic);
 
 #endif //TFE_MAPF_LIBRARY_H
