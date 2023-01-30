@@ -4,6 +4,7 @@
 #include <queue>
 #include <tuple>
 #include <set>
+#include <algorithm>
 
 typedef tuple<int, Node> Tuple;
 

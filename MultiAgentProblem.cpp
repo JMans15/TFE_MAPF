@@ -3,6 +3,7 @@
 //
 
 #include "MultiAgentProblem.h"
+#include <algorithm>
 
 MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
                                      ObjectiveFunction m_obj_function,

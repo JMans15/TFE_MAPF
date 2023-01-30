@@ -3,6 +3,7 @@
 //
 
 #include "MultiAgentState.h"
+#include <algorithm>
 
 MultiAgentState::MultiAgentState(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions, const vector<int>& m_cannotMove) : State(m_timestep) {
     positions = std::move(m_positions);

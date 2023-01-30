@@ -5,6 +5,7 @@
 #include "Heuristic.h"
 
 #include <utility>
+#include <algorithm>
 
 // Returns the Manhattan distance between position a and position b
 int distance(int a, int b, int width) {
