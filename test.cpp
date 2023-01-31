@@ -12,7 +12,7 @@ int main() {
     // Graph g = parser::parse("/home/mansj/CLionProjects/TFE_MAPF/Benchmarks/map_empty_4x4.map");
 
     // TEST 1 : 1 agent
-    Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/AssignmentIACourse.map");
+    Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
     int start = 7;
     int target = 17;
     SingleAgentProblem problem = SingleAgentProblem(g, start, target);

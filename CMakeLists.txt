@@ -14,3 +14,4 @@ add_library(TFE_MAPF library.cpp)
 # For testing
 add_executable(TFE_MAPF_test test.cpp library.cpp Problem.cpp Problem.h Node.cpp Node.h State.cpp State.h parser.cpp parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h Heuristic.cpp Heuristic.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.cpp SingleAgentState.h)
 
+add_executable(TFE_MAPF_visu runner_for_visualization.cpp library.cpp Problem.cpp Problem.h Node.cpp Node.h State.cpp State.h parser.cpp parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h Heuristic.cpp Heuristic.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.cpp SingleAgentState.h)
