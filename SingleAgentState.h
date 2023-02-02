@@ -11,16 +11,7 @@ public:
 
     SingleAgentState(int m_position, int m_timestep);
 
-    bool operator== (const SingleAgentState& other) const
-    {
-        if (position!=other.position){
-            return false;
-        }
-        /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
-            return false;
-        }*/
-        return true;
-    }
+    bool operator==(const State& other) const;
 
     bool operator< (const SingleAgentState& other) const
     {

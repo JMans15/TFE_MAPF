@@ -11,21 +11,7 @@ public:
 
     MultiAgentState(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions, const vector<int>& m_cannotMove = vector<int>());
 
-    bool operator== (MultiAgentState other) const
-    {
-        if (agentToAssign!=other.agentToAssign){
-            return false;
-        }
-        for (int i = 0; i < positions.size(); i++){
-            if (positions[i]!=other.positions[i]){
-                return false;
-            }
-        }
-        /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
-            return false;
-        }*/
-        return true;
-    }
+    bool operator==(const State& other) const;
 
     bool operator< (const MultiAgentState& other) const
     {

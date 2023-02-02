@@ -12,13 +12,13 @@ int main() {
     // Graph g = parser::parse("/home/mansj/CLionProjects/TFE_MAPF/Benchmarks/map_empty_4x4.map");
 
     // TEST 1 : 1 agent
-    Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
     int start = 7;
     int target = 17;
     SingleAgentProblem problem = SingleAgentProblem(g, start, target);
     Solution solution = aStarSearch(&problem, Manhattan);
     // cost = 18, numberOfVisitedStates = 27
-    solution.print();
+    solution.print();*/
 
     // TEST 2 : 1 agent
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/Berlin_1_256.map");
@@ -56,7 +56,7 @@ int main() {
     solution.print();*/
 
     // TEST 5 : 2 agents
-    /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/AssignmentIACourse.map");
+    Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(48);
     starts.push_back(17);
@@ -66,7 +66,7 @@ int main() {
     MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
     Solution solution = aStarSearch(&problem, SIC);
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
-    solution.print();*/
+    solution.print();
 
     // TEST 6 : 1 agent and a constraint (a, p, t)
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/empty-4-4.map");

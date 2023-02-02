@@ -17,3 +17,14 @@ vector<int> SingleAgentState::getPositions() {
 int SingleAgentState::getPosition() const {
     return position;
 }
+
+bool SingleAgentState::operator==(const State& other) const {
+    auto o = dynamic_cast<const SingleAgentState*>(&other);
+    if (position!=o->position){
+        return false;
+    }
+    /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
+        return false;
+    }*/
+    return true;
+}

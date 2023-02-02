@@ -61,7 +61,8 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
         Tuple tuplee = fringe.top();
         Node node = get<1>(tuplee);
         fringe.pop();
-        if (explored.count(node.getState())){ // if node.getState() is already in explored
+
+        if (std::count_if(explored.begin(), explored.end(), [&node](State* state) {return *state == *node.getState();})) { // if node.getState() is already in explored
             continue;
         }
         numberOfVisitedStates += 1;
@@ -74,7 +75,7 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
             State* child = get<0>(successor);
             int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
-            if (explored.count(child)==0){ // if node.getState() is not in explored
+            if (!std::count_if(explored.begin(), explored.end(), [&child](State* state) {return *state == *child;})){
                 fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
             }
         }

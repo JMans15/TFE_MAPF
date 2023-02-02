@@ -44,3 +44,19 @@ vector<int> MultiAgentState::getCannotMove() {
 bool MultiAgentState::canMove(int agent) {
     return not (std::find(cannotMove.begin(), cannotMove.end(), agent) != cannotMove.end());
 }
+
+bool MultiAgentState::operator==(const State& other) const {
+    auto o = dynamic_cast<const MultiAgentState*>(&other);
+    if (agentToAssign!=o->agentToAssign){
+        return false;
+    }
+    for (int i = 0; i < positions.size(); i++){
+        if (positions[i]!=o->positions[i]){
+            return false;
+        }
+    }
+    /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
+        return false;
+    }*/
+    return true;
+}

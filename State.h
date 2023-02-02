@@ -18,6 +18,8 @@ public:
     virtual vector<int> getPositions() = 0;
     int getTimestep() const;
 
+    virtual bool operator==(const State& rhs) const = 0;
+
 protected:
 
     // the timestep of this state
