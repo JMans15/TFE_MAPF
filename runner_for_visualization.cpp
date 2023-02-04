@@ -5,7 +5,9 @@
 #include "parser.h"
 #include "library.h"
 #include "SingleAgentProblem.h"
+#include "MultiAgentProblem.h"
 #include "external-headers/cxxopts.hpp"
+#include <fstream>
 
 int main(int argc, const char** argv) {
     cxxopts::Options options("TFE_MAPF_visu", "Runner program for visualizing our MAPF results");
@@ -76,25 +78,66 @@ int main(int argc, const char** argv) {
         exit(0);
     }
 
-    auto scenfile = result["scen"].as<std::string>();
-    if (file.substr(file.find_last_of('.') + 1) != "scen") {
-        std::cout << "Not a scen file" << std::endl;
-        exit(0);
-    }
-
     // Parsing the graph from the map file
     Graph g = parser::parse(file);
+    Solution solution;
 
     if (Mode == MULTI) {
-        cout << "Multi agent currently not supported, WIP" << endl;
+        auto scenfile = result["scen"].as<std::string>();
+        if (scenfile.substr(scenfile.find_last_of('.') + 1) != "scen") {
+            std::cout << "Not a scen file" << std::endl;
+            exit(0);
+        }
+        
+        ifstream infile;
+        infile.open(scenfile);
+        string line;
+        getline(infile, line);
+        vector<int> starts, targets;
+        int n, w, h, sx, sy, tx, ty;
+        double d;
+        string map;
+        while (getline(infile, line)) {
+            //region extract data from line
+            stringstream ss;
+            ss.str(line);
+            string item;
+            getline(ss, item, '\t');
+            n = stoi(item);
+            getline(ss, item, '\t');
+            getline(ss, item, '\t');
+            w = stoi(item);
+            getline(ss, item, '\t');
+            h = stoi(item);
+            getline(ss, item, '\t');
+            sx = stoi(item);
+            getline(ss, item, '\t');
+            sy = stoi(item);
+            getline(ss, item, '\t');
+            tx = stoi(item);
+            getline(ss, item, '\t');
+            ty = stoi(item);
+            //endregion
+
+            int start = sy*w+sx;
+            starts.emplace_back(start);
+            int target = ty*w+tx;
+            targets.emplace_back(target);
+        }
+
+        MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
+        solution = aStarSearch(&problem, MIC);
     }
 
-    // Getting start and target
-    auto start = result["s"].as<int>();
-    auto target = result["t"].as<int>();
+    else {
+        // Getting start and target
+        auto start = result["s"].as<int>();
+        auto target = result["t"].as<int>();
 
-    // Solving and printing problem
-    SingleAgentProblem problem = SingleAgentProblem(g, start, target);
-    Solution solution = aStarSearch(&problem, Manhattan);
+        // Solving and printing problem
+        SingleAgentProblem problem = SingleAgentProblem(g, start, target);
+        solution = aStarSearch(&problem, Manhattan);
+    }
+
     solution.print();
 }
