@@ -6,6 +6,8 @@
 #include <set>
 #include <algorithm>
 
+#define LOG(str) if (verbose) {cout << str << endl;}
+
 typedef tuple<int, Node> Tuple;
 
 struct CompareF
@@ -34,24 +36,24 @@ Solution retrieveSolution(int numberOfVisitedStates, Node node) {
     return {cost, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
 }
 
-Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
-    cout << "===== Search ====" << endl;
+Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verbose){
+    LOG("===== Search ====");
     Heuristic* heuristic;
     if (typeOfHeuristic==MIC){
-        cout << "The used heuristic will be the Maximum Individual Cost (Manhattan distance)." << endl;
+        LOG("The used heuristic will be the Maximum Individual Cost (Manhattan distance).");
         heuristic = new MICheuristic(problem->getTargets(), problem->getGraph().getWidth());
     } else if (typeOfHeuristic==SIC){
-        cout << "The used heuristic will be the Sum Of Individual Costs (Manhattan distance)." << endl;
+        LOG("The used heuristic will be the Sum Of Individual Costs (Manhattan distance).");
         heuristic = new SICheuristic(problem->getTargets(), problem->getGraph().getWidth());
     } else { // typeOfHeuristic==Manhattan
         if (problem->getNumberOfAgents()!=1){
-            cout << "We cannot use this heuristic with a single agent problem." << endl;
+            LOG("We cannot use this heuristic with a single agent problem.");
             return {};
         }
-        cout << "The used heuristic will be the Manhattan distance." << endl;
+        LOG("The used heuristic will be the Manhattan distance.");
         heuristic = new Manhattanheuristic(problem->getTargets()[0], problem->getGraph().getWidth());
     }
-    cout << "Beginning the A* search. " << endl;
+    LOG("Beginning the A* search. ");
     State* s = problem->getStartState();
     priority_queue<Tuple, vector<Tuple>, CompareF> fringe;
     fringe.emplace(0+heuristic->heuristicFunction(s), Node(s));
@@ -80,6 +82,6 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
             }
         }
     }
-    cout << "No path has been found." << endl;
+    LOG("No path has been found.");
     return {};
 }

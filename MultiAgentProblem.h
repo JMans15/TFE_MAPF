@@ -15,7 +15,7 @@ class MultiAgentProblem : public Problem{
 public:
     MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
                       ObjectiveFunction m_obj_function,
-                      const vector<Constraint> &m_setOfConstraints = vector<Constraint>());
+                      const vector<Constraint> &m_setOfConstraints = vector<Constraint>(), int verbose = 1);
     State* getStartState();
     bool isGoalState(State* state);
 

@@ -20,6 +20,7 @@ int main(int argc, const char** argv) {
         ("v, verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
         ("h, help", "Print help")
         ("m, multi", "Multi agent version")
+        ("outfile", "Output file that will be filled with result data", cxxopts::value<std::string>())
         ;
 
     auto result = options.parse(argc, argv);
@@ -125,8 +126,8 @@ int main(int argc, const char** argv) {
             targets.emplace_back(target);
         }
 
-        MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
-        solution = aStarSearch(&problem, MIC);
+        MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts, vector<Constraint>(), 0);
+        solution = aStarSearch(&problem, MIC, 0);
     }
 
     else {
@@ -135,9 +136,9 @@ int main(int argc, const char** argv) {
         auto target = result["t"].as<int>();
 
         // Solving and printing problem
-        SingleAgentProblem problem = SingleAgentProblem(g, start, target);
-        solution = aStarSearch(&problem, Manhattan);
+        SingleAgentProblem problem = SingleAgentProblem(g, start, target, 0);
+        solution = aStarSearch(&problem, Manhattan, 0);
     }
 
-    solution.print();
+    //solution.print();
 }

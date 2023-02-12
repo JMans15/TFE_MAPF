@@ -5,54 +5,56 @@
 #include "MultiAgentProblem.h"
 #include <algorithm>
 
+#define LOG(str) if (verbose) {cout << str << endl;}
+
 MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
                                      ObjectiveFunction m_obj_function,
-                                     const vector<Constraint> &m_setOfConstraints) : Problem(m_graph) {
+                                     const vector<Constraint> &m_setOfConstraints, int verbose) : Problem(m_graph) {
     starts = std::move(m_starts);
     targets = std::move(m_targets);
     numberOfAgents = starts.size();
-    cout << "==== Multi Agent Problem ====" << endl;
-    cout << "Number of agents : " << numberOfAgents << endl;
+    LOG("==== Multi Agent Problem ====");
+    LOG("Number of agents : " << numberOfAgents)
     obj_function = m_obj_function;
     if (obj_function!=SumOfCosts and obj_function!=Makespan and obj_function!=Fuel){
-        cout << "The input for the objective function is not correct." << endl;
-        cout << "So, the default objective function will be applied." << endl;
+        LOG("The input for the objective function is not correct.");
+        LOG("So, the default objective function will be applied.");
         obj_function = Fuel;
     }
     if (obj_function==SumOfCosts){
-        cout << "Objective function : SumOfCosts" << endl;
+        LOG("Objective function : SumOfCosts");
     } else if (obj_function==Makespan){
-        cout << "Objective function : Makespan" << endl;
+        LOG("Objective function : Makespan");
     } else {
-        cout << "Objective function : Fuel" << endl;
+        LOG("Objective function : Fuel");
     }
-    cout << "Start position of each agent :" << endl;
+    LOG("Start position of each agent :");
     for (int i = 0; i < numberOfAgents; i++){
-        cout << " - Agent " << i << " : " << starts[i] << endl;
+        LOG(" - Agent " << i << " : " << starts[i]);
         if (graph.getNeighbors(starts[i]).empty()){
-            cout << "   The start position of agent "<< i << " is unreachable." << endl;
+            LOG("   The start position of agent "<< i << " is unreachable.");
         }
     }
-    cout << "Target position of each agent :" << endl;
+    LOG("Target position of each agent :");
     for (int i = 0; i < numberOfAgents; i++){
-        cout << " - Agent " << i << " : " << targets[i] << endl;
+        LOG(" - Agent " << i << " : " << targets[i]);
         if (graph.getNeighbors(targets[i]).empty()){
-            cout << "   The target position of agent "<< i << " is unreachable." << endl;
+            LOG("   The target position of agent "<< i << " is unreachable.");
         }
     }
     setOfConstraints = m_setOfConstraints;
     if (not setOfConstraints.empty()){
-        cout << "The problem has the following constraints :" << endl;
+        LOG("The problem has the following constraints :");
         for (int i = 0; i < setOfConstraints.size(); i++){
             Constraint constraint = setOfConstraints[i];
             int agent = get<0>(constraint);
             int position = get<1>(constraint);
             int time = get<2>(constraint);
             setOfConstraintsMap[agent][time].push_back(position);
-            cout << "   (" << agent << ", " << position << ", " << time << ")" << endl;
+            LOG("   (" << agent << ", " << position << ", " << time << ")");
         }
     }
-    cout << "=================" << endl;
+    LOG("=================");
 }
 
 State* MultiAgentProblem::getStartState() {

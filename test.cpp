@@ -7,6 +7,26 @@
 #include "MultiAgentProblem.h"
 #include "SingleAgentProblem.h"
 #include <vector>
+#include <chrono>
+
+template <typename T>
+class Clock {
+    chrono::high_resolution_clock clock;
+    chrono::time_point<chrono::high_resolution_clock, chrono::nanoseconds> start;
+    chrono::time_point<chrono::high_resolution_clock, chrono::nanoseconds> stop;
+public:
+    void tick() {
+        this->start = this->clock.now();
+    }
+    void tack () {
+        this->stop = this->clock.now();
+    };
+    void print () {
+        cerr << chrono::duration_cast<T>(this->stop-this->start) << endl;
+    };
+};
+
+Clock<chrono::milliseconds> timer;
 
 int main() {
     // Graph g = parser::parse("/home/mansj/CLionProjects/TFE_MAPF/Benchmarks/map_empty_4x4.map");
@@ -21,13 +41,16 @@ int main() {
     solution.print();*/
 
     // TEST 2 : 1 agent
-    /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/Berlin_1_256.map");
+    Graph g = parser::parse("../mapf-map/Paris/Paris_1_256.map");
     int start = 1;
-    int target = 256*256-1;
+    int target = 256*200-100;
+    timer.tick();
     SingleAgentProblem problem = SingleAgentProblem(g, start, target);
     Solution solution = aStarSearch(&problem, Manhattan);
+    timer.tack();
     // cost = 509
-    solution.print();*/
+    solution.print();
+    timer.print();
 
     // TEST 3 : 2 agents can't be at the same vertex at the same time
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/empty-4-4.map");
@@ -56,7 +79,7 @@ int main() {
     solution.print();*/
 
     // TEST 5 : 2 agents
-    Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*Graph g = parser::parse("../mapf-map/Paris/Paris_1_256.map");
     vector<int> starts;
     starts.push_back(48);
     starts.push_back(17);
@@ -66,7 +89,7 @@ int main() {
     MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
     Solution solution = aStarSearch(&problem, SIC);
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
-    solution.print();
+    solution.print();*/
 
     // TEST 6 : 1 agent and a constraint (a, p, t)
     /*Graph g = parser::parse("/Users/arthurmahy/Desktop/memoire - LINFO2990/TFE_MAPF/mapf-map/empty-4-4.map");

@@ -7,7 +7,6 @@
 #include <vector>
 // setting a max line length for skipped lines
 #define MAX_LINE_LENGTH 4096
-#define DEBUG
 
 using std::ifstream;
 using std::getline;

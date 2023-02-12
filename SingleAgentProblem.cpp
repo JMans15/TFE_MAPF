@@ -4,14 +4,16 @@
 
 #include "SingleAgentProblem.h"
 
-SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target) : Problem(m_graph) {
+#define LOG(str) if (verbose) {cout << str << endl;}
+
+SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target, int verbose) : Problem(m_graph) {
     start = m_start;
     target = m_target;
     numberOfAgents = 1;
-    cout << "==== Single Agent Problem ====" << endl;
-    cout << "Start position of each agent : " << start << endl;
-    cout << "Target position of each agent : " << target << endl;
-    cout << "=================" << endl;
+    LOG("==== Single Agent Problem ====");
+    LOG("Start position of each agent : " << start);
+    LOG("Target position of each agent : " << target);
+    LOG("=================");
 }
 
 State* SingleAgentProblem::getStartState() {
