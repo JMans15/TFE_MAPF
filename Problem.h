@@ -16,6 +16,9 @@
 #include "map"
 using namespace std;
 typedef tuple<State*, int> Double;
+enum ObjectiveFunction {
+    Fuel, Makespan, SumOfCosts
+};
 
 class Problem {
 public:

@@ -127,7 +127,7 @@ int main(int argc, const char** argv) {
         }
 
         MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts, vector<Constraint>(), 0);
-        solution = aStarSearch(&problem, MIC, 0);
+        solution = aStarSearch(&problem, SIC, 0);
     }
 
     else {

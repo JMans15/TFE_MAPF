@@ -13,18 +13,14 @@ public:
 
     bool operator==(const State& other) const;
 
-    bool operator< (const SingleAgentState& other) const
-    {
-        /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
-            return timestep<other.timestep;
-        }*/
+    bool operator< (const SingleAgentState& other) const{
         return position<other.position;
     }
 
     vector<int> getPositions();
     int getPosition() const;
 
-private:
+protected:
 
     // Position of the agent in this state
     int position;

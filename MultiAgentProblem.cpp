@@ -87,7 +87,7 @@ bool notAlreadyOccupiedEdge(int position, vector<int> positions, int agentToAssi
 }
 
 // Returns true if agent is allowed to be at position at time (according to the set of constraints of the problem)
-bool NotInForbiddenPositions(int position, int agent, int time, map<int, map<int, vector<int>>> setOfConstraintsMap){
+bool notInForbiddenPositions(int position, int agent, int time, map<int, map<int, vector<int>>> setOfConstraintsMap){
     if (setOfConstraintsMap.count(agent)){
         if (setOfConstraintsMap[agent].count(time)){
             vector<int> v = setOfConstraintsMap[agent][time];
@@ -149,14 +149,14 @@ vector<Double> MultiAgentProblem::getSuccessors(State* state) {
         for (int j : graph.getNeighbors(positions[agentToAssign])){
             vector<int> newpositions(positions);
             newpositions[agentToAssign] = j;
-            if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, MAstate->getPrePositions()) && NotInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
+            if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, MAstate->getPrePositions()) && notInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
                 auto* pointer = new MultiAgentState(newpositions, nextT, nextAgentToAssign, isStandard, positions);
                 successors.emplace_back(pointer, costMovement);
             }
         }
 
         // Wait
-        if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+        if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
             auto* pointer = new MultiAgentState(positions, nextT, nextAgentToAssign, isStandard, positions);
             successors.emplace_back(pointer, costWait);
         }
@@ -169,7 +169,7 @@ vector<Double> MultiAgentProblem::getSuccessors(State* state) {
             for (int j : graph.getNeighbors(positions[agentToAssign])){
                 vector<int> newpositions(positions);
                 newpositions[agentToAssign] = j;
-                if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, MAstate->getPrePositions()) && NotInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
+                if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, MAstate->getPrePositions()) && notInForbiddenPositions(j, agentToAssign, nextT, setOfConstraintsMap)){
                     auto* pointer = new MultiAgentState(newpositions, nextT, nextAgentToAssign, isStandard, positions, cannotMove);
                     successors.emplace_back(pointer, costMovement);
                 }
@@ -178,14 +178,14 @@ vector<Double> MultiAgentProblem::getSuccessors(State* state) {
             // Wait
             if (positions[agentToAssign]!=targets[agentToAssign]){ // agentToAssign not at his target position
                 costWait = 1;
-                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
                     auto* pointer = new MultiAgentState(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove);
                     successors.emplace_back(pointer, costWait);
                 }
             } else { // agentToAssign is at his target position
                 // agentToAssign can still move in the future
                 costWait = 1;
-                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
                     auto* pointer = new MultiAgentState(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove);
                     successors.emplace_back(pointer, costWait);
                 }
@@ -193,7 +193,7 @@ vector<Double> MultiAgentProblem::getSuccessors(State* state) {
                 // we are forcing agentToAssign to not move in the future
                 costWait = 0;
                 cannotMove.push_back(agentToAssign);
-                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
                     auto* pointer = new MultiAgentState(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove);
                     successors.emplace_back(pointer, costWait);
                 }
@@ -202,7 +202,7 @@ vector<Double> MultiAgentProblem::getSuccessors(State* state) {
 
         } else { // agentToAssign is not allowed to move
             costWait = 0;
-            if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && NotInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
+            if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT, setOfConstraintsMap)){
                 auto* pointer = new MultiAgentState(positions, nextT, nextAgentToAssign, isStandard, positions, cannotMove);
                 successors.emplace_back(pointer, costWait);
             }

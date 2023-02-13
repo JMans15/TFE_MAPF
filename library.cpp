@@ -57,7 +57,7 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verb
     State* s = problem->getStartState();
     priority_queue<Tuple, vector<Tuple>, CompareF> fringe;
     fringe.emplace(0+heuristic->heuristicFunction(s), Node(s));
-    set<State*> explored;  // the closed list - THERE'S A PROBLEM HERE NEW
+    set<State*> explored;  // the closed list
     int numberOfVisitedStates = 0;
     while (!fringe.empty()){
         Tuple tuplee = fringe.top();
@@ -77,7 +77,7 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verb
             State* child = get<0>(successor);
             int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
-            if (!std::count_if(explored.begin(), explored.end(), [&child](State* state) {return *state == *child;})){
+            if (!std::count_if(explored.begin(), explored.end(), [&child](State* state) {return *state == *child;})){ // if child is not in explored
                 fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
             }
         }

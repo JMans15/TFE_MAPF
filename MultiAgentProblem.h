@@ -7,9 +7,6 @@
 #include "Problem.h"
 #include "MultiAgentState.h"
 typedef tuple<int, int, int> Constraint; // agent, position, time
-enum ObjectiveFunction {
-    Fuel, Makespan, SumOfCosts
-};
 
 class MultiAgentProblem : public Problem{
 public:
