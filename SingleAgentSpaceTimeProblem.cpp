@@ -38,7 +38,7 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(Graph m_graph, int m_st
             int position = get<1>(constraint);
             int time = get<2>(constraint);
             if (agent==numberOfTheAgent){
-                setOfConstraintsMap[time].push_back(position);
+                setOfConstraintsMap[time].insert(position);
             }
             LOG("   (" << agent << ", " << position << ", " << time << ")");
         }
@@ -58,10 +58,10 @@ bool SingleAgentSpaceTimeProblem::isGoalState(State *state) {
 }
 
 // Returns true if the agent is allowed to be at position at time (according to the set of constraints of the problem)
-bool notInForbiddenPositions(int position, int time, map<int, vector<int>> setOfConstraintsMap){
+bool notInForbiddenPositions(int position, int time, map<int, set<int>> setOfConstraintsMap){
     if (setOfConstraintsMap.count(time)){
-        vector<int> v = setOfConstraintsMap[time];
-        if (std::find(v.begin(), v.end(), position) != v.end()){
+        set<int> v = setOfConstraintsMap[time];
+        if (v.count(position)){
             return false;
         } else {
             return true;

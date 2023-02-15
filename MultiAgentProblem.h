@@ -6,6 +6,7 @@
 #define TFE_MAPF_MULTIAGENTPROBLEM_H
 #include "Problem.h"
 #include "MultiAgentState.h"
+#include "set"
 typedef tuple<int, int, int> Constraint; // agent, position, time
 
 class MultiAgentProblem : public Problem{
@@ -40,7 +41,7 @@ private:
     vector<Constraint> setOfConstraints;
 
     // setOfConstraintsMap[a][t] is the list of positions where agent a can't be at time t
-    map<int, map<int, vector<int>>> setOfConstraintsMap;
+    map<int, map<int, set<int>>> setOfConstraintsMap;
 
 };
 

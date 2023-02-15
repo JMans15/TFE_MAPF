@@ -50,7 +50,7 @@ MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector
             int agent = get<0>(constraint);
             int position = get<1>(constraint);
             int time = get<2>(constraint);
-            setOfConstraintsMap[agent][time].push_back(position);
+            setOfConstraintsMap[agent][time].insert(position);
             LOG("   (" << agent << ", " << position << ", " << time << ")");
         }
     }
@@ -87,11 +87,11 @@ bool notAlreadyOccupiedEdge(int position, vector<int> positions, int agentToAssi
 }
 
 // Returns true if agent is allowed to be at position at time (according to the set of constraints of the problem)
-bool notInForbiddenPositions(int position, int agent, int time, map<int, map<int, vector<int>>> setOfConstraintsMap){
+bool notInForbiddenPositions(int position, int agent, int time, map<int, map<int, set<int>>> setOfConstraintsMap){
     if (setOfConstraintsMap.count(agent)){
         if (setOfConstraintsMap[agent].count(time)){
-            vector<int> v = setOfConstraintsMap[agent][time];
-            if (std::find(v.begin(), v.end(), position) != v.end()){
+            set<int> v = setOfConstraintsMap[agent][time];
+            if (v.count(position)){
                 return false;
             } else {
                 return true;

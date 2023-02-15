@@ -7,6 +7,7 @@
 
 #include "Problem.h"
 #include "SingleAgentSpaceTimeState.h"
+#include <set>
 typedef tuple<int, int, int> Constraint; // agent, position, time
 
 class SingleAgentSpaceTimeProblem : public Problem{
@@ -40,7 +41,7 @@ private:
     vector<Constraint> setOfConstraints;
 
     // setOfConstraintsMap[t] is the list of positions where this agent can't be at time t
-    map<int, vector<int>> setOfConstraintsMap;
+    map<int, set<int>> setOfConstraintsMap;
 };
 
 
