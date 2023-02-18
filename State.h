@@ -7,6 +7,7 @@
 
 #include <utility>
 #include <vector>
+#include <boost/functional/hash.hpp>
 using namespace std;
 
 class State {
@@ -19,11 +20,13 @@ public:
     int getTimestep() const;
 
     virtual bool operator==(const State& rhs) const = 0;
+    virtual size_t hash() const = 0;
 
 protected:
 
     // the timestep of this state
     int timestep;
+
 };
 
 

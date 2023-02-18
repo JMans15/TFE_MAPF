@@ -5,6 +5,7 @@
 #include <tuple>
 #include <set>
 #include <algorithm>
+#include <unordered_set>
 
 #define LOG(str) if (verbose) {cout << str << endl;}
 
@@ -17,6 +18,35 @@ struct CompareF
         return get<0>(lhs) > get<0>(rhs);
     }
 };
+
+struct StatePtrHash {
+    size_t operator()(const unique_ptr<State>& ptr) const {
+        return ptr->hash();
+    }
+};
+
+struct StatePtrEqual {
+    size_t operator()(const unique_ptr<State>& ptr, const unique_ptr<State>& other) const {
+        return *ptr == *other;
+    }
+};
+
+typedef unordered_set<unique_ptr<State>, StatePtrHash, StatePtrEqual> myUSet;
+
+template <typename T>
+void addToSet(myUSet & set, T* state) {
+    if (typeid(*state) == typeid(T)) {
+        set.insert(std::unique_ptr<State>(state));
+    }
+}
+
+template <typename T>
+bool setContains(myUSet & set, T* state) {
+    if (typeid(*state) == typeid(T)) {
+        return set.count(std::unique_ptr<State>(state)) > 0;
+    }
+    return false;
+}
 
 Solution retrieveSolution(int numberOfVisitedStates, Node node) {
     vector<vector<int>> positionsAtTime;
@@ -57,27 +87,30 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verb
     State* s = problem->getStartState();
     priority_queue<Tuple, vector<Tuple>, CompareF> fringe;
     fringe.emplace(0+heuristic->heuristicFunction(s), Node(s));
-    set<State*> explored;  // the closed list
+
+    /*set<State*> explored;  // the closed list */
+    myUSet explored;
+
     int numberOfVisitedStates = 0;
     while (!fringe.empty()){
         Tuple tuplee = fringe.top();
         Node node = get<1>(tuplee);
         fringe.pop();
 
-        if (std::count_if(explored.begin(), explored.end(), [&node](State* state) {return *state == *node.getState();})) { // if node.getState() is already in explored
+        if (setContains(explored, node.getState())) { // if node.getState() is already in explored
             continue;
         }
         numberOfVisitedStates += 1;
         if (problem->isGoalState(node.getState())){
             return retrieveSolution(numberOfVisitedStates, node);
         }
-        explored.insert(node.getState());
+        addToSet(explored, node.getState());
         vector<Double> successors = problem->getSuccessors(node.getState());
         for (auto & successor : successors){
             State* child = get<0>(successor);
             int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
-            if (!std::count_if(explored.begin(), explored.end(), [&child](State* state) {return *state == *child;})){ // if child is not in explored
+            if (!setContains(explored, child)){ // if child is not in explored
                 fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
             }
         }
