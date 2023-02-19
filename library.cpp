@@ -11,8 +11,7 @@
 
 typedef tuple<int, Node> Tuple;
 
-struct CompareF
-{
+struct CompareF {
     bool operator()(const Tuple& lhs, const Tuple& rhs) const
     {
         return get<0>(lhs) > get<0>(rhs);
@@ -96,9 +95,10 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verb
         Tuple tuplee = fringe.top();
         Node node = get<1>(tuplee);
         fringe.pop();
-
+        // cout << "on pop " << node.getState()->getPositions()[0] << node.getState()->getPositions()[1] << endl;
         if (setContains(explored, node.getState())) { // if node.getState() is already in explored
             continue;
+            cout << "LE SET FONCTIONNE" << endl;
         }
         numberOfVisitedStates += 1;
         if (problem->isGoalState(node.getState())){
@@ -106,12 +106,16 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verb
         }
         addToSet(explored, node.getState());
         vector<Double> successors = problem->getSuccessors(node.getState());
+        // cout << "on étend " << node.getState()->getPositions()[0] << node.getState()->getPositions()[1] << endl;
         for (auto & successor : successors){
             State* child = get<0>(successor);
             int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
             if (!setContains(explored, child)){ // if child is not in explored
+                // cout << "on push " << child->getPositions()[0] << child->getPositions()[1] << endl;
                 fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
+            } else {
+                cout << "LE SET FONCTIONNE 2 " << endl;
             }
         }
     }
