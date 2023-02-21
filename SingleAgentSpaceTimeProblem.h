@@ -8,12 +8,12 @@
 #include "Problem.h"
 #include "SingleAgentSpaceTimeState.h"
 #include <set>
-typedef tuple<int, int, int> Constraint; // agent, position, time
+typedef tuple<int, int> PositionTimeConstraint; // position, time
 
 class SingleAgentSpaceTimeProblem : public Problem{
 public:
     SingleAgentSpaceTimeProblem(Graph m_graph, int m_start, int m_target, ObjectiveFunction m_obj_function,
-                                const vector<Constraint> &m_setOfConstraints = vector<Constraint>(),
+                                const set<PositionTimeConstraint> &m_setOfConstraints = set<PositionTimeConstraint>(),
                                         int m_numberOfTheAgent = 0, int verbose = 1);
     State* getStartState();
     bool isGoalState(State* state);
@@ -37,8 +37,8 @@ private:
     // - Makespan : Total time for the agent to reach its goal (costWait = 1)
     ObjectiveFunction obj_function;
 
-    // list of constraints like (a, p, t) meaning agent a can't be at position p at time t
-    vector<Constraint> setOfConstraints;
+    // list of constraints like (p, t) meaning this agent can't be at position p at time t
+    set<PositionTimeConstraint> setOfConstraints;
 
     // setOfConstraintsMap[t] is the list of positions where this agent can't be at time t
     map<int, set<int>> setOfConstraintsMap;

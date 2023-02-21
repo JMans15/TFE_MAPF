@@ -13,7 +13,7 @@ SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target,
     LOG("==== Single Agent Problem ====");
     LOG("Start position of each agent : " << start);
     LOG("Target position of each agent : " << target);
-    LOG("=================");
+    LOG(" ");
 }
 
 State* SingleAgentProblem::getStartState() {

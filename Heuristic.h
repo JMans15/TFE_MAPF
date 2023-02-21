@@ -7,13 +7,25 @@
 #include "State.h"
 #include "MultiAgentState.h"
 #include "SingleAgentState.h"
+#include "Graph.h"
 enum TypeOfHeuristic {
-    SIC, MIC, Manhattan
+    SIC, MIC, Manhattan, MIOC, SIOC
 };
 
 class Heuristic {
 public:
     virtual int heuristicFunction(State* state) = 0;
+};
+
+// Manhattan distance heuristic
+// - for single agent problem
+class Manhattanheuristic : public Heuristic {
+public :
+    Manhattanheuristic(int m_target, int m_width);
+    int heuristicFunction(State* state);
+private:
+    int target;
+    int width;
 };
 
 // Sum of Individual Costs heuristic
@@ -42,15 +54,30 @@ private:
     int width;
 };
 
-// Manhattan distance heuristic
-// - for single agent problem
-class Manhattanheuristic : public Heuristic {
+// Sum of Individual Optimal Costs heuristic
+// where cost is the optimal distance computed by a single agent A* (ignoring other agents)
+// - for SumOfCosts and Fuel objective functions
+// - for multi agent problem
+class SIOCheuristic : public Heuristic {
 public :
-    Manhattanheuristic(int m_target, int m_width);
+    SIOCheuristic(vector<int> m_targets, Graph m_graph);
     int heuristicFunction(State* state);
 private:
-    int target;
-    int width;
+    vector<int> targets;
+    Graph graph;
+};
+
+// Maximum Individual Optimal Cost heuristic
+// where cost is the optimal distance computed by a single agent A* (ignoring other agents)
+// - for Makespan objective function
+// - for multi agent problem
+class MIOCheuristic : public Heuristic {
+public :
+    MIOCheuristic(vector<int> m_targets, Graph m_graph);
+    int heuristicFunction(State* state);
+private:
+    vector<int> targets;
+    Graph graph;
 };
 
 

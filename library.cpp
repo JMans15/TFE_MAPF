@@ -10,6 +10,8 @@
 #define LOG(str) if (verbose) {cout << str << endl;}
 
 typedef tuple<int, Node> Tuple;
+typedef tuple<int, int> PositionTimeConstraint;
+
 
 struct CompareF {
     bool operator()(const Tuple& lhs, const Tuple& rhs) const
@@ -66,7 +68,7 @@ Solution retrieveSolution(int numberOfVisitedStates, Node node) {
 }
 
 Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verbose){
-    LOG("===== Search ====");
+    LOG("===== A* Search ====");
     Heuristic* heuristic;
     if (typeOfHeuristic==MIC){
         LOG("The used heuristic will be the Maximum Individual Cost (Manhattan distance).");
@@ -74,9 +76,15 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verb
     } else if (typeOfHeuristic==SIC){
         LOG("The used heuristic will be the Sum Of Individual Costs (Manhattan distance).");
         heuristic = new SICheuristic(problem->getTargets(), problem->getGraph().getWidth());
+    } else if (typeOfHeuristic==SIOC){
+        LOG("The used heuristic will be the Sum Of Individual Optimal Costs (optimal distance, single agent A*).");
+        heuristic = new SIOCheuristic(problem->getTargets(), problem->getGraph());
+    } else if (typeOfHeuristic==MIOC){
+        LOG("The used heuristic will be the Maximum Individual Optimal Cost (optimal distance, single agent A*).");
+        heuristic = new MIOCheuristic(problem->getTargets(), problem->getGraph());
     } else { // typeOfHeuristic==Manhattan
         if (problem->getNumberOfAgents()!=1){
-            LOG("We cannot use this heuristic with a single agent problem.");
+            LOG("We cannot use this heuristic with a multi agent problem.");
             return {};
         }
         LOG("The used heuristic will be the Manhattan distance.");
@@ -121,4 +129,61 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verb
     }
     LOG("No path has been found.");
     return {};
+}
+
+Solution cooperativeAStarSearch(MultiAgentProblem* problem, int verbose){
+    LOG("===== Cooperative A* Search ====");
+    set<PositionTimeConstraint> reservationTable;
+    int cost = 0;
+    int numberOfVisitedStates = 0;
+    int numberOfTimesteps = 0;
+    ObjectiveFunction objectiveFunction;
+    if (problem->getObjFunction()==Makespan or problem->getObjFunction()==SumOfCosts){
+        objectiveFunction = Makespan;
+    } else {
+        objectiveFunction = Fuel;
+    }
+    vector<vector<int>> positions;
+    LOG("Beginning the (numberOfAgents) single agent A* searches. ");
+    for (int a = 0; a < problem->getNumberOfAgents(); a++){
+
+        // Single agent A* search for agent a
+        SingleAgentSpaceTimeProblem singleagentproblem = SingleAgentSpaceTimeProblem(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, reservationTable, a, 0);
+        Solution solution = aStarSearch(&singleagentproblem, Manhattan, 0);
+
+        if (solution.getFoundPath()){
+            vector<int> pathofagent = solution.getPathOfAgent(0);
+            for (int t = 0; t < pathofagent.size(); t++){
+                reservationTable.insert(PositionTimeConstraint(pathofagent[t], t));
+            }
+            if (problem->getObjFunction()==SumOfCosts){
+                cost += solution.getSumOfCostsCost();
+            } else if (problem->getObjFunction()==Fuel){
+                cost += solution.getFuelCost();
+            } else {
+                cost = max(cost, solution.getMakespanCost());
+            }
+            numberOfVisitedStates += solution.getNumberOfVisitedStates();
+            numberOfTimesteps = max(numberOfTimesteps, solution.getNumberOfTimesteps());
+            positions.emplace_back(pathofagent);
+        } else {
+            LOG("No path has been found for agent " << a);
+            LOG("The solution is not valid");
+            return {};
+        }
+    }
+    // We put the paths in the right format
+    vector<vector<int>> positionsAtTime;
+    for (int t = 0; t < numberOfTimesteps; t++){
+        vector<int> pos;
+        for (int agent = 0; agent < problem->getNumberOfAgents(); agent++){
+            if (t >= positions[agent].size()){
+                pos.emplace_back(positions[agent][positions[agent].size()-1]);
+            } else {
+                pos.emplace_back(positions[agent][t]);
+            }
+        }
+        positionsAtTime.emplace_back(pos);
+    }
+    return {cost, numberOfVisitedStates, numberOfTimesteps, positionsAtTime};
 }

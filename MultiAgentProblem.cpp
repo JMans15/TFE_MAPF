@@ -9,7 +9,7 @@
 
 MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
                                      ObjectiveFunction m_obj_function,
-                                     const vector<Constraint> &m_setOfConstraints, int verbose) : Problem(m_graph) {
+                                     const set<Constraint> &m_setOfConstraints, int verbose) : Problem(m_graph) {
     starts = std::move(m_starts);
     targets = std::move(m_targets);
     numberOfAgents = starts.size();
@@ -45,8 +45,7 @@ MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector
     setOfConstraints = m_setOfConstraints;
     if (not setOfConstraints.empty()){
         LOG("The problem has the following constraints :");
-        for (int i = 0; i < setOfConstraints.size(); i++){
-            Constraint constraint = setOfConstraints[i];
+        for (Constraint constraint : setOfConstraints){
             int agent = get<0>(constraint);
             int position = get<1>(constraint);
             int time = get<2>(constraint);
@@ -54,7 +53,7 @@ MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector
             LOG("   (" << agent << ", " << position << ", " << time << ")");
         }
     }
-    LOG("=================");
+    LOG(" ");
 }
 
 State* MultiAgentProblem::getStartState() {

@@ -92,11 +92,38 @@ int main() {
     solution.print();*/
 
     // TEST 6 : 1 agent and a constraint (a, p, t)
-    Graph g = parser::parse("../mapf-map/empty-4-4.map");
+    /*Graph g = parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
-    SingleAgentSpaceTimeProblem problem = SingleAgentSpaceTimeProblem(g, start, target, Makespan, vector<Constraint>{Constraint(0,5,1)}, 0);
+    SingleAgentSpaceTimeProblem problem = SingleAgentSpaceTimeProblem(g, start, target, Makespan, set<PositionTimeConstraint>{PositionTimeConstraint(5,1)});
     Solution solution = aStarSearch(&problem, Manhattan);
     // makespan cost = 3, fuel cost = 2
+    solution.print();*/
+
+    // TEST 7 : 2 agents and comparaison between SIC and SIOC
+    /*Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(48);
+    starts.push_back(17);
+    vector<int> targets;
+    targets.push_back(17);
+    targets.push_back(20);
+    MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
+    Solution solution1 = aStarSearch(&problem, SIC);
+    Solution solution2 = aStarSearch(&problem, SIOC);
+    // We can observe that the number of visited states is higher in solution1 because SIOC is a better heuristic.
+    solution1.print();
+    solution2.print();*/
+
+    // TEST 8 : Cooperative A*
+    Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(17);
+    starts.push_back(25);
+    vector<int> targets;
+    targets.push_back(20);
+    targets.push_back(11);
+    MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, Makespan);
+    Solution solution = cooperativeAStarSearch(&problem);
     solution.print();
 }

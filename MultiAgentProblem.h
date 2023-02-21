@@ -12,8 +12,8 @@ typedef tuple<int, int, int> Constraint; // agent, position, time
 class MultiAgentProblem : public Problem{
 public:
     MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
-                      ObjectiveFunction m_obj_function,
-                      const vector<Constraint> &m_setOfConstraints = vector<Constraint>(), int verbose = 1);
+                      ObjectiveFunction m_obj_function = Fuel,
+                      const set<Constraint> &m_setOfConstraints = set<Constraint>(), int verbose = 1);
     State* getStartState();
     bool isGoalState(State* state);
 
@@ -38,7 +38,7 @@ private:
     ObjectiveFunction obj_function;
 
     // list of constraints like (a, p, t) meaning agent a can't be at position p at time t
-    vector<Constraint> setOfConstraints;
+    set<Constraint> setOfConstraints;
 
     // setOfConstraintsMap[a][t] is the list of positions where agent a can't be at time t
     map<int, map<int, set<int>>> setOfConstraintsMap;

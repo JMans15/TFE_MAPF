@@ -8,7 +8,7 @@
 
 SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(Graph m_graph, int m_start, int m_target,
                                                          ObjectiveFunction m_obj_function,
-                                                         const vector<Constraint> &m_setOfConstraints,
+                                                         const set<PositionTimeConstraint> &m_setOfConstraints,
                                                          int m_numberOfTheAgent, int verbose) : Problem(m_graph){
     start = m_start;
     target = m_target;
@@ -32,18 +32,14 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(Graph m_graph, int m_st
     setOfConstraints = m_setOfConstraints;
     if (not setOfConstraints.empty()){
         LOG("The problem has the following constraints :");
-        for (int i = 0; i < setOfConstraints.size(); i++){
-            Constraint constraint = setOfConstraints[i];
-            int agent = get<0>(constraint);
-            int position = get<1>(constraint);
-            int time = get<2>(constraint);
-            if (agent==numberOfTheAgent){
-                setOfConstraintsMap[time].insert(position);
-            }
-            LOG("   (" << agent << ", " << position << ", " << time << ")");
+        for (PositionTimeConstraint constraint : setOfConstraints){
+            int position = get<0>(constraint);
+            int time = get<1>(constraint);
+            setOfConstraintsMap[time].insert(position);
+            LOG("   (" << numberOfTheAgent << ", " << position << ", " << time << ")");
         }
     }
-    LOG("=================");
+    LOG(" ");
 
 }
 

@@ -18,11 +18,21 @@ public:
     int getNumberOfTimesteps() const;
     vector<int> getPositionsAtTime(int t);
     vector<int> getPathOfAgent(int i);
+    bool getFoundPath();
     void print();
+
+    // Fuel : Total amount of distance traveled by all agents
+    int getFuelCost();
+
+    // Makespan : Total time for the last agent to reach its goal
+    int getMakespanCost();
+
+    // SumOfCosts : The sum of the time steps required for every agent to reach its goal
+    int getSumOfCostsCost();
 
 private:
 
-    // Cost of the solution
+    // Cost of the solution / value of the objective function for this solution
     int cost;
 
     // The number of visited (goal tested) states.
@@ -36,7 +46,7 @@ private:
     vector<vector<int>> positionsAtTime;
 
     // true if this solution contains a path
-    bool foundpath;
+    bool foundPath;
 };
 
 
