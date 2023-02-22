@@ -21,8 +21,6 @@ public:
         }
         return position<other.position;
     }
-
-    size_t hash() const override;
 };
 
 

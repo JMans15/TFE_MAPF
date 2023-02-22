@@ -140,5 +140,5 @@ int main(int argc, const char** argv) {
         solution = aStarSearch(&problem, Manhattan, 0);
     }
 
-    solution.print();
+    //solution.print();
 }

@@ -60,13 +60,3 @@ bool MultiAgentState::operator==(const State& other) const {
     }*/
     return true;
 }
-
-size_t MultiAgentState::hash() const {
-    size_t result = 0;
-    for (const auto& val : positions) {
-        boost::hash_combine(result, val);
-    }
-    boost::hash_combine(result, agentToAssign);
-    return result;
-}
-

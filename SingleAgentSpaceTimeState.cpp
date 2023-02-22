@@ -17,10 +17,3 @@ bool SingleAgentSpaceTimeState::operator==(const State &other) const {
     }
     return true;
 }
-
-size_t SingleAgentSpaceTimeState::hash() const {
-    size_t result = 0;
-    boost::hash_combine(result, position);
-    boost::hash_combine(result, timestep);
-    return result;
-}

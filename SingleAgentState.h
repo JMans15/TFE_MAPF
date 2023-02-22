@@ -20,8 +20,6 @@ public:
     vector<int> getPositions();
     int getPosition() const;
 
-    size_t hash() const override;
-
 protected:
 
     // Position of the agent in this state
