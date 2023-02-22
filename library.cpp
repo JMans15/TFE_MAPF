@@ -5,6 +5,8 @@
 #include <tuple>
 #include <set>
 #include <algorithm>
+#include <unordered_set>
+#include <memory>
 
 //#define DEBUG
 
@@ -17,6 +19,32 @@
 typedef tuple<int, Node> Tuple;
 typedef tuple<int, int> PositionTimeConstraint;
 
+using namespace std;
+
+struct StatePtrHash {
+    size_t operator()(const State* ptr) const {
+        return ptr->hash();
+    }
+};
+
+struct StatePtrEqual {
+    size_t operator()(const State* ptr, const State* other) const {
+        return *ptr == *other;
+    }
+};
+
+typedef unordered_set<State*, StatePtrHash, StatePtrEqual> myUSet;
+
+template <typename T>
+void addToSet(myUSet & set, T** state) {
+    auto* newstate = dynamic_cast<State*>(*state);
+    set.insert(newstate);
+}
+
+template <typename T>
+bool setContains(myUSet & set, T** state) {
+    return set.count(*state) > 0;
+}
 
 struct CompareF {
     bool operator()(const Tuple& lhs, const Tuple& rhs) const
@@ -70,27 +98,27 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
     State* s = problem->getStartState();
     priority_queue<Tuple, vector<Tuple>, CompareF> fringe;
     fringe.emplace(0+heuristic->heuristicFunction(s), Node(s));
-    set<State*> explored;  // the closed list
+    myUSet explored;
     int numberOfVisitedStates = 0;
     while (!fringe.empty()){
         Tuple tuplee = fringe.top();
         Node node = get<1>(tuplee);
         fringe.pop();
-
-        if (std::count_if(explored.begin(), explored.end(), [&node](State* state) {return *state == *node.getState();})) { // if node.getState() is already in explored
+        auto nodestate = node.getState();
+        if (setContains(explored, &nodestate)) { // if node.getState() is already in explored
             continue;
         }
         numberOfVisitedStates += 1;
         if (problem->isGoalState(node.getState())){
             return retrieveSolution(numberOfVisitedStates, node);
         }
-        explored.insert(node.getState());
+        addToSet(explored, &nodestate);
         vector<Double> successors = problem->getSuccessors(node.getState());
         for (auto & successor : successors){
             State* child = get<0>(successor);
             int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
-            if (!std::count_if(explored.begin(), explored.end(), [&child](State* state) {return *state == *child;})){ // if child is not in explored
+            if (!setContains(explored, &child)) { // if child is not in explored
                 fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
             }
         }

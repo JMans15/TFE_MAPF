@@ -10,10 +10,7 @@ SingleAgentState::SingleAgentState(int m_position, int m_timestep) : State(m_tim
 
 bool SingleAgentState::operator==(const State& other) const {
     auto o = dynamic_cast<const SingleAgentState*>(&other);
-    if (position!=o->position){
-        return false;
-    }
-    return true;
+    return position==o->position;
 }
 
 vector<int> SingleAgentState::getPositions() {
@@ -24,4 +21,8 @@ vector<int> SingleAgentState::getPositions() {
 
 int SingleAgentState::getPosition() const {
     return position;
+}
+
+size_t SingleAgentState::hash() const {
+    return static_cast<size_t>(position);
 }

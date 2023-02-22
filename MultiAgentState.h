@@ -31,6 +31,7 @@ public:
     void makeStandard();
     vector<int> getCannotMove();
     bool canMove(int agent);
+    size_t hash() const override;
 
 private:
 

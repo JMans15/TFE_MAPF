@@ -4,6 +4,7 @@
 
 #include "MultiAgentState.h"
 #include <algorithm>
+#include <boost/functional/hash.hpp>
 
 MultiAgentState::MultiAgentState(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions, const vector<int>& m_cannotMove) : State(m_timestep) {
     positions = std::move(m_positions);
@@ -59,4 +60,13 @@ bool MultiAgentState::operator==(const State& other) const {
         return false;
     }*/
     return true;
+}
+
+size_t MultiAgentState::hash() const {
+    size_t result = 0;
+    for (const auto& val : positions) {
+        boost::hash_combine(result, val);
+    }
+    boost::hash_combine(result, agentToAssign);
+    return result;
 }

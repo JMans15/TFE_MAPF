@@ -3,6 +3,7 @@
 //
 
 #include "SingleAgentSpaceTimeState.h"
+#include <boost/functional/hash.hpp>
 
 SingleAgentSpaceTimeState::SingleAgentSpaceTimeState(int m_position, int m_timestep) : SingleAgentState(m_position, m_timestep){
 }
@@ -16,4 +17,11 @@ bool SingleAgentSpaceTimeState::operator==(const State &other) const {
         return false;
     }
     return true;
+}
+
+size_t SingleAgentSpaceTimeState::hash() const {
+    size_t result = 0;
+    boost::hash_combine(result, position);
+    boost::hash_combine(result, timestep);
+    return result;
 }
