@@ -10,7 +10,7 @@
 
 class SingleAgentProblem : public Problem{
 public:
-    SingleAgentProblem(Graph m_graph, int m_start, int m_target, int verbose = 1);
+    SingleAgentProblem(Graph m_graph, int m_start, int m_target);
     State* getStartState();
     bool isGoalState(State* state);
     vector<Double> getSuccessors(State* state);

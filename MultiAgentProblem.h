@@ -13,7 +13,7 @@ class MultiAgentProblem : public Problem{
 public:
     MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
                       ObjectiveFunction m_obj_function = Fuel,
-                      const set<Constraint> &m_setOfConstraints = set<Constraint>(), int verbose = 1);
+                      const set<Constraint> &m_setOfConstraints = set<Constraint>());
     State* getStartState();
     bool isGoalState(State* state);
 

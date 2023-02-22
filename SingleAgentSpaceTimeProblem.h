@@ -14,7 +14,7 @@ class SingleAgentSpaceTimeProblem : public Problem{
 public:
     SingleAgentSpaceTimeProblem(Graph m_graph, int m_start, int m_target, ObjectiveFunction m_obj_function,
                                 const set<PositionTimeConstraint> &m_setOfConstraints = set<PositionTimeConstraint>(),
-                                        int m_numberOfTheAgent = 0, int verbose = 1);
+                                        int m_numberOfTheAgent = 0);
     State* getStartState();
     bool isGoalState(State* state);
     vector<Double> getSuccessors(State* state);

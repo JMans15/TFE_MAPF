@@ -11,7 +11,7 @@ using namespace std;
 
 // Basic A* search
 // Can be applied for multi agent (operator decomposition) and single agent problems
-Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verbose = 1);
+Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic);
 
 // Cooperative A* search
 // Only for multi agent problem

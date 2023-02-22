@@ -12,15 +12,15 @@
 // Returns the Manhattan distance between position a and position b
 int distance(int a, int b, int width) {
     int ax, ay, bx, by;
-    ax = (int) a / width; ay = a % width;
-    bx = (int) b / width; by = b % width;
+    ax = (int) a % width; ay = a / width;
+    bx = (int) b % width; by = b / width;
     return abs(ax-bx) + abs(ay-by);
 }
 
 // Returns the optimal distance between position a and position b
 int optimalDistance(int a, int b, Graph g) {
-    SingleAgentProblem problem = SingleAgentProblem(g, a, b, 0);
-    Solution solution = aStarSearch(&problem, Manhattan, 0);
+    SingleAgentProblem problem = SingleAgentProblem(g, a, b);
+    Solution solution = aStarSearch(&problem, Manhattan);
     return solution.getCost();
 }
 

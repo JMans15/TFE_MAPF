@@ -5,11 +5,17 @@
 #include "MultiAgentProblem.h"
 #include <algorithm>
 
-#define LOG(str) if (verbose) {cout << str << endl;}
+//#define DEBUG
+
+#ifdef DEBUG
+#define LOG(str) cout << str << endl;
+#else
+#define LOG(str)
+#endif
 
 MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
                                      ObjectiveFunction m_obj_function,
-                                     const set<Constraint> &m_setOfConstraints, int verbose) : Problem(m_graph) {
+                                     const set<Constraint> &m_setOfConstraints) : Problem(m_graph) {
     starts = std::move(m_starts);
     targets = std::move(m_targets);
     numberOfAgents = starts.size();

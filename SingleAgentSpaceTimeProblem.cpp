@@ -4,12 +4,18 @@
 
 #include "SingleAgentSpaceTimeProblem.h"
 
-#define LOG(str) if (verbose) {cout << str << endl;}
+//#define DEBUG
+
+#ifdef DEBUG
+#define LOG(str) cout << str << endl;
+#else
+#define LOG(str)
+#endif
 
 SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(Graph m_graph, int m_start, int m_target,
                                                          ObjectiveFunction m_obj_function,
                                                          const set<PositionTimeConstraint> &m_setOfConstraints,
-                                                         int m_numberOfTheAgent, int verbose) : Problem(m_graph){
+                                                         int m_numberOfTheAgent) : Problem(m_graph){
     start = m_start;
     target = m_target;
     numberOfAgents = 1;

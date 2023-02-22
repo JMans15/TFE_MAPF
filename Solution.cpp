@@ -6,6 +6,7 @@
 
 #include <utility>
 #include <iostream>
+#include <fstream>
 
 Solution::Solution() {
     foundPath = false;
@@ -44,6 +45,26 @@ vector<int> Solution::getPathOfAgent(int i) {
     return path;
 }
 
+void Solution::write(std::string filename, int width) {
+    ofstream file(filename.c_str());
+    if (foundPath) {
+        int A = static_cast<int>(positionsAtTime[0].size());
+        int T = numberOfTimesteps;
+        file << A << " " << T << endl;
+        int x, y, p;
+        for (int t = 0; t < T; t++) {
+            for (int a = 0; a < A; a++) {
+                p = positionsAtTime[t][a];
+                // The compiler will likely reuse the result of the division, no need to bother optimizing ourselves
+                y = p / width;
+                x = p % width;
+                file << x << "," << y << endl;
+            }
+        }
+    }
+    file.close();
+}
+
 void Solution::print() {
     if (foundPath){
         cout << " " << endl;
@@ -68,6 +89,8 @@ void Solution::print() {
         }
     }
 }
+
+
 
 bool Solution::getFoundPath() {
     return foundPath;

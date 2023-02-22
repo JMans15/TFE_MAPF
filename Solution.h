@@ -20,6 +20,7 @@ public:
     vector<int> getPathOfAgent(int i);
     bool getFoundPath();
     void print();
+    void write(string filename, int w);
 
     // Fuel : Total amount of distance traveled by all agents
     int getFuelCost();

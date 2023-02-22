@@ -82,6 +82,7 @@ int main(int argc, const char** argv) {
     // Parsing the graph from the map file
     Graph g = parser::parse(file);
     Solution solution;
+    int w;
 
     if (Mode == MULTI) {
         auto scenfile = result["scen"].as<std::string>();
@@ -95,7 +96,7 @@ int main(int argc, const char** argv) {
         string line;
         getline(infile, line);
         vector<int> starts, targets;
-        int n, w, h, sx, sy, tx, ty;
+        int n, h, sx, sy, tx, ty;
         double d;
         string map;
         while (getline(infile, line)) {
@@ -126,8 +127,8 @@ int main(int argc, const char** argv) {
             targets.emplace_back(target);
         }
 
-        MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts, vector<Constraint>(), 0);
-        solution = aStarSearch(&problem, SIC, 0);
+        MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
+        solution = aStarSearch(&problem, SIC);
     }
 
     else {
@@ -136,9 +137,12 @@ int main(int argc, const char** argv) {
         auto target = result["t"].as<int>();
 
         // Solving and printing problem
-        SingleAgentProblem problem = SingleAgentProblem(g, start, target, 0);
-        solution = aStarSearch(&problem, Manhattan, 0);
+        SingleAgentProblem problem = SingleAgentProblem(g, start, target);
+        solution = aStarSearch(&problem, Manhattan);
     }
 
+    if (result.count("outfile")) {
+        solution.write(result["outfile"].as<string>(), w);
+    }
     //solution.print();
 }

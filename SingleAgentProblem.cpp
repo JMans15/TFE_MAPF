@@ -4,9 +4,15 @@
 
 #include "SingleAgentProblem.h"
 
-#define LOG(str) if (verbose) {cout << str << endl;}
+//#define DEBUG
 
-SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target, int verbose) : Problem(m_graph) {
+#ifdef DEBUG
+#define LOG(str) cout << str << endl;
+#else
+#define LOG(str)
+#endif
+
+SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target) : Problem(m_graph) {
     start = m_start;
     target = m_target;
     numberOfAgents = 1;

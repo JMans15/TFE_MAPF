@@ -6,7 +6,13 @@
 #include <set>
 #include <algorithm>
 
-#define LOG(str) if (verbose) {cout << str << endl;}
+//#define DEBUG
+
+#ifdef DEBUG
+#define LOG(str) cout << str << endl;
+#else
+#define LOG(str)
+#endif
 
 typedef tuple<int, Node> Tuple;
 typedef tuple<int, int> PositionTimeConstraint;
@@ -37,7 +43,7 @@ Solution retrieveSolution(int numberOfVisitedStates, Node node) {
     return {cost, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
 }
 
-Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic, int verbose){
+Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
     LOG("===== Search ====");
     Heuristic* heuristic;
     if (typeOfHeuristic==MIC){
@@ -110,8 +116,8 @@ Solution cooperativeAStarSearch(MultiAgentProblem* problem, int verbose){
     for (int a = 0; a < problem->getNumberOfAgents(); a++){
 
         // Single agent A* search for agent a
-        SingleAgentSpaceTimeProblem singleagentproblem = SingleAgentSpaceTimeProblem(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, reservationTable, a, 0);
-        Solution solution = aStarSearch(&singleagentproblem, Manhattan, 0);
+        SingleAgentSpaceTimeProblem singleagentproblem = SingleAgentSpaceTimeProblem(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, reservationTable, a);
+        Solution solution = aStarSearch(&singleagentproblem, Manhattan);
 
         if (solution.getFoundPath()){
             vector<int> pathofagent = solution.getPathOfAgent(0);
