@@ -11,9 +11,9 @@
 class SingleAgentProblem : public Problem{
 public:
     SingleAgentProblem(Graph m_graph, int m_start, int m_target);
-    State* getStartState();
-    bool isGoalState(State* state);
-    vector<Double> getSuccessors(State* state);
+    shared_ptr<State> getStartState();
+    bool isGoalState(shared_ptr<State> state);
+    vector<Double> getSuccessors(shared_ptr<State> state);
     vector<int> getStarts();
     vector<int> getTargets();
 

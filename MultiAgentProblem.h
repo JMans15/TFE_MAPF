@@ -14,11 +14,11 @@ public:
     MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
                       ObjectiveFunction m_obj_function = Fuel,
                       const set<Constraint> &m_setOfConstraints = set<Constraint>());
-    State* getStartState();
-    bool isGoalState(State* state);
+    shared_ptr<State> getStartState() override;
+    bool isGoalState(shared_ptr<State> state);
 
     // Extends state thanks to Operator Decomposition
-    vector<Double> getSuccessors(State* state);
+    vector<Double> getSuccessors(shared_ptr<State> state);
 
     vector<int> getStarts();
     vector<int> getTargets();
@@ -42,7 +42,6 @@ private:
 
     // setOfConstraintsMap[a][t] is the list of positions where agent a can't be at time t
     map<int, map<int, set<int>>> setOfConstraintsMap;
-
 };
 
 

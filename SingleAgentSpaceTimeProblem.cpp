@@ -49,13 +49,13 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(Graph m_graph, int m_st
 
 }
 
-State *SingleAgentSpaceTimeProblem::getStartState() {
-    auto* pointer = new SingleAgentSpaceTimeState(start,0);
+shared_ptr<State> SingleAgentSpaceTimeProblem::getStartState() {
+    auto pointer = make_shared<SingleAgentSpaceTimeState>(start,0);
     return pointer;
 }
 
-bool SingleAgentSpaceTimeProblem::isGoalState(State *state) {
-    auto* SAstate = dynamic_cast<SingleAgentSpaceTimeState *>(state);
+bool SingleAgentSpaceTimeProblem::isGoalState(shared_ptr<State> state) {
+    auto SAstate = dynamic_pointer_cast<SingleAgentSpaceTimeState>(state);
     return SAstate->getPosition()==target;
 }
 
@@ -72,9 +72,9 @@ bool notInForbiddenPositions(int position, int time, map<int, set<int>> setOfCon
     return true;
 }
 
-vector<Double> SingleAgentSpaceTimeProblem::getSuccessors(State *state) {
+vector<Double> SingleAgentSpaceTimeProblem::getSuccessors(shared_ptr<State> state) {
     vector<Double> successors;
-    auto* SAstate = dynamic_cast<SingleAgentSpaceTimeState *>(state);
+    auto SAstate = dynamic_pointer_cast<SingleAgentSpaceTimeState>(state);
     int position = SAstate->getPosition();
     int t = SAstate->getTimestep();
     int nextT = t+1;

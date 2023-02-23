@@ -4,6 +4,7 @@
 
 #ifndef TFE_MAPF_HEURISTIC_H
 #define TFE_MAPF_HEURISTIC_H
+#include <memory>
 #include "State.h"
 #include "MultiAgentState.h"
 #include "SingleAgentState.h"
@@ -14,7 +15,8 @@ enum TypeOfHeuristic {
 
 class Heuristic {
 public:
-    virtual int heuristicFunction(State* state) = 0;
+    virtual int heuristicFunction(shared_ptr<State> state) = 0;
+    virtual ~Heuristic() = default;
 };
 
 // Manhattan distance heuristic
@@ -22,10 +24,11 @@ public:
 class Manhattanheuristic : public Heuristic {
 public :
     Manhattanheuristic(int m_target, int m_width);
-    int heuristicFunction(State* state);
 private:
     int target;
     int width;
+
+    int heuristicFunction(shared_ptr<State> state) override;
 };
 
 // Sum of Individual Costs heuristic
@@ -35,7 +38,7 @@ private:
 class SICheuristic : public Heuristic {
 public :
     SICheuristic(vector<int> m_targets, int m_width);
-    int heuristicFunction(State* state);
+    int heuristicFunction(shared_ptr<State> state);
 private:
     vector<int> targets;
     int width;
@@ -48,7 +51,7 @@ private:
 class MICheuristic : public Heuristic {
 public :
     MICheuristic(vector<int> m_targets, int m_width);
-    int heuristicFunction(State* state);
+    int heuristicFunction(shared_ptr<State> state);
 private:
     vector<int> targets;
     int width;
@@ -61,7 +64,7 @@ private:
 class SIOCheuristic : public Heuristic {
 public :
     SIOCheuristic(vector<int> m_targets, Graph m_graph);
-    int heuristicFunction(State* state);
+    int heuristicFunction(shared_ptr<State> state);
 private:
     vector<int> targets;
     Graph graph;
@@ -74,7 +77,7 @@ private:
 class MIOCheuristic : public Heuristic {
 public :
     MIOCheuristic(vector<int> m_targets, Graph m_graph);
-    int heuristicFunction(State* state);
+    int heuristicFunction(shared_ptr<State> state);
 private:
     vector<int> targets;
     Graph graph;

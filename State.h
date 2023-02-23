@@ -14,6 +14,7 @@ class State {
 public:
 
     State(int m_timestep);
+    virtual ~State() = default;;
 
     virtual vector<int> getPositions() = 0;
     int getTimestep() const;

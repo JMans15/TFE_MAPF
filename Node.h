@@ -8,17 +8,18 @@
 #include "State.h"
 #include <vector>
 #include <string>
+#include <memory>
 using namespace std;
 
 
 class Node {
 public:
 
-    explicit Node(State* m_state);
-    Node(State* m_state, const Node& m_parent, int m_gn); //Constructeur surchargé
+    explicit Node(shared_ptr<State> m_state);
+    Node(shared_ptr<State> m_state, const Node& m_parent, int m_gn); //Constructeur surchargé
     ~Node(); //Destructeur
-    State* getState();
-    Node* getParent() const;
+    shared_ptr<State> getState();
+    shared_ptr<Node> getParent() const;
     int getGn() const;
     /*
     // 2 nodes are equal if they have the same state
@@ -28,8 +29,8 @@ public:
     }*/
 
 private:
-    State* state; // state of the node
-    Node* parent; // parent node
+    shared_ptr<State> state; // state of the node
+    shared_ptr<Node> parent; // parent node
     int gn; // path cost g(n)
 };
 

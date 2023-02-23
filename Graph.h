@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <fstream>
+#include <memory>
 
 using std::string;
 using std::vector;
@@ -18,6 +19,7 @@ private:
 
 public:
     Graph(int N, int Width);
+    ~Graph();
     int getN() const;
     int getWidth() const;
     void addEdge(int from, int to);

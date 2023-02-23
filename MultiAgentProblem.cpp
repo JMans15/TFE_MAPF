@@ -62,12 +62,12 @@ MultiAgentProblem::MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector
     LOG(" ");
 }
 
-State* MultiAgentProblem::getStartState() {
-    auto* pointer = new MultiAgentState(starts,0,0,true,starts);
+shared_ptr<State> MultiAgentProblem::getStartState() {
+    auto pointer = make_shared<MultiAgentState>(starts,0,0,true,starts);
     return pointer;
 }
 
-bool MultiAgentProblem::isGoalState(State* state) {
+bool MultiAgentProblem::isGoalState(shared_ptr<State> state) {
     return state->getPositions()==targets;
 }
 
@@ -106,9 +106,9 @@ bool notInForbiddenPositions(int position, int agent, int time, map<int, map<int
     return true;
 }
 
-vector<Double> MultiAgentProblem::getSuccessors(State* state) {
+vector<Double> MultiAgentProblem::getSuccessors(shared_ptr<State> state) {
     vector<Double> successors;
-    auto* MAstate = dynamic_cast<MultiAgentState *>(state);
+    auto MAstate = dynamic_pointer_cast<MultiAgentState>(state);
     vector<int> positions = MAstate->getPositions();
     int agentToAssign = MAstate->getAgentToAssign();
     int t = MAstate->getTimestep();

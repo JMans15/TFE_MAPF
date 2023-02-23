@@ -6,29 +6,25 @@
 
 #include <utility>
 
-Node::Node(State* m_state) {
-    state = m_state;
+Node::Node(shared_ptr<State> m_state) {
+    state = std::move(m_state);
     parent = nullptr;
     gn = 0;
 }
 
-Node::Node(State* m_state, const Node& m_parent, int m_gn) {
-    state = m_state;
-    parent = new Node(m_parent);
+Node::Node(shared_ptr<State> m_state, const Node& m_parent, int m_gn) {
+    state = std::move(m_state);
+    parent = make_shared<Node>(m_parent);
     gn = m_gn;
 }
 
-Node::~Node() {
-    //if (parent != nullptr){
-        // delete parent;
-    //}
-}
+Node::~Node() = default;
 
-State* Node::getState() {
+shared_ptr<State> Node::getState() {
     return state;
 }
 
-Node *Node::getParent() const {
+shared_ptr<Node> Node::getParent() const {
     return parent;
 }
 

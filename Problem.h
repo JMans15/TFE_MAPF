@@ -9,13 +9,14 @@
 #include <tuple>
 #include <vector>
 #include <iostream>
+#include <memory>
 #include "Graph.h"
 #include "Solution.h"
 #include "Node.h"
 #include "Heuristic.h"
 #include "map"
 using namespace std;
-typedef tuple<State*, int> Double;
+typedef tuple<shared_ptr<State>, int> Double;
 enum ObjectiveFunction {
     Fuel, Makespan, SumOfCosts
 };
@@ -25,17 +26,17 @@ public:
 
     // Constructor
     Problem(Graph m_graph);
-
+    ~Problem();
     // Returns the start state for the search problem
-    virtual State* getStartState() = 0;
+    virtual shared_ptr<State> getStartState() = 0;
 
     // Returns True if the state is a valid goal state
-    virtual bool isGoalState(State* state) = 0;
+    virtual bool isGoalState(shared_ptr<State> state) = 0;
 
     // For a given state, getSuccessors returns a list of doubles (successor, stepcost)
     // where successor is a successor state to the current state
     // stepcost is the cost to go from state to successor
-    virtual vector<Double> getSuccessors(State* state) = 0;
+    virtual vector<Double> getSuccessors(shared_ptr<State> state) = 0;
 
     Graph getGraph() const;
     virtual vector<int> getStarts() = 0;

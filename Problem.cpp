@@ -8,6 +8,8 @@
 #include <utility>
 
 Problem::Problem(Graph m_graph) : graph(m_graph) {}
+Problem::~Problem() {
+}
 
 Graph Problem::getGraph() const {
     return graph;

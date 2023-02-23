@@ -29,8 +29,8 @@ Manhattanheuristic::Manhattanheuristic(int m_target, int m_width) {
     width = m_width;
 }
 
-int Manhattanheuristic::heuristicFunction(State* state) {
-    auto* SAstate = dynamic_cast<SingleAgentState *>(state);
+int Manhattanheuristic::heuristicFunction(shared_ptr<State> state) {
+    auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
     return distance(SAstate->getPosition(), target, width);
 }
 
@@ -39,8 +39,8 @@ SICheuristic::SICheuristic(vector<int> m_targets, int m_width) {
     width = m_width;
 }
 
-int SICheuristic::heuristicFunction(State* state) {
-    auto* MAstate = dynamic_cast<MultiAgentState *>(state); // NEEDED ??
+int SICheuristic::heuristicFunction(shared_ptr<State> state) {
+    auto MAstate = dynamic_pointer_cast<MultiAgentState>(state); // NEEDED ??
     int sum = 0;
     vector<int> positions = MAstate->getPositions();
     for (int i = 0; i < positions.size(); i++){
@@ -54,8 +54,8 @@ MICheuristic::MICheuristic(vector<int> m_targets, int m_width) {
     width = m_width;
 }
 
-int MICheuristic::heuristicFunction(State* state) {
-    auto* MAstate = dynamic_cast<MultiAgentState *>(state);
+int MICheuristic::heuristicFunction(shared_ptr<State> state) {
+    auto MAstate = dynamic_pointer_cast<MultiAgentState>(state);
     int Max = 0;
     vector<int> positions = MAstate->getPositions();
     for (int i = 0; i < MAstate->getAgentToAssign(); i++){
@@ -71,8 +71,8 @@ SIOCheuristic::SIOCheuristic(vector<int> m_targets, Graph m_graph) : graph(m_gra
     targets = std::move(m_targets);
 }
 
-int SIOCheuristic::heuristicFunction(State *state) {
-    auto* MAstate = dynamic_cast<MultiAgentState *>(state); // NEEDED ??
+int SIOCheuristic::heuristicFunction(shared_ptr<State> state) {
+    auto MAstate = dynamic_pointer_cast<MultiAgentState>(state); // NEEDED ??
     int sum = 0;
     vector<int> positions = MAstate->getPositions();
     for (int i = 0; i < positions.size(); i++){
@@ -85,8 +85,8 @@ MIOCheuristic::MIOCheuristic(vector<int> m_targets, Graph m_graph) : graph(m_gra
     targets = std::move(m_targets);
 }
 
-int MIOCheuristic::heuristicFunction(State *state) {
-    auto* MAstate = dynamic_cast<MultiAgentState *>(state);
+int MIOCheuristic::heuristicFunction(shared_ptr<State> state) {
+    auto MAstate = dynamic_pointer_cast<MultiAgentState>(state);
     int Max = 0;
     vector<int> positions = MAstate->getPositions();
     for (int i = 0; i < MAstate->getAgentToAssign(); i++){

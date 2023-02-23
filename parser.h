@@ -12,6 +12,7 @@ using std::string;
 class parser {
 public:
     static Graph parse(string filename);
+
 private:
     static int tocellno(int l, int c, int w);
 };

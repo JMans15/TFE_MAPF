@@ -43,7 +43,7 @@ void Graph::print(int num) {
 
 vector<int> Graph::getNeighbors(int index) const {
     if (index > N) return {};
-    return adjlists[index];
+    return {adjlists[index]};
 }
 
 int Graph::getN() const {
@@ -53,3 +53,5 @@ int Graph::getN() const {
 int Graph::getWidth() const {
     return width;
 }
+
+Graph::~Graph() = default;

@@ -22,19 +22,19 @@ SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target)
     LOG(" ");
 }
 
-State* SingleAgentProblem::getStartState() {
-    auto* pointer = new SingleAgentState(start,0);
+shared_ptr<State> SingleAgentProblem::getStartState() {
+    auto pointer = make_shared<SingleAgentState>(start,0);
     return pointer;
 }
 
-bool SingleAgentProblem::isGoalState(State* state) {
-    auto* SAstate = dynamic_cast<SingleAgentState *>(state);
+bool SingleAgentProblem::isGoalState(shared_ptr<State> state) {
+    auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
     return SAstate->getPosition()==target;
 }
 
-vector<Double> SingleAgentProblem::getSuccessors(State* state) {
+vector<Double> SingleAgentProblem::getSuccessors(shared_ptr<State> state) {
     vector<Double> successors;
-    auto* SAstate = dynamic_cast<SingleAgentState *>(state);
+    auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
     int position = SAstate->getPosition();
     int t = SAstate->getTimestep();
     int nextT = t + 1;

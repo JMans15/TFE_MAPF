@@ -1,6 +1,7 @@
 #include "library.h"
 
 #include <iostream>
+#include <memory>
 #include <queue>
 #include <tuple>
 #include <set>
@@ -22,27 +23,27 @@ typedef tuple<int, int> PositionTimeConstraint;
 using namespace std;
 
 struct StatePtrHash {
-    size_t operator()(const State* ptr) const {
+    size_t operator()(const shared_ptr<State>& ptr) const {
         return ptr->hash();
     }
 };
 
 struct StatePtrEqual {
-    size_t operator()(const State* ptr, const State* other) const {
+    size_t operator()(const shared_ptr<State>& ptr, const shared_ptr<State>& other) const {
         return *ptr == *other;
     }
 };
 
-typedef unordered_set<State*, StatePtrHash, StatePtrEqual> myUSet;
+typedef unordered_set<shared_ptr<State>, StatePtrHash, StatePtrEqual> myUSet;
 
 template <typename T>
-void addToSet(myUSet & set, T** state) {
-    auto* newstate = dynamic_cast<State*>(*state);
+void addToSet(myUSet & set, shared_ptr<T>* state) {
+    auto newstate = dynamic_pointer_cast<State>(*state);
     set.insert(newstate);
 }
 
 template <typename T>
-bool setContains(myUSet & set, T** state) {
+bool setContains(myUSet & set, shared_ptr<T>* state) {
     return set.count(*state) > 0;
 }
 
@@ -56,7 +57,7 @@ struct CompareF {
 Solution retrieveSolution(int numberOfVisitedStates, Node node) {
     vector<vector<int>> positionsAtTime;
     int cost = node.getGn();
-    Node* currentnode = &node;
+    shared_ptr<Node> currentnode = std::make_unique<Node>(node);
     int numberOfTimesteps = node.getState()->getTimestep();
     int oldT = numberOfTimesteps+1;
     while (currentnode->getParent() != nullptr){
@@ -64,7 +65,7 @@ Solution retrieveSolution(int numberOfVisitedStates, Node node) {
             positionsAtTime.push_back(currentnode->getState()->getPositions());
         }
         oldT = currentnode->getState()->getTimestep();
-        currentnode = currentnode->getParent();
+        currentnode = std::move(currentnode->getParent());
     }
     positionsAtTime.push_back(currentnode->getState()->getPositions());
     reverse(positionsAtTime.begin(), positionsAtTime.end());
@@ -95,7 +96,7 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
         heuristic = new Manhattanheuristic(problem->getTargets()[0], problem->getGraph().getWidth());
     }
     LOG("Beginning the A* search. ");
-    State* s = problem->getStartState();
+    shared_ptr<State> s = problem->getStartState();
     priority_queue<Tuple, vector<Tuple>, CompareF> fringe;
     fringe.emplace(0+heuristic->heuristicFunction(s), Node(s));
     myUSet explored;
@@ -110,20 +111,23 @@ Solution aStarSearch(Problem* problem, TypeOfHeuristic typeOfHeuristic){
         }
         numberOfVisitedStates += 1;
         if (problem->isGoalState(node.getState())){
+            delete heuristic;
             return retrieveSolution(numberOfVisitedStates, node);
         }
         addToSet(explored, &nodestate);
         vector<Double> successors = problem->getSuccessors(node.getState());
         for (auto & successor : successors){
-            State* child = get<0>(successor);
+            shared_ptr<State> child = get<0>(successor);
             int cost = get<1>(successor);
             Node newnode(child, node, node.getGn()+cost);
             if (!setContains(explored, &child)) { // if child is not in explored
                 fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
             }
         }
+
     }
     LOG("No path has been found.");
+    delete heuristic;
     return {};
 }
 
