@@ -6,11 +6,10 @@
 #define TFE_MAPF_HEURISTIC_H
 #include <memory>
 #include "State.h"
-#include "MultiAgentState.h"
-#include "SingleAgentState.h"
+#include "ReverseResumableAStar.h"
 #include "Graph.h"
 enum TypeOfHeuristic {
-    SIC, MIC, Manhattan, MIOC, SIOC
+    SIC, MIC, Manhattan, MIOC, SIOC, OptimalDistance
 };
 
 class Heuristic {
@@ -29,6 +28,20 @@ private:
     int width;
 
     int heuristicFunction(shared_ptr<State> state) override;
+};
+
+class ReverseResumableAStar;
+
+// Optimal distance heuristic
+// - for single agent problem
+// - only interesting for Space Time A*
+// A reverse resumable A* search will be run in addition to the search which this heuristic is used for.
+class OptimalDistanceheuristic : public Heuristic {
+public :
+    OptimalDistanceheuristic(int m_start, int m_target, const Graph& m_graph);
+    int heuristicFunction(shared_ptr<State> state);
+private:
+    ReverseResumableAStar* RRAStarSearch;
 };
 
 // Sum of Individual Costs heuristic
@@ -63,7 +76,7 @@ private:
 // - for multi agent problem
 class SIOCheuristic : public Heuristic {
 public :
-    SIOCheuristic(vector<int> m_targets, Graph m_graph);
+    SIOCheuristic(vector<int> m_targets, const Graph& m_graph);
     int heuristicFunction(shared_ptr<State> state);
 private:
     vector<int> targets;
@@ -76,7 +89,7 @@ private:
 // - for multi agent problem
 class MIOCheuristic : public Heuristic {
 public :
-    MIOCheuristic(vector<int> m_targets, Graph m_graph);
+    MIOCheuristic(vector<int> m_targets, const Graph& m_graph);
     int heuristicFunction(shared_ptr<State> state);
 private:
     vector<int> targets;

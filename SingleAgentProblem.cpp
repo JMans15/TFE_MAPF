@@ -17,8 +17,14 @@ SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target)
     target = m_target;
     numberOfAgents = 1;
     LOG("==== Single Agent Problem ====");
-    LOG("Start position of each agent : " << start);
-    LOG("Target position of each agent : " << target);
+    LOG("Start position of the agent : " << start);
+    if (graph.getNeighbors(start).empty()){
+        LOG("   The start position is unreachable.");
+    }
+    LOG("Target position of the agent : " << target);
+    if (graph.getNeighbors(target).empty()){
+        LOG("   The target position is unreachable.");
+    }
     LOG(" ");
 }
 
@@ -26,6 +32,12 @@ shared_ptr<State> SingleAgentProblem::getStartState() {
     auto pointer = make_shared<SingleAgentState>(start,0);
     return pointer;
 }
+
+shared_ptr<State> SingleAgentProblem::getGoalState() {
+    auto pointer = make_shared<SingleAgentState>(target,0);
+    return pointer;
+}
+
 
 bool SingleAgentProblem::isGoalState(shared_ptr<State> state) {
     auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
@@ -42,7 +54,7 @@ vector<Double> SingleAgentProblem::getSuccessors(shared_ptr<State> state) {
 
     // Move
     for (int newposition : graph.getNeighbors(position)){
-        auto* pointer = new SingleAgentState(newposition, nextT);
+        auto pointer = make_shared<SingleAgentState>(newposition, nextT);
         successors.emplace_back(pointer, costMovement);
     }
 
@@ -60,3 +72,12 @@ vector<int> SingleAgentProblem::getTargets() {
     tab.push_back(target);
     return tab;
 }
+
+int SingleAgentProblem::getStart() {
+    return start;
+}
+
+int SingleAgentProblem::getTarget() {
+    return target;
+}
+

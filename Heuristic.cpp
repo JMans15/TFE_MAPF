@@ -4,12 +4,15 @@
 
 #include "Heuristic.h"
 #include "SingleAgentProblem.h"
-#include "library.h"
+#include "AStar.h"
+#include "MultiAgentState.h"
+#include "SingleAgentState.h"
 
 #include <utility>
 #include <algorithm>
 
 // Returns the Manhattan distance between position a and position b
+// ignoring walls and other agents
 int distance(int a, int b, int width) {
     int ax, ay, bx, by;
     ax = (int) a % width; ay = a / width;
@@ -18,9 +21,11 @@ int distance(int a, int b, int width) {
 }
 
 // Returns the optimal distance between position a and position b
-int optimalDistance(int a, int b, Graph g) {
+// computed by a single agent A*
+// ignoring other agents
+int optimalDistance(int a, int b, const Graph& g) {
     SingleAgentProblem problem = SingleAgentProblem(g, a, b);
-    Solution solution = aStarSearch(&problem, Manhattan);
+    Solution solution = AStar(&problem, Manhattan).getSolution();
     return solution.getCost();
 }
 
@@ -32,6 +37,16 @@ Manhattanheuristic::Manhattanheuristic(int m_target, int m_width) {
 int Manhattanheuristic::heuristicFunction(shared_ptr<State> state) {
     auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
     return distance(SAstate->getPosition(), target, width);
+}
+
+OptimalDistanceheuristic::OptimalDistanceheuristic(int m_start, int m_target, const Graph& m_graph) {
+    auto* prob = new SingleAgentProblem(m_graph, m_start, m_target);
+    RRAStarSearch = new ReverseResumableAStar(prob);
+}
+
+int OptimalDistanceheuristic::heuristicFunction(shared_ptr<State> state) {
+    auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
+    return RRAStarSearch->OptimalDistance(SAstate->getPosition());
 }
 
 SICheuristic::SICheuristic(vector<int> m_targets, int m_width) {
@@ -67,7 +82,7 @@ int MICheuristic::heuristicFunction(shared_ptr<State> state) {
     return Max;
 }
 
-SIOCheuristic::SIOCheuristic(vector<int> m_targets, Graph m_graph) : graph(m_graph) {
+SIOCheuristic::SIOCheuristic(vector<int> m_targets, const Graph& m_graph) : graph(m_graph) {
     targets = std::move(m_targets);
 }
 
@@ -81,7 +96,7 @@ int SIOCheuristic::heuristicFunction(shared_ptr<State> state) {
     return sum;
 }
 
-MIOCheuristic::MIOCheuristic(vector<int> m_targets, Graph m_graph) : graph(m_graph) {
+MIOCheuristic::MIOCheuristic(vector<int> m_targets, const Graph& m_graph) : graph(m_graph) {
     targets = std::move(m_targets);
 }
 

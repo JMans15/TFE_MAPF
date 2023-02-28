@@ -6,14 +6,11 @@
 #define TFE_MAPF_PROBLEM_H
 
 #include "State.h"
+#include "Graph.h"
 #include <tuple>
 #include <vector>
 #include <iostream>
 #include <memory>
-#include "Graph.h"
-#include "Solution.h"
-#include "Node.h"
-#include "Heuristic.h"
 #include "map"
 using namespace std;
 typedef tuple<shared_ptr<State>, int> Double;

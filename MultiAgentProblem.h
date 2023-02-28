@@ -23,6 +23,7 @@ public:
     vector<int> getStarts();
     vector<int> getTargets();
     ObjectiveFunction getObjFunction();
+    set<Constraint> getSetOfConstraints();
 
 private:
     // starts is a list of length numberOfAgents with the start position of each agent

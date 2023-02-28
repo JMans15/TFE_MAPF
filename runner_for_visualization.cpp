@@ -3,9 +3,10 @@
 //
 
 #include "parser.h"
-#include "library.h"
 #include "SingleAgentProblem.h"
 #include "MultiAgentProblem.h"
+#include "Solution.h"
+#include "AStar.h"
 #include "external-headers/cxxopts.hpp"
 #include <fstream>
 
@@ -128,7 +129,7 @@ int main(int argc, const char** argv) {
         }
 
         MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
-        solution = aStarSearch(&problem, SIC);
+        solution = AStar(&problem, SIC).getSolution();
     }
 
     else {
@@ -138,7 +139,7 @@ int main(int argc, const char** argv) {
 
         // Solving and printing problem
         SingleAgentProblem problem = SingleAgentProblem(g, start, target);
-        solution = aStarSearch(&problem, Manhattan);
+        solution = AStar(&problem, Manhattan).getSolution();
     }
 
     if (result.count("outfile")) {

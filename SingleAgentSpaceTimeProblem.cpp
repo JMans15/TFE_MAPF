@@ -12,9 +12,9 @@
 #define LOG(str)
 #endif
 
-SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(Graph m_graph, int m_start, int m_target,
+SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(const Graph& m_graph, int m_start, int m_target,
                                                          ObjectiveFunction m_obj_function,
-                                                         const set<PositionTimeConstraint> &m_setOfConstraints,
+                                                         const set<Constraint> &m_setOfConstraints,
                                                          int m_numberOfTheAgent) : Problem(m_graph){
     start = m_start;
     target = m_target;
@@ -33,16 +33,25 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(Graph m_graph, int m_st
     } else {
         LOG("Objective function : Fuel (costWait = 0)");
     }
-    LOG("Start position of each agent : " << start);
-    LOG("Target position of each agent : " << target);
+    LOG("Start position of the agent : " << start);
+    if (graph.getNeighbors(start).empty()){
+        LOG("   The start position is unreachable.");
+    }
+    LOG("Target position of the agent : " << target);
+    if (graph.getNeighbors(target).empty()){
+        LOG("   The target position is unreachable.");
+    }
     setOfConstraints = m_setOfConstraints;
     if (not setOfConstraints.empty()){
         LOG("The problem has the following constraints :");
-        for (PositionTimeConstraint constraint : setOfConstraints){
-            int position = get<0>(constraint);
-            int time = get<1>(constraint);
-            setOfConstraintsMap[time].insert(position);
-            LOG("   (" << numberOfTheAgent << ", " << position << ", " << time << ")");
+        for (Constraint constraint : setOfConstraints){
+            int agent = get<0>(constraint);
+            if (agent==numberOfTheAgent){
+                int position = get<1>(constraint);
+                int time = get<2>(constraint);
+                setOfConstraintsMap[time].insert(position);
+                LOG("   (" << numberOfTheAgent << ", " << position << ", " << time << ")");
+            }
         }
     }
     LOG(" ");

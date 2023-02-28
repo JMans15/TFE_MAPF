@@ -227,3 +227,8 @@ vector<int> MultiAgentProblem::getTargets() {
 ObjectiveFunction MultiAgentProblem::getObjFunction() {
     return obj_function;
 }
+
+set<Constraint> MultiAgentProblem::getSetOfConstraints() {
+    return setOfConstraints;
+}
+

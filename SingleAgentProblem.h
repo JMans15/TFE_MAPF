@@ -12,10 +12,13 @@ class SingleAgentProblem : public Problem{
 public:
     SingleAgentProblem(Graph m_graph, int m_start, int m_target);
     shared_ptr<State> getStartState();
+    shared_ptr<State> getGoalState();
     bool isGoalState(shared_ptr<State> state);
     vector<Double> getSuccessors(shared_ptr<State> state);
     vector<int> getStarts();
     vector<int> getTargets();
+    int getStart();
+    int getTarget();
 
 private:
     // start position of the agent
