@@ -9,7 +9,7 @@
 #include "ReverseResumableAStar.h"
 #include "Graph.h"
 enum TypeOfHeuristic {
-    SIC, MIC, Manhattan, MIOC, SIOC, OptimalDistance
+    Manhattan, OptimalDistance
 };
 
 class Heuristic {
@@ -18,7 +18,7 @@ public:
     virtual ~Heuristic() = default;
 };
 
-// Manhattan distance heuristic
+// Manhattan distance heuristic (ignoring walls)
 // - for single agent problem
 class Manhattanheuristic : public Heuristic {
 public :
@@ -45,7 +45,7 @@ private:
 };
 
 // Sum of Individual Costs heuristic
-// where cost is the Manhattan distance
+// where cost is the Manhattan distance (ignoring walls and other agents)
 // - for SumOfCosts and Fuel objective functions
 // - for multi agent problem
 class SICheuristic : public Heuristic {
@@ -58,7 +58,7 @@ private:
 };
 
 // Maximum Individual Cost heuristic
-// where cost is the Manhattan distance
+// where cost is the Manhattan distance (ignoring walls and other agents)
 // - for Makespan objective function
 // - for multi agent problem
 class MICheuristic : public Heuristic {
@@ -71,29 +71,29 @@ private:
 };
 
 // Sum of Individual Optimal Costs heuristic
-// where cost is the optimal distance computed by a single agent A* (ignoring other agents)
+// where cost is the optimal distance (ignoring other agents)
+// // A reverse resumable A* search per agent will be run in addition to the search which this heuristic is used for.
 // - for SumOfCosts and Fuel objective functions
 // - for multi agent problem
 class SIOCheuristic : public Heuristic {
 public :
-    SIOCheuristic(vector<int> m_targets, const Graph& m_graph);
+    SIOCheuristic(vector<int> m_starts, vector<int> m_targets, const Graph& m_graph);
     int heuristicFunction(shared_ptr<State> state);
 private:
-    vector<int> targets;
-    Graph graph;
+    vector<ReverseResumableAStar*> RRAStarSearches;
 };
 
 // Maximum Individual Optimal Cost heuristic
-// where cost is the optimal distance computed by a single agent A* (ignoring other agents)
+// where cost is the optimal distance (ignoring other agents)
+// A reverse resumable A* search per agent will be run in addition to the search which this heuristic is used for.
 // - for Makespan objective function
 // - for multi agent problem
 class MIOCheuristic : public Heuristic {
 public :
-    MIOCheuristic(vector<int> m_targets, const Graph& m_graph);
+    MIOCheuristic(vector<int> m_starts, vector<int> m_targets, const Graph& m_graph);
     int heuristicFunction(shared_ptr<State> state);
 private:
-    vector<int> targets;
-    Graph graph;
+    vector<ReverseResumableAStar*> RRAStarSearches;
 };
 
 

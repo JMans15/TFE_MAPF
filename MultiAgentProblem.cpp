@@ -5,7 +5,7 @@
 #include "MultiAgentProblem.h"
 #include <algorithm>
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 #define LOG(str) cout << str << endl;

@@ -43,14 +43,14 @@ int main() {
     solution.print();*/
 
     // TEST 2 : 1 agent
-    /*Graph g = parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    /*Graph g = parser::parse("../mapf-map/Paris_1_256.map");
     int start = 1;
     int target = 256*200-100;
     timer.tick();
     SingleAgentProblem problem = SingleAgentProblem(g, start, target);
     Solution solution = AStar(&problem, Manhattan).getSolution();
     timer.tack();
-    // cost =
+    // cost = 354
     solution.print();
     timer.print();*/
 
@@ -63,7 +63,7 @@ int main() {
     targets.push_back(6);
     targets.push_back(1);
     MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, Makespan);
-    Solution solution = AStar(&problem, MIC).getSolution();
+    Solution solution = AStar(&problem, Manhattan).getSolution();
     // makespan cost = 3, fuel cost = 4,  sumofcosts cost = 5
     solution.print();*/
 
@@ -76,7 +76,7 @@ int main() {
     targets.push_back(3);
     targets.push_back(0);
     MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
-    Solution solution = AStar(&problem, SIC).getSolution();
+    Solution solution = AStar(&problem, Manhattan).getSolution();
     // makespan cost = 5, fuel cost = 8,  sumofcosts cost = 8
     solution.print();*/
 
@@ -89,7 +89,7 @@ int main() {
     targets.push_back(17);
     targets.push_back(20);
     MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
-    Solution solution = AStar(&problem, SIC).getSolution();
+    Solution solution = AStar(&problem, Manhattan).getSolution();
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
     solution.print();*/
 
@@ -102,22 +102,7 @@ int main() {
     // makespan cost = 3, fuel cost = 2
     solution.print();*/
 
-    // TEST 7 : 2 agents and comparaison between SIC and SIOC
-    /*Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
-    vector<int> starts;
-    starts.push_back(48);
-    starts.push_back(17);
-    vector<int> targets;
-    targets.push_back(17);
-    targets.push_back(20);
-    MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
-    Solution solution1 = AStar(&problem, SIC).getSolution();
-    Solution solution2 = AStar(&problem, SIOC).getSolution();
-    // We can observe that the number of visited states is higher in solution1 because SIOC is a better heuristic.
-    solution1.print();
-    solution2.print();*/
-
-    // TEST 8 : Reverse Resumable A*
+    // TEST 7 : Reverse Resumable A*
     /*Graph g = parser::parse("../mapf-map/ReverseResumableAStarExample.map");
     int start = 33;
     int target = 2;
@@ -136,19 +121,19 @@ int main() {
     cout << search.OptimalDistance(6) << endl; // = 3
     cout << search.getExplored().size() << endl; // = 27*/
 
-    // TEST 9 : 1 single agent space time search, comparaison between Manhattan distance and Optimal distance (RRA*)
+    // TEST 8 : Single agent space time search, comparaison between Manhattan distance and Optimal distance (RRA*)
     /*Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
     int start = 7;
     int target = 17;
     SingleAgentSpaceTimeProblem problem = SingleAgentSpaceTimeProblem(g, start, target, Makespan);
-    //Solution solution1 = AStar(&problem, Manhattan).getSolution();
+    Solution solution1 = AStar(&problem, Manhattan).getSolution();
     Solution solution2 = AStar(&problem, OptimalDistance).getSolution();
     // makespan cost = 18, fuel cost = 18
-    //solution1.print(); // numberOfVisitedStates = 179
+    solution1.print(); // numberOfVisitedStates = 179
     solution2.print(); // numberOfVisitedStates = 26*/
 
-    // TEST 10 : Comparaison between cooperative A* (Manhattan for the single agent A*) and hierarchical cooperative A* (Optimal distance RRA* for the single agent A*)
-    Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
+    // TEST 9 : Comparaison between cooperative A* (Manhattan for the single agent A*) and hierarchical cooperative A* (Optimal distance RRA* for the single agent A*)
+    /*Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(17);
     starts.push_back(22);
@@ -159,5 +144,33 @@ int main() {
     Solution solution1 = CooperativeAStar(&problem, Manhattan).getSolution();
     Solution solution2 = CooperativeAStar(&problem, OptimalDistance).getSolution();
     solution1.print(); // numberOfVisitedStates = 395
-    solution2.print(); // numberOfVisitedStates = 160
+    solution2.print(); // numberOfVisitedStates = 160*/
+
+    // TEST 10 : 2 agents and comparaison between Manhattan and OptimalDistance
+    /*Graph g = parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(48);
+    starts.push_back(17);
+    vector<int> targets;
+    targets.push_back(17);
+    targets.push_back(20);
+    MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
+    Solution solution1 = AStar(&problem, Manhattan).getSolution();
+    Solution solution2 = AStar(&problem, OptimalDistance).getSolution();
+    solution1.print(); // numberOfVisitedStates = 23
+    solution2.print(); // numberOfVisitedStates = 17*/
+
+    // TEST 11 : 2 agents and comparaison between Manhattan and OptimalDistance
+    Graph g = parser::parse("../mapf-map/Paris_1_256.map");;
+    vector<int> starts;
+    starts.push_back(1);
+    starts.push_back(150);
+    vector<int> targets;
+    targets.push_back(150);
+    targets.push_back(1);
+    MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
+    Solution solution1 = AStar(&problem, Manhattan).getSolution();
+    solution1.print(); // numberOfVisitedStates = 285477
+    Solution solution2 = AStar(&problem, OptimalDistance).getSolution();
+    solution2.print(); // numberOfVisitedStates = 4173
 }

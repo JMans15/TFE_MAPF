@@ -3,7 +3,7 @@
 //
 
 #include "AStar.h"
-
+#include "MultiAgentProblem.h"
 
 #ifdef DEBUG
 #define LOG(str) cout << str << endl;
@@ -63,40 +63,53 @@ Solution retrieveSolution(int numberOfVisitedStates, Node node) {
     return {cost, numberOfVisitedStates, numberOfTimesteps+1, positionsAtTime};
 }
 
-AStar::AStar(Problem *problem, TypeOfHeuristic typeOfHeuristic) {
-    LOG("===== A* Search ====");
-    Heuristic* heuristic;
-    if (typeOfHeuristic==MIC){
-        LOG("The used heuristic will be the Maximum Individual Cost (Manhattan distance).");
-        heuristic = new MICheuristic(problem->getTargets(), problem->getGraph().getWidth());
-    } else if (typeOfHeuristic==SIC){
-        LOG("The used heuristic will be the Sum Of Individual Costs (Manhattan distance).");
-        heuristic = new SICheuristic(problem->getTargets(), problem->getGraph().getWidth());
-    } else if (typeOfHeuristic==SIOC){
-        LOG("The used heuristic will be the Sum Of Individual Optimal Costs (optimal distance, single agent A*).");
-        heuristic = new SIOCheuristic(problem->getTargets(), problem->getGraph());
-    } else if (typeOfHeuristic==MIOC){
-        LOG("The used heuristic will be the Maximum Individual Optimal Cost (optimal distance, single agent A*).");
-        heuristic = new MIOCheuristic(problem->getTargets(), problem->getGraph());
-    } else {
-        if (problem->getNumberOfAgents()!=1){
-            LOG("We cannot use this heuristic with a multi agent problem.");
-            solution = {};
-            return;
+Heuristic* chooseHeuristic(Problem* problem, TypeOfHeuristic typeOfHeuristic){
+    if (problem->getNumberOfAgents()!=1){
+        auto* prob = dynamic_cast<MultiAgentProblem*>(problem);
+        if (typeOfHeuristic==Manhattan){
+            if (prob->getObjFunction()==Makespan){
+                LOG("The used heuristic will be the Maximum Individual Cost (Manhattan distance).");
+                return new MICheuristic(problem->getTargets(), problem->getGraph().getWidth());
+            } else { // prob->getObjFunction()==SumOfCosts or prob->getObjFunction()==Fuel
+                LOG("The used heuristic will be the Sum Of Individual Costs (Manhattan distance).");
+                return new SICheuristic(problem->getTargets(), problem->getGraph().getWidth());
+            }
+        } else if (typeOfHeuristic==OptimalDistance){
+            if (prob->getObjFunction()==Makespan){
+                LOG("The used heuristic will be the Maximum Individual Optimal Cost (optimal distance).");
+                LOG("A reverse resumable A* search per agent will be run in addition to this search.");
+                return new MIOCheuristic(problem->getStarts(), problem->getTargets(), problem->getGraph());
+            } else { // prob->getObjFunction()==SumOfCosts or prob->getObjFunction()==Fuel
+                LOG("The used heuristic will be the Sum Of Individual Optimal Costs (optimal distance).");
+                LOG("A reverse resumable A* search per agent will be run in addition to this search.");
+                return new SIOCheuristic(problem->getStarts(), problem->getTargets(), problem->getGraph());
+            }
+        } else {
+            LOG("Not a valid heuristic.");
+            return nullptr;
         }
+    } else { // problem->getNumberOfAgents()==1
         if (typeOfHeuristic==Manhattan){
             LOG("The used heuristic will be the Manhattan distance.");
-            heuristic = new Manhattanheuristic(problem->getTargets()[0], problem->getGraph().getWidth());
+            return new Manhattanheuristic(problem->getTargets()[0], problem->getGraph().getWidth());
         } else if (typeOfHeuristic==OptimalDistance){
             LOG("The used heuristic will be the optimal distance.");
             LOG("This heuristic is only interesting for Space Time A*.");
             LOG("A reverse resumable A* search will be run in addition to this search.");
-            heuristic = new OptimalDistanceheuristic(problem->getStarts()[0], problem->getTargets()[0], problem->getGraph());
+            return new OptimalDistanceheuristic(problem->getStarts()[0], problem->getTargets()[0], problem->getGraph());
         } else {
             LOG("Not a valid heuristic.");
-            solution = {};
-            return;
+            return nullptr;
         }
+    }
+}
+
+AStar::AStar(Problem *problem, TypeOfHeuristic typeOfHeuristic) {
+    LOG("===== A* Search ====");
+    Heuristic* heuristic = chooseHeuristic(problem, typeOfHeuristic);
+    if (heuristic == nullptr){
+        solution = {};
+        return;
     }
     LOG("Beginning the A* search. ");
     shared_ptr<State> s = problem->getStartState();
