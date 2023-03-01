@@ -10,19 +10,20 @@
 class SingleAgentSpaceTimeState : public SingleAgentState {
 public:
 
-    SingleAgentSpaceTimeState(int m_position, int m_timestep);
+    SingleAgentSpaceTimeState(int position, int timestep);
+    ~SingleAgentSpaceTimeState();
+    
+    const std::size_t getHash() const override;
 
-    bool operator==(const State& other) const;
+    const bool isEqual(const SingleAgentSpaceTimeState &other) const;
 
-    bool operator< (const SingleAgentSpaceTimeState& other) const
-    {
-        if (timestep!=other.timestep){
-            return timestep<other.timestep;
-        }
-        return position<other.position;
-    }
+    const int getTimestep() const;
 
-    size_t hash() const override;
+private:
+
+    // Number of timesteps since the agent started
+    int timestep;
+
 };
 
 

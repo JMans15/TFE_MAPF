@@ -4,23 +4,23 @@
 
 #ifndef TFE_MAPF_SOLUTION_H
 #define TFE_MAPF_SOLUTION_H
+
 #include <string>
 #include <vector>
-using namespace std;
 
 class Solution {
 public:
     Solution();
-    Solution(int m_cost, int m_numberOfVisitedStates, int m_numberOfTimesteps, vector<vector<int>> m_positionsAtTime);
+    Solution(int cost, int numberOfVisitedStates, int numberOfTimesteps, std::vector<std::vector<int>> positionsAtTime);
 
     int getCost() const;
     int getNumberOfVisitedStates() const;
     int getNumberOfTimesteps() const;
-    vector<int> getPositionsAtTime(int t);
-    vector<int> getPathOfAgent(int i);
+    std::vector<int> getPositionsAtTime(int t);
+    std::vector<int> getPathOfAgent(int i);
     bool getFoundPath();
     void print();
-    void write(string filename, int w);
+    void write(std::string filename, int w);
 
     // Fuel : Total amount of distance traveled by all agents
     int getFuelCost();
@@ -43,8 +43,8 @@ private:
     int numberOfTimesteps;
 
     // Matrix of size numberOfTimesteps X numberOfAgents
-    // positionsAtTime[t][a] is the position of agent a at time t in this solution
-    vector<vector<int>> positionsAtTime;
+    // positions[a][t] is the position of agent a at time t in this solution
+    std::vector<std::vector<int>> positions;
 
     // true if this solution contains a path
     bool foundPath;

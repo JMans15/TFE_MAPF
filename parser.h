@@ -4,18 +4,17 @@
 
 #ifndef MAPF_REBORN_PARSER_H
 #define MAPF_REBORN_PARSER_H
-#include <fstream>
+
 #include "Graph.h"
 
-using std::string;
+#include <fstream>
 
-class parser {
+class Parser {
 public:
-    static Graph parse(string filename);
+    static std::shared_ptr<Graph> parse(std::string filename);
 
 private:
     static int tocellno(int l, int c, int w);
 };
-
 
 #endif //MAPF_REBORN_PARSER_H

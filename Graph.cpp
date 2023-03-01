@@ -2,56 +2,56 @@
 // Created by mansj on 10/11/22.
 //
 
-#include <sstream>
-#include <iostream>
 #include "Graph.h"
 
-using std::stringstream;
-using std::endl;
-using std::cout;
-using std::min;
+#include <sstream>
+#include <iostream>
 
-Graph::Graph(int N, int Width) : E(0), N(N), width(Width) {
-    adjlists = new vector<int>[N];
+Graph::Graph(int nVertices, int width)
+    : nVertices(nVertices)
+    , nEdges(0)
+    , width(width)
+{
+    neighbors.resize(nVertices);
 }
 
+Graph::~Graph() {}
+
 void Graph::addEdge(int from, int to) {
-    adjlists[from].push_back(to);
-    adjlists[to].push_back(from);
-    E++;
+    neighbors[from].push_back(to);
+    neighbors[to].push_back(from);
+    nEdges++;
 }
 
 void Graph::print() {
-    print(N);
+    print(nVertices);
 }
 
 void Graph::print(int num) {
-    stringstream res;
-    res << "Graph has " << N << " vertices and " << E << " edges." << endl;
-    if (num < N) res << "Printing first " << num << " vertices." << endl;
-    for (int n = 0; n < min(num, N); n++) {
-        if (adjlists[n].empty()) continue;
+    std::stringstream res;
+    res << "Graph has " << nVertices << " vertices and " << nEdges << " edges." << std::endl;
+    if (num < nVertices) res << "Printing first " << num << " vertices." << std::endl;
+    for (int n = 0; n < std::min(num, nVertices); n++) {
+        if (neighbors[n].empty()) continue;
         res << "Vertex " << n << ": [";
-        for (int i : adjlists[n]) {
+        for (int i : neighbors[n]) {
             res << i << ", ";
         }
-        res .seekp(-2, stringstream::cur);
-        res << "]" << endl;
+        res.seekp(-2, std::stringstream::cur);
+        res << "]" << std::endl;
     }
-    cout << res.str();
+    std::cout << res.str();
 }
 
-vector<int> Graph::getNeighbors(int index) const {
-    if (index > N) return {};
-    return {adjlists[index]};
+const std::vector<int>& Graph::getNeighbors(int index) const {
+    if (index > nVertices) return {};
+    return neighbors[index];
 }
 
-int Graph::getN() const {
-    return N;
+int Graph::getNumberOfVertices() const {
+    return nVertices;
 }
 
 int Graph::getWidth() const {
     return width;
 }
-
-Graph::~Graph() = default;

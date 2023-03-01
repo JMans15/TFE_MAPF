@@ -4,8 +4,9 @@
 
 #ifndef TFE_MAPF_COOPERATIVEASTAR_H
 #define TFE_MAPF_COOPERATIVEASTAR_H
-#include "MultiAgentProblem.h"
+
 #include "AStar.h"
+#include "MultiAgentProblem.h"
 #include "SingleAgentSpaceTimeProblem.h"
 
 // Cooperative A* search - not optimal
@@ -26,11 +27,12 @@
 //   We know this removes possible solutions
 // Could be improved with WINDOWED Hierarchical Cooperative A*
 class CooperativeAStar {
-public :
-    CooperativeAStar(MultiAgentProblem* problem, TypeOfHeuristic typeOfHeuristic);
-    Solution getSolution();
+public:
+    CooperativeAStar(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic);
+    Solution solve();
 private:
-    Solution solution;
+    std::shared_ptr<MultiAgentProblem> problem;
+    TypeOfHeuristic typeOfHeuristic;
 };
 
 

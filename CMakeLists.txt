@@ -12,7 +12,7 @@ find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 # define library
-add_library(TFE_MAPF Problem.cpp Problem.h Node.cpp Node.h State.cpp State.h parser.cpp parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h Heuristic.cpp Heuristic.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.cpp SingleAgentState.h SingleAgentSpaceTimeProblem.cpp SingleAgentSpaceTimeProblem.h SingleAgentSpaceTimeState.cpp SingleAgentSpaceTimeState.h AStar.cpp AStar.h CooperativeAStar.cpp CooperativeAStar.h ReverseResumableAStar.cpp ReverseResumableAStar.h IndependentDetection.cpp IndependentDetection.h)
+add_library(TFE_MAPF Problem.h Node.h State.h Parser.cpp Parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h Heuristic.h HeuristicAdvanced.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.h SingleAgentSpaceTimeProblem.cpp SingleAgentSpaceTimeProblem.h SingleAgentSpaceTimeState.cpp SingleAgentSpaceTimeState.h AStar.h CooperativeAStar.cpp CooperativeAStar.h ReverseResumableAStar.cpp ReverseResumableAStar.h IndependentDetection.cpp IndependentDetection.h)
 
 # first test
 add_executable(TFE_MAPF_test test.cpp)

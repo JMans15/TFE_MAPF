@@ -4,80 +4,60 @@
 
 #include "SingleAgentProblem.h"
 
-//#define DEBUG
-
-#ifdef DEBUG
-#define LOG(str) cout << str << endl;
-#else
-#define LOG(str)
-#endif
-
-SingleAgentProblem::SingleAgentProblem(Graph m_graph, int m_start, int m_target) : Problem(m_graph) {
-    start = m_start;
-    target = m_target;
-    numberOfAgents = 1;
+SingleAgentProblem::SingleAgentProblem(std::shared_ptr<Graph> graph, int start, int target) 
+    : Problem(graph, 1)
+    , start(start)
+    , target(target)
+{
     LOG("==== Single Agent Problem ====");
     LOG("Start position of the agent : " << start);
-    if (graph.getNeighbors(start).empty()){
+    if (graph->getNeighbors(start).empty()){
         LOG("   The start position is unreachable.");
     }
     LOG("Target position of the agent : " << target);
-    if (graph.getNeighbors(target).empty()){
+    if (graph->getNeighbors(target).empty()){
         LOG("   The target position is unreachable.");
     }
     LOG(" ");
 }
 
-shared_ptr<State> SingleAgentProblem::getStartState() {
-    auto pointer = make_shared<SingleAgentState>(start,0);
-    return pointer;
+std::shared_ptr<SingleAgentState> SingleAgentProblem::getStartState() const {
+    return std::make_shared<SingleAgentState>(start);
 }
 
-shared_ptr<State> SingleAgentProblem::getGoalState() {
-    auto pointer = make_shared<SingleAgentState>(target,0);
-    return pointer;
+std::shared_ptr<SingleAgentState> SingleAgentProblem::getGoalState() const {
+    return std::make_shared<SingleAgentState>(target);
 }
 
-
-bool SingleAgentProblem::isGoalState(shared_ptr<State> state) {
-    auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
-    return SAstate->getPosition()==target;
+bool SingleAgentProblem::isGoalState(std::shared_ptr<SingleAgentState> state) const {
+    return state->getPosition() == target;
 }
 
-vector<Double> SingleAgentProblem::getSuccessors(shared_ptr<State> state) {
-    vector<Double> successors;
-    auto SAstate = dynamic_pointer_cast<SingleAgentState>(state);
-    int position = SAstate->getPosition();
-    int t = SAstate->getTimestep();
-    int nextT = t + 1;
-    int costMovement = 1;
+std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> SingleAgentProblem::getSuccessors(std::shared_ptr<SingleAgentState> state) const {
+    std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> successors;
+    int position = state->getPosition();
+    int cost = 1;
 
-    // Move
-    for (int newposition : graph.getNeighbors(position)){
-        auto pointer = make_shared<SingleAgentState>(newposition, nextT);
-        successors.emplace_back(pointer, costMovement);
+    for (int newPosition : graph->getNeighbors(position)){
+        auto successor = std::make_shared<SingleAgentState>(newPosition);
+        successors.emplace_back(successor, cost);
     }
 
     return successors;
 }
 
-vector<int> SingleAgentProblem::getStarts() {
-    vector<int> tab;
-    tab.push_back(start);
-    return tab;
+std::vector<std::vector<int>> SingleAgentProblem::getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const {
+    std::vector<int> positions;
+    for (auto state : states) {
+        positions.push_back(state->getPosition());
+    }
+    return { positions };
 }
 
-vector<int> SingleAgentProblem::getTargets() {
-    vector<int> tab;
-    tab.push_back(target);
-    return tab;
-}
-
-int SingleAgentProblem::getStart() {
+const int SingleAgentProblem::getStart() const {
     return start;
 }
 
-int SingleAgentProblem::getTarget() {
+const int SingleAgentProblem::getTarget() const {
     return target;
 }
-

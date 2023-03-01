@@ -2,12 +2,14 @@
 // Created by mansj on 31/01/23.
 //
 
-#include "parser.h"
-#include "SingleAgentProblem.h"
-#include "MultiAgentProblem.h"
-#include "Solution.h"
 #include "AStar.h"
+#include "MultiAgentProblem.h"
+#include "Parser.h"
+#include "SingleAgentProblem.h"
+#include "Solution.h"
+
 #include "external-headers/cxxopts.hpp"
+
 #include <fstream>
 
 int main(int argc, const char** argv) {
@@ -21,6 +23,7 @@ int main(int argc, const char** argv) {
         ("v, verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
         ("h, help", "Print help")
         ("m, multi", "Multi agent version")
+        ("a, agents", "Number of agents", cxxopts::value<int>())
         ("outfile", "Output file that will be filled with result data", cxxopts::value<std::string>())
         ;
 
@@ -37,7 +40,7 @@ int main(int argc, const char** argv) {
     if (result.count("m")) {
         Mode = MULTI;
         if (result.count("s") || result.count("t")) {
-            cout << "Cant't use s or t in multi agent mode" << endl;
+            std::cout << "Cant't use s or t in multi agent mode" << std::endl;
             exit(0);
         }
         if (!result.count("scen")) {
@@ -81,7 +84,7 @@ int main(int argc, const char** argv) {
     }
 
     // Parsing the graph from the map file
-    Graph g = parser::parse(file);
+    auto g = Parser::parse(file);
     Solution solution;
     int w;
 
@@ -91,20 +94,26 @@ int main(int argc, const char** argv) {
             std::cout << "Not a scen file" << std::endl;
             exit(0);
         }
+
+        int agents = INT_MAX;
+        if (result.count("a")) {
+            agents = result["a"].as<int>();
+        }
         
-        ifstream infile;
+        std::ifstream infile;
         infile.open(scenfile);
         string line;
         getline(infile, line);
-        vector<int> starts, targets;
+        std::vector<int> starts, targets;
         int n, h, sx, sy, tx, ty;
         double d;
-        string map;
+        std::string map;
+        int count = 0;
         while (getline(infile, line)) {
             //region extract data from line
-            stringstream ss;
+            std::stringstream ss;
             ss.str(line);
-            string item;
+            std::string item;
             getline(ss, item, '\t');
             n = stoi(item);
             getline(ss, item, '\t');
@@ -126,24 +135,29 @@ int main(int argc, const char** argv) {
             starts.emplace_back(start);
             int target = ty*w+tx;
             targets.emplace_back(target);
+
+            count += 1;
+            if (count == agents) {
+                break;
+            }
         }
 
-        MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
-        solution = AStar(&problem, SIC).getSolution();
-    }
-
-    else {
+        auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+        auto aStar = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance);
+        solution = aStar.solve();
+    } else {
         // Getting start and target
         auto start = result["s"].as<int>();
         auto target = result["t"].as<int>();
 
         // Solving and printing problem
-        SingleAgentProblem problem = SingleAgentProblem(g, start, target);
-        solution = AStar(&problem, Manhattan).getSolution();
+        auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
+        auto aStar = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan);
+        solution = aStar.solve();
     }
 
     if (result.count("outfile")) {
-        solution.write(result["outfile"].as<string>(), w);
+        solution.write(result["outfile"].as<std::string>(), w);
     }
     //solution.print();
 }

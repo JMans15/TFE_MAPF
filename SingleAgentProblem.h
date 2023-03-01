@@ -8,25 +8,25 @@
 #include "Problem.h"
 #include "SingleAgentState.h"
 
-class SingleAgentProblem : public Problem{
+class SingleAgentProblem : public Problem<SingleAgentState> {
 public:
-    SingleAgentProblem(Graph m_graph, int m_start, int m_target);
-    shared_ptr<State> getStartState();
-    shared_ptr<State> getGoalState();
-    bool isGoalState(shared_ptr<State> state);
-    vector<Double> getSuccessors(shared_ptr<State> state);
-    vector<int> getStarts();
-    vector<int> getTargets();
-    int getStart();
-    int getTarget();
+    SingleAgentProblem(std::shared_ptr<Graph> graph, int start, int target);
 
-private:
+    std::shared_ptr<SingleAgentState> getStartState() const override;
+    std::shared_ptr<SingleAgentState> getGoalState() const;
+    bool isGoalState(std::shared_ptr<SingleAgentState> state) const override;
+    std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> getSuccessors(std::shared_ptr<SingleAgentState> state) const override;
+    std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const override;
+
+    const int getStart() const;
+    const int getTarget() const;
+
+protected:
     // start position of the agent
     int start;
 
     // target position of the agent
     int target;
 };
-
 
 #endif //TFE_MAPF_SINGLEAGENTPROBLEM_H

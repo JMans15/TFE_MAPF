@@ -7,20 +7,22 @@
 
 #include "Problem.h"
 #include "SingleAgentSpaceTimeState.h"
-#include <set>
-typedef tuple<int, int, int> Constraint; // agent, position, time
 
-class SingleAgentSpaceTimeProblem : public Problem{
+#include <set>
+
+class SingleAgentSpaceTimeProblem : public Problem<SingleAgentSpaceTimeState> {
 public:
-    SingleAgentSpaceTimeProblem(const Graph& m_graph, int m_start, int m_target, ObjectiveFunction m_obj_function,
-                                const set<Constraint> &m_setOfConstraints = set<Constraint>(),
-                                        int m_numberOfTheAgent = 0);
-    shared_ptr<State> getStartState();
-    bool isGoalState(shared_ptr<State> state);
-    vector<Double> getSuccessors(shared_ptr<State> state);
-    vector<int> getStarts();
-    vector<int> getTargets();
+    SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
+                                const std::set<Constraint> &setOfConstraints = std::set<Constraint>(), int agentId = 0);
+
+    std::shared_ptr<SingleAgentSpaceTimeState> getStartState() const override;
+    bool isGoalState(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
+    std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> getSuccessors(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
+    std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentSpaceTimeState>> states) const override;
+
     ObjectiveFunction getObjFunction();
+
+    bool notInForbiddenPositions(int position, int time) const;
 
 private:
     // start position of the agent
@@ -29,19 +31,15 @@ private:
     // target position of the agent
     int target;
 
-    // the number of the agent of this problem
-    int numberOfTheAgent;
+    int agentId;
 
     // The objective function to minimize : Fuel or Makespan
     // - Fuel : Total amount of distance traveled by the agent (costWait = 0)
     // - Makespan : Total time for the agent to reach its goal (costWait = 1)
-    ObjectiveFunction obj_function;
+    ObjectiveFunction objective;
 
     // list of constraints like (a, p, t) meaning agent a can't be at position p at time t
-    set<Constraint> setOfConstraints;
-
-    // setOfConstraintsMap[t] is the list of positions where this agent can't be at time t
-    map<int, set<int>> setOfConstraintsMap;
+    std::set<Constraint> setOfConstraints;
 };
 
 

@@ -5,28 +5,26 @@
 #ifndef TFE_MAPF_STATE_H
 #define TFE_MAPF_STATE_H
 
-#include <utility>
-#include <vector>
-using namespace std;
+#include <cstddef>
+#include <memory>
 
 class State {
-
 public:
-
-    State(int m_timestep);
-    virtual ~State() = default;;
-
-    virtual vector<int> getPositions() = 0;
-    int getTimestep() const;
-
-    virtual bool operator==(const State& rhs) const = 0;
-    virtual size_t hash() const = 0;
-
-protected:
-
-    // the timestep of this state
-    int timestep;
+    const virtual std::size_t getHash() const = 0;
 };
 
+template<class S>
+struct StateHasher {
+    std::size_t operator()(const std::shared_ptr<S> &state) const {
+        return state->getHash();
+    }
+};
+
+template<class S>
+struct StateEquality {
+    bool operator()(const std::shared_ptr<S> &a, const std::shared_ptr<S> &b) const {
+        return a->isEqual(*b);
+    }
+};
 
 #endif //TFE_MAPF_STATE_H

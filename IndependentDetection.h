@@ -12,7 +12,7 @@
 //
 // typeOfHeuristic is the heuristic for the A* searches
 class IndependentDetection {
-public :
+public:
     IndependentDetection(MultiAgentProblem* problem, TypeOfHeuristic typeOfHeuristic);
     Solution getSolution();
 private:

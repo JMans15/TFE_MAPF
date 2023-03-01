@@ -3,25 +3,27 @@
 //
 
 #include "SingleAgentSpaceTimeState.h"
+
 #include <boost/functional/hash.hpp>
 
-SingleAgentSpaceTimeState::SingleAgentSpaceTimeState(int m_position, int m_timestep) : SingleAgentState(m_position, m_timestep){
-}
+SingleAgentSpaceTimeState::SingleAgentSpaceTimeState(int position, int timestep)
+    : SingleAgentState(position)
+    , timestep(timestep)
+{}
 
-bool SingleAgentSpaceTimeState::operator==(const State &other) const {
-    auto o = dynamic_cast<const SingleAgentSpaceTimeState*>(&other);
-    if (position!=o->position){
-        return false;
-    }
-    if (timestep!=o->timestep){ // just needed because of the constraints (a, p, t)
-        return false;
-    }
-    return true;
-}
+SingleAgentSpaceTimeState::~SingleAgentSpaceTimeState() {}
 
-size_t SingleAgentSpaceTimeState::hash() const {
+inline const std::size_t SingleAgentSpaceTimeState::getHash() const {
     size_t result = 0;
     boost::hash_combine(result, position);
     boost::hash_combine(result, timestep);
     return result;
+}
+
+inline const bool SingleAgentSpaceTimeState::isEqual(const SingleAgentSpaceTimeState &other) const {
+    return position == other.position && timestep == other.timestep;
+}
+
+inline const int SingleAgentSpaceTimeState::getTimestep() const {
+    return timestep;
 }

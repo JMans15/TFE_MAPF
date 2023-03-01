@@ -4,61 +4,57 @@
 
 #include "ReverseResumableAStar.h"
 
-#ifdef DEBUG
-#define LOG(str) cout << str << endl;
-#else
-#define LOG(str)
-#endif
-
-ReverseResumableAStar::ReverseResumableAStar(SingleAgentProblem *m_problem) : problem(m_problem) {
+ReverseResumableAStar::ReverseResumableAStar(std::shared_ptr<SingleAgentProblem> problem) : problem(problem) {
     LOG("===== Reverse Resumable A* Search ====");
-    heuristic = new Manhattanheuristic(problem->getStart(), problem->getGraph().getWidth());
-    shared_ptr<State> g = problem->getGoalState();
-    shared_ptr<State> s = problem->getStartState();
-    fringe.emplace(0+heuristic->heuristicFunction(g), Node(g));
-    Resume(s);
+    heuristic = std::make_shared<ManhattanHeuristic<SingleAgentState>>(problem->getStart(), problem->getGraph()->getWidth());
+    auto start = problem->getStartState();
+    auto goal = problem->getGoalState();
+    fringe.insert(std::make_shared<Node<SingleAgentState>>(goal, 0, heuristic->heuristicFunction(goal)));
+    distance[goal] = 0;
 }
 
-int ReverseResumableAStar::Resume(const shared_ptr<State>& state) {
-    while (!fringe.empty()){
-        Tuple tuplee = fringe.top();
-        Node node = get<1>(tuplee);
-        fringe.pop();
-        auto nodestate = node.getState();
-        if (explored.count(nodestate)>0) { // if node.getState() is already in explored
+int ReverseResumableAStar::resume(const std::shared_ptr<SingleAgentState>& target) {
+    while (!fringe.empty()) {
+        auto it = fringe.begin();
+        auto node = *it;
+        auto state = node->getState();
+
+        if (node->getCost() > distance[state]) {
+            fringe.erase(it);
             continue;
         }
-        explored.insert({nodestate, node.getGn()});
-        vector<Double> successors = problem->getSuccessors(node.getState());
-        for (auto & successor : successors){
-            shared_ptr<State> child = get<0>(successor);
-            int cost = get<1>(successor);
-            Node newnode(child, node, node.getGn()+cost);
-            if (explored.count(child)==0) { // if child is not in explored
-                fringe.emplace(newnode.getGn()+heuristic->heuristicFunction(child),newnode);
-            }
+
+        if (StateEquality<SingleAgentState>()(state, target)) {
+            return node->getCost();
         }
-        if (*nodestate==*state){
-            return node.getGn();
+
+        fringe.erase(it);
+        closed.insert(state);
+
+        auto successors = problem->getSuccessors(state);
+        for (auto &[successor, edgeCost] : successors) {
+            auto successorCost = node->getCost() + edgeCost;
+            auto it = distance.find(successor);
+            if (it == distance.end() || successorCost < it->second) {
+                distance[successor] = successorCost;
+                auto h = heuristic->heuristicFunction(successor);
+                fringe.insert(std::make_shared<Node<SingleAgentState>>(successor, successorCost, h));
+            }
         }
     }
     return -1;
 }
 
-int ReverseResumableAStar::OptimalDistance(int position) {
-    auto state = make_shared<SingleAgentState>(position,0);
-    if (explored.count(state)>0) { // if state is already in explored
+int ReverseResumableAStar::optimalDistance(int position) {
+    auto state = std::make_shared<SingleAgentState>(position);
+    if (closed.contains(state)) { // if state is already in explored
         LOG("position is already explored")
-        return explored.at(state);
+        return distance[state];
     }
     LOG("position is not yet explored, we'll continue the RRA* search to visit position")
-    int cost = Resume(state);
-    if (cost==-1){
+    int cost = resume(state);
+    if (cost == -1) {
         return INT_MAX;
     }
     return cost;
-}
-
-myUMap ReverseResumableAStar::getExplored() {
-    return explored;
 }

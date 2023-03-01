@@ -4,56 +4,71 @@
 
 #ifndef TFE_MAPF_HEURISTIC_H
 #define TFE_MAPF_HEURISTIC_H
-#include <memory>
-#include "State.h"
-#include "ReverseResumableAStar.h"
+
 #include "Graph.h"
+#include "MultiAgentProblem.h"
+#include "MultiAgentState.h"
+#include "ReverseResumableAStar.h"
+#include "SingleAgentProblem.h"
+#include "SingleAgentState.h"
+#include "State.h"
+
+#include <memory>
+
 enum TypeOfHeuristic {
     Manhattan, OptimalDistance
 };
 
+template <class S>
 class Heuristic {
 public:
-    virtual int heuristicFunction(shared_ptr<State> state) = 0;
+    virtual int heuristicFunction(std::shared_ptr<S> state) = 0;
     virtual ~Heuristic() = default;
 };
 
+// Returns the Manhattan distance between position a and position b
+// ignoring walls and other agents
+inline int manhattanDistance(int a, int b, int width) {
+    int ax, ay, bx, by;
+    ax = (int) a % width; ay = a / width;
+    bx = (int) b % width; by = b / width;
+    return abs(ax-bx) + abs(ay-by);
+}
+
 // Manhattan distance heuristic (ignoring walls)
 // - for single agent problem
-class Manhattanheuristic : public Heuristic {
-public :
-    Manhattanheuristic(int m_target, int m_width);
+template<typename S, typename std::enable_if<std::is_base_of<SingleAgentState, S>::value>::type* = nullptr>
+class ManhattanHeuristic : public Heuristic<S> {
+public:
+    ManhattanHeuristic(int target, int width) : target(target), width(width) {}
+
+    int heuristicFunction(std::shared_ptr<S> state) override {
+        return manhattanDistance(state->getPosition(), target, width);
+    }
 private:
     int target;
     int width;
-
-    int heuristicFunction(shared_ptr<State> state) override;
-};
-
-class ReverseResumableAStar;
-
-// Optimal distance heuristic
-// - for single agent problem
-// - only interesting for Space Time A*
-// A reverse resumable A* search will be run in addition to the search which this heuristic is used for.
-class OptimalDistanceheuristic : public Heuristic {
-public :
-    OptimalDistanceheuristic(int m_start, int m_target, const Graph& m_graph);
-    int heuristicFunction(shared_ptr<State> state);
-private:
-    ReverseResumableAStar* RRAStarSearch;
 };
 
 // Sum of Individual Costs heuristic
 // where cost is the Manhattan distance (ignoring walls and other agents)
 // - for SumOfCosts and Fuel objective functions
 // - for multi agent problem
-class SICheuristic : public Heuristic {
-public :
-    SICheuristic(vector<int> m_targets, int m_width);
-    int heuristicFunction(shared_ptr<State> state);
+template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value>::type* = nullptr>
+class SICheuristic : public Heuristic<S> {
+public:
+    SICheuristic(std::vector<int> targets, int width) : targets(targets), width(width) {}
+
+    int heuristicFunction(std::shared_ptr<S> state) override {
+        int sum = 0;
+        auto positions = state->getPositions();
+        for (int i = 0; i < positions.size(); i++){
+            sum += manhattanDistance(positions[i], targets[i], width);
+        }
+        return sum;
+    }
 private:
-    vector<int> targets;
+    std::vector<int> targets;
     int width;
 };
 
@@ -61,40 +76,25 @@ private:
 // where cost is the Manhattan distance (ignoring walls and other agents)
 // - for Makespan objective function
 // - for multi agent problem
-class MICheuristic : public Heuristic {
-public :
-    MICheuristic(vector<int> m_targets, int m_width);
-    int heuristicFunction(shared_ptr<State> state);
+template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value>::type* = nullptr>
+class MICheuristic : public Heuristic<S> {
+public:
+    MICheuristic(std::vector<int> targets, int width) : targets(targets), width(width) {}
+
+    int heuristicFunction(std::shared_ptr<S> state) {
+        int maxDistance = 0;
+        auto positions = state->getPositions();
+        for (int i = 0; i < state->getAgentToAssign(); i++){
+            maxDistance = std::max(maxDistance, manhattanDistance(positions[i], targets[i], width));
+        }
+        for (int i = state->getAgentToAssign(); i < positions.size(); i++){
+            maxDistance = std::max(maxDistance, manhattanDistance(positions[i], targets[i], width) - 1);
+        }
+        return maxDistance;
+    }
 private:
-    vector<int> targets;
+    std::vector<int> targets;
     int width;
 };
-
-// Sum of Individual Optimal Costs heuristic
-// where cost is the optimal distance (ignoring other agents)
-// // A reverse resumable A* search per agent will be run in addition to the search which this heuristic is used for.
-// - for SumOfCosts and Fuel objective functions
-// - for multi agent problem
-class SIOCheuristic : public Heuristic {
-public :
-    SIOCheuristic(vector<int> m_starts, vector<int> m_targets, const Graph& m_graph);
-    int heuristicFunction(shared_ptr<State> state);
-private:
-    vector<ReverseResumableAStar*> RRAStarSearches;
-};
-
-// Maximum Individual Optimal Cost heuristic
-// where cost is the optimal distance (ignoring other agents)
-// A reverse resumable A* search per agent will be run in addition to the search which this heuristic is used for.
-// - for Makespan objective function
-// - for multi agent problem
-class MIOCheuristic : public Heuristic {
-public :
-    MIOCheuristic(vector<int> m_starts, vector<int> m_targets, const Graph& m_graph);
-    int heuristicFunction(shared_ptr<State> state);
-private:
-    vector<ReverseResumableAStar*> RRAStarSearches;
-};
-
 
 #endif //TFE_MAPF_HEURISTIC_H

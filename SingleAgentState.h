@@ -4,22 +4,32 @@
 
 #ifndef TFE_MAPF_SINGLEAGENTSTATE_H
 #define TFE_MAPF_SINGLEAGENTSTATE_H
+
 #include "State.h"
+
+#include <vector>
 
 class SingleAgentState : public State {
 public:
 
-    SingleAgentState(int m_position, int m_timestep);
+    SingleAgentState(int position) : position(position) {}
+    ~SingleAgentState() {}
 
-    bool operator==(const State& other) const;
-
-    bool operator< (const SingleAgentState& other) const{
-        return position<other.position;
+    inline const std::size_t getHash() const {
+        return position;
     }
 
-    vector<int> getPositions();
-    int getPosition() const;
-    size_t hash() const override;
+    inline const bool isEqual(const SingleAgentState &other) const {
+        return position == other.position;
+    }
+
+    inline const int getPosition() const {
+        return position;
+    }
+
+    const std::vector<int> getPositions() const {
+        return { position };
+    }
 
 protected:
 

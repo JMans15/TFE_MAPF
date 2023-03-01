@@ -2,50 +2,46 @@
 // Created by mansj on 10/11/22.
 //
 
-#include "parser.h"
+#include "Parser.h"
+
 #include <iostream>
 #include <vector>
+
 // setting a max line length for skipped lines
 #define MAX_LINE_LENGTH 4096
 
-using std::ifstream;
-using std::getline;
-using std::ws;
-using std::cout;
-using std::endl;
-using std::ostringstream;
-using std::vector;
+//#define DEBUG
 
-Graph parser::parse(string filename) {
+std::shared_ptr<Graph> Parser::parse(std::string filename) {
 #ifdef DEBUG
-    cout << "Parsing data in file " << filename << endl;
+    std::cout << "Parsing data in file " << filename << std::endl;
 #endif
-    ifstream file;
+    std::ifstream file;
     file.open(filename);
 
     // skip first line
     file.ignore(MAX_LINE_LENGTH, '\n');
-    string text;
+    std::string text;
     int width, height;
     // get width and height
     getline(file, text, ' ');   // move pointer to right before the int value
-    file >> height;                         // extract the value
-    file >> ws;                             // remove trailing whitespaces
+    file >> height;             // extract the value
+    file >> std::ws;            // remove trailing whitespaces
     getline(file, text, ' ');
     file >> width;
-    file >> ws;
+    file >> std::ws;
     // DEBUG
 #ifdef DEBUG
-    cout << "Map is " << width << " x " << height << endl;
+    std::cout << "Map is " << width << " x " << height << std::endl;
 #endif
     // skip next line
     file.ignore(MAX_LINE_LENGTH, '\n');
 
     // extract the map as a list of strings
-    vector<string> lines(height);
+    std::vector<std::string> lines(height);
     for (int l = 0; l < height; l++) {
         getline(file, lines[l], '\n');
-        file >> ws;
+        file >> std::ws;
     }
     // region eigen
     /*
@@ -73,26 +69,26 @@ Graph parser::parse(string filename) {
     */
     //endregion
 
-    Graph result(width*height, width);
+    auto result = std::make_shared<Graph>(width*height, width);
     for (int l = 0; l < height; l++) {
         for (int c = 0; c < width; c++) {
             if (lines[l][c] != '.') continue;
             // S
             if (l < height-1 && lines[l+1][c] == '.')
-                result.addEdge(tocellno(l+1, c, width), tocellno(l, c, width));
+                result->addEdge(tocellno(l+1, c, width), tocellno(l, c, width));
             // E
             if (c < width-1 && lines[l][c+1] == '.')
-                result.addEdge(tocellno(l, c+1, width), tocellno(l, c, width));
+                result->addEdge(tocellno(l, c+1, width), tocellno(l, c, width));
         }
     }
 #ifdef DEBUG
-    cout << "===== Graph =====" << endl;
-    result.print(20);
-    cout << "=================" << endl;
+    std::cout << "===== Graph =====" << std::endl;
+    result->print(20);
+    std::cout << "=================" << std::endl;
 #endif
     return result;
 }
 
-int parser::tocellno(int l, int c, int w) {
+int Parser::tocellno(int l, int c, int w) {
     return l*w+c;
 }
