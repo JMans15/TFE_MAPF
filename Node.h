@@ -47,9 +47,6 @@ class NodeComparator {
 public:
     inline bool operator() (const std::shared_ptr<Node<S>> &a, const std::shared_ptr<Node<S>> &b) const {
         if (a->getCost() + a->getHeuristic() == b->getCost() + b->getHeuristic()) {
-            if (a->getCost() == b->getCost()) {
-                return a->getState()->getHash() < b->getState()->getHash();
-            }
             return a->getCost() > b->getCost();
         }
         return a->getCost() + a->getHeuristic() < b->getCost() + b->getHeuristic();

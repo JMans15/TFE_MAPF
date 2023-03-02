@@ -34,7 +34,7 @@ public:
 private:
     std::shared_ptr<SingleAgentProblem> problem;
     std::shared_ptr<Heuristic<SingleAgentState>> heuristic;
-    std::set<std::shared_ptr<Node<SingleAgentState>>, NodeComparator<SingleAgentState>> fringe;
+    std::multiset<std::shared_ptr<Node<SingleAgentState>>, NodeComparator<SingleAgentState>> fringe;
     std::unordered_map<std::shared_ptr<SingleAgentState>, int, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> distance;
     std::unordered_set<std::shared_ptr<SingleAgentState>, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> closed;
 };
