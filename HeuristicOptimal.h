@@ -1,7 +1,7 @@
-#ifndef TFE_MAPF_HEURISTICADVANCED_H
-#define TFE_MAPF_SINGLEAGENTHEURISTIC_H
+#ifndef TFE_MAPF_HEURISTICOPTIMAL_H
+#define TFE_MAPF_HEURISTICOPTIMAL_H
 
-#include "Heuristic.h"
+#include "HeuristicManhattan.h"
 #include "ReverseResumableAStar.h"
 
 // Optimal distance heuristic
@@ -128,4 +128,4 @@ std::shared_ptr<Heuristic<S>> getHeuristic(std::shared_ptr<P> problem, std::shar
     }
 }
 
-#endif//TFE_MAPF_HEURISTICADVANCED_H
+#endif//TFE_MAPF_HEURISTICOPTIMAL_H

@@ -2,8 +2,8 @@
 // Created by Arthur Mahy on 14/01/2023.
 //
 
-#ifndef TFE_MAPF_HEURISTIC_H
-#define TFE_MAPF_HEURISTIC_H
+#ifndef TFE_MAPF_HEURISTICMANHATTAN_H
+#define TFE_MAPF_HEURISTICMANHATTAN_H
 
 #include "Graph.h"
 #include "MultiAgentProblem.h"
@@ -97,4 +97,4 @@ private:
     int width;
 };
 
-#endif //TFE_MAPF_HEURISTIC_H
+#endif //TFE_MAPF_HEURISTICMANHATTAN_H

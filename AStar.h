@@ -5,7 +5,7 @@
 #ifndef TFE_MAPF_ASTAR_H
 #define TFE_MAPF_ASTAR_H
 
-#include "HeuristicAdvanced.h"
+#include "HeuristicOptimal.h"
 #include "Problem.h"
 #include "Solution.h"
 

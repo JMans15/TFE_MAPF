@@ -5,7 +5,7 @@
 #ifndef TFE_MAPF_REVERSERESUMABLEASTAR_H
 #define TFE_MAPF_REVERSERESUMABLEASTAR_H
 
-#include "Heuristic.h"
+#include "HeuristicManhattan.h"
 #include "Node.h"
 #include "SingleAgentProblem.h"
 
