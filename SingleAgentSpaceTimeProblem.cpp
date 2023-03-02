@@ -4,53 +4,39 @@
 
 #include "SingleAgentSpaceTimeProblem.h"
 
-//#define DEBUG
-
-#ifdef DEBUG
-#define LOG(str) cout << str << endl;
-#else
-#define LOG(str)
-#endif
-
-SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(const Graph& m_graph, int m_start, int m_target,
-                                                         ObjectiveFunction m_obj_function,
-                                                         const set<Constraint> &m_setOfConstraints,
-                                                         int m_numberOfTheAgent) : Problem(m_graph){
-    start = m_start;
-    target = m_target;
-    numberOfAgents = 1;
-    numberOfTheAgent = m_numberOfTheAgent;
+SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
+                                                         const std::set<Constraint> &setOfConstraints, int agentId)
+    : Problem(graph, 1)
+    , start(start)
+    , target(target)
+    , objective(objective)
+    , setOfConstraints(setOfConstraints)
+    , agentId(agentId)
+{
     LOG("==== Single Agent Space Time Problem ====");
-    LOG("Number of the agent : " << numberOfTheAgent);
-    obj_function = m_obj_function;
-    if (obj_function!=Makespan and obj_function!=Fuel){
+    if (objective != Makespan && objective != Fuel){
         LOG("The input for the objective function is not correct.");
         LOG("So, the default objective function will be applied.");
-        obj_function = Fuel;
+        objective = Fuel;
     }
-    if (obj_function==Makespan){
+    if (objective == Makespan){
         LOG("Objective function : Makespan (costWait = 1)");
     } else {
         LOG("Objective function : Fuel (costWait = 0)");
     }
     LOG("Start position of the agent : " << start);
-    if (graph.getNeighbors(start).empty()){
+    if (graph->getNeighbors(start).empty()){
         LOG("   The start position is unreachable.");
     }
     LOG("Target position of the agent : " << target);
-    if (graph.getNeighbors(target).empty()){
+    if (graph->getNeighbors(target).empty()){
         LOG("   The target position is unreachable.");
     }
-    setOfConstraints = m_setOfConstraints;
-    if (not setOfConstraints.empty()){
+    if (!setOfConstraints.empty()){
         LOG("The problem has the following constraints :");
         for (Constraint constraint : setOfConstraints){
-            int agent = get<0>(constraint);
-            if (agent==numberOfTheAgent){
-                int position = get<1>(constraint);
-                int time = get<2>(constraint);
-                setOfConstraintsMap[time].insert(position);
-                LOG("   (" << numberOfTheAgent << ", " << position << ", " << time << ")");
+            if (constraint.agent == agentId){
+                LOG("   (" << agentId << ", " << constraint.position << ", " << constraint.time << ")");
             }
         }
     }
@@ -58,38 +44,27 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(const Graph& m_graph, i
 
 }
 
-shared_ptr<State> SingleAgentSpaceTimeProblem::getStartState() {
-    auto pointer = make_shared<SingleAgentSpaceTimeState>(start,0);
-    return pointer;
+std::shared_ptr<SingleAgentSpaceTimeState> SingleAgentSpaceTimeProblem::getStartState() const {
+    return std::make_shared<SingleAgentSpaceTimeState>(start, 0);
 }
 
-bool SingleAgentSpaceTimeProblem::isGoalState(shared_ptr<State> state) {
-    auto SAstate = dynamic_pointer_cast<SingleAgentSpaceTimeState>(state);
-    return SAstate->getPosition()==target;
+bool SingleAgentSpaceTimeProblem::isGoalState(std::shared_ptr<SingleAgentSpaceTimeState> state) const {
+    return state->getPosition() == target;
 }
 
 // Returns true if the agent is allowed to be at position at time (according to the set of constraints of the problem)
-bool notInForbiddenPositions(int position, int time, map<int, set<int>> setOfConstraintsMap){
-    if (setOfConstraintsMap.count(time)){
-        set<int> v = setOfConstraintsMap[time];
-        if (v.count(position)){
-            return false;
-        } else {
-            return true;
-        }
-    }
-    return true;
+bool SingleAgentSpaceTimeProblem::notInForbiddenPositions(int position, int time) const {
+    return setOfConstraints.find({agentId, position, time}) == setOfConstraints.end();
 }
 
-vector<Double> SingleAgentSpaceTimeProblem::getSuccessors(shared_ptr<State> state) {
-    vector<Double> successors;
-    auto SAstate = dynamic_pointer_cast<SingleAgentSpaceTimeState>(state);
-    int position = SAstate->getPosition();
-    int t = SAstate->getTimestep();
+std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> SingleAgentSpaceTimeProblem::getSuccessors(std::shared_ptr<SingleAgentSpaceTimeState> state) const {
+    std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> successors;
+    int position = state->getPosition();
+    int t = state->getTimestep();
     int nextT = t+1;
     int costMovement;
     int costWait;
-    if (obj_function==Fuel){
+    if (objective == Fuel) {
         costMovement = 1;
         costWait = 0;
     } else { // obj_function==Makespan
@@ -98,34 +73,30 @@ vector<Double> SingleAgentSpaceTimeProblem::getSuccessors(shared_ptr<State> stat
     }
 
     // Move
-    for (int newposition : graph.getNeighbors(position)){
-        if (notInForbiddenPositions(newposition, nextT, setOfConstraintsMap)){
-            auto* pointer = new SingleAgentSpaceTimeState(newposition, nextT);
-            successors.emplace_back(pointer, costMovement);
+    for (int newPosition : graph->getNeighbors(position)){
+        if (notInForbiddenPositions(newPosition, nextT)){
+            auto successor = std::make_shared<SingleAgentSpaceTimeState>(newPosition, nextT);
+            successors.emplace_back(successor, costMovement);
         }
     }
 
     // Wait
-    if (notInForbiddenPositions(position, nextT, setOfConstraintsMap)){
-        auto* pointer = new SingleAgentSpaceTimeState(position, nextT);
-        successors.emplace_back(pointer, costWait);
+    if (notInForbiddenPositions(position, nextT)){
+        auto successor = std::make_shared<SingleAgentSpaceTimeState>(position, nextT);
+        successors.emplace_back(successor, costWait);
     }
 
     return successors;
 }
 
-vector<int> SingleAgentSpaceTimeProblem::getStarts() {
-    vector<int> tab;
-    tab.push_back(start);
-    return tab;
-}
-
-vector<int> SingleAgentSpaceTimeProblem::getTargets() {
-    vector<int> tab;
-    tab.push_back(target);
-    return tab;
+std::vector<std::vector<int>> SingleAgentSpaceTimeProblem::getPositions(std::vector<std::shared_ptr<SingleAgentSpaceTimeState>> states) const {
+    std::vector<int> positions;
+    for (auto state : states) {
+        positions.push_back(state->getPosition());
+    }
+    return { positions };
 }
 
 ObjectiveFunction SingleAgentSpaceTimeProblem::getObjFunction() {
-    return obj_function;
+    return objective;
 }

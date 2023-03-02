@@ -2,21 +2,23 @@
 // Created by mansj on 10/11/22.
 //
 
-#include "parser.h"
 #include "AStar.h"
 #include "CooperativeAStar.h"
-#include "ReverseResumableAStar.h"
 #include "MultiAgentProblem.h"
+#include "Parser.h"
+#include "ReverseResumableAStar.h"
 #include "SingleAgentProblem.h"
 #include "SingleAgentSpaceTimeProblem.h"
-#include <vector>
+
 #include <chrono>
+#include <iostream>
+#include <vector>
 
 template <typename T>
 class Clock {
-    chrono::high_resolution_clock clock;
-    chrono::time_point<chrono::high_resolution_clock, chrono::nanoseconds> start;
-    chrono::time_point<chrono::high_resolution_clock, chrono::nanoseconds> stop;
+    std::chrono::high_resolution_clock clock;
+    std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> start;
+    std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> stop;
 public:
     void tick() {
         this->start = this->clock.now();
@@ -25,11 +27,11 @@ public:
         this->stop = this->clock.now();
     };
     void print () {
-        cerr << chrono::duration_cast<T>(this->stop-this->start) << endl;
+        std::cerr << std::chrono::duration_cast<T>(this->stop-this->start) << std::endl;
     };
 };
 
-Clock<chrono::milliseconds> timer;
+Clock<std::chrono::milliseconds> timer;
 
 int main() {
 
@@ -161,16 +163,18 @@ int main() {
     solution2.print(); // numberOfVisitedStates = 17*/
 
     // TEST 11 : 2 agents and comparaison between Manhattan and OptimalDistance
-    Graph g = parser::parse("../mapf-map/Paris_1_256.map");;
-    vector<int> starts;
+    auto g = Parser::parse("../mapf-map/Paris_1_256.map");
+    std::vector<int> starts;
     starts.push_back(1);
     starts.push_back(150);
-    vector<int> targets;
+    std::vector<int> targets;
     targets.push_back(150);
     targets.push_back(1);
-    MultiAgentProblem problem = MultiAgentProblem(g, starts, targets, SumOfCosts);
-    Solution solution1 = AStar(&problem, Manhattan).getSolution();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto aStar = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan);
+    auto solution1 = aStar.solve();
     solution1.print(); // numberOfVisitedStates = 285477
-    Solution solution2 = AStar(&problem, OptimalDistance).getSolution();
+    aStar = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance);
+    Solution solution2 = aStar.solve();
     solution2.print(); // numberOfVisitedStates = 4173
 }

@@ -12,14 +12,14 @@ Solution::Solution() {
     foundPath = false;
 }
 
-Solution::Solution(int m_cost, int m_numberOfVisitedStates,
-                   int m_numberOfTimesteps, vector<vector<int>> m_positionsAtTime) {
-    foundPath = true;
-    cost = m_cost;
-    numberOfVisitedStates = m_numberOfVisitedStates;
-    numberOfTimesteps = m_numberOfTimesteps;
-    positionsAtTime = std::move(m_positionsAtTime);
-}
+Solution::Solution(int cost, int numberOfVisitedStates,
+                   int numberOfTimesteps, std::vector<std::vector<int>> positions)
+    : foundPath(true)
+    , cost(cost)
+    , numberOfVisitedStates(numberOfVisitedStates)
+    , numberOfTimesteps(numberOfTimesteps)
+    , positions(positions)
+{}
 
 int Solution::getCost() const {
     return cost;
@@ -33,32 +33,32 @@ int Solution::getNumberOfTimesteps() const {
     return numberOfTimesteps;
 }
 
-vector<int> Solution::getPositionsAtTime(int t) {
-    return positionsAtTime[t];
+std::vector<int> Solution::getPositionsAtTime(int t) {
+    std::vector<int> pos;
+    for (int i = 0; i < positions.size(); i++){
+        pos.push_back(positions[i][t]);
+    }
+    return pos;
 }
 
-vector<int> Solution::getPathOfAgent(int i) {
-    vector<int> path;
-    for (int t = 0; t < numberOfTimesteps; t++){
-        path.push_back(positionsAtTime[t][i]);
-    }
-    return path;
+std::vector<int> Solution::getPathOfAgent(int i) {
+    return positions[i];
 }
 
 void Solution::write(std::string filename, int width) {
-    ofstream file(filename.c_str());
+    std::ofstream file(filename.c_str());
     if (foundPath) {
-        int A = static_cast<int>(positionsAtTime[0].size());
+        int A = static_cast<int>(positions.size());
         int T = numberOfTimesteps;
-        file << A << " " << T << endl;
+        file << A << " " << T << std::endl;
         int x, y, p;
         for (int t = 0; t < T; t++) {
             for (int a = 0; a < A; a++) {
-                p = positionsAtTime[t][a];
+                p = positions[a][t];
                 // The compiler will likely reuse the result of the division, no need to bother optimizing ourselves
                 y = p / width;
                 x = p % width;
-                file << x << "," << y << endl;
+                file << x << "," << y << std::endl;
             }
         }
     }
@@ -67,24 +67,24 @@ void Solution::write(std::string filename, int width) {
 
 void Solution::print() {
     if (foundPath){
-        cout << " " << endl;
-        cout << "==== Solution ====" << endl;
-        cout << numberOfVisitedStates << " visited states (goal tested)" << endl;
-        cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << endl;
-        cout << " " << endl;
-        cout << " -> Position of every agent at each time : " << endl;
+        std::cout << " " << std::endl;
+        std::cout << "==== Solution ====" << std::endl;
+        std::cout << numberOfVisitedStates << " visited states (goal tested)" << std::endl;
+        std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
+        std::cout << " " << std::endl;
+        std::cout << " -> Position of every agent at each time : " << std::endl;
         for (int t = 0; t < numberOfTimesteps; t++){
-            cout << " -- Time " << t << " : " << endl;
-            for (int i = 0; i < positionsAtTime[t].size(); i++){
-                cout << " --- Agent " << i << " : position " << positionsAtTime[t][i] << endl;
+            std::cout << " -- Time " << t << " : " << std::endl;
+            for (int i = 0; i < positions.size(); i++){
+                std::cout << " --- Agent " << i << " : position " << positions[i][t] << std::endl;
             }
         }
-        cout << " " << endl;
-        cout << " -> Path of each agent : " << endl;
-        for (int i = 0; i < positionsAtTime[0].size(); i++){
-            cout << " -- Agent " << i << " : " << endl;
+        std::cout << " " << std::endl;
+        std::cout << " -> Path of each agent : " << std::endl;
+        for (int i = 0; i < positions.size(); i++){
+            std::cout << " -- Agent " << i << " : " << std::endl;
             for (int t = 0; t < numberOfTimesteps; t++){
-                cout << " --- Time " << t << " : position " << positionsAtTime[t][i] << endl;
+                std::cout << " --- Time " << t << " : position " << positions[i][t] << std::endl;
             }
         }
     }
@@ -97,30 +97,30 @@ bool Solution::getFoundPath() {
 }
 
 int Solution::getFuelCost() {
-    int Cost = 0;
-    for (int a = 0; a < positionsAtTime[0].size(); a++){
-        for (int t = 1; t < numberOfTimesteps; t++){
-            if (positionsAtTime[t][a]!=positionsAtTime[t-1][a]){
-                Cost+=1;
+    int cost = 0;
+    for (int a = 0; a < positions.size(); a++) {
+        for (int t = 1; t < numberOfTimesteps; t++) {
+            if (positions[a][t] != positions[a][t-1]) {
+                cost += 1;
             }
         }
     }
-    return Cost;
+    return cost;
 }
 
 int Solution::getMakespanCost() {
-    return positionsAtTime.size()-1;
+    return positions[0].size() - 1;
 }
 
 int Solution::getSumOfCostsCost() {
-    int Cost = 0;
-    for (int a = 0; a < positionsAtTime[0].size(); a++){
-        for (int t = numberOfTimesteps-1; t >= 0; t--){
-            if (positionsAtTime[t][a]!=positionsAtTime[numberOfTimesteps-1][a]){
-                Cost += t+1;
+    int cost = 0;
+    for (int a = 0; a < positions.size(); a++) {
+        for (int t = numberOfTimesteps-1; t >= 0; t--) {
+            if (positions[a][t] != positions[a][numberOfTimesteps-1]) {
+                cost += t+1;
                 break;
             }
         }
     }
-    return Cost;
+    return cost;
 }

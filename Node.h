@@ -5,34 +5,52 @@
 #ifndef TFE_MAPF_NODE_H
 #define TFE_MAPF_NODE_H
 
-#include "State.h"
-#include <vector>
-#include <string>
 #include <memory>
-using namespace std;
 
-
+template <class S>
 class Node {
 public:
 
-    explicit Node(shared_ptr<State> m_state);
-    Node(shared_ptr<State> m_state, const Node& m_parent, int m_gn); //Constructeur surchargé
-    ~Node(); //Destructeur
-    shared_ptr<State> getState();
-    shared_ptr<Node> getParent() const;
-    int getGn() const;
-    /*
-    // 2 nodes are equal if they have the same state
-    bool operator== (Node other) const
-    {
-        return *other.getState()==*state;
-    }*/
+    Node(std::shared_ptr<S> state, int cost, int heuristic, std::shared_ptr<Node<S>> parent = nullptr)
+        : state(state)
+        , cost(cost)
+        , heuristic(heuristic)
+        , parent(parent)
+    {}
+    ~Node() {}
+
+    inline std::shared_ptr<S> getState() const {
+        return state;
+    }
+
+    inline std::shared_ptr<Node<S>> getParent() const {
+        return parent;
+    }
+
+    inline int getCost() const {
+        return cost;
+    }
+
+    inline int getHeuristic() const {
+        return heuristic;
+    }
 
 private:
-    shared_ptr<State> state; // state of the node
-    shared_ptr<Node> parent; // parent node
-    int gn; // path cost g(n)
+    std::shared_ptr<S> state; // state of the node
+    std::shared_ptr<Node<S>> parent; // parent node
+    int cost; // path cost
+    int heuristic; // heuristic value
 };
 
+template <class S>
+class NodeComparator {
+public:
+    inline bool operator() (const std::shared_ptr<Node<S>> &a, const std::shared_ptr<Node<S>> &b) const {
+        if (a->getCost() + a->getHeuristic() == b->getCost() + b->getHeuristic()) {
+            return a->getCost() > b->getCost();
+        }
+        return a->getCost() + a->getHeuristic() < b->getCost() + b->getHeuristic();
+    }
+};
 
 #endif //TFE_MAPF_NODE_H

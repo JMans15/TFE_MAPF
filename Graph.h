@@ -13,19 +13,23 @@ using std::string;
 using std::vector;
 
 class Graph {
-private:
-    vector<int> *adjlists;
-    int N, E, width;
-
 public:
-    Graph(int N, int Width);
+
+    Graph(int nVertices, int width);
     ~Graph();
-    int getN() const;
+
+    int getNumberOfVertices() const;
     int getWidth() const;
     void addEdge(int from, int to);
-    vector<int> getNeighbors(int index) const;
+    const std::vector<int>& getNeighbors(int index) const;
     void print();
     void print(int num);
+
+private:
+
+    std::vector<std::vector<int>> neighbors;
+    int nVertices, nEdges, width;
+
 };
 
 

@@ -4,45 +4,45 @@
 
 #ifndef TFE_MAPF_MULTIAGENTPROBLEM_H
 #define TFE_MAPF_MULTIAGENTPROBLEM_H
+
 #include "Problem.h"
 #include "MultiAgentState.h"
-#include "set"
-typedef tuple<int, int, int> Constraint; // agent, position, time
 
-class MultiAgentProblem : public Problem{
+#include <set>
+
+class MultiAgentProblem : public Problem<MultiAgentState> {
 public:
-    MultiAgentProblem(Graph m_graph, vector<int> m_starts, vector<int> m_targets,
-                      ObjectiveFunction m_obj_function = Fuel,
-                      const set<Constraint> &m_setOfConstraints = set<Constraint>());
-    shared_ptr<State> getStartState() override;
-    bool isGoalState(shared_ptr<State> state);
+    MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
+                      ObjectiveFunction objective = Fuel, const std::set<Constraint> &setOfConstraints = std::set<Constraint>());
 
-    // Extends state thanks to Operator Decomposition
-    vector<Double> getSuccessors(shared_ptr<State> state);
+    std::shared_ptr<MultiAgentState> getStartState() const override;
+    bool isGoalState(std::shared_ptr<MultiAgentState> state) const override;
+    std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> getSuccessors(std::shared_ptr<MultiAgentState> state) const override;
+    std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const override;
 
-    vector<int> getStarts();
-    vector<int> getTargets();
+    const std::vector<int>& getStarts() const;
+    const std::vector<int>& getTargets() const;
     ObjectiveFunction getObjFunction();
-    set<Constraint> getSetOfConstraints();
+    const std::set<Constraint>& getSetOfConstraints() const;
 
 private:
     // starts is a list of length numberOfAgents with the start position of each agent
-    vector<int> starts;
+    std::vector<int> starts;
 
     // target is a list of length numberOfAgents with the target position of each agent
-    vector<int> targets;
+    std::vector<int> targets;
 
     // The objective function to minimize : Fuel or Makespan or SumOfCosts
     // - Fuel : Total amount of distance traveled by all agents
     // - Makespan : Total time for the last agent to reach its goal
     // - SumOfCosts : The sum of the time steps required for every agent to reach its goal
-    ObjectiveFunction obj_function;
+    ObjectiveFunction objective;
 
     // list of constraints like (a, p, t) meaning agent a can't be at position p at time t
-    set<Constraint> setOfConstraints;
+    std::set<Constraint> setOfConstraints;
 
-    // setOfConstraintsMap[a][t] is the list of positions where agent a can't be at time t
-    map<int, map<int, set<int>>> setOfConstraintsMap;
+    bool notInForbiddenPositions(int position, int agent, int time) const;
+
 };
 
 

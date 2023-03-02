@@ -3,31 +3,32 @@
 //
 
 #include "MultiAgentState.h"
-#include <algorithm>
+
 #include <boost/functional/hash.hpp>
 
-MultiAgentState::MultiAgentState(vector<int> m_positions, int m_timestep, int m_agentToAssign, bool m_standard, vector<int> m_prePositions, const vector<int>& m_cannotMove) : State(m_timestep) {
-    positions = std::move(m_positions);
-    agentToAssign = m_agentToAssign;
-    standard = m_standard;
-    if (standard){
-        prePositions = positions;
-    } else {
-        prePositions = std::move(m_prePositions);
-    }
-    cannotMove = m_cannotMove;
-}
+MultiAgentState::MultiAgentState(std::vector<int> positions, std::vector<int> prePositions, int timestep, int agentToAssign, bool standard, const std::vector<int>& cannotMove)
+    : positions(positions)
+    , prePositions(prePositions)
+    , timestep(timestep)
+    , agentToAssign(agentToAssign)
+    , standard(standard)
+    , cannotMove(cannotMove)
+{}
 
-vector<int> MultiAgentState::getPositions() {
+const std::vector<int>& MultiAgentState::getPositions() const {
     return positions;
 }
 
-vector<int> MultiAgentState::getPrePositions() {
+const std::vector<int>& MultiAgentState::getPrePositions() const {
     return prePositions;
 }
 
 int MultiAgentState::getAgentToAssign() const {
     return agentToAssign;
+}
+
+int MultiAgentState::getTimestep() const {
+    return timestep;
 }
 
 bool MultiAgentState::isStandard() const {
@@ -38,7 +39,7 @@ void MultiAgentState::makeStandard() {
     standard = true;
 }
 
-vector<int> MultiAgentState::getCannotMove() {
+const std::vector<int>& MultiAgentState::getCannotMove() const {
     return cannotMove;
 }
 
@@ -46,27 +47,37 @@ bool MultiAgentState::canMove(int agent) {
     return not (std::find(cannotMove.begin(), cannotMove.end(), agent) != cannotMove.end());
 }
 
-bool MultiAgentState::operator==(const State& other) const {
-    auto o = dynamic_cast<const MultiAgentState*>(&other);
-    if (agentToAssign!=o->agentToAssign){
-        return false;
-    }
-    for (int i = 0; i < positions.size(); i++){
-        if (positions[i]!=o->positions[i]){
-            return false;
-        }
-    }
-    /*if (timestep!=other.timestep){ // just needed because of the constraints (a, p, t)
-        return false;
-    }*/
-    return true;
-}
-
-size_t MultiAgentState::hash() const {
+const std::size_t MultiAgentState::getHash() const {
     size_t result = 0;
+    for (const auto& val : prePositions) {
+        boost::hash_combine(result, val);
+    }
     for (const auto& val : positions) {
+        boost::hash_combine(result, val);
+    }
+    for (const auto& val : cannotMove) {
         boost::hash_combine(result, val);
     }
     boost::hash_combine(result, agentToAssign);
     return result;
+}
+
+const bool MultiAgentState::isEqual(const MultiAgentState &other) const {
+    for (int i = 0; i < prePositions.size(); i++) {
+        if (prePositions[i] != other.prePositions[i] || positions[i] != other.positions[i]) {
+            return false;
+        }
+    }
+
+    if (cannotMove.size() != other.cannotMove.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < cannotMove.size(); i++) {
+        if (cannotMove[i] != other.cannotMove[i]) {
+            return false;
+        }
+    }
+
+    return true;
 }
