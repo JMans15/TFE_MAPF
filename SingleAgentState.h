@@ -31,7 +31,7 @@ public:
         return { position };
     }
 
-protected:
+private:
 
     // Position of the agent in this state
     int position;

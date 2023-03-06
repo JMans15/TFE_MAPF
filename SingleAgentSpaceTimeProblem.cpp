@@ -97,6 +97,14 @@ std::vector<std::vector<int>> SingleAgentSpaceTimeProblem::getPositions(std::vec
     return { positions };
 }
 
+const int SingleAgentSpaceTimeProblem::getStart() const {
+    return start;
+}
+
+const int SingleAgentSpaceTimeProblem::getTarget() const {
+    return target;
+}
+
 ObjectiveFunction SingleAgentSpaceTimeProblem::getObjFunction() {
     return objective;
 }

@@ -203,9 +203,12 @@ std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem:
 std::vector<std::vector<int>> MultiAgentProblem::getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const {
     std::vector<std::vector<int>> positions(numberOfAgents);
 
-    for (auto state : states) {
-        int agent = state->getAgentToAssign();
-        positions[agent].push_back(state->getPositions()[agent]);
+    for (const auto& state : states) {
+        if (state->isStandard()){
+            for (int agent = 0; agent < numberOfAgents; agent++){
+                positions[agent].push_back(state->getPositions()[agent]);
+            }
+        }
     }
 
     return positions;

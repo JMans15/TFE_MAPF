@@ -11,6 +11,8 @@
 #include "ReverseResumableAStar.h"
 #include "SingleAgentProblem.h"
 #include "SingleAgentState.h"
+#include "SingleAgentSpaceTimeProblem.h"
+#include "SingleAgentSpaceTimeState.h"
 #include "State.h"
 
 #include <memory>
@@ -37,7 +39,7 @@ inline int manhattanDistance(int a, int b, int width) {
 
 // Manhattan distance heuristic (ignoring walls)
 // - for single agent problem
-template<typename S, typename std::enable_if<std::is_base_of<SingleAgentState, S>::value>::type* = nullptr>
+template<typename S, typename std::enable_if<std::is_base_of<SingleAgentState, S>::value or std::is_base_of<SingleAgentSpaceTimeState, S>::value>::type* = nullptr>
 class ManhattanHeuristic : public Heuristic<S> {
 public:
     ManhattanHeuristic(int target, int width) : target(target), width(width) {}

@@ -47,7 +47,7 @@ int ReverseResumableAStar::resume(const std::shared_ptr<SingleAgentState>& targe
 
 int ReverseResumableAStar::optimalDistance(int position) {
     auto state = std::make_shared<SingleAgentState>(position);
-    if (closed.contains(state)) { // if state is already in explored
+    if (closed.count(state)>0) { // if state is already in explored
         LOG("position is already explored")
         return distance[state];
     }
@@ -57,4 +57,9 @@ int ReverseResumableAStar::optimalDistance(int position) {
         return INT_MAX;
     }
     return cost;
+}
+
+std::unordered_map<std::shared_ptr<SingleAgentState>, int, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>>
+ReverseResumableAStar::getDistance() {
+    return distance;
 }

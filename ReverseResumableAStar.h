@@ -19,7 +19,7 @@ class Heuristic;
 // Reverse Resumable A* search
 // Only for single agent problem
 // Consists of a single agent search where the beginning of the search is the goal state (target position) of the problem
-// Possibility to continue the search (with the Resume method) even when the start state of the problem is goal tested
+// Possibility to continue the search (with the resume method) even when the start state of the problem is goal tested
 // (https://www.davidsilver.uk/wp-content/uploads/2020/03/coop-path-AIWisdom.pdf)
 class ReverseResumableAStar {
 public:
@@ -31,6 +31,9 @@ public:
 
     // Returns the optimal distance (walls are taken into account) between position and target
     int optimalDistance(int position);
+
+    std::unordered_map<std::shared_ptr<SingleAgentState>, int, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> getDistance();
+
 private:
     std::shared_ptr<SingleAgentProblem> problem;
     std::shared_ptr<Heuristic<SingleAgentState>> heuristic;

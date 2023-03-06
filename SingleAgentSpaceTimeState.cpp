@@ -7,7 +7,7 @@
 #include <boost/functional/hash.hpp>
 
 SingleAgentSpaceTimeState::SingleAgentSpaceTimeState(int position, int timestep)
-    : SingleAgentState(position)
+    : position(position)
     , timestep(timestep)
 {}
 
@@ -20,10 +20,18 @@ inline const std::size_t SingleAgentSpaceTimeState::getHash() const {
     return result;
 }
 
-inline const bool SingleAgentSpaceTimeState::isEqual(const SingleAgentSpaceTimeState &other) const {
+const bool SingleAgentSpaceTimeState::isEqual(const SingleAgentSpaceTimeState &other) const{
     return position == other.position && timestep == other.timestep;
 }
 
-inline const int SingleAgentSpaceTimeState::getTimestep() const {
+const int SingleAgentSpaceTimeState::getPosition() const {
+    return position;
+}
+
+const int SingleAgentSpaceTimeState::getTimestep() const {
     return timestep;
+}
+
+const std::vector<int> SingleAgentSpaceTimeState::getPositions() const {
+    return { position };
 }

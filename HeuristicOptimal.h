@@ -8,7 +8,7 @@
 // - for single agent problem
 // - only interesting for Space Time A*
 // A reverse resumable A* search will be run in addition to the search which this heuristic is used for.
-template<typename S, typename std::enable_if<std::is_base_of<SingleAgentState, S>::value>::type* = nullptr>
+template<typename S, typename std::enable_if<std::is_base_of<SingleAgentState, S>::value or std::is_base_of<SingleAgentSpaceTimeState, S>::value>::type* = nullptr>
 class OptimalDistanceHeuristic : public Heuristic<S> {
 public:
     OptimalDistanceHeuristic(int start, int target, std::shared_ptr<Graph> graph)
@@ -84,6 +84,26 @@ template <class P, class S,
 >
 std::shared_ptr<Heuristic<S>> getHeuristic(std::shared_ptr<P> problem, std::shared_ptr<TypeOfHeuristic> type) {
     auto pb = std::dynamic_pointer_cast<SingleAgentProblem>(problem);
+    if (*type == Manhattan){
+        LOG("The used heuristic will be the Manhattan distance.");
+        return std::make_shared<ManhattanHeuristic<S>>(pb->getTarget(), pb->getGraph()->getWidth());
+    } else if (*type == OptimalDistance){
+        LOG("The used heuristic will be the optimal distance.");
+        LOG("This heuristic is only interesting for Space Time A*.");
+        LOG("A reverse resumable A* search will be run in addition to this search.");
+        return std::make_shared<OptimalDistanceHeuristic<S>>(pb->getStart(), pb->getTarget(), pb->getGraph());
+    } else {
+        LOG("Not a valid heuristic.");
+        return nullptr;
+    }
+}
+
+template <class P, class S,
+        typename std::enable_if<std::is_base_of<Problem<S>, P>::value>::type* = nullptr,
+        typename std::enable_if<std::is_base_of<SingleAgentSpaceTimeState, S>::value>::type* = nullptr
+>
+std::shared_ptr<Heuristic<S>> getHeuristic(std::shared_ptr<P> problem, std::shared_ptr<TypeOfHeuristic> type) {
+    auto pb = std::dynamic_pointer_cast<SingleAgentSpaceTimeProblem>(problem);
     if (*type == Manhattan){
         LOG("The used heuristic will be the Manhattan distance.");
         return std::make_shared<ManhattanHeuristic<S>>(pb->getTarget(), pb->getGraph()->getWidth());

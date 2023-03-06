@@ -20,6 +20,8 @@ public:
     std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> getSuccessors(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
     std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentSpaceTimeState>> states) const override;
 
+    const int getStart() const;
+    const int getTarget() const;
     ObjectiveFunction getObjFunction();
 
     bool notInForbiddenPositions(int position, int time) const;

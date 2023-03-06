@@ -5,15 +5,21 @@
 #include "MultiAgentState.h"
 
 #include <boost/functional/hash.hpp>
+#include <utility>
 
-MultiAgentState::MultiAgentState(std::vector<int> positions, std::vector<int> prePositions, int timestep, int agentToAssign, bool standard, const std::vector<int>& cannotMove)
+MultiAgentState::MultiAgentState(std::vector<int> positions, std::vector<int> prePositions_, int timestep, int agentToAssign, bool standard, const std::vector<int>& cannotMove)
     : positions(positions)
-    , prePositions(prePositions)
     , timestep(timestep)
     , agentToAssign(agentToAssign)
     , standard(standard)
     , cannotMove(cannotMove)
-{}
+{
+    if (standard) {
+        prePositions = positions;
+    } else {
+        prePositions = std::move(prePositions_);
+    }
+}
 
 const std::vector<int>& MultiAgentState::getPositions() const {
     return positions;

@@ -6,13 +6,14 @@ set(CMAKE_CXX_STANDARD 23)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -Wextra")
 
 find_package(Boost REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
 # define library
-add_library(TFE_MAPF Problem.h Node.h State.h Parser.cpp Parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h HeuristicManhattan.h HeuristicOptimal.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.h SingleAgentSpaceTimeProblem.cpp SingleAgentSpaceTimeProblem.h SingleAgentSpaceTimeState.cpp SingleAgentSpaceTimeState.h AStar.h CooperativeAStar.cpp CooperativeAStar.h ReverseResumableAStar.cpp ReverseResumableAStar.h IndependentDetection.cpp IndependentDetection.h)
+add_library(TFE_MAPF Problem.h Node.h State.h Parser.cpp Parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h HeuristicManhattan.h HeuristicOptimal.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.h SingleAgentSpaceTimeProblem.cpp SingleAgentSpaceTimeProblem.h SingleAgentSpaceTimeState.cpp SingleAgentSpaceTimeState.h AStar.h CooperativeAStar.h ReverseResumableAStar.cpp ReverseResumableAStar.h IndependentDetection.cpp IndependentDetection.h)
 
 # first test
 add_executable(TFE_MAPF_test test.cpp)
