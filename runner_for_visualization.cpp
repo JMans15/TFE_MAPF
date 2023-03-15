@@ -85,7 +85,7 @@ int main(int argc, const char** argv) {
 
     // Parsing the graph from the map file
     auto g = Parser::parse(file);
-    Solution solution;
+    std::shared_ptr<Solution> solution;
     int w;
 
     if (Mode == MULTI) {
@@ -157,7 +157,7 @@ int main(int argc, const char** argv) {
     }
 
     if (result.count("outfile")) {
-        solution.write(result["outfile"].as<std::string>(), w);
+        solution->write(result["outfile"].as<std::string>(), w);
     }
     //solution.print();
 }

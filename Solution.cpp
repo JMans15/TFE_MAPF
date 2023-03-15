@@ -7,6 +7,7 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include "set"
 
 Solution::Solution() {

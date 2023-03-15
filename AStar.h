@@ -9,6 +9,7 @@
 #include "Problem.h"
 #include "Solution.h"
 
+#include <algorithm>
 #include <unordered_map>
 
 // Basic A* search

@@ -13,7 +13,7 @@ find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 # define library
-add_library(TFE_MAPF Problem.h Node.h State.h Parser.cpp Parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h HeuristicManhattan.h HeuristicOptimal.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.h SingleAgentSpaceTimeProblem.cpp SingleAgentSpaceTimeProblem.h SingleAgentSpaceTimeState.cpp SingleAgentSpaceTimeState.h AStar.h CooperativeAStar.h ReverseResumableAStar.cpp ReverseResumableAStar.h IndependentDetection.cpp IndependentDetection.h)
+add_library(TFE_MAPF Problem.h Node.h State.h Parser.cpp Parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h HeuristicManhattan.h HeuristicOptimal.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.h SingleAgentSpaceTimeProblem.cpp SingleAgentSpaceTimeProblem.h SingleAgentSpaceTimeState.cpp SingleAgentSpaceTimeState.h AStar.h CooperativeAStar.h ReverseResumableAStar.cpp ReverseResumableAStar.h IndependentDetection.cpp IndependentDetection.h Boost_tests/test1.cpp)
 
 # first test
 add_executable(TFE_MAPF_test test.cpp)
@@ -24,3 +24,5 @@ target_link_libraries(TFE_MAPF_test ${Boost_LIBRARIES})
 add_executable(TFE_MAPF_visu runner_for_visualization.cpp)
 target_link_libraries(TFE_MAPF_visu TFE_MAPF)
 target_link_libraries(TFE_MAPF_visu ${Boost_LIBRARIES})
+
+add_subdirectory(Boost_tests)
