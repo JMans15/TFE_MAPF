@@ -20,8 +20,8 @@ public:
         : problem(problem)
         , heuristic(getHeuristic<P,S>(problem, std::make_shared<TypeOfHeuristic>(typeOfHeuristic)))
     {}
-    
-    Solution solve() {
+
+    std::shared_ptr<Solution> solve() {
         LOG("===== A* Search ====");
         LOG("Beginning the A* search. ");
 
@@ -61,7 +61,7 @@ public:
         }
         
         LOG("No path has been found.");
-        return {};
+        return std::make_shared<Solution>();
     }
 private:
     std::shared_ptr<P> problem;
@@ -69,7 +69,7 @@ private:
     std::multiset<std::shared_ptr<Node<S>>, NodeComparator<S>> fringe;
     std::unordered_map<std::shared_ptr<S>, int, StateHasher<S>, StateEquality<S>> distance; // the closed list
 
-    Solution retrieveSolution(int numberOfVisitedStates, std::shared_ptr<Node<S>> node) {
+    std::shared_ptr<Solution> retrieveSolution(int numberOfVisitedStates, std::shared_ptr<Node<S>> node) {
         int cost = node->getCost();
 
         std::vector<std::shared_ptr<S>> states;
@@ -82,7 +82,7 @@ private:
         auto positions = problem->getPositions(states);
         int numberOfTimesteps = positions[0].size();
         
-        return {cost, numberOfVisitedStates, numberOfTimesteps, positions};
+        return std::make_shared<Solution>(cost, numberOfVisitedStates, numberOfTimesteps, positions, problem->getAgentIds());
     }
 };
 

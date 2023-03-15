@@ -32,7 +32,8 @@ public:
             : problem(problem)
             , typeOfHeuristic(typeOfHeuristic)
     {}
-    Solution solve() {
+
+    std::shared_ptr<Solution> solve() {
         if (typeOfHeuristic == Manhattan){
             LOG("===== Cooperative A* Search ====");
         } else if (typeOfHeuristic == OptimalDistance){
@@ -59,38 +60,38 @@ public:
         for (int a = 0; a < problem->getNumberOfAgents(); a++){
 
             // Single agent A* search for agent a
-            auto singleAgentProblem = std::make_shared<SingleAgentSpaceTimeProblem>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, reservationTable, a);
+            auto singleAgentProblem = std::make_shared<SingleAgentSpaceTimeProblem>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, problem->getAgentIds()[a], reservationTable);
             auto aStar = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic);
             auto solution = aStar.solve();
 
-            if (solution.getFoundPath()) {
-                auto pathOfAgent = solution.getPathOfAgent(0);
+            if (solution->getFoundPath()) {
+                auto pathOfAgent = solution->getPathOfAgent(0);
                 for (int t = 0; t < pathOfAgent.size(); t++){
                     // We force that the next agents cannot go where the already planned agents go
                     for (int agent = a+1; agent < problem->getNumberOfAgents(); agent++){
 
                         // agent cannot go at position pathofagent[t] at time t
-                        reservationTable.insert(Constraint{agent, pathOfAgent[t], t});
+                        reservationTable.insert(Constraint{problem->getAgentIds()[agent], pathOfAgent[t], t});
 
                         // to avoid edge conflict, we have to add that
                         // agent cannot go at position pathofagent[t] also at time t+1
-                        reservationTable.insert(Constraint{agent, pathOfAgent[t], t+1});
+                        reservationTable.insert(Constraint{problem->getAgentIds()[agent], pathOfAgent[t], t+1});
                     }
                 }
                 if (problem->getObjFunction() == SumOfCosts) {
-                    cost += solution.getSumOfCostsCost();
+                    cost += solution->getSumOfCostsCost();
                 } else if (problem->getObjFunction() == Fuel) {
-                    cost += solution.getFuelCost();
+                    cost += solution->getFuelCost();
                 } else {
-                    cost = std::max(cost, solution.getMakespanCost());
+                    cost = std::max(cost, solution->getMakespanCost());
                 }
-                numberOfVisitedStates += solution.getNumberOfVisitedStates();
-                numberOfTimesteps = std::max(numberOfTimesteps, solution.getNumberOfTimesteps());
+                numberOfVisitedStates += solution->getNumberOfVisitedStates();
+                numberOfTimesteps = std::max(numberOfTimesteps, solution->getNumberOfTimesteps());
                 positions.emplace_back(pathOfAgent);
             } else {
                 LOG("No path has been found for agent " << a);
                 LOG("The solution is not valid");
-                return {};
+                return std::make_shared<Solution>();
             }
         }
         // We put the paths in the right format
@@ -99,7 +100,7 @@ public:
                 positions[agent].emplace_back(problem->getTargets()[agent]);
             }
         }
-        return {cost, numberOfVisitedStates, numberOfTimesteps, positions};
+        return std::make_shared<Solution>(numberOfTimesteps, positions, problem->getAgentIds());
     }
 private:
     std::shared_ptr<MultiAgentProblem> problem;

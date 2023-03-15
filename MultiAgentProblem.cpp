@@ -7,12 +7,13 @@
 #include <algorithm>
 
 MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
-                                     ObjectiveFunction objective, const std::set<Constraint> &setOfConstraints)
+                                     ObjectiveFunction objective, std::vector<int> m_agentIds, const std::set<Constraint> &setOfConstraints)
     : Problem(graph, starts.size())
     , starts(starts)
     , targets(targets)
     , objective(objective)
     , setOfConstraints(setOfConstraints)
+    , agentIds(m_agentIds)
 {
     LOG("==== Multi Agent Problem ====");
     LOG("Number of agents : " << numberOfAgents)
@@ -29,18 +30,23 @@ MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<i
     } else {
         LOG("Objective function : Fuel");
     }
+    if (m_agentIds.empty()){
+        for (int a = 0; a < numberOfAgents; a++){
+            agentIds.emplace_back(a);
+        }
+    }
     LOG("Start position of each agent :");
     for (int i = 0; i < numberOfAgents; i++) {
-        LOG(" - Agent " << i << " : " << starts[i]);
+        LOG(" - Agent " << agentIds[i] << " : " << starts[i]);
         if (graph->getNeighbors(starts[i]).empty()) {
-            LOG("   The start position of agent "<< i << " is unreachable.");
+            LOG("   The start position of agent "<< agentIds[i] << " is unreachable.");
         }
     }
     LOG("Target position of each agent :");
     for (int i = 0; i < numberOfAgents; i++) {
-        LOG(" - Agent " << i << " : " << targets[i]);
+        LOG(" - Agent " << agentIds[i] << " : " << targets[i]);
         if (graph->getNeighbors(targets[i]).empty()) {
-            LOG("   The target position of agent "<< i << " is unreachable.");
+            LOG("   The target position of agent "<< agentIds[i] << " is unreachable.");
         }
     }
     if (!setOfConstraints.empty()) {
@@ -88,7 +94,7 @@ bool notAlreadyOccupiedEdge(int position, const std::vector<int> &positions, int
 
 // Returns true if agent is allowed to be at position at time (according to the set of constraints of the problem)
 bool MultiAgentProblem::notInForbiddenPositions(int position, int agent, int time) const {
-    return setOfConstraints.find({position, agent, time}) == setOfConstraints.end();
+    return setOfConstraints.find({agentIds[agent], position, time}) == setOfConstraints.end();
 }
 
 std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem::getSuccessors(std::shared_ptr<MultiAgentState> state) const {
@@ -229,5 +235,27 @@ ObjectiveFunction MultiAgentProblem::getObjFunction() {
 
 const std::set<Constraint>& MultiAgentProblem::getSetOfConstraints() const {
     return setOfConstraints;
+}
+
+std::vector<int> MultiAgentProblem::getAgentIds() const {
+    return agentIds;
+}
+
+int MultiAgentProblem::getStartOf(int id) {
+    auto it = find(agentIds.begin(), agentIds.end(), id);
+    if (it==agentIds.end()){
+        std::cout << "Agent " << id << " isn't in this problem." << std::endl;
+        return {};
+    }
+    return starts[it - agentIds.begin()];
+}
+
+int MultiAgentProblem::getTargetOf(int id) {
+    auto it = find(agentIds.begin(), agentIds.end(), id);
+    if (it==agentIds.end()){
+        std::cout << "Agent " << id << " isn't in this problem." << std::endl;
+        return {};
+    }
+    return targets[it - agentIds.begin()];
 }
 

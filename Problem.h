@@ -66,6 +66,8 @@ public:
 
     virtual std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<S>> states) const = 0;
 
+    virtual std::vector<int> getAgentIds() const = 0;
+
 protected:
 
     // Graph with the possible positions and transitions for the agents

@@ -13,17 +13,22 @@
 class MultiAgentProblem : public Problem<MultiAgentState> {
 public:
     MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
-                      ObjectiveFunction objective = Fuel, const std::set<Constraint> &setOfConstraints = std::set<Constraint>());
+                      ObjectiveFunction objective = Fuel, std::vector<int> agentIds = std::vector<int>(),
+                              const std::set<Constraint> &setOfConstraints = std::set<Constraint>());
 
     std::shared_ptr<MultiAgentState> getStartState() const override;
     bool isGoalState(std::shared_ptr<MultiAgentState> state) const override;
     std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> getSuccessors(std::shared_ptr<MultiAgentState> state) const override;
     std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const override;
+    std::vector<int> getAgentIds() const override;
 
     const std::vector<int>& getStarts() const;
     const std::vector<int>& getTargets() const;
     ObjectiveFunction getObjFunction();
     const std::set<Constraint>& getSetOfConstraints() const;
+
+    int getStartOf(int id);
+    int getTargetOf(int id);
 
 private:
     // starts is a list of length numberOfAgents with the start position of each agent
@@ -31,6 +36,8 @@ private:
 
     // target is a list of length numberOfAgents with the target position of each agent
     std::vector<int> targets;
+
+    std::vector<int> agentIds;
 
     // The objective function to minimize : Fuel or Makespan or SumOfCosts
     // - Fuel : Total amount of distance traveled by all agents

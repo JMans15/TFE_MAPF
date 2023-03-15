@@ -9,6 +9,7 @@
 #include "ReverseResumableAStar.h"
 #include "SingleAgentProblem.h"
 #include "SingleAgentSpaceTimeProblem.h"
+#include "IndependentDetection.h"
 
 #include <chrono>
 #include <iostream>
@@ -40,9 +41,9 @@ int main() {
     int start = 7;
     int target = 17;
     auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
-    Solution solution = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan).solve();
+    auto solution = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan).solve();
     // cost = 18, numberOfVisitedStates = 25
-    solution.print();*/
+    solution->print();*/
 
     // TEST 2 : 1 agent
     /*auto g = Parser::parse("../mapf-map/Paris_1_256.map");
@@ -50,10 +51,10 @@ int main() {
     int target = 256*200-100;
     timer.tick();
     auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
-    Solution solution = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan).solve();
+    auto solution = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan).solve();
     timer.tack();
     // cost = 354
-    solution.print();
+    solution->print();
     timer.print();*/
 
     // TEST 3 : 2 agents can't be at the same vertex at the same time
@@ -65,9 +66,9 @@ int main() {
     targets.push_back(6);
     targets.push_back(1);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
-    Solution solution = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
+    auto solution = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
     // makespan cost = 3, fuel cost = 4,  sumofcosts cost = 5
-    solution.print();*/
+    solution->print();*/
 
     // TEST 4 : 2 agents can't traverse the same edge between successive time steps
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
@@ -78,9 +79,9 @@ int main() {
     targets.push_back(3);
     targets.push_back(0);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-    Solution solution = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
+    auto solution = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
     // makespan cost = 5, fuel cost = 8,  sumofcosts cost = 8
-    solution.print();*/
+    solution->print();*/
 
     // TEST 5 : 2 agents
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
@@ -91,18 +92,18 @@ int main() {
     targets.push_back(17);
     targets.push_back(20);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
-    Solution solution = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
+    auto solution = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
-    solution.print();*/
+    solution->print();*/
 
     // TEST 6 : 1 agent and a constraint (a, p, t)
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
     auto problem = std::make_shared<SingleAgentSpaceTimeProblem>(g, start, target, Makespan, std::set<Constraint>{Constraint{0,5,1}});
-    Solution solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
+    auto solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
     // makespan cost = 3, fuel cost = 2
-    solution.print();*/
+    solution->print();*/
 
     // TEST 7 : Reverse Resumable A*
     /*auto g = Parser::parse("../mapf-map/ReverseResumableAStarExample.map");
@@ -128,11 +129,11 @@ int main() {
     int start = 7;
     int target = 17;
     auto problem = std::make_shared<SingleAgentSpaceTimeProblem>(g, start, target, Makespan);
-    Solution solution1 = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
-    Solution solution2 = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, OptimalDistance).solve();
+    auto solution1 = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
+    auto solution2 = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, OptimalDistance).solve();
     // makespan cost = 18, fuel cost = 18
-    solution1.print(); // numberOfVisitedStates = 177
-    solution2.print(); // numberOfVisitedStates = 19*/
+    solution1->print(); // numberOfVisitedStates = 177
+    solution2->print(); // numberOfVisitedStates = 19*/
 
     // TEST 9 : Comparaison between cooperative A* (Manhattan for the single agent A*) and hierarchical cooperative A* (Optimal distance RRA* for the single agent A*)
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
@@ -143,10 +144,10 @@ int main() {
     targets.push_back(7);
     targets.push_back(6);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
-    Solution solution1 = CooperativeAStar(problem, Manhattan).solve();
-    Solution solution2 = CooperativeAStar(problem, OptimalDistance).solve();
-    solution1.print(); // numberOfVisitedStates = 389
-    solution2.print(); // numberOfVisitedStates = 142*/
+    auto solution1 = CooperativeAStar(problem, Manhattan).solve();
+    auto solution2 = CooperativeAStar(problem, OptimalDistance).solve();
+    solution1->print(); // numberOfVisitedStates = 389
+    solution2->print(); // numberOfVisitedStates = 142*/
 
     // TEST 10 : 2 agents and comparaison between Manhattan and OptimalDistance
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
@@ -157,13 +158,13 @@ int main() {
     targets.push_back(17);
     targets.push_back(20);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-    Solution solution1 = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
-    Solution solution2 = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance).solve();
-    solution1.print(); // numberOfVisitedStates = 17
-    solution2.print(); // numberOfVisitedStates = 17*/
+    auto solution1 = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
+    auto solution2 = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance).solve();
+    solution1->print(); // numberOfVisitedStates = 17
+    solution2->print(); // numberOfVisitedStates = 17*/
 
     // TEST 11 : 2 agents and comparaison between Manhattan and OptimalDistance
-    auto g = Parser::parse("../mapf-map/Paris_1_256.map");
+    /*auto g = Parser::parse("../mapf-map/Paris_1_256.map");
     std::vector<int> starts;
     starts.push_back(1);
     starts.push_back(150);
@@ -172,7 +173,34 @@ int main() {
     targets.push_back(1);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
     auto solution1 = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
-    solution1.print(); // numberOfVisitedStates = 690412
+    solution1->print(); // numberOfVisitedStates = 690412
     auto solution2 = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance).solve();
-    solution2.print(); // numberOfVisitedStates = 331
+    solution2->print(); // numberOfVisitedStates = 331*/
+
+    // TEST 11 : Small Independence detection test
+    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(7);
+    starts.push_back(3);
+    starts.push_back(11);
+    vector<int> targets;
+    targets.push_back(21);
+    targets.push_back(5);
+    targets.push_back(4);
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
+    auto solution = IndependentDetection(problem, OptimalDistance).solve();
+    solution->print();
+
+
+    // TEST 12 : Independence Detection
+    /*auto g = Parser::parse("../mapf-map/Paris_1_256.map");
+    std::vector<int> starts;
+    starts.push_back(1);
+    starts.push_back(150);
+    std::vector<int> targets;
+    targets.push_back(150);
+    targets.push_back(1);
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, std::vector<int>{5,10});
+    auto solution = IndependentDetection(problem, OptimalDistance).solve();
+    solution->print();*/
 }

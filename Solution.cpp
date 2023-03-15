@@ -7,19 +7,38 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
+#include "set"
 
 Solution::Solution() {
     foundPath = false;
 }
 
+Solution::Solution(int numberOfTimesteps, std::vector<std::vector<int>> positions, std::vector<int> agentIds)
+: foundPath(true)
+, cost(-1)
+, numberOfVisitedStates(-1)
+, numberOfTimesteps(numberOfTimesteps)
+, positions(positions)
+, agentIds(agentIds)
+{
+    if (not isValid()){
+        std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
+    }
+}
+
 Solution::Solution(int cost, int numberOfVisitedStates,
-                   int numberOfTimesteps, std::vector<std::vector<int>> positions)
+                   int numberOfTimesteps, std::vector<std::vector<int>> positions, std::vector<int> agentIds)
     : foundPath(true)
     , cost(cost)
     , numberOfVisitedStates(numberOfVisitedStates)
     , numberOfTimesteps(numberOfTimesteps)
     , positions(positions)
-{}
+    , agentIds(agentIds)
+{
+    if (not isValid()){
+        std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
+    }
+}
 
 int Solution::getCost() const {
     return cost;
@@ -41,8 +60,13 @@ std::vector<int> Solution::getPositionsAtTime(int t) {
     return pos;
 }
 
-std::vector<int> Solution::getPathOfAgent(int i) {
-    return positions[i];
+std::vector<int> Solution::getPathOfAgent(int id) {
+    auto it = find(agentIds.begin(), agentIds.end(), id);
+    if (it==agentIds.end()){
+        std::cout << "Agent " << id << " isn't in this solution." << std::endl;
+        return {};
+    }
+    return positions[it - agentIds.begin()];
 }
 
 void Solution::write(std::string filename, int width) {
@@ -76,13 +100,13 @@ void Solution::print() {
         for (int t = 0; t < numberOfTimesteps; t++){
             std::cout << " -- Time " << t << " : " << std::endl;
             for (int i = 0; i < positions.size(); i++){
-                std::cout << " --- Agent " << i << " : position " << positions[i][t] << std::endl;
+                std::cout << " --- Agent " << agentIds[i] << " : position " << positions[i][t] << std::endl;
             }
         }
         std::cout << " " << std::endl;
         std::cout << " -> Path of each agent : " << std::endl;
         for (int i = 0; i < positions.size(); i++){
-            std::cout << " -- Agent " << i << " : " << std::endl;
+            std::cout << " -- Agent " << agentIds[i] << " : " << std::endl;
             for (int t = 0; t < numberOfTimesteps; t++){
                 std::cout << " --- Time " << t << " : position " << positions[i][t] << std::endl;
             }
@@ -123,4 +147,43 @@ int Solution::getSumOfCostsCost() {
         }
     }
     return cost;
+}
+
+bool Solution::isValid() {
+    // Vertex conflict
+    for (int t = 0; t < numberOfTimesteps; t++){
+        std::set<int> positionsAtThisTimestep;
+        for (int i = 0; i < positions.size(); i++){
+             if (positionsAtThisTimestep.count(positions[i][t])>0){
+                 return false;
+             } else {
+                 positionsAtThisTimestep.insert(positions[i][t]);
+             }
+        }
+    }
+    // Edge conflict
+    for (int t = 0; t < numberOfTimesteps-1; t++){
+        std::set<std::pair<int, int>> edgesAtThisTimestep;
+        for (int i = 0; i < positions.size(); i++){
+            if (edgesAtThisTimestep.count(std::pair <int, int> (positions[i][t], positions[i][t+1]))>0){
+                return false;
+            } else {
+                edgesAtThisTimestep.insert(std::pair <int, int> (positions[i][t+1], positions[i][t]));
+            }
+        }
+    }
+    return true;
+}
+
+std::vector<std::vector<int>> Solution::getPositions() const {
+    return positions;
+}
+
+void Solution::lengthenPositions(int length) {
+    int actualLength = positions[0].size();
+    if (actualLength < length){
+        for (int i = 0; i < positions.size(); i++){
+            positions[i].resize(length, positions[i][actualLength-1]);
+        }
+    }
 }

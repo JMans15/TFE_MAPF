@@ -4,10 +4,11 @@
 
 #include "SingleAgentProblem.h"
 
-SingleAgentProblem::SingleAgentProblem(std::shared_ptr<Graph> graph, int start, int target) 
+SingleAgentProblem::SingleAgentProblem(std::shared_ptr<Graph> graph, int start, int target, int agentId)
     : Problem(graph, 1)
     , start(start)
     , target(target)
+    , agentId(agentId)
 {
     LOG("==== Single Agent Problem ====");
     LOG("Start position of the agent : " << start);
@@ -60,4 +61,8 @@ const int SingleAgentProblem::getStart() const {
 
 const int SingleAgentProblem::getTarget() const {
     return target;
+}
+
+std::vector<int> SingleAgentProblem::getAgentIds() const {
+    return {agentId};
 }

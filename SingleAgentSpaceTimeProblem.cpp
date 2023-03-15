@@ -5,7 +5,7 @@
 #include "SingleAgentSpaceTimeProblem.h"
 
 SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
-                                                         const std::set<Constraint> &setOfConstraints, int agentId)
+                                                         int agentId, const std::set<Constraint> &setOfConstraints)
     : Problem(graph, 1)
     , start(start)
     , target(target)
@@ -107,4 +107,8 @@ const int SingleAgentSpaceTimeProblem::getTarget() const {
 
 ObjectiveFunction SingleAgentSpaceTimeProblem::getObjFunction() {
     return objective;
+}
+
+std::vector<int> SingleAgentSpaceTimeProblem::getAgentIds() const {
+    return {agentId};
 }

@@ -13,12 +13,13 @@
 class SingleAgentSpaceTimeProblem : public Problem<SingleAgentSpaceTimeState> {
 public:
     SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
-                                const std::set<Constraint> &setOfConstraints = std::set<Constraint>(), int agentId = 0);
+                                int agentId = 0, const std::set<Constraint> &setOfConstraints = std::set<Constraint>());
 
     std::shared_ptr<SingleAgentSpaceTimeState> getStartState() const override;
     bool isGoalState(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
     std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> getSuccessors(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
     std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentSpaceTimeState>> states) const override;
+    std::vector<int> getAgentIds() const override;
 
     const int getStart() const;
     const int getTarget() const;

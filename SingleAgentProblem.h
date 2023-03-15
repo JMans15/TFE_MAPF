@@ -10,13 +10,14 @@
 
 class SingleAgentProblem : public Problem<SingleAgentState> {
 public:
-    SingleAgentProblem(std::shared_ptr<Graph> graph, int start, int target);
+    SingleAgentProblem(std::shared_ptr<Graph> graph, int start, int target, int agentId = 0);
 
     std::shared_ptr<SingleAgentState> getStartState() const override;
     std::shared_ptr<SingleAgentState> getGoalState() const;
     bool isGoalState(std::shared_ptr<SingleAgentState> state) const override;
     std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> getSuccessors(std::shared_ptr<SingleAgentState> state) const override;
     std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const override;
+    std::vector<int> getAgentIds() const override;
 
     const int getStart() const;
     const int getTarget() const;
@@ -27,6 +28,8 @@ protected:
 
     // target position of the agent
     int target;
+
+    int agentId;
 };
 
 #endif //TFE_MAPF_SINGLEAGENTPROBLEM_H
