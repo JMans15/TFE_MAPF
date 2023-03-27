@@ -10,7 +10,7 @@ SingleAgentProblem::SingleAgentProblem(std::shared_ptr<Graph> graph, int start, 
     , target(target)
     , agentId(agentId)
 {
-    LOG("==== Single Agent Problem ====");
+    LOG("==== Single Agent Problems ====");
     LOG("Start position of the agent : " << start);
     if (graph->getNeighbors(start).empty()){
         LOG("   The start position is unreachable.");

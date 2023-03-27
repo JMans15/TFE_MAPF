@@ -6,7 +6,7 @@
 #define TFE_MAPF_SINGLEAGENTPROBLEM_H
 
 #include "Problem.h"
-#include "SingleAgentState.h"
+#include "../States/SingleAgentState.h"
 
 class SingleAgentProblem : public Problem<SingleAgentState> {
 public:

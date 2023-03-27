@@ -5,9 +5,9 @@
 #ifndef TFE_MAPF_ASTAR_H
 #define TFE_MAPF_ASTAR_H
 
-#include "HeuristicOptimal.h"
-#include "Problem.h"
-#include "Solution.h"
+#include "../Heuristics/HeuristicOptimal.h"
+#include "../Problems/Problem.h"
+#include "../Solution/Solution.h"
 
 #include <algorithm>
 #include <unordered_map>

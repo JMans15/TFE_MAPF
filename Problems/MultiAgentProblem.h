@@ -6,7 +6,7 @@
 #define TFE_MAPF_MULTIAGENTPROBLEM_H
 
 #include "Problem.h"
-#include "MultiAgentState.h"
+#include "../States/MultiAgentState.h"
 
 #include <set>
 

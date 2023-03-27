@@ -13,7 +13,7 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> 
     , setOfConstraints(setOfConstraints)
     , agentId(agentId)
 {
-    LOG("==== Single Agent Space Time Problem ====");
+    LOG("==== Single Agent Space Time Problems ====");
     if (objective != Makespan && objective != Fuel){
         LOG("The input for the objective function is not correct.");
         LOG("So, the default objective function will be applied.");

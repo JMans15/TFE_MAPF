@@ -5,7 +5,7 @@
 #ifndef TFE_MAPF_PROBLEM_H
 #define TFE_MAPF_PROBLEM_H
 
-#include "Graph.h"
+#include "../GraphParser/Graph.h"
 
 #include <iostream>
 #include <memory>

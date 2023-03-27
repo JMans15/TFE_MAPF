@@ -6,7 +6,7 @@
 #define TFE_MAPF_SINGLEAGENTSPACETIMEPROBLEM_H
 
 #include "Problem.h"
-#include "SingleAgentSpaceTimeState.h"
+#include "../States/SingleAgentSpaceTimeState.h"
 
 #include <set>
 

@@ -2,11 +2,11 @@
 // Created by mansj on 31/01/23.
 //
 
-#include "AStar.h"
-#include "MultiAgentProblem.h"
-#include "Parser.h"
-#include "SingleAgentProblem.h"
-#include "Solution.h"
+#include "Solvers/AStar.h"
+#include "Problems/MultiAgentProblem.h"
+#include "GraphParser/Parser.h"
+#include "Problems/SingleAgentProblem.h"
+#include "Solution/Solution.h"
 
 #include "external-headers/cxxopts.hpp"
 

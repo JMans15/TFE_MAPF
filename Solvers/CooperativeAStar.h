@@ -6,8 +6,8 @@
 #define TFE_MAPF_COOPERATIVEASTAR_H
 
 #include "AStar.h"
-#include "MultiAgentProblem.h"
-#include "SingleAgentSpaceTimeProblem.h"
+#include "../Problems/MultiAgentProblem.h"
+#include "../Problems/SingleAgentSpaceTimeProblem.h"
 
 // Cooperative A* search - not optimal
 // Only for multi agent problem

@@ -13,7 +13,7 @@ find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 # define library
-add_library(TFE_MAPF Problem.h Node.h State.h Parser.cpp Parser.h Graph.cpp Graph.h Solution.cpp Solution.h MultiAgentProblem.cpp MultiAgentProblem.h HeuristicManhattan.h HeuristicOptimal.h SingleAgentProblem.cpp SingleAgentProblem.h MultiAgentState.cpp MultiAgentState.h SingleAgentState.h SingleAgentSpaceTimeProblem.cpp SingleAgentSpaceTimeProblem.h SingleAgentSpaceTimeState.cpp SingleAgentSpaceTimeState.h AStar.h CooperativeAStar.h ReverseResumableAStar.cpp ReverseResumableAStar.h IndependentDetection.cpp IndependentDetection.h Boost_tests/test1.cpp)
+add_library(TFE_MAPF Problems/Problem.h Solvers/Node.h States/State.h GraphParser/Parser.cpp GraphParser/Parser.h GraphParser/Graph.cpp GraphParser/Graph.h Solution/Solution.cpp Solution/Solution.h Problems/MultiAgentProblem.cpp Problems/MultiAgentProblem.h Heuristics/HeuristicManhattan.h Heuristics/HeuristicOptimal.h Problems/SingleAgentProblem.cpp Problems/SingleAgentProblem.h States/MultiAgentState.cpp States/MultiAgentState.h States/SingleAgentState.h Problems/SingleAgentSpaceTimeProblem.cpp Problems/SingleAgentSpaceTimeProblem.h States/SingleAgentSpaceTimeState.cpp States/SingleAgentSpaceTimeState.h Solvers/AStar.h Solvers/CooperativeAStar.h Solvers/ReverseResumableAStar.cpp Solvers/ReverseResumableAStar.h Solvers/IndependentDetection.cpp Solvers/IndependentDetection.h  Boost_tests/test1.cpp)
 
 # first test
 add_executable(TFE_MAPF_test test.cpp)

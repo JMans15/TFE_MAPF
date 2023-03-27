@@ -5,7 +5,7 @@
 #ifndef TFE_MAPF_INDEPENDENTDETECTION_H
 #define TFE_MAPF_INDEPENDENTDETECTION_H
 
-#include "MultiAgentProblem.h"
+#include "../Problems/MultiAgentProblem.h"
 #include "AStar.h"
 
 #include <boost/functional/hash.hpp>

@@ -6,15 +6,15 @@
 #define BOOST_TEST_MAIN  // in only one cpp file
 #include <boost/test/unit_test.hpp>
 
-#include "../AStar.h"
-#include "../CooperativeAStar.h"
-#include "../MultiAgentProblem.h"
-#include "../Parser.h"
-#include "../ReverseResumableAStar.h"
-#include "../SingleAgentProblem.h"
-#include "../SingleAgentSpaceTimeProblem.h"
-#include "../IndependentDetection.h"
-#include "../Solution.h"
+#include "../Solvers/AStar.h"
+#include "../Solvers/CooperativeAStar.h"
+#include "../Problems/MultiAgentProblem.h"
+#include "../GraphParser/Parser.h"
+#include "../Solvers/ReverseResumableAStar.h"
+#include "../Problems/SingleAgentProblem.h"
+#include "../Problems/SingleAgentSpaceTimeProblem.h"
+#include "../Solvers/IndependentDetection.h"
+#include "../Solution/Solution.h"
 
 #include <chrono>
 #include <iostream>

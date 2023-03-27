@@ -2,14 +2,14 @@
 // Created by mansj on 10/11/22.
 //
 
-#include "AStar.h"
-#include "CooperativeAStar.h"
-#include "MultiAgentProblem.h"
-#include "Parser.h"
-#include "ReverseResumableAStar.h"
-#include "SingleAgentProblem.h"
-#include "SingleAgentSpaceTimeProblem.h"
-#include "IndependentDetection.h"
+#include "Solvers/AStar.h"
+#include "Solvers/CooperativeAStar.h"
+#include "Problems/MultiAgentProblem.h"
+#include "GraphParser/Parser.h"
+#include "Solvers/ReverseResumableAStar.h"
+#include "Problems/SingleAgentProblem.h"
+#include "Problems/SingleAgentSpaceTimeProblem.h"
+#include "Solvers/IndependentDetection.h"
 
 #include <chrono>
 #include <iostream>
