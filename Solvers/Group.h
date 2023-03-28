@@ -6,18 +6,19 @@
 #define TFE_MAPF_GROUP_H
 
 #include <boost/functional/hash.hpp>
+#include <utility>
 
 class Group {
 public:
-    Group(){}
-    Group(std::set<int> agents) : agents(agents){}
+    Group()= default;
+    explicit Group(std::set<int> agents) : agents(std::move(agents)){}
 
     std::set<int> getAgents() {
         return agents;
     }
 
     void putSolution(std::shared_ptr<Solution> m_solution){
-        solution = m_solution;
+        solution = std::move(m_solution);
     }
 
     std::shared_ptr<Solution> getSolution() {
@@ -29,7 +30,7 @@ private:
 };
 
 struct GroupHasher {
-    std::size_t operator()(std::shared_ptr<Group> group) const {
+    std::size_t operator()(const std::shared_ptr<Group>& group) const {
         size_t result = 0;
         for (int i : group->getAgents()){
             boost::hash_combine(result, i);
@@ -39,7 +40,7 @@ struct GroupHasher {
 };
 
 struct GroupEquality {
-    bool operator()(std::shared_ptr<Group> a, std::shared_ptr<Group> b) const {
+    bool operator()(const std::shared_ptr<Group>& a, const std::shared_ptr<Group>& b) const {
         return a->getAgents()==b->getAgents();
     }
 };

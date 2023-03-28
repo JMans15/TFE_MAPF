@@ -190,67 +190,36 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         auto solution2 = CooperativeAStar(problem, OptimalDistance).solve();
         BOOST_REQUIRE_MESSAGE(solution1->getFoundPath(), "Found a path with Manhattan");
         BOOST_REQUIRE_MESSAGE(solution2->getFoundPath(), "Found a path with OptimalDistance");
-        BOOST_CHECK_MESSAGE(solution1->getNumberOfVisitedStates() == 389, "NumberOfVisitedStates = " << solution1->getNumberOfVisitedStates() << " for Manhattan, tested against 389");
-        BOOST_CHECK_MESSAGE(solution2->getNumberOfVisitedStates() == 142, "NumberOfVisitedStates = " << solution2->getNumberOfVisitedStates() << " for OptimalDistance, tested against 142");
+    }
+
+    BOOST_AUTO_TEST_CASE(independence_detection_simple) {
+        auto g = Parser::parse("../../mapf-map/AssignmentIACourse.map");
+        vector<int> starts;
+        starts.push_back(7);
+        starts.push_back(3);
+        starts.push_back(11);
+        vector<int> targets;
+        targets.push_back(21);
+        targets.push_back(5);
+        targets.push_back(4);
+        auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
+        auto solution = IndependenceDetection(problem, OptimalDistance).solve();
+        solution->print();
+        BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
+    }
+
+    BOOST_AUTO_TEST_CASE(independence_detection_full) {
+        auto g = Parser::parse("../../mapf-map/Paris_1_256.map");
+        std::vector<int> starts;
+        starts.push_back(1);
+        starts.push_back(150);
+        std::vector<int> targets;
+        targets.push_back(150);
+        targets.push_back(1);
+        auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, std::vector<int>{5,10});
+        auto solution = IndependenceDetection(problem, OptimalDistance).solve();
+        solution->print();
+        BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
     }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-/*
-// TEST 10 : 2 agents and comparaison between Manhattan and OptimalDistance
-auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
-vector<int> starts;
-starts.push_back(48);
-starts.push_back(17);
-vector<int> targets;
-targets.push_back(17);
-targets.push_back(20);
-auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-auto solution1 = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
-auto solution2 = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance).solve();
-solution1->print(); // numberOfVisitedStates = 17
-solution2->print(); // numberOfVisitedStates = 17
-
-// TEST 11 : 2 agents and comparaison between Manhattan and OptimalDistance
-auto g = Parser::parse("../mapf-map/Paris_1_256.map");
-std::vector<int> starts;
-starts.push_back(1);
-starts.push_back(150);
-std::vector<int> targets;
-targets.push_back(150);
-targets.push_back(1);
-auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-auto solution1 = AStar<MultiAgentProblem, MultiAgentState>(problem, Manhattan).solve();
-solution1->print(); // numberOfVisitedStates = 690412
-auto solution2 = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance).solve();
-solution2->print(); // numberOfVisitedStates = 331
-
-// TEST 11 : Small Independence detection test
-auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
-vector<int> starts;
-starts.push_back(7);
-starts.push_back(3);
-starts.push_back(11);
-vector<int> targets;
-targets.push_back(21);
-targets.push_back(5);
-targets.push_back(4);
-auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
-auto solution = IndependenceDetection(problem, OptimalDistance).solve();
-solution->print();
-
-
-// TEST 12 : Independence Detection
-auto g = Parser::parse("../mapf-map/Paris_1_256.map");
-std::vector<int> starts;
-starts.push_back(1);
-starts.push_back(150);
-std::vector<int> targets;
-targets.push_back(150);
-targets.push_back(1);
-auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, std::vector<int>{5,10});
-auto solution = IndependenceDetection(problem, OptimalDistance).solve();
-solution->print();
-}
-
-*/

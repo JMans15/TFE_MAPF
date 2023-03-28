@@ -25,21 +25,21 @@ bool SimpleIndependenceDetection::planSingletonGroups() {
 
 std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndependenceDetection::findAConflict() {
     int numberOfTimesteps = 0;
-    for (std::shared_ptr<Group> group : groups){
-        for (int agent = 0; agent < group->getAgents().size(); agent++){
+    for (const std::shared_ptr<Group>& group : groups){
+        for (int agent = 0; agent < (int) group->getAgents().size(); agent++){
             numberOfTimesteps = std::max((int)group->getSolution()->getPositions()[agent].size(), numberOfTimesteps);
         }
     }
-    for (std::shared_ptr<Group> group : groups){
-        for (int agent = 0; agent < group->getAgents().size(); agent++){
+    for (const std::shared_ptr<Group>& group : groups){
+        for (int agent = 0; agent < (int) group->getAgents().size(); agent++){
             group->getSolution()->lengthenPositions(numberOfTimesteps);
         }
     }
     // Vertex conflict
     for (int t = 0; t < numberOfTimesteps; t++){
         std::unordered_map<int, std::shared_ptr<Group>> positionsAtThisTimestep;
-        for (std::shared_ptr<Group> group : groups){
-            for (int agent = 0; agent < group->getSolution()->getPositions().size(); agent++){
+        for (const std::shared_ptr<Group>& group : groups){
+            for (int agent = 0; agent < (int) group->getSolution()->getPositions().size(); agent++){
                 if (positionsAtThisTimestep.count(group->getSolution()->getPositions()[agent][t])>0){
                     return {true, positionsAtThisTimestep[group->getSolution()->getPositions()[agent][t]], group};
                 } else {
@@ -51,8 +51,8 @@ std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndepende
     // Edge conflict
     for (int t = 0; t < numberOfTimesteps-1; t++){
         std::unordered_map<std::pair<int, int>, std::shared_ptr<Group>, PairHasher<int>, PairEquality<int>> edgesAtThisTimestep;
-        for (std::shared_ptr<Group> group : groups){
-            for (int agent = 0; agent < group->getSolution()->getPositions().size(); agent++){
+        for (const std::shared_ptr<Group>& group : groups){
+            for (int agent = 0; agent < (int) group->getSolution()->getPositions().size(); agent++){
                 if (edgesAtThisTimestep.count(std::pair <int, int> (group->getSolution()->getPositions()[agent][t], group->getSolution()->getPositions()[agent][t+1]))>0){
                     return {true, edgesAtThisTimestep[std::pair <int, int> (group->getSolution()->getPositions()[agent][t], group->getSolution()->getPositions()[agent][t+1])], group};
                 } else {
@@ -93,7 +93,7 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
 
 std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
     vector<vector<int>> positions(problem->getNumberOfAgents());
-    for (std::shared_ptr<Group> group : groups){
+    for (const std::shared_ptr<Group>& group : groups){
         for (int agentId : group->getAgents()){
             auto it = find(problem->getAgentIds().begin(), problem->getAgentIds().end(), agentId);
             if (it==problem->getAgentIds().end()){
