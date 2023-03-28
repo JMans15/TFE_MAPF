@@ -13,7 +13,7 @@
 #include "../Solvers/ReverseResumableAStar.h"
 #include "../Problems/SingleAgentProblem.h"
 #include "../Problems/SingleAgentSpaceTimeProblem.h"
-#include "../Solvers/IndependentDetection.h"
+#include "../Solvers/IndependenceDetection.h"
 #include "../Solution/Solution.h"
 
 #include <chrono>
@@ -236,7 +236,7 @@ targets.push_back(21);
 targets.push_back(5);
 targets.push_back(4);
 auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
-auto solution = IndependentDetection(problem, OptimalDistance).solve();
+auto solution = IndependenceDetection(problem, OptimalDistance).solve();
 solution->print();
 
 
@@ -249,7 +249,7 @@ std::vector<int> targets;
 targets.push_back(150);
 targets.push_back(1);
 auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, std::vector<int>{5,10});
-auto solution = IndependentDetection(problem, OptimalDistance).solve();
+auto solution = IndependenceDetection(problem, OptimalDistance).solve();
 solution->print();
 }
 

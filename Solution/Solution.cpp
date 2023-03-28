@@ -22,9 +22,9 @@ Solution::Solution(int numberOfTimesteps, std::vector<std::vector<int>> position
 , positions(positions)
 , agentIds(agentIds)
 {
-    if (not isValid()){
-        std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
-    }
+    //if (not isValid()){
+    //    std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
+    //}
 }
 
 Solution::Solution(int cost, int numberOfVisitedStates,

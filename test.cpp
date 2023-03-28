@@ -9,7 +9,8 @@
 #include "Solvers/ReverseResumableAStar.h"
 #include "Problems/SingleAgentProblem.h"
 #include "Problems/SingleAgentSpaceTimeProblem.h"
-#include "Solvers/IndependentDetection.h"
+#include "Solvers/SimpleIndependenceDetection.h"
+#include "Solvers/IndependenceDetection.h"
 
 #include <chrono>
 #include <iostream>
@@ -188,7 +189,7 @@ int main() {
     targets.push_back(5);
     targets.push_back(4);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
-    auto solution = IndependentDetection(problem, OptimalDistance).solve();
+    auto solution = SimpleIndependenceDetection(problem, OptimalDistance).solve();
     solution->print();
 
 
@@ -201,6 +202,17 @@ int main() {
     targets.push_back(150);
     targets.push_back(1);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, std::vector<int>{5,10});
-    auto solution = IndependentDetection(problem, OptimalDistance).solve();
-    solution->print();*/
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
+    auto solution1 = SimpleIndependenceDetection(problem, OptimalDistance).solve();
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+    std::cout << elapsed_seconds.count() << std::endl;
+    start = std::chrono::system_clock::now();
+    auto solution2 = AStar<MultiAgentProblem,MultiAgentState>(problem, OptimalDistance).solve();
+    end = std::chrono::system_clock::now();
+    elapsed_seconds = end - start;
+    std::cout << elapsed_seconds.count() << std::endl;
+    std::cout << solution1->getMakespanCost() << std::endl;
+    std::cout << solution2->getMakespanCost() << std::endl;*/
 }

@@ -22,9 +22,6 @@
 // - Agents don't cooperate once they have a planned path (for example, problem if narrow corridor)
 //   Ideally, agent should allow to move of its target to allow others to pass.
 // - It depends on the order of the agents (see prioritized planning Latombe 1991)
-// - To avoid edge conflict, we made the following decision:
-//   when we know that a planned path has a (p,t) point, we put (p,t) in the reservation AND ALSO (p,t+1) !
-//   We know this removes possible solutions
 // Could be improved with WINDOWED Hierarchical Cooperative A*
 class CooperativeAStar {
 public:
@@ -52,8 +49,6 @@ public:
 
         auto reservationTable = problem->getSetOfConstraints();
 
-        int cost = 0;
-        int numberOfVisitedStates = 0;
         int numberOfTimesteps = 0;
         std::vector<vector<int>> positions;
         LOG("Beginning the (numberOfAgents) single agent A* searches. ");
@@ -73,19 +68,12 @@ public:
                         // agent cannot go at position pathofagent[t] at time t
                         reservationTable.insert(Constraint{problem->getAgentIds()[agent], pathOfAgent[t], t});
 
+                        // TODO : illegal moves for edge conflict instead of this
                         // to avoid edge conflict, we have to add that
                         // agent cannot go at position pathofagent[t] also at time t+1
                         reservationTable.insert(Constraint{problem->getAgentIds()[agent], pathOfAgent[t], t+1});
                     }
                 }
-                if (problem->getObjFunction() == SumOfCosts) {
-                    cost += solution->getSumOfCostsCost();
-                } else if (problem->getObjFunction() == Fuel) {
-                    cost += solution->getFuelCost();
-                } else {
-                    cost = std::max(cost, solution->getMakespanCost());
-                }
-                numberOfVisitedStates += solution->getNumberOfVisitedStates();
                 numberOfTimesteps = std::max(numberOfTimesteps, solution->getNumberOfTimesteps());
                 positions.emplace_back(pathOfAgent);
             } else {

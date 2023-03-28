@@ -10,7 +10,7 @@
 #include <iostream>
 #include <memory>
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 #define LOG(str) std::cout << str << std::endl;

@@ -15,7 +15,7 @@ MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<i
     , setOfConstraints(setOfConstraints)
     , agentIds(m_agentIds)
 {
-    LOG("==== Multi Agent Problems ====");
+    LOG("==== Multi Agent Problem ====");
     LOG("Number of agents : " << numberOfAgents)
     
     if (objective != SumOfCosts && objective != Makespan && objective != Fuel) {
