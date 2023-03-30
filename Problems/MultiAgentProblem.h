@@ -13,7 +13,7 @@
 class MultiAgentProblem : public Problem<MultiAgentState> {
 public:
     MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
-                      ObjectiveFunction objective = Fuel, std::vector<int> agentIds = std::vector<int>(),
+                      ObjectiveFunction objective = Fuel, const std::vector<int>& agentIds = std::vector<int>(),
                               const std::set<Constraint> &setOfConstraints = std::set<Constraint>());
 
     std::shared_ptr<MultiAgentState> getStartState() const override;

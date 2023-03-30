@@ -3,6 +3,7 @@
 //
 
 #include "SimpleIndependenceDetection.h"
+#include <unordered_map>
 
 SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic)
         : problem(problem)
@@ -93,18 +94,19 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
 
 std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
     vector<vector<int>> positions(problem->getNumberOfAgents());
+    vector<int> ids = problem->getAgentIds();
     for (const std::shared_ptr<Group>& group : groups){
         for (int agentId : group->getAgents()){
-            auto it = find(problem->getAgentIds().begin(), problem->getAgentIds().end(), agentId);
+            auto it = find(ids.begin(), ids.end(), agentId);
             if (it==problem->getAgentIds().end()){
                 std::cout << "Agent " << agentId << " isn't in this problem." << std::endl;
                 return {};
             }
-            auto index = it - problem->getAgentIds().begin();
+            auto index = it - ids.begin();
             positions[index] = group->getSolution()->getPathOfAgent(agentId);
         }
     }
-    int numberOfTimesteps = positions[0].size();
+    int numberOfTimesteps = static_cast<int>(positions[0].size());
     return std::make_shared<Solution>(numberOfTimesteps, positions, problem->getAgentIds());
 }
 

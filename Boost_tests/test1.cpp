@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_SUITE(globalTests)
     }
 
     BOOST_AUTO_TEST_CASE(independence_detection_full) {
-        auto g = Parser::parse("../../mapf-map/Paris_1_256.map");
+        auto g = Parser::parse("../../mapf-map/Paris/Paris_1_256.map");
         std::vector<int> starts;
         starts.push_back(1);
         starts.push_back(150);

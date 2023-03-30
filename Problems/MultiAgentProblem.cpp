@@ -7,13 +7,13 @@
 #include <algorithm>
 
 MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
-                                     ObjectiveFunction objective, std::vector<int> m_agentIds, const std::set<Constraint> &setOfConstraints)
+                                     ObjectiveFunction objective, const std::vector<int>& m_agentIds, const std::set<Constraint> &setOfConstraints)
     : Problem(graph, starts.size())
     , starts(starts)
     , targets(targets)
+    , agentIds(m_agentIds)
     , objective(objective)
     , setOfConstraints(setOfConstraints)
-    , agentIds(m_agentIds)
 {
     LOG("==== Multi Agent Problem ====");
     LOG("Number of agents : " << numberOfAgents)

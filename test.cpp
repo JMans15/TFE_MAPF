@@ -38,7 +38,7 @@ Clock<std::chrono::milliseconds> timer;
 int main() {
 
     // TEST 11 : Small Independence detection test
-    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(7);
     starts.push_back(3);
@@ -50,10 +50,10 @@ int main() {
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
     auto solution = SimpleIndependenceDetection(problem, OptimalDistance).solve();
     solution->print();
-
+    */
 
     // TEST 12 : Independence Detection
-    /*auto g = Parser::parse("../mapf-map/Paris_1_256.map");
+    auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     std::vector<int> starts;
     starts.push_back(1);
     starts.push_back(150);
@@ -73,5 +73,5 @@ int main() {
     elapsed_seconds = end - start;
     std::cout << elapsed_seconds.count() << std::endl;
     std::cout << solution1->getMakespanCost() << std::endl;
-    std::cout << solution2->getMakespanCost() << std::endl;*/
+    std::cout << solution2->getMakespanCost() << std::endl;
 }
