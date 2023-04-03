@@ -47,7 +47,7 @@ int main() {
     solution->print();*/
 
     // TEST 2 : 1 agent
-    /*auto g = Parser::parse("../mapf-map/Paris_1_256.map");
+    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     int start = 1;
     int target = 256*200-100;
     timer.tick();
@@ -165,7 +165,7 @@ int main() {
     solution2->print(); // numberOfVisitedStates = 17*/
 
     // TEST 11 : 2 agents and comparaison between Manhattan and OptimalDistance
-    /*auto g = Parser::parse("../mapf-map/Paris_1_256.map");
+    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     std::vector<int> starts;
     starts.push_back(1);
     starts.push_back(150);
@@ -216,8 +216,19 @@ int main() {
     std::cout << solution1->getMakespanCost() << std::endl;
     std::cout << solution2->getMakespanCost() << std::endl;*/
 
-    // TEST 14 : Small independence detection test
-    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    // TEST 14 : maxCost in an A* search
+    auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    int start = 1;
+    int target = 256*200-100;
+    auto problem1 = std::make_shared<SingleAgentProblem>(g, start, target, 0, 354);
+    auto solution1 = AStar<SingleAgentProblem, SingleAgentState>(problem1, Manhattan).solve();
+    solution1->print(); // foundPath = true
+    auto problem2 = std::make_shared<SingleAgentProblem>(g, start, target, 0, 353);
+    auto solution2 = AStar<SingleAgentProblem, SingleAgentState>(problem2, Manhattan).solve();
+    solution1->print(); // foundPath = false
+
+    // TEST 15 : Small independence detection test
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(7);
     starts.push_back(3);
@@ -228,5 +239,5 @@ int main() {
     targets.push_back(4);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
     auto solution = IndependenceDetection(problem, OptimalDistance).solve();
-    solution->print();
+    solution->print();*/
 }

@@ -13,7 +13,7 @@
 class SingleAgentSpaceTimeProblem : public Problem<SingleAgentSpaceTimeState> {
 public:
     SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
-                                int agentId = 0, const std::set<Constraint> &setOfConstraints = std::set<Constraint>());
+                                int agentId = 0, const std::set<Constraint> &setOfConstraints = std::set<Constraint>(), int maxCost = INT_MAX);
 
     std::shared_ptr<SingleAgentSpaceTimeState> getStartState() const override;
     bool isGoalState(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;

@@ -51,11 +51,13 @@ public:
             auto successors = problem->getSuccessors(nodeState);
             for (auto &[successor, edgeCost] : successors) {
                 auto successorCost = node->getCost() + edgeCost;
-                auto it = distance.find(successor);
-                if (it == distance.end() || successorCost < it->second) {
-                    distance[successor] = successorCost;
-                    auto h = heuristic->heuristicFunction(successor);
-                    fringe.insert(std::make_shared<Node<S>>(successor, successorCost, h, node));
+                if (successorCost <= problem->getMaxCost()){
+                    auto it = distance.find(successor);
+                    if (it == distance.end() || successorCost < it->second) {
+                        distance[successor] = successorCost;
+                        auto h = heuristic->heuristicFunction(successor);
+                        fringe.insert(std::make_shared<Node<S>>(successor, successorCost, h, node));
+                    }
                 }
             }
 

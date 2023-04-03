@@ -34,9 +34,8 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> gr
         targets.push_back(problem->getTargetOf(agentId));
         agentIds.push_back(agentId);
     }
-    // TODO : add a max cost of groupA.getSolution().getCost() for this search
     // TODO : SingleAgentProb if 1 agent and MultiAgentProb if several agents
-    auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, illegalMoveTable);
+    auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, illegalMoveTable, groupA->getSolution()->getCost());
     auto solution = AStar<MultiAgentProblem, MultiAgentState>(prob, typeOfHeuristic).solve();
     if (solution->getFoundPath() and solution->isValid()) {
         groupA->putSolution(solution);
@@ -94,17 +93,19 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
                         return {};
                     }
                     std::cout << "We couldn't find an alternate optimal solution for group A and group B -> we merge." << std::endl;
+                } else {
+                    std::cout << "We replanned this group : " << std::endl;
+                    std::cout << "group:" << std::endl;
+                    for (auto agent : groupB->getAgents()){
+                        std::cout << agent << std::endl;
+                    }
                 }
+            } else {
                 std::cout << "We replanned this group : " << std::endl;
                 std::cout << "group:" << std::endl;
-                for (auto agent : groupB->getAgents()){
+                for (auto agent : groupA->getAgents()){
                     std::cout << agent << std::endl;
                 }
-            }
-            std::cout << "We replanned this group : " << std::endl;
-            std::cout << "group:" << std::endl;
-            for (auto agent : groupA->getAgents()){
-                std::cout << agent << std::endl;
             }
         } else {
             std::cout << "Group A and group B already conflicted before -> we merge." << std::endl;

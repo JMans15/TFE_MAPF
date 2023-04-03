@@ -23,6 +23,8 @@
 //   Ideally, agent should allow to move of its target to allow others to pass.
 // - It depends on the order of the agents (see prioritized planning Latombe 1991)
 // Could be improved with WINDOWED Hierarchical Cooperative A*
+//
+// We don't take into account the maxCost attribute of problem
 class CooperativeAStar {
 public:
     CooperativeAStar(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic)

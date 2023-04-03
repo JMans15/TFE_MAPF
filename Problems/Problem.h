@@ -43,7 +43,7 @@ template <class S>
 class Problem {
 public:
 
-    Problem(std::shared_ptr<Graph> graph, int numberOfAgents) : graph(graph), numberOfAgents(numberOfAgents) {}
+    Problem(std::shared_ptr<Graph> graph, int numberOfAgents, int maxCost) : graph(graph), numberOfAgents(numberOfAgents), maxCost(maxCost) {}
     ~Problem() {}
 
     std::shared_ptr<Graph> getGraph() const {
@@ -52,6 +52,10 @@ public:
 
     inline int getNumberOfAgents() const {
         return numberOfAgents;
+    }
+
+    inline int getMaxCost() const {
+        return maxCost;
     }
 
     // Returns the start state for the search problem
@@ -75,6 +79,9 @@ protected:
     std::shared_ptr<Graph> graph;
 
     int numberOfAgents;
+
+    // The solution of this problem must have a cost inferior or equal to maxCost
+    int maxCost;
 
 };
 

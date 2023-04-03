@@ -7,8 +7,8 @@
 #include <algorithm>
 
 MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
-                                     ObjectiveFunction objective, const std::vector<int>& m_agentIds, const std::set<Constraint> &setOfConstraints)
-    : Problem(graph, starts.size())
+                                     ObjectiveFunction objective, const std::vector<int>& m_agentIds, const std::set<Constraint> &setOfConstraints, int maxCost)
+    : Problem(graph, starts.size(), maxCost)
     , starts(starts)
     , targets(targets)
     , agentIds(m_agentIds)

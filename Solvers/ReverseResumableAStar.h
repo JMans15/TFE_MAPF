@@ -21,6 +21,7 @@ class Heuristic;
 // Consists of a single agent search where the beginning of the search is the goal state (target position) of the problem
 // Possibility to continue the search (with the resume method) even when the start state of the problem is goal tested
 // (https://www.davidsilver.uk/wp-content/uploads/2020/03/coop-path-AIWisdom.pdf)
+// We don't take into account the maxCost attribute of problem
 class ReverseResumableAStar {
 public:
     ReverseResumableAStar(std::shared_ptr<SingleAgentProblem> problem);
