@@ -14,13 +14,12 @@ Solution::Solution() {
     foundPath = false;
 }
 
-Solution::Solution(int numberOfTimesteps, std::vector<std::vector<int>> positions, std::vector<int> agentIds)
+Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions)
 : foundPath(true)
 , cost(-1)
 , numberOfVisitedStates(-1)
 , numberOfTimesteps(numberOfTimesteps)
 , positions(positions)
-, agentIds(agentIds)
 {
     //if (not isValid()){
     //    std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
@@ -28,13 +27,12 @@ Solution::Solution(int numberOfTimesteps, std::vector<std::vector<int>> position
 }
 
 Solution::Solution(int cost, int numberOfVisitedStates,
-                   int numberOfTimesteps, std::vector<std::vector<int>> positions, std::vector<int> agentIds)
+                   int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions)
     : foundPath(true)
     , cost(cost)
     , numberOfVisitedStates(numberOfVisitedStates)
     , numberOfTimesteps(numberOfTimesteps)
     , positions(positions)
-    , agentIds(agentIds)
 {
     if (not isValid()){
         std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
@@ -53,21 +51,8 @@ int Solution::getNumberOfTimesteps() const {
     return numberOfTimesteps;
 }
 
-std::vector<int> Solution::getPositionsAtTime(int t) {
-    std::vector<int> pos;
-    for (int i = 0; i < positions.size(); i++){
-        pos.push_back(positions[i][t]);
-    }
-    return pos;
-}
-
 std::vector<int> Solution::getPathOfAgent(int id) {
-    auto it = find(agentIds.begin(), agentIds.end(), id);
-    if (it==agentIds.end()){
-        std::cout << "Agent " << id << " isn't in this solution." << std::endl;
-        return {};
-    }
-    return positions[it - agentIds.begin()];
+    return positions[id];
 }
 
 void Solution::write(std::string filename, int width) {
@@ -78,8 +63,8 @@ void Solution::write(std::string filename, int width) {
         file << A << " " << T << std::endl;
         int x, y, p;
         for (int t = 0; t < T; t++) {
-            for (int a = 0; a < A; a++) {
-                p = positions[a][t];
+            for (auto a : positions) {
+                p = a.second[t];
                 // The compiler will likely reuse the result of the division, no need to bother optimizing ourselves
                 y = p / width;
                 x = p % width;
@@ -98,18 +83,18 @@ void Solution::print() {
         std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
         std::cout << " " << std::endl;
         std::cout << " -> Position of every agent at each time : " << std::endl;
-        for (int t = 0; t < numberOfTimesteps; t++){
+        for (int t = 0; t < positions.begin()->second.size(); t++){
             std::cout << " -- Time " << t << " : " << std::endl;
-            for (int i = 0; i < positions.size(); i++){
-                std::cout << " --- Agent " << agentIds[i] << " : position " << positions[i][t] << std::endl;
+            for (auto i : positions){
+                std::cout << " --- Agent " << i.first << " : position " << i.second[t] << std::endl;
             }
         }
         std::cout << " " << std::endl;
         std::cout << " -> Path of each agent : " << std::endl;
-        for (int i = 0; i < positions.size(); i++){
-            std::cout << " -- Agent " << agentIds[i] << " : " << std::endl;
-            for (int t = 0; t < numberOfTimesteps; t++){
-                std::cout << " --- Time " << t << " : position " << positions[i][t] << std::endl;
+        for (auto i : positions){
+            std::cout << " -- Agent " << i.first << " : " << std::endl;
+            for (int t = 0; t < i.second.size(); t++){
+                std::cout << " --- Time " << t << " : position " << i.second[t] << std::endl;
             }
         }
     }
@@ -123,9 +108,9 @@ bool Solution::getFoundPath() {
 
 int Solution::getFuelCost() {
     int cost = 0;
-    for (int a = 0; a < positions.size(); a++) {
+    for (auto a : positions) {
         for (int t = 1; t < numberOfTimesteps; t++) {
-            if (positions[a][t] != positions[a][t-1]) {
+            if (a.second[t] != a.second[t-1]) {
                 cost += 1;
             }
         }
@@ -134,14 +119,14 @@ int Solution::getFuelCost() {
 }
 
 int Solution::getMakespanCost() {
-    return positions[0].size() - 1;
+    return numberOfTimesteps - 1;
 }
 
 int Solution::getSumOfCostsCost() {
     int cost = 0;
-    for (int a = 0; a < positions.size(); a++) {
+    for (auto a : positions) {
         for (int t = numberOfTimesteps-1; t >= 0; t--) {
-            if (positions[a][t] != positions[a][numberOfTimesteps-1]) {
+            if (a.second[t] != a.second[numberOfTimesteps-1]) {
                 cost += t+1;
                 break;
             }
@@ -154,37 +139,37 @@ bool Solution::isValid() {
     // Vertex conflict
     for (int t = 0; t < numberOfTimesteps; t++){
         std::set<int> positionsAtThisTimestep;
-        for (int i = 0; i < positions.size(); i++){
-             if (positionsAtThisTimestep.count(positions[i][t])>0){
+        for (auto i : positions){
+             if (positionsAtThisTimestep.count(i.second[t])>0){
                  return false;
              } else {
-                 positionsAtThisTimestep.insert(positions[i][t]);
+                 positionsAtThisTimestep.insert(i.second[t]);
              }
         }
     }
     // Edge conflict
     for (int t = 0; t < numberOfTimesteps-1; t++){
         std::set<std::pair<int, int>> edgesAtThisTimestep;
-        for (int i = 0; i < positions.size(); i++){
-            if (edgesAtThisTimestep.count(std::pair <int, int> (positions[i][t], positions[i][t+1]))>0){
+        for (auto i : positions){
+            if (edgesAtThisTimestep.count(std::pair <int, int> (i.second[t], i.second[t+1]))>0){
                 return false;
             } else {
-                edgesAtThisTimestep.insert(std::pair <int, int> (positions[i][t+1], positions[i][t]));
+                edgesAtThisTimestep.insert(std::pair <int, int> (i.second[t+1], i.second[t]));
             }
         }
     }
     return true;
 }
 
-std::vector<std::vector<int>> Solution::getPositions() const {
+std::unordered_map<int, std::vector<int>> Solution::getPositions() const {
     return positions;
 }
 
 void Solution::lengthenPositions(int length) {
-    int actualLength = positions[0].size();
+    int actualLength = positions.begin()->second.size();
     if (actualLength < length){
-        for (int i = 0; i < positions.size(); i++){
-            positions[i].resize(length, positions[i][actualLength-1]);
+        for (auto i : positions){
+            positions[i.first].resize(length, i.second[actualLength-1]);
         }
     }
 }

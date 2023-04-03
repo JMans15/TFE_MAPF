@@ -81,9 +81,9 @@ private:
         std::reverse(states.begin(), states.end());
 
         auto positions = problem->getPositions(states);
-        int numberOfTimesteps = positions[0].size();
+        int numberOfTimesteps = positions.begin()->second.size();
         
-        return std::make_shared<Solution>(cost, numberOfVisitedStates, numberOfTimesteps, positions, problem->getAgentIds());
+        return std::make_shared<Solution>(cost, numberOfVisitedStates, numberOfTimesteps, positions);
     }
 };
 

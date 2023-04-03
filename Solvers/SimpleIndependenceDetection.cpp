@@ -27,20 +27,18 @@ bool SimpleIndependenceDetection::planSingletonGroups() {
 std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndependenceDetection::findAConflict() {
     int numberOfTimesteps = 0;
     for (const std::shared_ptr<Group>& group : groups){
-        for (int agent = 0; agent < (int) group->getAgents().size(); agent++){
+        for (int agent : group->getAgents()){
             numberOfTimesteps = std::max((int)group->getSolution()->getPositions()[agent].size(), numberOfTimesteps);
         }
     }
     for (const std::shared_ptr<Group>& group : groups){
-        for (int agent = 0; agent < (int) group->getAgents().size(); agent++){
-            group->getSolution()->lengthenPositions(numberOfTimesteps);
-        }
+        group->getSolution()->lengthenPositions(numberOfTimesteps);
     }
     // Vertex conflict
     for (int t = 0; t < numberOfTimesteps; t++){
         std::unordered_map<int, std::shared_ptr<Group>> positionsAtThisTimestep;
         for (const std::shared_ptr<Group>& group : groups){
-            for (int agent = 0; agent < (int) group->getSolution()->getPositions().size(); agent++){
+            for (int agent : group->getAgents()){
                 if (positionsAtThisTimestep.count(group->getSolution()->getPositions()[agent][t])>0){
                     return {true, positionsAtThisTimestep[group->getSolution()->getPositions()[agent][t]], group};
                 } else {
@@ -53,7 +51,7 @@ std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndepende
     for (int t = 0; t < numberOfTimesteps-1; t++){
         std::unordered_map<std::pair<int, int>, std::shared_ptr<Group>, PairHasher<int>, PairEquality<int>> edgesAtThisTimestep;
         for (const std::shared_ptr<Group>& group : groups){
-            for (int agent = 0; agent < (int) group->getSolution()->getPositions().size(); agent++){
+            for (int agent : group->getAgents()){
                 if (edgesAtThisTimestep.count(std::pair <int, int> (group->getSolution()->getPositions()[agent][t], group->getSolution()->getPositions()[agent][t+1]))>0){
                     return {true, edgesAtThisTimestep[std::pair <int, int> (group->getSolution()->getPositions()[agent][t], group->getSolution()->getPositions()[agent][t+1])], group};
                 } else {
@@ -83,8 +81,7 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
         agentIds.push_back(agentId);
     }
     auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds);
-    auto search = AStar<MultiAgentProblem, MultiAgentState>(prob, typeOfHeuristic);
-    auto solution = search.solve();
+    auto solution = AStar<MultiAgentProblem, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
     if (not solution->getFoundPath() or not solution->isValid()){
         return false;
@@ -93,21 +90,15 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
 }
 
 std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
-    vector<vector<int>> positions(problem->getNumberOfAgents());
+    std::unordered_map<int, vector<int>> positions;
     vector<int> ids = problem->getAgentIds();
     for (const std::shared_ptr<Group>& group : groups){
         for (int agentId : group->getAgents()){
-            auto it = find(ids.begin(), ids.end(), agentId);
-            if (it==problem->getAgentIds().end()){
-                std::cout << "Agent " << agentId << " isn't in this problem." << std::endl;
-                return {};
-            }
-            auto index = it - ids.begin();
-            positions[index] = group->getSolution()->getPathOfAgent(agentId);
+            positions[agentId] = group->getSolution()->getPathOfAgent(agentId);
         }
     }
-    int numberOfTimesteps = static_cast<int>(positions[0].size());
-    return std::make_shared<Solution>(numberOfTimesteps, positions, problem->getAgentIds());
+    int numberOfTimesteps = positions.begin()->second.size();
+    return std::make_shared<Solution>(numberOfTimesteps, positions);
 }
 
 std::shared_ptr<Solution> SimpleIndependenceDetection::solve() {

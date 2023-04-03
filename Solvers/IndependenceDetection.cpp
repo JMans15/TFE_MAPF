@@ -11,7 +11,8 @@ IndependenceDetection::IndependenceDetection(std::shared_ptr<MultiAgentProblem> 
 
 bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB){
     std::set<Constraint> illegalMoveTable;
-    for (const auto& pathOfAgent : groupB->getSolution()->getPositions()){
+    for (auto a : groupB->getSolution()->getPositions()){
+        vector<int> pathOfAgent = a.second;
         for (int t = 0; t < pathOfAgent.size(); t++){
             for (int agentA : groupA->getAgents()){
 
@@ -73,6 +74,16 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
     while (std::get<0>(conflict)){
         auto groupA = std::get<1>(conflict);
         auto groupB = std::get<2>(conflict);
+
+        std::cout << "These 2 groups are in conflict : " << std::endl;
+        std::cout << "groupA:" << std::endl;
+        for (auto agent : groupA->getAgents()){
+            std::cout << agent << std::endl;
+        }
+        std::cout << "groupB:" << std::endl;
+        for (auto agent : groupB->getAgents()){
+            std::cout << agent << std::endl;
+        }
 
         // TODO : does alreadyConflictedBefore work ??
         if (alreadyConflictedBefore.count(std::pair <std::shared_ptr<Group>, std::shared_ptr<Group>>(groupA, groupB))==0){

@@ -47,12 +47,12 @@ std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> SingleAgentProble
     return successors;
 }
 
-std::vector<std::vector<int>> SingleAgentProblem::getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const {
-    std::vector<int> positions;
+std::unordered_map<int, std::vector<int>> SingleAgentProblem::getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const {
+    std::unordered_map<int, std::vector<int>> positions;
     for (auto state : states) {
-        positions.push_back(state->getPosition());
+        positions[agentId].push_back(state->getPosition());
     }
-    return { positions };
+    return positions;
 }
 
 const int SingleAgentProblem::getStart() const {

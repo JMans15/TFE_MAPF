@@ -50,14 +50,13 @@ public:
         auto reservationTable = problem->getSetOfConstraints();
 
         int numberOfTimesteps = 0;
-        std::vector<vector<int>> positions;
+        std::unordered_map<int, std::vector<int>> positions;
         LOG("Beginning the (numberOfAgents) single agent A* searches. ");
         for (int a = 0; a < problem->getNumberOfAgents(); a++){
 
             // Single agent A* search for agent a
             auto singleAgentProblem = std::make_shared<SingleAgentSpaceTimeProblem>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, problem->getAgentIds()[a], reservationTable);
-            auto aStar = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic);
-            auto solution = aStar.solve();
+            auto solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic).solve();
 
             if (solution->getFoundPath()) {
                 auto pathOfAgent = solution->getPathOfAgent(0);
@@ -75,20 +74,20 @@ public:
                     }
                 }
                 numberOfTimesteps = std::max(numberOfTimesteps, solution->getNumberOfTimesteps());
-                positions.emplace_back(pathOfAgent);
+                positions[problem->getAgentIds()[a]]=pathOfAgent;
             } else {
-                LOG("No path has been found for agent " << a);
+                LOG("No path has been found for agent " << problem->getAgentIds()[a]);
                 LOG("The solution is not valid");
                 return std::make_shared<Solution>();
             }
         }
         // We put the paths in the right format
-        for (int agent = 0; agent < problem->getNumberOfAgents(); agent++) {
-            while (positions[agent].size() < numberOfTimesteps) {
-                positions[agent].emplace_back(problem->getTargets()[agent]);
+        for (int agentId : problem->getAgentIds()) {
+            while (positions[agentId].size() < numberOfTimesteps) {
+                positions[agentId].emplace_back(problem->getTargetOf(agentId));
             }
         }
-        return std::make_shared<Solution>(numberOfTimesteps, positions, problem->getAgentIds());
+        return std::make_shared<Solution>(numberOfTimesteps, positions);
     }
 private:
     std::shared_ptr<MultiAgentProblem> problem;

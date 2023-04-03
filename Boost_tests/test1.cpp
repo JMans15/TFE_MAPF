@@ -149,13 +149,14 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         BOOST_CHECK_MESSAGE(search.getDistance().size() == 27, "Distance size = " << search.getDistance().size() << " tested against 27");
         int p[27] = {11, 12, 17, 24, 6, 35, 0, 29, 23, 28, 5, 34, 33, 2, 15, 30, 1, 8, 21, 7, 20, 9, 22, 19, 32, 26, 25};
         int v[27] = {8, 4, 7, 8, 3, 8, 2, 7, 6, 6, 9, 7, 8, 0, 3, 9, 1, 1, 4, 2, 5, 2, 5, 6, 7, 6, 7};
-        int i = 0;
+        std::unordered_map<int, int> expected;
+        for (int i = 0; i < 27; i++){
+            expected[p[i]]=v[i];
+        }
         for(const auto& key_value: search.getDistance()) {
             std::shared_ptr<SingleAgentState> key = key_value.first;
             int value = key_value.second;
-            BOOST_REQUIRE_MESSAGE(p[i] == key->getPosition(), "Position = " << key->getPosition() << " tested against " << p[i]);
-            BOOST_REQUIRE_MESSAGE(v[i] == value, "Value = " << value << " tested against " << v[i]);
-            i += 1;
+            BOOST_REQUIRE_MESSAGE(expected[key->getPosition()] == value, "Value = " << value << " tested against " << expected[key->getPosition()]);
         }
     }
 

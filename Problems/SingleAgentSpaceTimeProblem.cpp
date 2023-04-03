@@ -89,12 +89,12 @@ std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> SingleAg
     return successors;
 }
 
-std::vector<std::vector<int>> SingleAgentSpaceTimeProblem::getPositions(std::vector<std::shared_ptr<SingleAgentSpaceTimeState>> states) const {
-    std::vector<int> positions;
+std::unordered_map<int, std::vector<int>> SingleAgentSpaceTimeProblem::getPositions(std::vector<std::shared_ptr<SingleAgentSpaceTimeState>> states) const {
+    std::unordered_map<int, std::vector<int>> positions;
     for (auto state : states) {
-        positions.push_back(state->getPosition());
+        positions[agentId].push_back(state->getPosition());
     }
-    return { positions };
+    return positions;
 }
 
 const int SingleAgentSpaceTimeProblem::getStart() const {

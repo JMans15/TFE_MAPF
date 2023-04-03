@@ -7,17 +7,17 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 class Solution {
 public:
     Solution();
-    Solution(int numberOfTimesteps, std::vector<std::vector<int>> positions, std::vector<int> agentIds);
-    Solution(int cost, int numberOfVisitedStates, int numberOfTimesteps, std::vector<std::vector<int>> positions, std::vector<int> agentIds);
+    Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
+    Solution(int cost, int numberOfVisitedStates, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
 
     int getCost() const;
     int getNumberOfVisitedStates() const;
     int getNumberOfTimesteps() const;
-    std::vector<int> getPositionsAtTime(int t);
     std::vector<int> getPathOfAgent(int id);
     bool getFoundPath();
     void print();
@@ -35,7 +35,7 @@ public:
     // Returns True if all paths don't have any conflict (vertex conflict and edge conflict)
     bool isValid();
 
-    std::vector<std::vector<int>> getPositions() const;
+    std::unordered_map<int, std::vector<int>> getPositions() const;
 
     // Lengthens the matrix positions so that the length of a path is length
     void lengthenPositions(int length);
@@ -51,15 +51,13 @@ private:
     // The number of needed timesteps from all agents to reach their target position
     int numberOfTimesteps;
 
-    // Matrix of size numberOfAgents X numberOfTimesteps
+    // Map with the paths
+    // The key is the id of an agent and the value is the path of the agent
     // positions[a][t] is the position of agent a at time t in this solution
-    std::vector<std::vector<int>> positions;
+    std::unordered_map<int, std::vector<int>> positions;
 
     // true if this solution contains a path
     bool foundPath;
-
-    // Id(s) of the agent(s) in this solution
-    std::vector<int> agentIds;
 };
 
 

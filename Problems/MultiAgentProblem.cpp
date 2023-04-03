@@ -35,6 +35,9 @@ MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<i
             agentIds.emplace_back(a);
         }
     }
+    for (int i = 0; i < numberOfAgents; i++){
+        idToIndex[agentIds[i]] = i;
+    }
     LOG("Start position of each agent :");
     for (int i = 0; i < numberOfAgents; i++) {
         LOG(" - Agent " << agentIds[i] << " : " << starts[i]);
@@ -206,13 +209,13 @@ std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem:
     return successors;
 }
 
-std::vector<std::vector<int>> MultiAgentProblem::getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const {
-    std::vector<std::vector<int>> positions(numberOfAgents);
+std::unordered_map<int, std::vector<int>> MultiAgentProblem::getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const {
+    std::unordered_map<int, std::vector<int>> positions;
 
     for (const auto& state : states) {
         if (state->isStandard()){
             for (int agent = 0; agent < numberOfAgents; agent++){
-                positions[agent].push_back(state->getPositions()[agent]);
+                positions[agentIds[agent]].push_back(state->getPositions()[agent]);
             }
         }
     }
@@ -242,20 +245,10 @@ std::vector<int> MultiAgentProblem::getAgentIds() const {
 }
 
 int MultiAgentProblem::getStartOf(int id) {
-    auto it = find(agentIds.begin(), agentIds.end(), id);
-    if (it==agentIds.end()){
-        std::cout << "Agent " << id << " isn't in this problem." << std::endl;
-        return {};
-    }
-    return starts[it - agentIds.begin()];
+    return starts[idToIndex[id]];
 }
 
 int MultiAgentProblem::getTargetOf(int id) {
-    auto it = find(agentIds.begin(), agentIds.end(), id);
-    if (it==agentIds.end()){
-        std::cout << "Agent " << id << " isn't in this problem." << std::endl;
-        return {};
-    }
-    return targets[it - agentIds.begin()];
+    return targets[idToIndex[id]];
 }
 

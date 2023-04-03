@@ -9,8 +9,9 @@
 
 #include <iostream>
 #include <memory>
+#include "unordered_map"
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef DEBUG
 #define LOG(str) std::cout << str << std::endl;
@@ -64,7 +65,7 @@ public:
     // stepcost is the cost to go from state to successor
     virtual std::vector<std::pair<std::shared_ptr<S>, int>> getSuccessors(std::shared_ptr<S> state) const = 0;
 
-    virtual std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<S>> states) const = 0;
+    virtual std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<S>> states) const = 0;
 
     virtual std::vector<int> getAgentIds() const = 0;
 

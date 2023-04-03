@@ -16,7 +16,7 @@ public:
     std::shared_ptr<SingleAgentState> getGoalState() const;
     bool isGoalState(std::shared_ptr<SingleAgentState> state) const override;
     std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> getSuccessors(std::shared_ptr<SingleAgentState> state) const override;
-    std::vector<std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const override;
+    std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const override;
     std::vector<int> getAgentIds() const override;
 
     const int getStart() const;
