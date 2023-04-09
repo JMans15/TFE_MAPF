@@ -11,6 +11,7 @@ SingleAgentProblem::SingleAgentProblem(std::shared_ptr<Graph> graph, int start, 
     , agentId(agentId)
 {
     LOG("==== Single Agent Problem ====");
+    LOG("Id of the agent : " << agentId);
     LOG("Start position of the agent : " << start);
     if (graph->getNeighbors(start).empty()){
         LOG("   The start position is unreachable.");
@@ -18,6 +19,9 @@ SingleAgentProblem::SingleAgentProblem(std::shared_ptr<Graph> graph, int start, 
     LOG("Target position of the agent : " << target);
     if (graph->getNeighbors(target).empty()){
         LOG("   The target position is unreachable.");
+    }
+    if (maxCost!=INT_MAX){
+        LOG("The solution of this problem must have a cost inferior or equal to " << maxCost);
     }
     LOG(" ");
 }
@@ -36,12 +40,10 @@ bool SingleAgentProblem::isGoalState(std::shared_ptr<SingleAgentState> state) co
 
 std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> SingleAgentProblem::getSuccessors(std::shared_ptr<SingleAgentState> state) const {
     std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> successors;
-    int position = state->getPosition();
-    int cost = 1;
 
-    for (int newPosition : graph->getNeighbors(position)){
+    for (int newPosition : graph->getNeighbors(state->getPosition())){
         auto successor = std::make_shared<SingleAgentState>(newPosition);
-        successors.emplace_back(successor, cost);
+        successors.emplace_back(successor, 1);
     }
 
     return successors;

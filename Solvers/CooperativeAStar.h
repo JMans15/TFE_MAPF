@@ -49,7 +49,8 @@ public:
             objectiveFunction = Fuel;
         }
 
-        auto reservationTable = problem->getSetOfConstraints();
+        auto verticesReservationTable = problem->getSetOfVertexConstraints();
+        auto edgesReservationTable = problem->getSetOfEdgeConstraints();
 
         int numberOfTimesteps = 0;
         std::unordered_map<int, std::vector<int>> positions;
@@ -57,22 +58,20 @@ public:
         for (int a = 0; a < problem->getNumberOfAgents(); a++){
 
             // Single agent A* search for agent a
-            auto singleAgentProblem = std::make_shared<SingleAgentSpaceTimeProblem>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, problem->getAgentIds()[a], reservationTable);
+            auto singleAgentProblem = std::make_shared<SingleAgentSpaceTimeProblem>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, problem->getAgentIds()[a], verticesReservationTable, edgesReservationTable);
             auto solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic).solve();
 
             if (solution->getFoundPath()) {
-                auto pathOfAgent = solution->getPathOfAgent(0);
-                for (int t = 0; t < pathOfAgent.size(); t++){
-                    // We force that the next agents cannot go where the already planned agents go
-                    for (int agent = a+1; agent < problem->getNumberOfAgents(); agent++){
-
+                auto pathOfAgent = solution->getPathOfAgent(problem->getAgentIds()[a]);
+                // We force that the next agents cannot go where the already planned agents go
+                for (int agent = a+1; agent < problem->getNumberOfAgents(); agent++){
+                    for (int t = 0; t < pathOfAgent.size(); t++){
                         // agent cannot go at position pathofagent[t] at time t
-                        reservationTable.insert(Constraint{problem->getAgentIds()[agent], pathOfAgent[t], t});
-
-                        // TODO : illegal moves for edge conflict instead of this
-                        // to avoid edge conflict, we have to add that
-                        // agent cannot go at position pathofagent[t] also at time t+1
-                        reservationTable.insert(Constraint{problem->getAgentIds()[agent], pathOfAgent[t], t+1});
+                        verticesReservationTable.insert({problem->getAgentIds()[agent], pathOfAgent[t], t});
+                    }
+                    for (int t = 1; t < pathOfAgent.size(); t++){
+                        // to avoid edge conflict
+                        edgesReservationTable.insert({problem->getAgentIds()[agent], pathOfAgent[t], pathOfAgent[t-1], t});
                     }
                 }
                 numberOfTimesteps = std::max(numberOfTimesteps, solution->getNumberOfTimesteps());

@@ -5,15 +5,20 @@
 #include "SingleAgentSpaceTimeProblem.h"
 
 SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
-                                                         int agentId, const std::set<Constraint> &setOfConstraints, int maxCost)
+                                                         int agentId, const std::set<VertexConstraint> &setOfVertexConstraints,
+                                                         const std::set<EdgeConstraint> &setOfEdgeConstraints, int maxCost)
     : Problem(graph, 1, maxCost)
     , start(start)
     , target(target)
-    , objective(objective)
-    , setOfConstraints(setOfConstraints)
     , agentId(agentId)
+    , objective(objective)
+    , setOfVertexConstraints(setOfVertexConstraints)
+    , setOfEdgeConstraints(setOfEdgeConstraints)
 {
     LOG("==== Single Agent Space Time Problem ====");
+    if (objective == SumOfCosts){
+        objective = Makespan;
+    }
     if (objective != Makespan && objective != Fuel){
         LOG("The input for the objective function is not correct.");
         LOG("So, the default objective function will be applied.");
@@ -24,6 +29,7 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> 
     } else {
         LOG("Objective function : Fuel (costWait = 0)");
     }
+    LOG("Id of the agent : " << agentId);
     LOG("Start position of the agent : " << start);
     if (graph->getNeighbors(start).empty()){
         LOG("   The start position is unreachable.");
@@ -32,13 +38,20 @@ SingleAgentSpaceTimeProblem::SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> 
     if (graph->getNeighbors(target).empty()){
         LOG("   The target position is unreachable.");
     }
-    if (!setOfConstraints.empty()){
-        LOG("The problem has the following constraints :");
-        for (Constraint constraint : setOfConstraints){
-            if (constraint.agent == agentId){
-                LOG("   (" << agentId << ", " << constraint.position << ", " << constraint.time << ")");
-            }
+    if (!setOfVertexConstraints.empty()){
+        LOG("The problem has the following vertex constraints :");
+        for (const auto& constraint : setOfVertexConstraints){
+            LOG("   Agent " << constraint.getAgent() << " cannot be at position " << constraint.getPosition() << " at time " << constraint.getTime() << ".");
         }
+    }
+    if (!setOfEdgeConstraints.empty()){
+        LOG("The problem has the following edge constraints :");
+        for (const auto& constraint : setOfEdgeConstraints){
+            LOG("   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between time " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
+        }
+    }
+    if (maxCost!=INT_MAX){
+        LOG("The solution of this problem must have a cost inferior or equal to " << maxCost);
     }
     LOG(" ");
 
@@ -52,9 +65,11 @@ bool SingleAgentSpaceTimeProblem::isGoalState(std::shared_ptr<SingleAgentSpaceTi
     return state->getPosition() == target;
 }
 
-// Returns true if the agent is allowed to be at position at time (according to the set of constraints of the problem)
-bool SingleAgentSpaceTimeProblem::notInForbiddenPositions(int position, int time) const {
-    return setOfConstraints.find({agentId, position, time}) == setOfConstraints.end();
+bool SingleAgentSpaceTimeProblem::okForConstraints(int position, int newPosition, int time) const {
+    if (setOfVertexConstraints.find({agentId, newPosition, time}) == setOfVertexConstraints.end()){
+        return setOfEdgeConstraints.find({agentId, position, newPosition, time}) == setOfEdgeConstraints.end();
+    }
+    return false;
 }
 
 std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> SingleAgentSpaceTimeProblem::getSuccessors(std::shared_ptr<SingleAgentSpaceTimeState> state) const {
@@ -74,14 +89,14 @@ std::vector<std::pair<std::shared_ptr<SingleAgentSpaceTimeState>, int>> SingleAg
 
     // Move
     for (int newPosition : graph->getNeighbors(position)){
-        if (notInForbiddenPositions(newPosition, nextT)){
+        if (okForConstraints(position, newPosition, nextT)){
             auto successor = std::make_shared<SingleAgentSpaceTimeState>(newPosition, nextT);
             successors.emplace_back(successor, costMovement);
         }
     }
 
     // Wait
-    if (notInForbiddenPositions(position, nextT)){
+    if (okForConstraints(position, position, nextT)){
         auto successor = std::make_shared<SingleAgentSpaceTimeState>(position, nextT);
         successors.emplace_back(successor, costWait);
     }

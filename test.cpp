@@ -97,14 +97,23 @@ int main() {
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
     solution->print();*/
 
-    // TEST 6 : 1 agent and a constraint (a, p, t)
+    // TEST 6 : 1 agent and a vertex constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentSpaceTimeProblem>(g, start, target, Makespan, std::set<Constraint>{Constraint{0,5,1}});
+    auto problem = std::make_shared<SingleAgentSpaceTimeProblem>(g, start, target, Makespan, 0, std::set<VertexConstraint>{{0,5,1}});
     auto solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
     // makespan cost = 3, fuel cost = 2
     solution->print();*/
+
+    // TEST 6 BIS : 1 agent and an edge constraint
+    auto g = Parser::parse("../mapf-map/empty-4-4.map");
+    int start = 4;
+    int target = 6;
+    auto problem = std::make_shared<SingleAgentSpaceTimeProblem>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{0,4,5,1}});
+    auto solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
+    // makespan cost = 3, fuel cost = 2
+    solution->print();
 
     // TEST 7 : Reverse Resumable A*
     /*auto g = Parser::parse("../mapf-map/ReverseResumableAStarExample.map");
@@ -190,8 +199,7 @@ int main() {
     targets.push_back(4);
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
     auto solution = SimpleIndependenceDetection(problem, OptimalDistance).solve();
-    solution->print();
-    */
+    solution->print();*/
 
     // TEST 13 : Simple independence detection
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
@@ -217,7 +225,7 @@ int main() {
     std::cout << solution2->getMakespanCost() << std::endl;*/
 
     // TEST 14 : maxCost in an A* search
-    auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     int start = 1;
     int target = 256*200-100;
     auto problem1 = std::make_shared<SingleAgentProblem>(g, start, target, 0, 354);
@@ -225,7 +233,7 @@ int main() {
     solution1->print(); // foundPath = true
     auto problem2 = std::make_shared<SingleAgentProblem>(g, start, target, 0, 353);
     auto solution2 = AStar<SingleAgentProblem, SingleAgentState>(problem2, Manhattan).solve();
-    solution1->print(); // foundPath = false
+    solution1->print(); // foundPath = false*/
 
     // TEST 15 : Small independence detection test
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");

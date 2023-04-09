@@ -10,19 +10,18 @@ IndependenceDetection::IndependenceDetection(std::shared_ptr<MultiAgentProblem> 
 
 
 bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB){
-    std::set<Constraint> illegalMoveTable;
+    std::set<VertexConstraint> vertexIllegalTable;
+    std::set<EdgeConstraint> edgeIllegalTable;
     for (auto a : groupB->getSolution()->getPositions()){
         vector<int> pathOfAgent = a.second;
-        for (int t = 0; t < pathOfAgent.size(); t++){
-            for (int agentA : groupA->getAgents()){
-
+        for (int agentA : groupA->getAgents()){
+            for (int t = 0; t < pathOfAgent.size(); t++){
                 // agent cannot go at position pathofagent[t] at time t
-                illegalMoveTable.insert(Constraint{agentA, pathOfAgent[t], t});
-
-                // TODO : illegal moves for edge conflict instead of this
-                // to avoid edge conflict, we have to add that
-                // agent cannot go at position pathofagent[t] also at time t+1
-                illegalMoveTable.insert(Constraint{agentA, pathOfAgent[t], t+1});
+                vertexIllegalTable.insert({agentA, pathOfAgent[t], t});
+            }
+            for (int t = 1; t < pathOfAgent.size(); t++){
+                // to avoid edge conflict
+                edgeIllegalTable.insert({agentA, pathOfAgent[t], pathOfAgent[t-1], t});
             }
         }
     }
@@ -34,9 +33,14 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> gr
         targets.push_back(problem->getTargetOf(agentId));
         agentIds.push_back(agentId);
     }
-    // TODO : SingleAgentProb if 1 agent and MultiAgentProb if several agents
-    auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, illegalMoveTable, groupA->getSolution()->getCost());
-    auto solution = AStar<MultiAgentProblem, MultiAgentState>(prob, typeOfHeuristic).solve();
+    std::shared_ptr<Solution> solution;
+    if (groupA->getAgents().size()==1){
+        auto prob = std::make_shared<SingleAgentSpaceTimeProblem>(problem->getGraph(), starts[0], targets[0], problem->getObjFunction(), agentIds[0], vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost());
+        solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
+    } else {
+        auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost());
+        solution = AStar<MultiAgentProblem, MultiAgentState>(prob, typeOfHeuristic).solve();
+    }
     if (solution->getFoundPath() and solution->isValid()) {
         groupA->putSolution(solution);
         return true;

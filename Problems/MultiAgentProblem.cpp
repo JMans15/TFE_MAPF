@@ -7,13 +7,15 @@
 #include <algorithm>
 
 MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
-                                     ObjectiveFunction objective, const std::vector<int>& m_agentIds, const std::set<Constraint> &setOfConstraints, int maxCost)
+                                     ObjectiveFunction objective, const std::vector<int>& m_agentIds, const std::set<VertexConstraint> &setOfVertexConstraints,
+                                     const std::set<EdgeConstraint> &setOfEdgeConstraints, int maxCost)
     : Problem(graph, starts.size(), maxCost)
     , starts(starts)
     , targets(targets)
     , agentIds(m_agentIds)
     , objective(objective)
-    , setOfConstraints(setOfConstraints)
+    , setOfVertexConstraints(setOfVertexConstraints)
+    , setOfEdgeConstraints(setOfEdgeConstraints)
 {
     LOG("==== Multi Agent Problem ====");
     LOG("Number of agents : " << numberOfAgents)
@@ -52,11 +54,20 @@ MultiAgentProblem::MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<i
             LOG("   The target position of agent "<< agentIds[i] << " is unreachable.");
         }
     }
-    if (!setOfConstraints.empty()) {
-        LOG("The problem has the following constraints :");
-        for (Constraint constraint : setOfConstraints) {
-            LOG("   (" << constraint.agent << ", " << constraint.position << ", " << constraint.time << ")");
+    if (!setOfVertexConstraints.empty()){
+        LOG("The problem has the following vertex constraints :");
+        for (const auto& constraint : setOfVertexConstraints){
+            LOG("   Agent " << constraint.getAgent() << " cannot be at position " << constraint.getPosition() << " at time " << constraint.getTime() << ".");
         }
+    }
+    if (!setOfEdgeConstraints.empty()){
+        LOG("The problem has the following edge constraints :");
+        for (const auto& constraint : setOfEdgeConstraints){
+            LOG("   Agent " << constraint.getAgent() << "cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
+        }
+    }
+    if (maxCost!=INT_MAX){
+        LOG("The solution of this problem must have a cost inferior or equal to " << maxCost);
     }
     LOG(" ");
 }
@@ -95,9 +106,11 @@ bool notAlreadyOccupiedEdge(int position, const std::vector<int> &positions, int
     return true;
 }
 
-// Returns true if agent is allowed to be at position at time (according to the set of constraints of the problem)
-bool MultiAgentProblem::notInForbiddenPositions(int position, int agent, int time) const {
-    return setOfConstraints.find({agentIds[agent], position, time}) == setOfConstraints.end();
+bool MultiAgentProblem::okForConstraints(int agent, int position, int newPosition, int time) const {
+    if (setOfVertexConstraints.find({agentIds[agent], newPosition, time}) == setOfVertexConstraints.end()){
+        return setOfEdgeConstraints.find({agentIds[agent], position, newPosition, time}) == setOfEdgeConstraints.end();
+    }
+    return false;
 }
 
 std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem::getSuccessors(std::shared_ptr<MultiAgentState> state) const {
@@ -147,14 +160,14 @@ std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem:
         for (int j : graph->getNeighbors(positions[agentToAssign])) {
             vector<int> newpositions(positions);
             newpositions[agentToAssign] = j;
-            if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state->getPrePositions()) && notInForbiddenPositions(j, agentToAssign, nextT)) {
+            if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state->getPrePositions()) && okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
                 auto successor = std::make_shared<MultiAgentState>(newpositions, positions, nextT, nextAgentToAssign, isStandard);
                 successors.emplace_back(successor, costMovement);
             }
         }
 
         // Wait
-        if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT)) {
+        if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], positions[agentToAssign], nextT)) {
             auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard);
             successors.emplace_back(successor, costWait);
         }
@@ -167,7 +180,7 @@ std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem:
             for (int j : graph->getNeighbors(positions[agentToAssign])) {
                 vector<int> newpositions(positions);
                 newpositions[agentToAssign] = j;
-                if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state->getPrePositions()) && notInForbiddenPositions(j, agentToAssign, nextT)) {
+                if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state->getPrePositions()) && okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
                     auto successor = std::make_shared<MultiAgentState>(newpositions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costMovement);
                 }
@@ -176,14 +189,14 @@ std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem:
             // Wait
             if (positions[agentToAssign]!=targets[agentToAssign]) { // agentToAssign not at his target position
                 costWait = 1;
-                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT)) {
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], positions[agentToAssign], nextT)) {
                     auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait);
                 }
             } else { // agentToAssign is at his target position
                 // agentToAssign can still move in the future
                 costWait = 1;
-                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT)) {
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], positions[agentToAssign], nextT)) {
                     auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait);
                 }
@@ -191,7 +204,7 @@ std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem:
                 // we are forcing agentToAssign to not move in the future
                 costWait = 0;
                 cannotMove.push_back(agentToAssign);
-                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT)) {
+                if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], positions[agentToAssign], nextT)) {
                     auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait);
                 }
@@ -200,7 +213,7 @@ std::vector<std::pair<std::shared_ptr<MultiAgentState>, int>> MultiAgentProblem:
 
         } else { // agentToAssign is not allowed to move
             costWait = 0;
-            if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && notInForbiddenPositions(positions[agentToAssign], agentToAssign, nextT)) {
+            if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], positions[agentToAssign], nextT)) {
                 auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
                 successors.emplace_back(successor, costWait);
             }
@@ -236,8 +249,12 @@ ObjectiveFunction MultiAgentProblem::getObjFunction() {
     return objective;
 }
 
-const std::set<Constraint>& MultiAgentProblem::getSetOfConstraints() const {
-    return setOfConstraints;
+std::set<VertexConstraint> MultiAgentProblem::getSetOfVertexConstraints() const {
+    return setOfVertexConstraints;
+}
+
+std::set<EdgeConstraint> MultiAgentProblem::getSetOfEdgeConstraints() const {
+    return setOfEdgeConstraints;
 }
 
 std::vector<int> MultiAgentProblem::getAgentIds() const {

@@ -14,7 +14,8 @@ class MultiAgentProblem : public Problem<MultiAgentState> {
 public:
     MultiAgentProblem(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
                       ObjectiveFunction objective = Fuel, const std::vector<int>& agentIds = std::vector<int>(),
-                              const std::set<Constraint> &setOfConstraints = std::set<Constraint>(), int maxCost = INT_MAX);
+                      const std::set<VertexConstraint> &setOfVertexConstraints = std::set<VertexConstraint>(),
+                      const std::set<EdgeConstraint> &setOfEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX);
 
     std::shared_ptr<MultiAgentState> getStartState() const override;
     bool isGoalState(std::shared_ptr<MultiAgentState> state) const override;
@@ -25,7 +26,8 @@ public:
     const std::vector<int>& getStarts() const;
     const std::vector<int>& getTargets() const;
     ObjectiveFunction getObjFunction();
-    const std::set<Constraint>& getSetOfConstraints() const;
+    std::set<VertexConstraint> getSetOfVertexConstraints() const;
+    std::set<EdgeConstraint> getSetOfEdgeConstraints() const;
 
     int getStartOf(int id);
     int getTargetOf(int id);
@@ -46,10 +48,13 @@ private:
     // - SumOfCosts : The sum of the time steps required for every agent to reach its goal
     ObjectiveFunction objective;
 
-    // list of constraints like (a, p, t) meaning agent a can't be at position p at time t
-    std::set<Constraint> setOfConstraints;
+    // set of vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
+    std::set<VertexConstraint> setOfVertexConstraints;
+    // set of edge constraints
+    std::set<EdgeConstraint> setOfEdgeConstraints;
 
-    bool notInForbiddenPositions(int position, int agent, int time) const;
+    // Returns true if agent is allowed to go from position to newPosition between time-1 and time (according to the set of constraints of the problem)
+    bool okForConstraints(int agent, int position, int newPosition, int time) const;
 
 };
 

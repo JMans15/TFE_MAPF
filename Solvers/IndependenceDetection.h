@@ -20,7 +20,8 @@ public:
     std::shared_ptr<Solution> solve();
 private:
     std::unordered_set<std::pair<std::shared_ptr<Group>, std::shared_ptr<Group>>, PairHasher<std::shared_ptr<Group>>, PairEquality<std::shared_ptr<Group>>> alreadyConflictedBefore;
-    std::set<Constraint> conflictAvoidanceTable;
+    std::set<VertexConstraint> vertexConflictAvoidanceTable;
+    std::set<EdgeConstraint> edgeConflictAvoidanceTable;
 
     // Find another optimal solution for groupA
     // - with the same cost as the previous one

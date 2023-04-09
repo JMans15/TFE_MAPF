@@ -6,6 +6,8 @@
 #define TFE_MAPF_PROBLEM_H
 
 #include "../GraphParser/Graph.h"
+#include "../Constraints/VertexConstraint.h"
+#include "../Constraints/EdgeConstraint.h"
 
 #include <iostream>
 #include <memory>
@@ -22,22 +24,6 @@
 enum ObjectiveFunction {
     Fuel, Makespan, SumOfCosts
 };
-
-typedef struct Constraint {
-    int agent;
-    int position;
-    int time;
-
-    bool operator<(const struct Constraint &other) const {
-        if (agent == other.agent) {
-            if (position == other.position) {
-                return time < other.time;
-            }
-            return position < other.position;
-        }
-        return agent < other.agent;
-    }
-} Constraint;
 
 template <class S>
 class Problem {

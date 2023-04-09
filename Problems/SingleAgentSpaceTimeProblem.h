@@ -13,7 +13,8 @@
 class SingleAgentSpaceTimeProblem : public Problem<SingleAgentSpaceTimeState> {
 public:
     SingleAgentSpaceTimeProblem(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
-                                int agentId = 0, const std::set<Constraint> &setOfConstraints = std::set<Constraint>(), int maxCost = INT_MAX);
+                                int agentId = 0, const std::set<VertexConstraint> &setOfVertexConstraints = std::set<VertexConstraint>(),
+                                const std::set<EdgeConstraint> &setOfEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX);
 
     std::shared_ptr<SingleAgentSpaceTimeState> getStartState() const override;
     bool isGoalState(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
@@ -24,8 +25,6 @@ public:
     const int getStart() const;
     const int getTarget() const;
     ObjectiveFunction getObjFunction();
-
-    bool notInForbiddenPositions(int position, int time) const;
 
 private:
     // start position of the agent
@@ -41,8 +40,13 @@ private:
     // - Makespan : Total time for the agent to reach its goal (costWait = 1)
     ObjectiveFunction objective;
 
-    // list of constraints like (a, p, t) meaning agent a can't be at position p at time t
-    std::set<Constraint> setOfConstraints;
+    // set of vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
+    std::set<VertexConstraint> setOfVertexConstraints;
+    // set of edge constraints
+    std::set<EdgeConstraint> setOfEdgeConstraints;
+
+    // Returns true if the agent is allowed to go from position to newPosition between time-1 and time (according to the set of constraints of the problem)
+    bool okForConstraints(int position, int newPosition, int time) const;
 };
 
 
