@@ -37,7 +37,7 @@ protected:
 
     // Merges groupA and groupB and plan a path for the new group
     // Returns true if it found a valid solution for the new group (false otherwise)
-    bool mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB);
+    virtual bool mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB);
 
     std::shared_ptr<Solution> combineSolutions();
 };

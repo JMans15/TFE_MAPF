@@ -8,6 +8,9 @@
 #include "SimpleIndependenceDetection.h"
 
 // Independence Detection search
+// - with a Conflict Avoidance Table (CAT) when replanning
+// - Enhanced version of ID (EID) : tries to resolve a conflict (by attempting to replan one group to avoid the plan of the other group) before merging the groups
+//
 // Only for multi agent problem
 //
 // typeOfHeuristic is the heuristic for the A* searches

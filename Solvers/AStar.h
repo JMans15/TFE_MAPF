@@ -70,7 +70,7 @@ public:
 private:
     std::shared_ptr<P> problem;
     std::shared_ptr<Heuristic<S>> heuristic;
-    std::multiset<std::shared_ptr<Node<S>>, NodeComparator<S>> fringe;
+    std::multiset<std::shared_ptr<Node<S>>, NodeComparator<S>> fringe; // the open list
     std::unordered_map<std::shared_ptr<S>, int, StateHasher<S>, StateEquality<S>> distance; // the closed list
 
     std::shared_ptr<Solution> retrieveSolution(int numberOfVisitedStates, std::shared_ptr<Node<S>> node) {

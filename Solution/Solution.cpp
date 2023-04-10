@@ -34,9 +34,9 @@ Solution::Solution(int cost, int numberOfVisitedStates,
     , numberOfTimesteps(numberOfTimesteps)
     , positions(positions)
 {
-    if (not isValid()){
-        std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
-    }
+    //if (not isValid()){
+    //    std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
+    //}
 }
 
 int Solution::getCost() const {
@@ -151,10 +151,10 @@ bool Solution::isValid() {
     for (int t = 0; t < numberOfTimesteps-1; t++){
         std::set<std::pair<int, int>> edgesAtThisTimestep;
         for (auto i : positions){
-            if (edgesAtThisTimestep.count(std::pair <int, int> (i.second[t], i.second[t+1]))>0){
+            if (edgesAtThisTimestep.count({i.second[t], i.second[t + 1]})>0){
                 return false;
             } else {
-                edgesAtThisTimestep.insert(std::pair <int, int> (i.second[t+1], i.second[t]));
+                edgesAtThisTimestep.insert({i.second[t + 1], i.second[t]});
             }
         }
     }

@@ -39,10 +39,11 @@ std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndepende
         std::unordered_map<int, std::shared_ptr<Group>> positionsAtThisTimestep;
         for (const std::shared_ptr<Group>& group : groups){
             for (int agent : group->getAgents()){
-                if (positionsAtThisTimestep.count(group->getSolution()->getPositions()[agent][t])>0){
-                    return {true, positionsAtThisTimestep[group->getSolution()->getPositions()[agent][t]], group};
+                int positionOfAgentAtTimestep = group->getSolution()->getPositions()[agent][t];
+                if (positionsAtThisTimestep.count(positionOfAgentAtTimestep)>0){
+                    return {true, positionsAtThisTimestep[positionOfAgentAtTimestep], group};
                 } else {
-                    positionsAtThisTimestep[group->getSolution()->getPositions()[agent][t]]=group;
+                    positionsAtThisTimestep[positionOfAgentAtTimestep]=group;
                 }
             }
         }
@@ -52,10 +53,11 @@ std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndepende
         std::unordered_map<std::pair<int, int>, std::shared_ptr<Group>, PairHasher<int>, PairEquality<int>> edgesAtThisTimestep;
         for (const std::shared_ptr<Group>& group : groups){
             for (int agent : group->getAgents()){
-                if (edgesAtThisTimestep.count(std::pair <int, int> (group->getSolution()->getPositions()[agent][t], group->getSolution()->getPositions()[agent][t+1]))>0){
-                    return {true, edgesAtThisTimestep[std::pair <int, int> (group->getSolution()->getPositions()[agent][t], group->getSolution()->getPositions()[agent][t+1])], group};
+                auto pathOfAgent = group->getSolution()->getPositions()[agent];
+                if (edgesAtThisTimestep.count({pathOfAgent[t], pathOfAgent[t + 1]})>0){
+                    return {true, edgesAtThisTimestep[{pathOfAgent[t], pathOfAgent[t + 1]}], group};
                 } else {
-                    edgesAtThisTimestep[std::pair <int, int> (group->getSolution()->getPositions()[agent][t+1], group->getSolution()->getPositions()[agent][t])] = group;
+                    edgesAtThisTimestep[{pathOfAgent[t + 1], pathOfAgent[t]}] = group;
                 }
             }
         }
