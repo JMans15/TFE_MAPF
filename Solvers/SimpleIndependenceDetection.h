@@ -5,7 +5,7 @@
 #ifndef TFE_MAPF_SIMPLEINDEPENDENCEDETECTION_H
 #define TFE_MAPF_SIMPLEINDEPENDENCEDETECTION_H
 
-#include "../Problems/MultiAgentProblem.h"
+#include "../Problems/MultiAgentProblemWithConstraints.h"
 #include "AStar.h"
 #include "Group.h"
 
@@ -14,16 +14,16 @@
 //
 // typeOfHeuristic is the heuristic for the A* searches
 //
-// We don't take into account the setOfConstraints attribute of problem
+// We don't take into account the setOfConstraints attributes of problem
 // We don't take into account the maxCost attribute of problem
 class SimpleIndependenceDetection {
 public:
-    SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic);
+    SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic);
 
     virtual std::shared_ptr<Solution> solve();
 
 protected:
-    std::shared_ptr<MultiAgentProblem> problem;
+    std::shared_ptr<MultiAgentProblemWithConstraints> problem;
     TypeOfHeuristic typeOfHeuristic;
     std::unordered_set<std::shared_ptr<Group>, GroupHasher, GroupEquality> groups;
 

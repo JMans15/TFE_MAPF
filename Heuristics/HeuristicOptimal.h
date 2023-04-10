@@ -103,7 +103,7 @@ template <class P, class S,
         typename std::enable_if<std::is_base_of<SingleAgentSpaceTimeState, S>::value>::type* = nullptr
 >
 std::shared_ptr<Heuristic<S>> getHeuristic(std::shared_ptr<P> problem, std::shared_ptr<TypeOfHeuristic> type) {
-    auto pb = std::dynamic_pointer_cast<SingleAgentSpaceTimeProblem>(problem);
+    auto pb = std::dynamic_pointer_cast<SingleAgentProblemWithConstraints>(problem);
     if (*type == Manhattan){
         LOG("The used heuristic will be the Manhattan distance.");
         return std::make_shared<ManhattanHeuristic<S>>(pb->getTarget(), pb->getGraph()->getWidth());
@@ -123,7 +123,7 @@ template <class P, class S,
     typename std::enable_if<std::is_base_of<MultiAgentState, S>::value>::type* = nullptr
 >
 std::shared_ptr<Heuristic<S>> getHeuristic(std::shared_ptr<P> problem, std::shared_ptr<TypeOfHeuristic> type) {
-    auto pb = std::dynamic_pointer_cast<MultiAgentProblem>(problem);
+    auto pb = std::dynamic_pointer_cast<MultiAgentProblemWithConstraints>(problem);
     if (*type == Manhattan){
         if (pb->getObjFunction() == Makespan){
             LOG("The used heuristic will be the Maximum Individual Cost (Manhattan distance).");

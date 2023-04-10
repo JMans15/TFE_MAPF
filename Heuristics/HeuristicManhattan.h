@@ -6,12 +6,12 @@
 #define TFE_MAPF_HEURISTICMANHATTAN_H
 
 #include "../GraphParser/Graph.h"
-#include "../Problems/MultiAgentProblem.h"
+#include "../Problems/MultiAgentProblemWithConstraints.h"
 #include "../States/MultiAgentState.h"
 #include "../Solvers/ReverseResumableAStar.h"
 #include "../Problems/SingleAgentProblem.h"
 #include "../States/SingleAgentState.h"
-#include "../Problems/SingleAgentSpaceTimeProblem.h"
+#include "../Problems/SingleAgentProblemWithConstraints.h"
 #include "../States/SingleAgentSpaceTimeState.h"
 #include "../States/State.h"
 

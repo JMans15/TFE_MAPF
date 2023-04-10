@@ -6,8 +6,8 @@
 #define TFE_MAPF_COOPERATIVEASTAR_H
 
 #include "AStar.h"
-#include "../Problems/MultiAgentProblem.h"
-#include "../Problems/SingleAgentSpaceTimeProblem.h"
+#include "../Problems/MultiAgentProblemWithConstraints.h"
+#include "../Problems/SingleAgentProblemWithConstraints.h"
 
 // Cooperative A* search - not optimal
 // Only for multi agent problem
@@ -24,10 +24,11 @@
 // - It depends on the order of the agents (see prioritized planning Latombe 1991)
 // Could be improved with WINDOWED Hierarchical Cooperative A*
 //
+// We don't take into account the setOfSoftConstraints attribute of problem
 // We don't take into account the maxCost attribute of problem
 class CooperativeAStar {
 public:
-    CooperativeAStar(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic)
+    CooperativeAStar(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
             : problem(problem)
             , typeOfHeuristic(typeOfHeuristic)
     {}
@@ -49,8 +50,8 @@ public:
             objectiveFunction = Fuel;
         }
 
-        auto verticesReservationTable = problem->getSetOfVertexConstraints();
-        auto edgesReservationTable = problem->getSetOfEdgeConstraints();
+        auto verticesReservationTable = problem->getSetOfHardVertexConstraints();
+        auto edgesReservationTable = problem->getSetOfHardEdgeConstraints();
 
         int numberOfTimesteps = 0;
         std::unordered_map<int, std::vector<int>> positions;
@@ -58,8 +59,8 @@ public:
         for (int a = 0; a < problem->getNumberOfAgents(); a++){
 
             // Single agent A* search for agent a
-            auto singleAgentProblem = std::make_shared<SingleAgentSpaceTimeProblem>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, problem->getAgentIds()[a], verticesReservationTable, edgesReservationTable);
-            auto solution = AStar<SingleAgentSpaceTimeProblem, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic).solve();
+            auto singleAgentProblem = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, problem->getAgentIds()[a], verticesReservationTable, edgesReservationTable);
+            auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic).solve();
 
             if (solution->getFoundPath()) {
                 auto pathOfAgent = solution->getPathOfAgent(problem->getAgentIds()[a]);
@@ -91,7 +92,7 @@ public:
         return std::make_shared<Solution>(numberOfTimesteps, positions);
     }
 private:
-    std::shared_ptr<MultiAgentProblem> problem;
+    std::shared_ptr<MultiAgentProblemWithConstraints> problem;
     TypeOfHeuristic typeOfHeuristic;
 };
 

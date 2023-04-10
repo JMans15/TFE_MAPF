@@ -50,10 +50,11 @@ public:
     // Returns True if the state is a valid goal state
     virtual bool isGoalState(std::shared_ptr<S> state) const = 0;
 
-    // For a given state, getSuccessors returns a list of pairs (successor, stepcost)
+    // For a given state, getSuccessors returns a list of pairs (successor, stepcost, numberOfViolations)
     // where successor is a successor state to the current state
     // stepcost is the cost to go from state to successor
-    virtual std::vector<std::pair<std::shared_ptr<S>, int>> getSuccessors(std::shared_ptr<S> state) const = 0;
+    // numberOfViolations is the number of soft constraints that have been violated to go from state to successor
+    virtual std::vector<std::tuple<std::shared_ptr<S>, int, int>> getSuccessors(std::shared_ptr<S> state) const = 0;
 
     virtual std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<S>> states) const = 0;
 

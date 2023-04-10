@@ -49,14 +49,15 @@ public:
             }
 
             auto successors = problem->getSuccessors(nodeState);
-            for (auto &[successor, edgeCost] : successors) {
+            for (auto &[successor, edgeCost, numberOfViolations] : successors) {
                 auto successorCost = node->getCost() + edgeCost;
                 if (successorCost <= problem->getMaxCost()){
                     auto it = distance.find(successor);
                     if (it == distance.end() || successorCost < it->second) {
                         distance[successor] = successorCost;
                         auto h = heuristic->heuristicFunction(successor);
-                        fringe.insert(std::make_shared<Node<S>>(successor, successorCost, h, node));
+                        auto violationCount = node->getViolationCount() + numberOfViolations;
+                        fringe.insert(std::make_shared<Node<S>>(successor, successorCost, h, node, violationCount));
                     }
                 }
             }

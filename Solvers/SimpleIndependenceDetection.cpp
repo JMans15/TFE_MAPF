@@ -5,7 +5,7 @@
 #include "SimpleIndependenceDetection.h"
 #include <unordered_map>
 
-SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic)
+SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
         : problem(problem)
         , typeOfHeuristic(typeOfHeuristic)
 {}
@@ -80,8 +80,8 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
         targets.push_back(problem->getTargetOf(agentId));
         agentIds.push_back(agentId);
     }
-    auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds);
-    auto solution = AStar<MultiAgentProblem, MultiAgentState>(prob, typeOfHeuristic).solve();
+    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds);
+    auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
     if (not solution->getFoundPath() or not solution->isValid()){
         return false;

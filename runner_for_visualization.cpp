@@ -3,7 +3,7 @@
 //
 
 #include "Solvers/AStar.h"
-#include "Problems/MultiAgentProblem.h"
+#include "Problems/MultiAgentProblemWithConstraints.h"
 #include "GraphParser/Parser.h"
 #include "Problems/SingleAgentProblem.h"
 #include "Solution/Solution.h"
@@ -142,8 +142,8 @@ int main(int argc, const char** argv) {
             }
         }
 
-        auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-        auto aStar = AStar<MultiAgentProblem, MultiAgentState>(problem, OptimalDistance);
+        auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+        auto aStar = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance);
         solution = aStar.solve();
     } else {
         // Getting start and target

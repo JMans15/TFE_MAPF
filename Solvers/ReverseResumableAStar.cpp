@@ -32,7 +32,7 @@ int ReverseResumableAStar::resume(const std::shared_ptr<SingleAgentState>& targe
         closed.insert(state);
 
         auto successors = problem->getSuccessors(state);
-        for (auto &[successor, edgeCost] : successors) {
+        for (auto &[successor, edgeCost, numberOfViolations] : successors) {
             auto successorCost = node->getCost() + edgeCost;
             auto it = distance.find(successor);
             if (it == distance.end() || successorCost < it->second) {

@@ -38,12 +38,12 @@ bool SingleAgentProblem::isGoalState(std::shared_ptr<SingleAgentState> state) co
     return state->getPosition() == target;
 }
 
-std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> SingleAgentProblem::getSuccessors(std::shared_ptr<SingleAgentState> state) const {
-    std::vector<std::pair<std::shared_ptr<SingleAgentState>, int>> successors;
+std::vector<std::tuple<std::shared_ptr<SingleAgentState>, int, int>> SingleAgentProblem::getSuccessors(std::shared_ptr<SingleAgentState> state) const {
+    std::vector<std::tuple<std::shared_ptr<SingleAgentState>, int, int>> successors;
 
     for (int newPosition : graph->getNeighbors(state->getPosition())){
         auto successor = std::make_shared<SingleAgentState>(newPosition);
-        successors.emplace_back(successor, 1);
+        successors.emplace_back(successor, 1, 0);
     }
 
     return successors;
