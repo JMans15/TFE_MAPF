@@ -11,6 +11,7 @@
 #include "Problems/SingleAgentProblemWithConstraints.h"
 #include "Solvers/SimpleIndependenceDetection.h"
 #include "Solvers/IndependenceDetection.h"
+#include "Solvers/ConflictBasedSearch.h"
 
 #include <chrono>
 #include <iostream>
@@ -250,7 +251,7 @@ int main() {
     solution1->print(); // foundPath = false*/
 
     // TEST 16 : Small independence detection test
-    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(7);
     starts.push_back(5);
@@ -261,5 +262,21 @@ int main() {
     targets.push_back(5);
     auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
     auto solution = IndependenceDetection(problem, OptimalDistance).solve();
-    solution->print();
+    solution->print();*/
+
+    // TEST 15 : Conflict Based Search
+    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(7);
+    starts.push_back(5);
+    starts.push_back(11);
+    vector<int> targets;
+    targets.push_back(21);
+    targets.push_back(11);
+    targets.push_back(5);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
+    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    solution1->print();
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    solution2->print();
 }

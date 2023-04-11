@@ -17,7 +17,7 @@ Solution::Solution() {
 Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions)
 : foundPath(true)
 , cost(-1)
-, numberOfVisitedStates(-1)
+, numberOfVisitedNodes(-1)
 , numberOfTimesteps(numberOfTimesteps)
 , positions(positions)
 {
@@ -26,11 +26,11 @@ Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<in
     //}
 }
 
-Solution::Solution(int cost, int numberOfVisitedStates,
+Solution::Solution(int cost, int numberOfVisitedNodes,
                    int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions)
     : foundPath(true)
     , cost(cost)
-    , numberOfVisitedStates(numberOfVisitedStates)
+    , numberOfVisitedNodes(numberOfVisitedNodes)
     , numberOfTimesteps(numberOfTimesteps)
     , positions(positions)
 {
@@ -43,8 +43,8 @@ int Solution::getCost() const {
     return cost;
 }
 
-int Solution::getNumberOfVisitedStates() const {
-    return numberOfVisitedStates;
+int Solution::getNumberOfVisitedNodes() const {
+    return numberOfVisitedNodes;
 }
 
 int Solution::getNumberOfTimesteps() const {
@@ -79,7 +79,9 @@ void Solution::print() {
     if (foundPath){
         std::cout << " " << std::endl;
         std::cout << "==== Solution ====" << std::endl;
-        std::cout << numberOfVisitedStates << " visited states (goal tested)" << std::endl;
+        std::cout << numberOfVisitedNodes << " visited nodes " << std::endl;
+        std::cout << " - goal tested states if solution of a single joint A*" << std::endl;
+        std::cout << " - conflict tree nodes if solution of conflict based search" << std::endl;
         std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
         std::cout << " " << std::endl;
         std::cout << " -> Position of every agent at each time : " << std::endl;

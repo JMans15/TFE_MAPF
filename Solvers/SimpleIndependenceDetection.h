@@ -46,8 +46,13 @@ template<class S>
 struct PairHasher {
     std::size_t operator()(const std::pair<S, S> &pair) const {
         size_t result = 0;
-        boost::hash_combine(result, pair.first);
-        boost::hash_combine(result, pair.second);
+        if (pair.first<pair.second){
+            boost::hash_combine(result, pair.first);
+            boost::hash_combine(result, pair.second);
+        } else {
+            boost::hash_combine(result, pair.second);
+            boost::hash_combine(result, pair.first);
+        }
         return result;
     }
 };

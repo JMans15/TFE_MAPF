@@ -13,10 +13,10 @@ class Solution {
 public:
     Solution();
     Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
-    Solution(int cost, int numberOfVisitedStates, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
+    Solution(int cost, int numberOfVisitedNodes, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
 
     int getCost() const;
-    int getNumberOfVisitedStates() const;
+    int getNumberOfVisitedNodes() const;
     int getNumberOfTimesteps() const;
     std::vector<int> getPathOfAgent(int id);
     bool getFoundPath();
@@ -32,7 +32,7 @@ public:
     // SumOfCosts : The sum of the time steps required for every agent to reach its goal
     int getSumOfCostsCost();
 
-    // Returns True if all paths don't have any conflict (vertex conflict and edge conflict)
+    // Returns true if all paths don't have any conflict (vertex conflict and edge conflict)
     bool isValid();
 
     std::unordered_map<int, std::vector<int>> getPositions() const;
@@ -45,8 +45,10 @@ private:
     // Cost of the solution / value of the objective function for this solution (if solution of a single joint A*)
     int cost;
 
-    // The number of visited (goal tested) states (if solution of a single joint A*)
-    int numberOfVisitedStates;
+    // The number of visited nodes
+    // - goal tested states if solution of a single joint A*
+    // - conflict tree nodes if solution of conflict based search
+    int numberOfVisitedNodes;
 
     // The number of needed timesteps from all agents to reach their target position
     int numberOfTimesteps;

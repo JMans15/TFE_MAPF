@@ -18,7 +18,7 @@ public:
         , parent(parent)
         , violationCount(violationCount)
     {}
-    ~Node() {}
+    ~Node() = default;
 
     inline std::shared_ptr<S> getState() const {
         return state;

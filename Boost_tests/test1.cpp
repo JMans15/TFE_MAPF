@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
         auto solution = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan).solve();
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
-        BOOST_CHECK_MESSAGE(solution->getNumberOfVisitedStates() == 25, "NumberOfVisitedStates = " << solution->getNumberOfVisitedStates() << " tested against 25");
+        BOOST_CHECK_MESSAGE(solution->getNumberOfVisitedNodes() == 25, "NumberOfVisitedStates = " << solution->getNumberOfVisitedNodes() << " tested against 25");
         BOOST_CHECK_MESSAGE(solution->getCost() == 18, "Cost = " << solution->getCost() << " tested against 18");
     }
 
@@ -174,8 +174,8 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         auto solution2 = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, OptimalDistance).solve();
         BOOST_CHECK_MESSAGE(solution1->getMakespanCost() == 18, "MakespanCost = " << solution1->getMakespanCost() << " tested against 18");
 
-        BOOST_CHECK_MESSAGE(solution1->getNumberOfVisitedStates() == 177, "NumberOfVisitedStates = " << solution1->getNumberOfVisitedStates() << " for Manhattan, tested against 177");
-        BOOST_CHECK_MESSAGE(solution2->getNumberOfVisitedStates() == 19, "NumberOfVisitedStates = " << solution2->getNumberOfVisitedStates() << " for OptimalDistance, tested against 19");
+        BOOST_CHECK_MESSAGE(solution1->getNumberOfVisitedNodes() == 177, "NumberOfVisitedStates = " << solution1->getNumberOfVisitedNodes() << " for Manhattan, tested against 177");
+        BOOST_CHECK_MESSAGE(solution2->getNumberOfVisitedNodes() == 19, "NumberOfVisitedStates = " << solution2->getNumberOfVisitedNodes() << " for OptimalDistance, tested against 19");
     }
 
     BOOST_AUTO_TEST_CASE(cooperative) {

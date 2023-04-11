@@ -32,6 +32,7 @@ private:
 struct GroupHasher {
     std::size_t operator()(const std::shared_ptr<Group>& group) const {
         size_t result = 0;
+        // TODO : we need to iterate through the set always in the same order, is it the case here??
         for (int i : group->getAgents()){
             boost::hash_combine(result, i);
         }
