@@ -20,7 +20,7 @@ std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int
         auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStarts()[i], problem->getTargets()[i], agentId);
         auto solution = AStar<SingleAgentProblem, SingleAgentState>(prob, typeOfHeuristic).solve();
         if (not solution->getFoundPath()){
-            return {{}, -1, {}};
+            return {solutions, -1, costs};
         }
         solutions[agentId] = solution->getPathOfAgent(agentId);
         costs[agentId] = solution->getCost();

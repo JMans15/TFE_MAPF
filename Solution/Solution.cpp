@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include "set"
+#include <set>
 
 Solution::Solution() {
     foundPath = false;
@@ -34,9 +34,9 @@ Solution::Solution(int cost, int numberOfVisitedNodes,
     , numberOfTimesteps(numberOfTimesteps)
     , positions(positions)
 {
-    //if (not isValid()){
-    //    std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
-    //}
+    if (not isValid()){
+        std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
+    }
 }
 
 int Solution::getCost() const {
@@ -154,6 +154,7 @@ bool Solution::isValid() {
         std::set<std::pair<int, int>> edgesAtThisTimestep;
         for (auto i : positions){
             if (edgesAtThisTimestep.count({i.second[t], i.second[t + 1]})>0){
+                
                 return false;
             } else {
                 edgesAtThisTimestep.insert({i.second[t + 1], i.second[t]});
