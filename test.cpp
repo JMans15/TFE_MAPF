@@ -189,16 +189,18 @@ int main() {
     solution2->print(); // numberOfVisitedStates = 17*/
 
     // TEST 12 : 2 agents and comparaison between Manhattan and OptimalDistance
-    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     std::vector<int> starts;
-    starts.push_back(1);
-    starts.push_back(150);
+    starts.push_back(205*256+177);
+    starts.push_back(206*256+171);
+    starts.push_back(39*256+79);
     std::vector<int> targets;
-    targets.push_back(150);
-    targets.push_back(1);
+    targets.push_back(249*256+72);
+    targets.push_back(181*256+239);
+    targets.push_back(67*256+65);
     auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
-    solution1->print(); // numberOfVisitedStates = 690412
+    // auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
+    // solution1->print(); // numberOfVisitedStates = 690412
     auto solution2 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
     solution2->print(); // numberOfVisitedStates = 331*/
 
@@ -265,7 +267,7 @@ int main() {
     solution->print();*/
 
     // TEST 15 : Conflict Based Search
-    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(7);
     starts.push_back(5);
@@ -278,5 +280,5 @@ int main() {
     auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
     solution1->print();
     auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
-    solution2->print();
+    solution2->print();*/
 }

@@ -21,9 +21,9 @@ Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<in
 , numberOfTimesteps(numberOfTimesteps)
 , positions(positions)
 {
-    //if (not isValid()){
-    //    std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
-    //}
+    if (not isValid()){
+        std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
+    }
 }
 
 Solution::Solution(int cost, int numberOfVisitedNodes,
@@ -154,7 +154,6 @@ bool Solution::isValid() {
         std::set<std::pair<int, int>> edgesAtThisTimestep;
         for (auto i : positions){
             if (edgesAtThisTimestep.count({i.second[t], i.second[t + 1]})>0){
-                
                 return false;
             } else {
                 edgesAtThisTimestep.insert({i.second[t + 1], i.second[t]});

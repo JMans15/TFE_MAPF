@@ -155,6 +155,7 @@ int MultiAgentProblemWithConstraints::numberOfViolations(int agent, int newPosit
 std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> MultiAgentProblemWithConstraints::getSuccessors(std::shared_ptr<MultiAgentState> state) const {
     std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> successors;
     auto positions = state->getPositions();
+    auto prePositions = state->getPrePositions();
     int agentToAssign = state->getAgentToAssign();
     int t = state->getTimestep();
     int nextAgentToAssign;
@@ -199,15 +200,15 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> MultiAgentPr
         for (int j : graph->getNeighbors(positions[agentToAssign])) {
             vector<int> newpositions(positions);
             newpositions[agentToAssign] = j;
-            if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state->getPrePositions()) && okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
-                auto successor = std::make_shared<MultiAgentState>(newpositions, positions, nextT, nextAgentToAssign, isStandard);
+            if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
+                auto successor = std::make_shared<MultiAgentState>(newpositions, prePositions, nextT, nextAgentToAssign, isStandard);
                 successors.emplace_back(successor, costMovement, numberOfViolations(agentToAssign, positions[agentToAssign], j, nextT));
             }
         }
 
         // Wait
         if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-            auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard);
+            auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextT, nextAgentToAssign, isStandard);
             successors.emplace_back(successor, costWait, numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
         }
 
@@ -219,8 +220,8 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> MultiAgentPr
             for (int j : graph->getNeighbors(positions[agentToAssign])) {
                 vector<int> newpositions(positions);
                 newpositions[agentToAssign] = j;
-                if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, state->getPrePositions()) && okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
-                    auto successor = std::make_shared<MultiAgentState>(newpositions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
+                    auto successor = std::make_shared<MultiAgentState>(newpositions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costMovement, numberOfViolations(agentToAssign, positions[agentToAssign], j, nextT));
                 }
             }
@@ -229,14 +230,14 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> MultiAgentPr
             if (positions[agentToAssign]!=targets[agentToAssign]) { // agentToAssign not at his target position
                 costWait = 1;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                    auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
                 }
             } else { // agentToAssign is at his target position
                 // agentToAssign can still move in the future
                 costWait = 1;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                    auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
                 }
 
@@ -244,7 +245,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> MultiAgentPr
                 costWait = 0;
                 cannotMove.push_back(agentToAssign);
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                    auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
                 }
             }
@@ -253,7 +254,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> MultiAgentPr
         } else { // agentToAssign is not allowed to move
             costWait = 0;
             if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                auto successor = std::make_shared<MultiAgentState>(positions, positions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                 successors.emplace_back(successor, costWait, numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
             }
         }

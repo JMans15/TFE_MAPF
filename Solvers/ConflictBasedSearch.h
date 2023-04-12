@@ -29,6 +29,7 @@ protected:
     TypeOfHeuristic typeOfHeuristic;
     std::multiset<std::shared_ptr<ConflictTreeNode>, ConflictTreeNodeComparator> fringe; // the open list
 
+    // TODO : commentaires
     std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int, int>> planIndividualPaths();
     std::tuple<bool, bool, int, int, int, int, int> findAConflict(std::shared_ptr<ConflictTreeNode> node);
     std::shared_ptr<Solution> combineSolutions(std::shared_ptr<ConflictTreeNode> node, int numberOfVisitedNodes);
