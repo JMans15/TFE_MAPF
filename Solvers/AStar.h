@@ -29,7 +29,7 @@ public:
         auto start = problem->getStartState();
         fringe.insert(std::make_shared<Node<S>>(start, 0, heuristic->heuristicFunction(start)));
 
-        int numberOfVisitedStates = 0;
+        numberOfVisitedStates = 0;
 
         while (!fringe.empty()){
             auto it = fringe.begin();
@@ -45,7 +45,7 @@ public:
             numberOfVisitedStates += 1;
 
             if (problem->isGoalState(nodeState)){
-                return retrieveSolution(numberOfVisitedStates, node);
+                return retrieveSolution(node);
             }
 
             auto successors = problem->getSuccessors(nodeState);
@@ -72,8 +72,9 @@ private:
     std::shared_ptr<Heuristic<S>> heuristic;
     std::multiset<std::shared_ptr<Node<S>>, NodeComparator<S>> fringe; // the open list
     std::unordered_map<std::shared_ptr<S>, int, StateHasher<S>, StateEquality<S>> distance; // the closed list
+    int numberOfVisitedStates;
 
-    std::shared_ptr<Solution> retrieveSolution(int numberOfVisitedStates, std::shared_ptr<Node<S>> node) {
+    std::shared_ptr<Solution> retrieveSolution(std::shared_ptr<Node<S>> node) {
         int cost = node->getCost();
 
         std::vector<std::shared_ptr<S>> states;

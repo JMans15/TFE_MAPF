@@ -265,7 +265,7 @@ int main() {
     solution->print();*/
 
     // TEST 15 : Conflict Based Search
-    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(7);
     starts.push_back(5);
@@ -278,5 +278,19 @@ int main() {
     auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
     solution1->print();
     auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    solution2->print();*/
+
+    // TEST 16 : Conflict Based Search
+    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(17);
+    starts.push_back(22);
+    vector<int> targets;
+    targets.push_back(7);
+    targets.push_back(6);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    solution1->print();
     solution2->print();
 }

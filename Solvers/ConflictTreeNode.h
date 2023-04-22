@@ -7,18 +7,25 @@
 #ifndef TFE_MAPF_CONFLICTTREENODE_H
 #define TFE_MAPF_CONFLICTTREENODE_H
 
+#include "../ConflictConstraints/Conflict.h"
+
 class ConflictTreeNode {
 public:
 
-    ConflictTreeNode(std::set<VertexConstraint> setOfVertexConstraints, std::set<EdgeConstraint> setOfEdgeConstraints, std::unordered_map<int, std::vector<int>> solution, const std::unordered_map<int,int>& costs, int cost, int numberOfConflicts = 0)
+    ConflictTreeNode(std::set<VertexConstraint> setOfVertexConstraints, std::set<EdgeConstraint> setOfEdgeConstraints, std::unordered_map<int, std::vector<int>> solution, std::unordered_map<int,int> costs, int cost, std::shared_ptr<ConflictTreeNode> parent = nullptr, std::set<Conflict> setOfConflicts = std::set<Conflict>())
         : setOfVertexConstraints(std::move(setOfVertexConstraints))
         , setOfEdgeConstraints(std::move(setOfEdgeConstraints))
         , solution(std::move(solution))
-        , costs(costs)
+        , costs(std::move(costs))
         , cost(cost)
-        , numberOfConflicts(numberOfConflicts)
+        , parent(std::move(parent))
+        , setOfConflicts(setOfConflicts)
     {}
     ~ConflictTreeNode() = default;
+
+    inline std::shared_ptr<ConflictTreeNode> getParent() const {
+        return parent;
+    }
 
     std::set<VertexConstraint> getSetOfVertexConstraints(){
         return setOfVertexConstraints;
@@ -41,16 +48,21 @@ public:
     }
 
     inline int getNumberOfConflicts() const {
-        return numberOfConflicts;
+        return setOfConflicts.size();
+    }
+
+    std::set<Conflict> getSetOfConflicts() const {
+        return setOfConflicts;
     }
 
 private:
+    std::shared_ptr<ConflictTreeNode> parent; // parent node
     std::set<VertexConstraint> setOfVertexConstraints;
     std::set<EdgeConstraint> setOfEdgeConstraints;
     std::unordered_map<int, std::vector<int>> solution; // key = id of the agent, value = path of this agent
     std::unordered_map<int,int> costs; // key = id of the agent, value = cost of the path for this agent
     int cost; // cost of the current solution, the f-value of the node
-    int numberOfConflicts; // number of soft constraints that have been violated on the path leading up to this node
+    std::set<Conflict> setOfConflicts; // set of conflicts (between the paths) in the current solution
 };
 
 class ConflictTreeNodeComparator {

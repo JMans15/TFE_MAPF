@@ -37,13 +37,13 @@ public:
     }
     void print() const {
         if (vertexConflict){
-            std::cout << "Vertex conflict : " << agent1 << " and " << agent2 << " are at position " << position1 << " at time " << time << "." << std::endl;
+            std::cout << "Vertex conflict : agent " << agent1 << " and agent " << agent2 << " are at position " << position1 << " at time " << time << "." << std::endl;
         } else {
-            std::cout << "Edge conflict : " << agent1 << " and " << agent2 << " are occupying the edge {" << position1 << ", " << position2 << "} from time " << time-1 << " to time " << time << "." << std::endl;
+            std::cout << "Edge conflict : agent " << agent1 << " and agent " << agent2 << " are occupying the edge {" << position1 << ", " << position2 << "} from time " << time-1 << " to time " << time << "." << std::endl;
         }
     }
 
-    // TODO : think about to put here
+    // TODO : think about what to put here
     // first the conflict with the lower time
     // and then ?? (idea: first the vertex conflicts and then edge conflicts)
     bool operator<(const Conflict &other) const {
