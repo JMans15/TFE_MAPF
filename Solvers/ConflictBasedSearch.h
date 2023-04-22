@@ -9,6 +9,7 @@
 #include "AStar.h"
 #include "ConflictTreeNode.h"
 #include "SimpleIndependenceDetection.h"
+#include "../ConflictConstraints/Conflict.h"
 
 // Conflict Based Search
 // - high level of the algorithm - Conflict Tree (CT) as a best first search
@@ -29,9 +30,15 @@ protected:
     TypeOfHeuristic typeOfHeuristic;
     std::multiset<std::shared_ptr<ConflictTreeNode>, ConflictTreeNodeComparator> fringe; // the open list
 
-    // TODO : commentaires
+    // Plans a path for each agent
+    // Returns un tuple {solutions, cost, costs} where
+    // - solutions is a map from the id of an agent to the path of this agent
+    // - cost is the cost of all the paths
+    // - costs is a map from the id an agent to the cost of the path of this agent
     std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int, int>> planIndividualPaths();
-    std::tuple<bool, bool, int, int, int, int, int> findAConflict(std::shared_ptr<ConflictTreeNode> node);
+
+    std::shared_ptr<Conflict> findAConflict(std::shared_ptr<ConflictTreeNode> node);
+
     std::shared_ptr<Solution> combineSolutions(std::shared_ptr<ConflictTreeNode> node, int numberOfVisitedNodes);
 };
 

@@ -80,8 +80,8 @@ void Solution::print() {
         std::cout << " " << std::endl;
         std::cout << "==== Solution ====" << std::endl;
         std::cout << numberOfVisitedNodes << " visited nodes " << std::endl;
-        std::cout << " - goal tested states if solution of a single joint A*" << std::endl;
-        std::cout << " - conflict tree nodes if solution of conflict based search" << std::endl;
+        std::cout << " ( = goal tested states if solution of a single joint A*" << std::endl;
+        std::cout << "  or conflict tree nodes if solution of conflict based search)" << std::endl;
         std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
         std::cout << " " << std::endl;
         std::cout << " -> Position of every agent at each time : " << std::endl;

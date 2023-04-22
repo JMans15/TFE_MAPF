@@ -6,8 +6,8 @@
 #define TFE_MAPF_PROBLEM_H
 
 #include "../GraphParser/Graph.h"
-#include "../Constraints/VertexConstraint.h"
-#include "../Constraints/EdgeConstraint.h"
+#include "../ConflictConstraints/VertexConstraint.h"
+#include "../ConflictConstraints/EdgeConstraint.h"
 
 #include <iostream>
 #include <memory>

@@ -33,7 +33,7 @@ std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int
     return {solutions, cost, costs};
 }
 
-std::tuple<bool, bool, int, int, int, int, int> ConflictBasedSearch::findAConflict(std::shared_ptr<ConflictTreeNode> node) {
+std::shared_ptr<Conflict> ConflictBasedSearch::findAConflict(std::shared_ptr<ConflictTreeNode> node) {
     auto solution = node->getSolution();
     int numberOfTimesteps = 0;
     for (const auto& a : solution){
@@ -51,7 +51,7 @@ std::tuple<bool, bool, int, int, int, int, int> ConflictBasedSearch::findAConfli
         for (auto a : solution){
             int positionOfAgentAtTimestep = a.second[t];
             if (positionsAtThisTimestep.count(positionOfAgentAtTimestep)>0){
-                return {true, true, positionsAtThisTimestep[positionOfAgentAtTimestep], a.first, positionOfAgentAtTimestep, t, -1};
+                return std::make_shared<Conflict>(positionsAtThisTimestep[positionOfAgentAtTimestep], a.first, positionOfAgentAtTimestep, t);
             } else {
                 positionsAtThisTimestep[positionOfAgentAtTimestep] = a.first;
             }
@@ -63,13 +63,13 @@ std::tuple<bool, bool, int, int, int, int, int> ConflictBasedSearch::findAConfli
         for (const auto& a : solution){
             auto pathOfAgent = a.second;
             if (edgesAtThisTimestep.count({pathOfAgent[t], pathOfAgent[t + 1]})>0){
-                return {true, false, edgesAtThisTimestep[{pathOfAgent[t], pathOfAgent[t + 1]}], a.first, pathOfAgent[t], pathOfAgent[t + 1], t+1};
+                return std::make_shared<Conflict>(edgesAtThisTimestep[{pathOfAgent[t], pathOfAgent[t + 1]}], a.first, pathOfAgent[t], pathOfAgent[t + 1], t+1);
             } else {
                 edgesAtThisTimestep[{pathOfAgent[t + 1], pathOfAgent[t]}] = a.first;
             }
         }
     }
-    return {false, false, -1, -1, -1, -1, -1};
+    return nullptr;
 }
 
 std::shared_ptr<Solution> ConflictBasedSearch::combineSolutions(std::shared_ptr<ConflictTreeNode> node, int numberOfVisitedNodes) {
@@ -105,22 +105,23 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
 
         auto conflict = findAConflict(node);
 
-        if (not std::get<0>(conflict)){
+        if (conflict == nullptr){
             return combineSolutions(node, numberOfVisitedNodes);
         }
 
-        bool vertexConflict = std::get<1>(conflict);
-        int agent1 = std::get<2>(conflict);
-        int agent2 = std::get<3>(conflict);
+        conflict->print();
+
+        int agent1 = conflict->getAgent1();
+        int agent2 = conflict->getAgent2();
 
         for (int agentId : {agent1, agent2}){
             auto successorSetOfVertexConstraints = node->getSetOfVertexConstraints();
             auto successorSetOfEdgeConstraints = node->getSetOfEdgeConstraints();
-            if (vertexConflict){
-                successorSetOfVertexConstraints.insert({agentId, std::get<4>(conflict), std::get<5>(conflict)});
+            if (conflict->isVertexConflict()){
+                successorSetOfVertexConstraints.insert({agentId, conflict->getPosition1(), conflict->getTime()});
             } else { // edge conflict
-                successorSetOfEdgeConstraints.insert({agentId, std::get<4>(conflict), std::get<5>(conflict), std::get<6>(conflict)});
-                successorSetOfEdgeConstraints.insert({agentId, std::get<5>(conflict), std::get<4>(conflict), std::get<6>(conflict)});
+                successorSetOfEdgeConstraints.insert({agentId, conflict->getPosition1(), conflict->getPosition2(), conflict->getTime()});
+                successorSetOfEdgeConstraints.insert({agentId, conflict->getPosition2(), conflict->getPosition1(), conflict->getTime()});
             }
             auto successorSolution = node->getSolution();
             auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, successorSetOfVertexConstraints, successorSetOfEdgeConstraints);

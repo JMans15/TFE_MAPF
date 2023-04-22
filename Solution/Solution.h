@@ -42,7 +42,7 @@ public:
 
 private:
 
-    // Cost of the solution / value of the objective function for this solution (if solution of a single joint A*)
+    // Cost of the solution / value of the objective function for this solution (if solution of a single joint A* or conflict based search)
     int cost;
 
     // The number of visited nodes
