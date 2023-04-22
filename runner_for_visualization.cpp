@@ -3,6 +3,8 @@
 //
 
 #include "Solvers/AStar.h"
+#include "Solvers/SimpleIndependenceDetection.h"
+#include "Solvers/IndependenceDetection.h"
 #include "Problems/MultiAgentProblemWithConstraints.h"
 #include "GraphParser/Parser.h"
 #include "Problems/SingleAgentProblem.h"
@@ -23,6 +25,8 @@ int main(int argc, const char** argv) {
         ("v, verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
         ("h, help", "Print help")
         ("m, multi", "Multi agent version")
+        ("sid", "Simple Independence Detection")
+        ("id", "Independence Detection")
         ("a, agents", "Number of agents", cxxopts::value<int>())
         ("outfile", "Output file that will be filled with result data", cxxopts::value<std::string>())
         ;
@@ -143,8 +147,18 @@ int main(int argc, const char** argv) {
         }
 
         auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-        auto aStar = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance);
-        solution = aStar.solve();
+        if (result.count("sid")) {
+            auto solver = SimpleIndependenceDetection(problem, OptimalDistance);
+            solution = solver.solve();
+        }
+        else if (result.count("id")) {
+            auto solver = IndependenceDetection(problem, OptimalDistance);
+            solution = solver.solve();
+        }
+        else {
+            auto solver = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance);
+            solution = solver.solve();
+        }
     } else {
         // Getting start and target
         auto start = result["s"].as<int>();

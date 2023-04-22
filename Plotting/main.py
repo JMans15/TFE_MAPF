@@ -7,11 +7,9 @@ import sys, os
 
 directory = '../mapf-map/Paris/scen-random'
 program = '../cmake-build-debug/TFE_MAPF_visu'
-timeout = 10  # Timeout in seconds
+timeout = 2  # Timeout in seconds
 args = ['-m', '--map', '../mapf-map/Paris/Paris_1_256.map']
-num_threads = 4  # Number of threads to use (do not use too much because of RAM usage of mapf)
-
-data = []
+num_threads = 1  # Number of threads to use (do not use too much because of RAM usage of mapf)
 
 def check_solution(file):
     file.seek(0)
@@ -63,35 +61,53 @@ def check_start_and_target(file, scenario_filename, nagents):
         return False
     return True
 
-def run_program(file_path, a, i):
+def run_program(file_path, a, i, algo):
     try:
-        subprocess.run([program, '--scen', f'{file_path}', '-a', f'{a}', '--outfile', f'../Plotting/result_{i}.txt'] + args, timeout=timeout)
+        subprocess.run([program, '--scen', f'{file_path}', '-a', f'{a}', '--outfile', f'../Plotting/result_{i}.txt', algo] + args, timeout=timeout)
         with open(f"result_{i}.txt", 'r') as file:
             if not check_solution(file):
+                print(f"failed with scenario {file_path}")
                 return False
             if not check_start_and_target(file, file_path, a):
+                print(f"failed with scenario {file_path}")
                 return False
         return True
     except subprocess.TimeoutExpired:
         return False
 
-for a in range(1, 1002):
-    files = os.listdir(directory)
-    with Pool(num_threads) as p:
-        results = [p.apply_async(run_program, (os.path.join(directory, filename), a, i)) for i, filename in enumerate(files)]
-        timeouts = sum(not result.get() for result in results)
-    success = (1-timeouts/len(files))*100
-    data.append(success)
-    print(f"Success rate with {a} agents = {success}")
-    if success == 0.0:
-        break
+def data_for_algo(algo):
+    data = []
+    for a in range(1, 26): #max 1002
+        files = os.listdir(directory)
+        with Pool(num_threads) as p:
+            results = [p.apply_async(run_program, (os.path.join(directory, filename), a, i, algo)) for i, filename in enumerate(files)]
+            timeouts = sum(not result.get() for result in results)
+        success = (1-timeouts/len(files))*100
+        data.append(success)
+        print(f"Success rate with {a} agents = {success}")
+        if success == 0.0:
+            break
 
-print(f"\nDatapoints : {data}")
+    return data
 
 fig = plt.figure(figsize=(16, 8))
 ax = fig.subplots(1,1)
+
+data = data_for_algo('')
+
 ax.set_title(f"Timeout = {timeout}, random scenarios")
 ax.set_xlabel("Number of agents")
 ax.set_ylabel("Success rate [%]")
-ax.plot(list(range(1, len(data)+1)), data, marker='x')
+
+ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A*")
+
+data = data_for_algo("--sid")
+ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Simple Independence Detection")
+
+data = data_for_algo("--id")
+ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Independence Detection")
+
+ax.grid(axis='both')
+
+plt.legend()
 plt.show()
