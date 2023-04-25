@@ -5,6 +5,8 @@
 #ifndef TFE_MAPF_EDGECONSTRAINT_H
 #define TFE_MAPF_EDGECONSTRAINT_H
 
+#include <iostream>
+
 class EdgeConstraint {
 public:
 
@@ -23,6 +25,9 @@ public:
     }
     int getTime() const {
         return time;
+    }
+    void print() const {
+        std::cout << "Edge constraint : agent " << agent << " cannot go from position " << position1 << " to position " << position2 << " between time " << time-1 << " and time " << time << "." << std::endl;
     }
 
     bool operator<(const EdgeConstraint &other) const {

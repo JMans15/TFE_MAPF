@@ -5,6 +5,8 @@
 #ifndef TFE_MAPF_VERTEXCONSTRAINT_H
 #define TFE_MAPF_VERTEXCONSTRAINT_H
 
+#include <iostream>
+
 class VertexConstraint {
 public:
 
@@ -20,6 +22,9 @@ public:
     }
     int getTime() const {
         return time;
+    }
+    void print() const {
+        std::cout << "Vertex constraint : agent " << agent << " cannot be at position " << position << " at time " << time << "." << std::endl;
     }
 
     bool operator<(const VertexConstraint &other) const {

@@ -288,9 +288,40 @@ int main() {
     vector<int> targets;
     targets.push_back(7);
     targets.push_back(6);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
     auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
     auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
     solution1->print();
     solution2->print();
+    std::cout << solution2->getMakespanCost() << std::endl;
+
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(37);
+    starts.push_back(43);
+    vector<int> targets;
+    targets.push_back(26);
+    targets.push_back(20);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
+    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    solution1->print();
+    solution2->print();
+    std::cout << solution2->getMakespanCost() << std::endl;*/
+
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(4);
+    starts.push_back(10);
+    starts.push_back(18);
+    vector<int> targets;
+    targets.push_back(13);
+    targets.push_back(13);
+    targets.push_back(13);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
+    //auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    //solution1->print();
+    solution2->print();
+    std::cout << solution2->getMakespanCost() << std::endl;*/
 }

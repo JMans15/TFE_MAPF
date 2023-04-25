@@ -48,10 +48,7 @@ public:
     // and then ?? (idea: first the vertex conflicts and then edge conflicts)
     bool operator<(const Conflict &other) const {
         if (time == other.time) {
-            if (position1 == other.position1) {
-                return position2 < other.position2;
-            }
-            return position1 < other.position1;
+            return true;
         }
         return time < other.time;
     }

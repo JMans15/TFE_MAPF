@@ -35,50 +35,28 @@ std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int
 
 std::set<Conflict> ConflictBasedSearch::calculateSetOfConflicts(std::unordered_map<int, std::vector<int>> solutions) {
     std::set<Conflict> setOfConflicts;
-    int numberOfTimesteps = 0;
-    for (const auto& a : solutions){
-        numberOfTimesteps = std::max((int)a.second.size(), numberOfTimesteps);
-    }
-    for (auto i : solutions){
-        int actualLength = (int) i.second.size();
-        if (actualLength < numberOfTimesteps){
-            solutions[i.first].resize(numberOfTimesteps, i.second[actualLength-1]);
-        }
-    }
-    // Vertex conflict
-    for (int t = 0; t < numberOfTimesteps; t++){
-        std::unordered_map<int, std::set<int>> positionsAtThisTimestep;
-        for (auto a : solutions){
-            int positionOfAgentAtTimestep = a.second[t];
-            if (positionsAtThisTimestep.count(positionOfAgentAtTimestep)>0){
-                for (auto agent : positionsAtThisTimestep[positionOfAgentAtTimestep]){
-                    setOfConflicts.insert({agent, a.first, positionOfAgentAtTimestep, t});
+    for (auto [agentA, pathA] : solutions){
+        for (auto [agentB, pathB] : solutions){
+            if (agentA < agentB){
+                // Vertex conflict
+                for (int t = 0; t < std::min(pathA.size(), pathB.size()); t++){
+                    if (pathA[t]==pathB[t]){
+                        setOfConflicts.insert({agentA, agentB, pathA[t], t});
+                    }
                 }
-                positionsAtThisTimestep[positionOfAgentAtTimestep].insert(a.first);
-            } else {
-                positionsAtThisTimestep[positionOfAgentAtTimestep].insert(a.first);
-            }
-        }
-    }
-    // Edge conflict
-    for (int t = 0; t < numberOfTimesteps-1; t++){
-        std::unordered_map<std::pair<int, int>, std::set<int>, PairHasher<int>, PairEquality<int>> edgesAtThisTimestep;
-        for (const auto& a : solutions){
-            auto pathOfAgent = a.second;
-            if (edgesAtThisTimestep.count({pathOfAgent[t], pathOfAgent[t + 1]})>0){
-                for (auto agent : edgesAtThisTimestep[{pathOfAgent[t], pathOfAgent[t + 1]}]){
-                    setOfConflicts.insert({agent, a.first, pathOfAgent[t], pathOfAgent[t + 1], t+1});
+                // Edge conflict
+                for (int t = 0; t < std::min(pathA.size(), pathB.size())-1; t++){
+                    if (pathA[t]==pathB[t+1] and pathA[t+1]==pathB[t]){
+                        setOfConflicts.insert({agentA, agentB, pathA[t], pathA[t + 1], t+1});
+                    }
                 }
-                edgesAtThisTimestep[{pathOfAgent[t], pathOfAgent[t + 1]}].insert(a.first);
-            } else {
-                edgesAtThisTimestep[{pathOfAgent[t], pathOfAgent[t + 1]}].insert(a.first);
             }
         }
     }
     return setOfConflicts;
 }
 
-std::set<Conflict> ConflictBasedSearch::updateSetOfConflicts(std::unordered_map<int, std::vector<int>> fullSolutions, std::set<Conflict> setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution){
+std::set<Conflict> ConflictBasedSearch::updateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& fullSolutions, std::set<Conflict> setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution){
     std::set<Conflict> successorSetOfConflicts;
     int agentId = successorSolution.begin()->first;
     vector<int> pathOfAgentId = successorSolution.begin()->second;
@@ -87,44 +65,18 @@ std::set<Conflict> ConflictBasedSearch::updateSetOfConflicts(std::unordered_map<
             successorSetOfConflicts.insert(conflict);
         }
     }
-    int numberOfTimesteps = 0;
-    for (const auto& a : fullSolutions){
-        if (a.first==agentId){
-            numberOfTimesteps = std::max((int)pathOfAgentId.size(), numberOfTimesteps);
-        } else {
-            numberOfTimesteps = std::max((int)a.second.size(), numberOfTimesteps);
-        }
-    }
-    for (auto i : fullSolutions){
-        if (i.first==agentId){
-            int actualLength = (int) pathOfAgentId.size();
-            if (actualLength < numberOfTimesteps){
-                pathOfAgentId.resize(numberOfTimesteps, pathOfAgentId[actualLength-1]);
-            }
-        } else {
-            int actualLength = (int) i.second.size();
-            if (actualLength < numberOfTimesteps){
-                fullSolutions[i.first].resize(numberOfTimesteps, i.second[actualLength-1]);
-            }
-        }
-    }
-    // Vertex conflict
-    for (int t = 0; t < numberOfTimesteps; t++){
-        for (auto a : fullSolutions){
-            if (a.first!=agentId){
-                if (a.second[t]==pathOfAgentId[t]){
-                    successorSetOfConflicts.insert({agentId, a.first, pathOfAgentId[t], t});
+    for (auto [agentA, pathA] : fullSolutions){
+        if (agentA != agentId){
+            // Vertex conflict
+            for (int t = 0; t < std::min(pathA.size(), pathOfAgentId.size()); t++){
+                if (pathA[t]==pathOfAgentId[t]){
+                    successorSetOfConflicts.insert({agentA, agentId, pathA[t], t});
                 }
             }
-        }
-    }
-    // Edge conflict
-    for (int t = 0; t < numberOfTimesteps-1; t++){
-        for (const auto& a : fullSolutions){
-            auto pathOfAgent = a.second;
-            if (a.first!=agentId){
-                if ((pathOfAgent[t]==pathOfAgentId[t] and pathOfAgent[t+1]==pathOfAgentId[t+1]) or (pathOfAgent[t]==pathOfAgentId[t+1] and pathOfAgent[t+1]==pathOfAgentId[t])){
-                    successorSetOfConflicts.insert({agentId, a.first, pathOfAgent[t], pathOfAgent[t + 1], t+1});
+            // Edge conflict
+            for (int t = 0; t < std::min(pathA.size(), pathOfAgentId.size())-1; t++){
+                if (pathA[t]==pathOfAgentId[t+1] and pathA[t+1]==pathOfAgentId[t]){
+                    successorSetOfConflicts.insert({agentA, agentId, pathA[t], pathA[t + 1], t+1});
                 }
             }
         }
@@ -170,6 +122,14 @@ std::unordered_map<int, vector<int>> ConflictBasedSearch::retrieveSolutions(std:
                 solutions[agentId] = path;
             }
         }
+        //std::cout << "New node :" << std::endl;
+        //for (auto constraint : node->getSetOfEdgeConstraints()){
+        //    constraint.print();
+        //}
+        //for (auto constraint : node->getSetOfVertexConstraints()){
+        //    constraint.print();
+        //}
+        //std::cout << node->getSetOfConflicts().size() << std::endl;
         if ((int)solutions.size() == problem->getNumberOfAgents()){
             break;
         }
@@ -212,8 +172,13 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
     numberOfVisitedNodes = 0;
 
     while (!fringe.empty()){
+        /*std::cout << "Dans la fringe :" << std::endl;
+        for (auto conflicttreenode : fringe){
+            std::cout << conflicttreenode->getCost() << " " << conflicttreenode->getSetOfConflicts().size() << std::endl;
+        }*/
         auto it = fringe.begin();
         const auto node = *it;
+        //std::cout << "On sort " << node->getCost() << " " << node->getSetOfConflicts().size() << std::endl;
 
         fringe.erase(it);
 
@@ -223,8 +188,13 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
             return combineSolutions(node);
         }
 
+        /*std::cout << "Dans le set of conflicts :" << std::endl;
+        for (auto conflict : node->getSetOfConflicts()){
+            conflict.print();
+        }*/
         auto conflict = *node->getSetOfConflicts().begin();
-        conflict.print();
+        //std::cout << "On sort " << std::endl;
+        //conflict.print();
 
         int agent1 = conflict.getAgent1();
         int agent2 = conflict.getAgent2();
@@ -234,7 +204,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
         for (int agentId : {agent1, agent2}){
             std::set<VertexConstraint> successorSetOfVertexConstraints;
             std::set<EdgeConstraint> successorSetOfEdgeConstraints;
-            auto newFullSetOfVertexConstraints = fullSetOfVertexConstraints; // TODO : verify que cest bien un copy
+            auto newFullSetOfVertexConstraints = fullSetOfVertexConstraints;
             auto newFullSetOfEdgeConstraints = fullSetOfEdgeConstraints;
             if (conflict.isVertexConflict()){
                 successorSetOfVertexConstraints.insert({agentId, conflict.getPosition1(), conflict.getTime()});
