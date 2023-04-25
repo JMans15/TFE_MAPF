@@ -21,7 +21,7 @@ target_link_libraries(TFE_MAPF_test TFE_MAPF)
 target_link_libraries(TFE_MAPF_test ${Boost_LIBRARIES})
 
 # runner with args
-add_executable(TFE_MAPF_visu runner_for_visualization.cpp)
+add_executable(TFE_MAPF_visu visualization-runner.cpp)
 target_link_libraries(TFE_MAPF_visu TFE_MAPF)
 target_link_libraries(TFE_MAPF_visu ${Boost_LIBRARIES})
 
