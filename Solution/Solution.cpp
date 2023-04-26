@@ -138,25 +138,21 @@ int Solution::getSumOfCostsCost() {
 }
 
 bool Solution::isValid() {
-    // Vertex conflict
-    for (int t = 0; t < numberOfTimesteps; t++){
-        std::set<int> positionsAtThisTimestep;
-        for (auto i : positions){
-             if (positionsAtThisTimestep.count(i.second[t])>0){
-                 return false;
-             } else {
-                 positionsAtThisTimestep.insert(i.second[t]);
-             }
-        }
-    }
-    // Edge conflict
-    for (int t = 0; t < numberOfTimesteps-1; t++){
-        std::set<std::pair<int, int>> edgesAtThisTimestep;
-        for (auto i : positions){
-            if (edgesAtThisTimestep.count({i.second[t], i.second[t + 1]})>0){
-                return false;
-            } else {
-                edgesAtThisTimestep.insert({i.second[t + 1], i.second[t]});
+    for (auto [agentA, pathA] : positions){
+        for (auto [agentB, pathB] : positions){
+            if (agentA < agentB){
+                // Vertex conflict
+                for (int t = 0; t < numberOfTimesteps; t++){
+                    if (pathA[t]==pathB[t]){
+                        return false;
+                    }
+                }
+                // Edge conflict
+                for (int t = 0; t < numberOfTimesteps-1; t++){
+                    if (pathA[t]==pathB[t+1] and pathA[t+1]==pathB[t]){
+                        return false;
+                    }
+                }
             }
         }
     }

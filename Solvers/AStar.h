@@ -20,6 +20,7 @@ public:
     AStar(std::shared_ptr<P> problem, TypeOfHeuristic typeOfHeuristic)
         : problem(problem)
         , heuristic(getHeuristic<P,S>(problem, std::make_shared<TypeOfHeuristic>(typeOfHeuristic)))
+        , numberOfVisitedStates(0)
     {}
 
     std::shared_ptr<Solution> solve() {
@@ -28,8 +29,6 @@ public:
 
         auto start = problem->getStartState();
         fringe.insert(std::make_shared<Node<S>>(start, 0, heuristic->heuristicFunction(start)));
-
-        numberOfVisitedStates = 0;
 
         while (!fringe.empty()){
             auto it = fringe.begin();

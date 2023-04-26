@@ -30,18 +30,36 @@ protected:
     std::multiset<std::shared_ptr<ConflictTreeNode>, ConflictTreeNodeComparator> fringe; // the open list
     int numberOfVisitedNodes;
 
-    // TODO : commentaires
     // Plans a path for each agent
     // Returns a tuple {solutions, cost, costs} where
     // - solutions is a map from the id of an agent to the path of this agent
     // - cost is the cost of all the paths
     // - costs is a map from the id an agent to the cost of the path of this agent
     std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int, int>> planIndividualPaths();
-    std::set<Conflict> calculateSetOfConflicts(std::unordered_map<int, std::vector<int>> solutions);
-    std::set<Conflict> updateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& fullSolutions, std::set<Conflict> setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution);
-    std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node);
+
+    // Returns the set of conflicts between the paths of solutions
+    static std::set<Conflict> calculateSetOfConflicts(std::unordered_map<int, std::vector<int>> solutions);
+
+    // Returns an updated set of conflicts after having replanned agent agentId
+    // - fullSolutions contains the paths of the parent
+    // - setOfConflicts is the set of conflicts of the parent
+    // - successorSolution contains the new path of agent agentId
+    static std::set<Conflict> updateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& fullSolutions, std::set<Conflict> setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution);
+
+    // Retrieves information from the parent nodes
+    // Returns a tuple {fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions}
+    // - fullSetOfVertexConstraints and fullSetOfEdgeConstraints are the sets of constraints from the root node to this node
+    // - fullCosts is a map from the id of an agent to the cost of the latest path of this agent
+    // - fullSolutions is a map from the id of an agent to the latest path of this agent
+    static std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node);
+
+    // Retrieves the paths from the parent nodes
+    // Returns fullSolutions
+    // - fullSolutions is a map from the id of an agent to the latest path of this agent
     std::unordered_map<int, vector<int>> retrieveSolutions(std::shared_ptr<ConflictTreeNode> node);
-    std::shared_ptr<Solution> combineSolutions(std::shared_ptr<ConflictTreeNode> node);
+
+    // Returns the solution in node with the right format (Solution class and same size for all paths)
+    std::shared_ptr<Solution> combineSolutions(const std::shared_ptr<ConflictTreeNode>& node);
 };
 
 

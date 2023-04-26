@@ -9,6 +9,7 @@
 ConflictBasedSearch::ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
     : problem(std::move(problem))
     , typeOfHeuristic(typeOfHeuristic)
+    , numberOfVisitedNodes(0)
     {}
 
 std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int, int>> ConflictBasedSearch::planIndividualPaths() {
@@ -46,6 +47,8 @@ std::set<Conflict> ConflictBasedSearch::calculateSetOfConflicts(std::unordered_m
                 }
                 // Edge conflict
                 for (int t = 0; t < std::min(pathA.size(), pathB.size())-1; t++){
+                    // We only add an edge conflict if 2 agents are traversing the edge with different directions
+                    // The other case is already token into account with 2 vertex conflicts
                     if (pathA[t]==pathB[t+1] and pathA[t+1]==pathB[t]){
                         setOfConflicts.insert({agentA, agentB, pathA[t], pathA[t + 1], t+1});
                     }
@@ -122,14 +125,6 @@ std::unordered_map<int, vector<int>> ConflictBasedSearch::retrieveSolutions(std:
                 solutions[agentId] = path;
             }
         }
-        //std::cout << "New node :" << std::endl;
-        //for (auto constraint : node->getSetOfEdgeConstraints()){
-        //    constraint.print();
-        //}
-        //for (auto constraint : node->getSetOfVertexConstraints()){
-        //    constraint.print();
-        //}
-        //std::cout << node->getSetOfConflicts().size() << std::endl;
         if ((int)solutions.size() == problem->getNumberOfAgents()){
             break;
         }
@@ -139,7 +134,7 @@ std::unordered_map<int, vector<int>> ConflictBasedSearch::retrieveSolutions(std:
     return solutions;
 }
 
-std::shared_ptr<Solution> ConflictBasedSearch::combineSolutions(std::shared_ptr<ConflictTreeNode> node) {
+std::shared_ptr<Solution> ConflictBasedSearch::combineSolutions(const std::shared_ptr<ConflictTreeNode>& node) {
     auto solutions = retrieveSolutions(node);
     int numberOfTimesteps = 0;
     for (const auto& a : solutions){
@@ -169,16 +164,9 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
 
     fringe.insert(std::make_shared<ConflictTreeNode>(setOfVertexConstraints, setOfEdgeConstraints, solution, costs, cost, nullptr, setOfConflicts));
 
-    numberOfVisitedNodes = 0;
-
     while (!fringe.empty()){
-        /*std::cout << "Dans la fringe :" << std::endl;
-        for (auto conflicttreenode : fringe){
-            std::cout << conflicttreenode->getCost() << " " << conflicttreenode->getSetOfConflicts().size() << std::endl;
-        }*/
         auto it = fringe.begin();
         const auto node = *it;
-        //std::cout << "On sort " << node->getCost() << " " << node->getSetOfConflicts().size() << std::endl;
 
         fringe.erase(it);
 
@@ -188,13 +176,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
             return combineSolutions(node);
         }
 
-        /*std::cout << "Dans le set of conflicts :" << std::endl;
-        for (auto conflict : node->getSetOfConflicts()){
-            conflict.print();
-        }*/
         auto conflict = *node->getSetOfConflicts().begin();
-        //std::cout << "On sort " << std::endl;
-        //conflict.print();
 
         int agent1 = conflict.getAgent1();
         int agent2 = conflict.getAgent2();

@@ -57,10 +57,14 @@ public:
 
 private:
     std::shared_ptr<ConflictTreeNode> parent; // parent node
-    std::set<VertexConstraint> setOfVertexConstraints;
-    std::set<EdgeConstraint> setOfEdgeConstraints;
+    std::set<VertexConstraint> setOfVertexConstraints; // constraint added in this node
+    std::set<EdgeConstraint> setOfEdgeConstraints; // constraint added in this node
+
+    // solution and costs only contains the path (and its path) of the agent that just has been replanned
+    // but they contain the paths of all agents in the root node
     std::unordered_map<int, std::vector<int>> solution; // key = id of the agent, value = path of this agent
     std::unordered_map<int,int> costs; // key = id of the agent, value = cost of the path for this agent
+
     int cost; // cost of the current solution, the f-value of the node
     std::set<Conflict> setOfConflicts; // set of conflicts (between the paths) in the current solution
 };
