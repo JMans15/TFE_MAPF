@@ -23,6 +23,7 @@ public:
     std::vector<std::tuple<std::shared_ptr<SingleAgentSpaceTimeState>, int, int>> getSuccessors(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
     std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentSpaceTimeState>> states) const override;
     std::vector<int> getAgentIds() const override;
+    bool isImpossible() const override;
 
     const int getStart() const;
     const int getTarget() const;
@@ -36,6 +37,9 @@ private:
     int target;
 
     int agentId;
+
+    // true if the start or the target position is unreachable
+    bool impossible;
 
     // The objective function to minimize : Fuel or Makespan
     // - Fuel : Total amount of distance traveled by the agent (costWait = 0)

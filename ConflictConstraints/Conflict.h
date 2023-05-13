@@ -12,10 +12,11 @@ public:
         vertexConflict = true;
     }
     // edge conflict : agent1 and agent2 are occupying the edge {position1, position2} from time-1 to time
+    // agent1 goes from position1 to position2 and agent2 goes from position2 to position1
     Conflict(int agent1, int agent2, int position1, int position2, int time) : agent1(agent1), agent2(agent2), position1(position1), position2(position2), time(time) {
         vertexConflict = false;
     }
-    ~Conflict() {}
+    ~Conflict() = default;
 
     bool isVertexConflict() const {
         return vertexConflict;

@@ -25,6 +25,11 @@ public:
 
     std::shared_ptr<Solution> solve() {
         LOG("===== A* Search ====");
+
+        if (problem->isImpossible()){
+            return std::make_shared<Solution>();
+        }
+
         LOG("Beginning the A* search. ");
 
         auto start = problem->getStartState();

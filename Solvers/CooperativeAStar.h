@@ -34,6 +34,7 @@ public:
     {}
 
     std::shared_ptr<Solution> solve() {
+
         if (typeOfHeuristic == Manhattan){
             LOG("===== Cooperative A* Search ====");
         } else if (typeOfHeuristic == OptimalDistance){
@@ -41,6 +42,10 @@ public:
         } else {
             LOG("Not a valid heuristic.");
             return {};
+        }
+
+        if (problem->isImpossible()){
+            return std::make_shared<Solution>();
         }
 
         ObjectiveFunction objectiveFunction;

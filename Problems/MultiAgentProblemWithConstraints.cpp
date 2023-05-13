@@ -45,11 +45,13 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(std::shared_p
     for (int i = 0; i < numberOfAgents; i++){
         idToIndex[agentIds[i]] = i;
     }
+    impossible = false;
     LOG("Start position of each agent :");
     for (int i = 0; i < numberOfAgents; i++) {
         LOG(" - Agent " << agentIds[i] << " : " << starts[i]);
         if (graph->getNeighbors(starts[i]).empty()) {
             LOG("   The start position of agent "<< agentIds[i] << " is unreachable.");
+            impossible = true;
         }
     }
     LOG("Target position of each agent :");
@@ -57,6 +59,21 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(std::shared_p
         LOG(" - Agent " << agentIds[i] << " : " << targets[i]);
         if (graph->getNeighbors(targets[i]).empty()) {
             LOG("   The target position of agent "<< agentIds[i] << " is unreachable.");
+            impossible = true;
+        }
+    }
+    for (int start : starts){
+        if (std::count(starts.begin(), starts.end(), start)>1){
+            LOG("   2 or more agents have the same start position.");
+            impossible = true;
+            break;
+        }
+    }
+    for (int target : targets){
+        if (std::count(targets.begin(), targets.end(), target)>1){
+            LOG("   2 or more agents have the same target position.");
+            impossible = true;
+            break;
         }
     }
     if (!setOfHardVertexConstraints.empty()){
@@ -307,5 +324,9 @@ int MultiAgentProblemWithConstraints::getStartOf(int id) {
 
 int MultiAgentProblemWithConstraints::getTargetOf(int id) {
     return targets[idToIndex[id]];
+}
+
+bool MultiAgentProblemWithConstraints::isImpossible() const {
+    return impossible;
 }
 

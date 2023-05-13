@@ -18,6 +18,7 @@ public:
     std::vector<std::tuple<std::shared_ptr<SingleAgentState>, int, int>> getSuccessors(std::shared_ptr<SingleAgentState> state) const override;
     std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<SingleAgentState>> states) const override;
     std::vector<int> getAgentIds() const override;
+    bool isImpossible() const override;
 
     const int getStart() const;
     const int getTarget() const;
@@ -30,6 +31,9 @@ protected:
     int target;
 
     int agentId;
+
+    // true if the start or the target position is unreachable
+    bool impossible;
 };
 
 #endif //TFE_MAPF_SINGLEAGENTPROBLEM_H

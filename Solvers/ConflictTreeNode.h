@@ -12,14 +12,14 @@
 class ConflictTreeNode {
 public:
 
-    ConflictTreeNode(std::set<VertexConstraint> setOfVertexConstraints, std::set<EdgeConstraint> setOfEdgeConstraints, std::unordered_map<int, std::vector<int>> solution, std::unordered_map<int,int> costs, int cost, std::shared_ptr<ConflictTreeNode> parent = nullptr, std::set<Conflict> setOfConflicts = std::set<Conflict>())
-        : setOfVertexConstraints(std::move(setOfVertexConstraints))
-        , setOfEdgeConstraints(std::move(setOfEdgeConstraints))
+    ConflictTreeNode(std::shared_ptr<EdgeConstraint> edgeConstraint, std::shared_ptr<VertexConstraint> vertexConstraint, std::unordered_map<int, std::vector<int>> solution, std::unordered_map<int,int> costs, int cost, std::shared_ptr<ConflictTreeNode> parent = nullptr, std::set<Conflict> setOfConflicts = std::set<Conflict>())
+        : edgeConstraint(std::move(edgeConstraint))
+        , vertexConstraint(std::move(vertexConstraint))
         , solution(std::move(solution))
         , costs(std::move(costs))
         , cost(cost)
         , parent(std::move(parent))
-        , setOfConflicts(setOfConflicts)
+        , setOfConflicts(std::move(setOfConflicts))
     {}
     ~ConflictTreeNode() = default;
 
@@ -27,12 +27,12 @@ public:
         return parent;
     }
 
-    std::set<VertexConstraint> getSetOfVertexConstraints(){
-        return setOfVertexConstraints;
+    std::shared_ptr<EdgeConstraint> getEdgeConstraint(){
+        return edgeConstraint;
     }
 
-    std::set<EdgeConstraint> getSetOfEdgeConstraints(){
-        return setOfEdgeConstraints;
+    std::shared_ptr<VertexConstraint> getVertexConstraint(){
+        return vertexConstraint;
     }
 
     std::unordered_map<int, std::vector<int>> getSolution() const {
@@ -57,8 +57,8 @@ public:
 
 private:
     std::shared_ptr<ConflictTreeNode> parent; // parent node
-    std::set<VertexConstraint> setOfVertexConstraints; // constraint added in this node
-    std::set<EdgeConstraint> setOfEdgeConstraints; // constraint added in this node
+    std::shared_ptr<EdgeConstraint> edgeConstraint; // constraint added in this node : either edgeConstraint is a nullptr, either vertexConstraint is a nullptr
+    std::shared_ptr<VertexConstraint> vertexConstraint;
 
     // solution and costs only contains the path (and its path) of the agent that just has been replanned
     // but they contain the paths of all agents in the root node

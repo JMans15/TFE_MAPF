@@ -106,6 +106,11 @@ std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
 std::shared_ptr<Solution> SimpleIndependenceDetection::solve() {
 
     std::cout << "===== Simple Independent Detection Search ====" << std::endl;
+
+    if (problem->isImpossible()){
+        return std::make_shared<Solution>();
+    }
+
     // Assign each agent to a singleton group
     for (int agent : problem->getAgentIds()){
         groups.insert(std::make_shared<Group>(std::set<int>{agent}));

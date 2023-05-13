@@ -24,6 +24,7 @@ public:
     std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> getSuccessors(std::shared_ptr<MultiAgentState> state) const override;
     std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const override;
     std::vector<int> getAgentIds() const override;
+    bool isImpossible() const override;
 
     const std::vector<int>& getStarts() const;
     const std::vector<int>& getTargets() const;
@@ -43,6 +44,10 @@ private:
 
     std::vector<int> agentIds; // Index to id
     std::unordered_map<int, int> idToIndex; // Id to index
+
+    // true if a start or a target position is unreachable
+    // or if 2 agents have the same start or target position
+    bool impossible;
 
     // The objective function to minimize : Fuel or Makespan or SumOfCosts
     // - Fuel : Total amount of distance traveled by all agents

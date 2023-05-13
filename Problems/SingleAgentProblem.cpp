@@ -12,13 +12,16 @@ SingleAgentProblem::SingleAgentProblem(std::shared_ptr<Graph> graph, int start, 
 {
     LOG("==== Single Agent Problem ====");
     LOG("Id of the agent : " << agentId);
+    impossible = false;
     LOG("Start position of the agent : " << start);
     if (graph->getNeighbors(start).empty()){
         LOG("   The start position is unreachable.");
+        impossible = true;
     }
     LOG("Target position of the agent : " << target);
     if (graph->getNeighbors(target).empty()){
         LOG("   The target position is unreachable.");
+        impossible = true;
     }
     if (maxCost!=INT_MAX){
         LOG("The solution of this problem must have a cost inferior or equal to " << maxCost);
@@ -57,6 +60,10 @@ std::unordered_map<int, std::vector<int>> SingleAgentProblem::getPositions(std::
     return positions;
 }
 
+std::vector<int> SingleAgentProblem::getAgentIds() const {
+    return {agentId};
+}
+
 const int SingleAgentProblem::getStart() const {
     return start;
 }
@@ -65,6 +72,6 @@ const int SingleAgentProblem::getTarget() const {
     return target;
 }
 
-std::vector<int> SingleAgentProblem::getAgentIds() const {
-    return {agentId};
+bool SingleAgentProblem::isImpossible() const {
+    return impossible;
 }

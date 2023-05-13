@@ -33,14 +33,17 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
     } else {
         LOG("Objective function : Fuel (costWait = 0)");
     }
+    impossible = false;
     LOG("Id of the agent : " << agentId);
     LOG("Start position of the agent : " << start);
     if (graph->getNeighbors(start).empty()){
         LOG("   The start position is unreachable.");
+        impossible = true;
     }
     LOG("Target position of the agent : " << target);
     if (graph->getNeighbors(target).empty()){
         LOG("   The target position is unreachable.");
+        impossible = true;
     }
     if (!setOfHardVertexConstraints.empty()){
         LOG("The problem has the following hard vertex constraints :");
@@ -164,4 +167,8 @@ ObjectiveFunction SingleAgentProblemWithConstraints::getObjFunction() {
 
 std::vector<int> SingleAgentProblemWithConstraints::getAgentIds() const {
     return {agentId};
+}
+
+bool SingleAgentProblemWithConstraints::isImpossible() const {
+    return impossible;
 }

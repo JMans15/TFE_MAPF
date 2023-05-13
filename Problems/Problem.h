@@ -59,6 +59,7 @@ public:
     virtual std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<S>> states) const = 0;
 
     virtual std::vector<int> getAgentIds() const = 0;
+    virtual bool isImpossible() const = 0;
 
 protected:
 
