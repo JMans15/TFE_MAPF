@@ -5,9 +5,9 @@
 #ifndef TFE_MAPF_REVERSERESUMABLEASTAR_H
 #define TFE_MAPF_REVERSERESUMABLEASTAR_H
 
-#include "../Heuristics/HeuristicManhattan.h"
+#include "../../Heuristics/HeuristicManhattan.h"
 #include "Node.h"
-#include "../Problems/SingleAgentProblem.h"
+#include "../../Problems/SingleAgentProblem.h"
 
 #include <queue>
 #include <unordered_map>

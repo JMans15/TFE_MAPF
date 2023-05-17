@@ -1,15 +1,16 @@
 //
-// Created by Arthur Mahy on 27/03/2023.
+// Created by Arthur Mahy on 15/05/2023.
 //
 
 #ifndef TFE_MAPF_SIMPLEINDEPENDENCEDETECTION_H
 #define TFE_MAPF_SIMPLEINDEPENDENCEDETECTION_H
 
-#include "../Problems/MultiAgentProblemWithConstraints.h"
-#include "AStar.h"
+#include "../../Problems/MultiAgentProblemWithConstraints.h"
+#include "../AStar/AStar.h"
 #include "Group.h"
+#include "GroupConflict.h"
 
-// Simple Independence Detection search
+// Simple Independence Detection search (with an updated set of conflicts)
 // Only for multi agent problem
 //
 // typeOfHeuristic is the heuristic for the A* searches
@@ -26,42 +27,20 @@ protected:
     std::shared_ptr<MultiAgentProblemWithConstraints> problem;
     TypeOfHeuristic typeOfHeuristic;
     std::unordered_set<std::shared_ptr<Group>, GroupHasher, GroupEquality> groups;
+    std::set<GroupConflict> setOfConflicts;
 
     // Plans a path for each singleton group
     // Returns true if it found a solution for each agent (false otherwise)
     bool planSingletonGroups();
 
-    // Returns (true, a, b) if there's a conflict between the paths of group a and group b
-    // and (false, _, _) otherwise
-    std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> findAConflict();
+    // Calculates the set of conflicts between the paths of the current groups
+    void calculateSetOfConflicts();
 
-    // Merges groupA and groupB and plan a path for the new group
+    // Merges groupA and groupB, plan a path for the new group and update the set of conflicts
     // Returns true if it found a valid solution for the new group (false otherwise)
     virtual bool mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB);
 
     std::shared_ptr<Solution> combineSolutions();
-};
-
-template<class S>
-struct PairHasher {
-    std::size_t operator()(const std::pair<S, S> &pair) const {
-        size_t result = 0;
-        if (pair.first<pair.second){
-            boost::hash_combine(result, pair.first);
-            boost::hash_combine(result, pair.second);
-        } else {
-            boost::hash_combine(result, pair.second);
-            boost::hash_combine(result, pair.first);
-        }
-        return result;
-    }
-};
-
-template<class S>
-struct PairEquality {
-    bool operator()(const std::pair<S, S> &a, const std::pair<S, S> &b) const {
-        return (a.first==b.first && a.second==b.second) or (a.first==b.second && a.second==b.first);
-    }
 };
 
 

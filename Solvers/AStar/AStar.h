@@ -5,9 +5,9 @@
 #ifndef TFE_MAPF_ASTAR_H
 #define TFE_MAPF_ASTAR_H
 
-#include "../Heuristics/HeuristicOptimal.h"
-#include "../Problems/Problem.h"
-#include "../Solution/Solution.h"
+#include "../../Heuristics/HeuristicOptimal.h"
+#include "../../Problems/Problem.h"
+#include "../../Solution/Solution.h"
 
 #include <algorithm>
 #include <unordered_map>
@@ -27,7 +27,7 @@ public:
         LOG("===== A* Search ====");
 
         if (problem->isImpossible()){
-            return std::make_shared<Solution>();
+            return {};
         }
 
         LOG("Beginning the A* search. ");

@@ -2,7 +2,7 @@
 #define TFE_MAPF_HEURISTICOPTIMAL_H
 
 #include "HeuristicManhattan.h"
-#include "../Solvers/ReverseResumableAStar.h"
+#include "../Solvers/AStar/ReverseResumableAStar.h"
 
 // Optimal distance heuristic
 // - for single agent problem

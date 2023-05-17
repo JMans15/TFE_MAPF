@@ -1,13 +1,14 @@
 //
-// Created by Arthur Mahy on 28/02/2023.
+// Created by Arthur Mahy on 16/05/2023.
 //
 
 #ifndef TFE_MAPF_INDEPENDENCEDETECTION_H
 #define TFE_MAPF_INDEPENDENCEDETECTION_H
 
 #include "SimpleIndependenceDetection.h"
+#include "AlreadyConflictedBeforeSet.h"
 
-// Independence Detection search
+// Independence Detection search (with an updated set of conflicts)
 // - with a Conflict Avoidance Table (CAT) when replanning
 // - Enhanced version of ID (EID) : tries to resolve a conflict (by attempting to replan one group to avoid the plan of the other group) before merging the groups
 //
@@ -22,7 +23,7 @@ public:
     IndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic);
     std::shared_ptr<Solution> solve();
 private:
-    std::unordered_set<std::pair<std::shared_ptr<Group>, std::shared_ptr<Group>>, PairHasher<std::shared_ptr<Group>>, PairEquality<std::shared_ptr<Group>>> alreadyConflictedBefore;
+    std::unordered_set<std::set<std::shared_ptr<Group>, PointerGroupEquality>, SetOfPointersHasher, SetOfPointersEquality> alreadyConflictedBefore;
 
     // Find another optimal solution for groupA
     // - with the same cost as the previous one

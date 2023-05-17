@@ -2,16 +2,18 @@
 // Created by mansj on 10/11/22.
 //
 
-#include "Solvers/AStar.h"
+#include "Solvers/AStar/AStar.h"
 #include "Solvers/CooperativeAStar.h"
 #include "Problems/MultiAgentProblemWithConstraints.h"
 #include "GraphParser/Parser.h"
-#include "Solvers/ReverseResumableAStar.h"
+#include "Solvers/AStar/ReverseResumableAStar.h"
 #include "Problems/SingleAgentProblem.h"
 #include "Problems/SingleAgentProblemWithConstraints.h"
-#include "Solvers/SimpleIndependenceDetection.h"
-#include "Solvers/IndependenceDetection.h"
-#include "Solvers/ConflictBasedSearch.h"
+#include "Solvers/ID/OldSimpleIndependenceDetection.h"
+#include "Solvers/ID/SimpleIndependenceDetection.h"
+#include "Solvers/ID/OldIndependenceDetection.h"
+#include "Solvers/ID/IndependenceDetection.h"
+#include "Solvers/CBS/ConflictBasedSearch.h"
 
 #include <chrono>
 #include <iostream>
@@ -212,9 +214,11 @@ int main() {
     targets.push_back(21);
     targets.push_back(5);
     targets.push_back(4);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{1,3,4});
     auto solution = SimpleIndependenceDetection(problem, OptimalDistance).solve();
-    solution->print();*/
+    auto solution2 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    solution->print();
+    solution2->print();*/
 
     // TEST 14 : Simple independence detection
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
@@ -224,7 +228,7 @@ int main() {
     std::vector<int> targets;
     targets.push_back(150);
     targets.push_back(1);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, std::vector<int>{5,10});
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan, std::vector<int>{5,10});
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
     auto solution1 = SimpleIndependenceDetection(problem, OptimalDistance).solve();
@@ -261,8 +265,10 @@ int main() {
     targets.push_back(11);
     targets.push_back(5);
     auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
-    auto solution = IndependenceDetection(problem, OptimalDistance).solve();
-    solution->print();*/
+    auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    solution->print();
+    auto solution2 = IndependenceDetection(problem, OptimalDistance).solve();
+    solution2->print();*/
 
     // TEST 15 : Conflict Based Search
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
@@ -281,20 +287,35 @@ int main() {
     solution2->print();*/
 
     // TEST 16 : Conflict Based Search
-    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(17);
     starts.push_back(22);
     vector<int> targets;
     targets.push_back(7);
     targets.push_back(6);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
-    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+    start = std::chrono::system_clock::now();
+    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
     solution1->print();
-    solution2->print();*/
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds1 = end - start;
+    start = std::chrono::system_clock::now();
+    auto solution2 = IndependenceDetection(problem, Manhattan).solve();
+    solution2->print();
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds2 = end - start;
+    start = std::chrono::system_clock::now();
+    auto solution3 = ConflictBasedSearch(problem, Manhattan).solve();
+    solution3->print();
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds3 = end - start;
+    std::cout << elapsed_seconds1.count() << std::endl;
+    std::cout << elapsed_seconds2.count() << std::endl;
+    std::cout << elapsed_seconds3.count() << std::endl;
 
-    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(37);
     starts.push_back(43);
@@ -305,5 +326,5 @@ int main() {
     auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
     auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
     solution1->print();
-    solution2->print();
+    solution2->print();*/
 }

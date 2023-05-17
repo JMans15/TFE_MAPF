@@ -7,12 +7,12 @@
 #ifndef TFE_MAPF_CONFLICTTREENODE_H
 #define TFE_MAPF_CONFLICTTREENODE_H
 
-#include "../ConflictConstraints/Conflict.h"
+#include "AgentConflict.h"
 
 class ConflictTreeNode {
 public:
 
-    ConflictTreeNode(std::shared_ptr<EdgeConstraint> edgeConstraint, std::shared_ptr<VertexConstraint> vertexConstraint, std::unordered_map<int, std::vector<int>> solution, std::unordered_map<int,int> costs, int cost, std::shared_ptr<ConflictTreeNode> parent = nullptr, std::set<Conflict> setOfConflicts = std::set<Conflict>())
+    ConflictTreeNode(std::shared_ptr<EdgeConstraint> edgeConstraint, std::shared_ptr<VertexConstraint> vertexConstraint, std::unordered_map<int, std::vector<int>> solution, std::unordered_map<int,int> costs, int cost, std::shared_ptr<ConflictTreeNode> parent = nullptr, std::set<AgentConflict> setOfConflicts = std::set<AgentConflict>())
         : edgeConstraint(std::move(edgeConstraint))
         , vertexConstraint(std::move(vertexConstraint))
         , solution(std::move(solution))
@@ -51,7 +51,7 @@ public:
         return setOfConflicts.size();
     }
 
-    std::set<Conflict> getSetOfConflicts() const {
+    std::set<AgentConflict> getSetOfConflicts() const {
         return setOfConflicts;
     }
 
@@ -66,7 +66,7 @@ private:
     std::unordered_map<int,int> costs; // key = id of the agent, value = cost of the path for this agent
 
     int cost; // cost of the current solution, the f-value of the node
-    std::set<Conflict> setOfConflicts; // set of conflicts (between the paths) in the current solution
+    std::set<AgentConflict> setOfConflicts; // set of conflicts (between the paths) in the current solution
 };
 
 class ConflictTreeNodeComparator {

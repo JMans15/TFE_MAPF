@@ -2,9 +2,9 @@
 // Created by mansj on 31/01/23.
 //
 
-#include "Solvers/AStar.h"
-#include "Solvers/SimpleIndependenceDetection.h"
-#include "Solvers/IndependenceDetection.h"
+#include "Solvers/AStar/AStar.h"
+#include "Solvers/ID/SimpleIndependenceDetection.h"
+#include "Solvers/ID/IndependenceDetection.h"
 #include "Problems/MultiAgentProblemWithConstraints.h"
 #include "GraphParser/Parser.h"
 #include "Problems/SingleAgentProblem.h"

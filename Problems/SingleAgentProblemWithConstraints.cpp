@@ -54,7 +54,7 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
     if (!setOfHardEdgeConstraints.empty()){
         LOG("The problem has the following hard edge constraints :");
         for (const auto& constraint : setOfHardEdgeConstraints){
-            LOG("   Agent " << constraint.getAgent() << "cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
+            LOG("   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
         }
     }
     if (!setOfSoftVertexConstraints.empty()){
@@ -66,7 +66,7 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
     if (!setOfSoftEdgeConstraints.empty()){
         LOG("The problem has the following soft edge constraints :");
         for (const auto& constraint : setOfSoftEdgeConstraints){
-            LOG("   Agent " << constraint.getAgent() << "cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
+            LOG("   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
         }
     }
     if (maxCost!=INT_MAX){

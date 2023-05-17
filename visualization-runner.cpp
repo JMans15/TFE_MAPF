@@ -15,10 +15,10 @@
 // -> Heuristics
 // -> Objective functions
 
-#include "Solvers/AStar.h"
-#include "Solvers/SimpleIndependenceDetection.h"
-#include "Solvers/IndependenceDetection.h"
-#include "Solvers/ConflictBasedSearch.h"
+#include "Solvers/AStar/AStar.h"
+#include "Solvers/ID/SimpleIndependenceDetection.h"
+#include "Solvers/ID/IndependenceDetection.h"
+#include "Solvers/CBS/ConflictBasedSearch.h"
 #include "Solvers/CooperativeAStar.h"
 #include "Problems/MultiAgentProblemWithConstraints.h"
 #include "GraphParser/Parser.h"

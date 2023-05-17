@@ -5,10 +5,9 @@
 #ifndef TFE_MAPF_CONFLICTBASEDSEARCH_H
 #define TFE_MAPF_CONFLICTBASEDSEARCH_H
 
-#include "../Problems/MultiAgentProblemWithConstraints.h"
-#include "AStar.h"
+#include "../../Problems/MultiAgentProblemWithConstraints.h"
+#include "../AStar/AStar.h"
 #include "ConflictTreeNode.h"
-#include "SimpleIndependenceDetection.h"
 
 // Conflict Based Search
 // - high level of the algorithm - Conflict Tree (CT) as a best first search
@@ -33,18 +32,18 @@ protected:
     // Plans a path for each agent
     // Returns a tuple {solutions, cost, costs} where
     // - solutions is a map from the id of an agent to the path of this agent
-    // - cost is the cost of all the paths
+    // - cost is the cost of all the paths (-1 if it didn't find a solution for one agent)
     // - costs is a map from the id an agent to the cost of the path of this agent
     std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int, int>> planIndividualPaths();
 
     // Returns the set of conflicts between the paths of solutions
-    static std::set<Conflict> calculateSetOfConflicts(std::unordered_map<int, std::vector<int>> solutions);
+    static std::set<AgentConflict> calculateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& solutions);
 
     // Returns an updated set of conflicts after having replanned agent agentId
     // - fullSolutions contains the paths of the parent
     // - setOfConflicts is the set of conflicts of the parent
     // - successorSolution contains the new path of agent agentId
-    static std::set<Conflict> updateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& fullSolutions, std::set<Conflict> setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution);
+    static std::set<AgentConflict> updateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& fullSolutions, const std::set<AgentConflict>& setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution);
 
     // Retrieves information from the parent nodes
     // Returns a tuple {fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions}

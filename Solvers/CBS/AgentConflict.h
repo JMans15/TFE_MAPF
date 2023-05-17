@@ -2,21 +2,21 @@
 // Created by Arthur Mahy on 22/04/2023.
 //
 
-#ifndef TFE_MAPF_CONFLICT_H
-#define TFE_MAPF_CONFLICT_H
+#ifndef TFE_MAPF_AGENTCONFLICT_H
+#define TFE_MAPF_AGENTCONFLICT_H
 
-class Conflict {
+class AgentConflict {
 public:
     // vertex conflict : agent1 and agent2 are at position at time
-    Conflict(int agent1, int agent2, int position, int time) : agent1(agent1), agent2(agent2), position1(position), time(time) {
+    AgentConflict(int agent1, int agent2, int position, int time) : agent1(agent1), agent2(agent2), position1(position), time(time) {
         vertexConflict = true;
     }
     // edge conflict : agent1 and agent2 are occupying the edge {position1, position2} from time-1 to time
     // agent1 goes from position1 to position2 and agent2 goes from position2 to position1
-    Conflict(int agent1, int agent2, int position1, int position2, int time) : agent1(agent1), agent2(agent2), position1(position1), position2(position2), time(time) {
+    AgentConflict(int agent1, int agent2, int position1, int position2, int time) : agent1(agent1), agent2(agent2), position1(position1), position2(position2), time(time) {
         vertexConflict = false;
     }
-    ~Conflict() = default;
+    ~AgentConflict() = default;
 
     bool isVertexConflict() const {
         return vertexConflict;
@@ -46,8 +46,8 @@ public:
 
     // TODO : think about what to put here
     // first the conflict with the lower time
-    // and then ?? (idea: first the vertex conflicts and then edge conflicts)
-    bool operator<(const Conflict &other) const {
+    // and then ??
+    bool operator<(const AgentConflict &other) const {
         if (time == other.time) {
             return true;
         }
@@ -65,4 +65,4 @@ private:
 };
 
 
-#endif //TFE_MAPF_CONFLICT_H
+#endif //TFE_MAPF_AGENTCONFLICT_H

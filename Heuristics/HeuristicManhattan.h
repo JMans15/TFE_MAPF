@@ -8,7 +8,7 @@
 #include "../GraphParser/Graph.h"
 #include "../Problems/MultiAgentProblemWithConstraints.h"
 #include "../States/MultiAgentState.h"
-#include "../Solvers/ReverseResumableAStar.h"
+#include "../Solvers/AStar/ReverseResumableAStar.h"
 #include "../Problems/SingleAgentProblem.h"
 #include "../States/SingleAgentState.h"
 #include "../Problems/SingleAgentProblemWithConstraints.h"

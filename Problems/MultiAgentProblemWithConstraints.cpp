@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
+MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
                                                                    ObjectiveFunction objective, const std::vector<int>& m_agentIds,
                                                                    const std::set<VertexConstraint> &setOfHardVertexConstraints,
                                                                    const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
@@ -85,7 +85,7 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(std::shared_p
     if (!setOfHardEdgeConstraints.empty()){
         LOG("The problem has the following hard edge constraints :");
         for (const auto& constraint : setOfHardEdgeConstraints){
-            LOG("   Agent " << constraint.getAgent() << "cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
+            LOG("   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
         }
     }
     if (!setOfSoftVertexConstraints.empty()){
@@ -97,7 +97,7 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(std::shared_p
     if (!setOfSoftEdgeConstraints.empty()){
         LOG("The problem has the following soft edge constraints :");
         for (const auto& constraint : setOfSoftEdgeConstraints){
-            LOG("   Agent " << constraint.getAgent() << "cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
+            LOG("   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
         }
     }
     if (maxCost!=INT_MAX){

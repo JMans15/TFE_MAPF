@@ -12,7 +12,7 @@
 
 class MultiAgentProblemWithConstraints : public Problem<MultiAgentState> {
 public:
-    MultiAgentProblemWithConstraints(std::shared_ptr<Graph> graph, std::vector<int> starts, std::vector<int> targets,
+    MultiAgentProblemWithConstraints(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
                                      ObjectiveFunction objective = Fuel, const std::vector<int>& agentIds = std::vector<int>(),
                                      const std::set<VertexConstraint> &setOfHardVertexConstraints = std::set<VertexConstraint>(),
                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX,

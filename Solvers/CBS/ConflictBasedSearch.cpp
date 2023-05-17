@@ -34,8 +34,8 @@ std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int
     return {solutions, cost, costs};
 }
 
-std::set<Conflict> ConflictBasedSearch::calculateSetOfConflicts(std::unordered_map<int, std::vector<int>> solutions) {
-    std::set<Conflict> setOfConflicts;
+std::set<AgentConflict> ConflictBasedSearch::calculateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& solutions) {
+    std::set<AgentConflict> setOfConflicts;
     for (auto [agentA, pathA] : solutions){
         for (auto [agentB, pathB] : solutions){
             if (agentA < agentB){
@@ -59,8 +59,8 @@ std::set<Conflict> ConflictBasedSearch::calculateSetOfConflicts(std::unordered_m
     return setOfConflicts;
 }
 
-std::set<Conflict> ConflictBasedSearch::updateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& fullSolutions, std::set<Conflict> setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution){
-    std::set<Conflict> successorSetOfConflicts;
+std::set<AgentConflict> ConflictBasedSearch::updateSetOfConflicts(const std::unordered_map<int, std::vector<int>>& fullSolutions, const std::set<AgentConflict>& setOfConflicts, std::unordered_map<int, std::vector<int>> successorSolution){
+    std::set<AgentConflict> successorSetOfConflicts;
     int agentId = successorSolution.begin()->first;
     vector<int> pathOfAgentId = successorSolution.begin()->second;
     for (const auto& conflict : setOfConflicts){
@@ -154,7 +154,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
     LOG("===== Conflict Based Search ====");
 
     if (problem->isImpossible()){
-        return std::make_shared<Solution>();
+        return {};
     }
 
     auto [solution, cost, costs] = planIndividualPaths();
@@ -162,14 +162,13 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
         return {};
     }
 
-    std::set<Conflict> setOfConflicts = calculateSetOfConflicts(solution);
+    std::set<AgentConflict> setOfConflicts = calculateSetOfConflicts(solution);
 
     fringe.insert(std::make_shared<ConflictTreeNode>(nullptr, nullptr, solution, costs, cost, nullptr, setOfConflicts));
 
     while (!fringe.empty()){
         auto it = fringe.begin();
         const auto node = *it;
-
         fringe.erase(it);
 
         numberOfVisitedNodes += 1;
@@ -177,6 +176,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
         if (node->getSetOfConflicts().empty()){
             return combineSolutions(node);
         }
+
         auto conflict = *node->getSetOfConflicts().begin();
 
         int agent1 = conflict.getAgent1();

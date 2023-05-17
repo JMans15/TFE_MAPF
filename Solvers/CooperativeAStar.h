@@ -5,7 +5,9 @@
 #ifndef TFE_MAPF_COOPERATIVEASTAR_H
 #define TFE_MAPF_COOPERATIVEASTAR_H
 
-#include "AStar.h"
+#include <utility>
+
+#include "AStar/AStar.h"
 #include "../Problems/MultiAgentProblemWithConstraints.h"
 #include "../Problems/SingleAgentProblemWithConstraints.h"
 
@@ -29,7 +31,7 @@
 class CooperativeAStar {
 public:
     CooperativeAStar(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
-            : problem(problem)
+            : problem(std::move(problem))
             , typeOfHeuristic(typeOfHeuristic)
     {}
 
@@ -45,7 +47,7 @@ public:
         }
 
         if (problem->isImpossible()){
-            return std::make_shared<Solution>();
+            return {};
         }
 
         ObjectiveFunction objectiveFunction;

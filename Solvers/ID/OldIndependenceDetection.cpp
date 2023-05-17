@@ -2,14 +2,14 @@
 // Created by Arthur Mahy on 28/02/2023.
 //
 
-#include "IndependenceDetection.h"
+#include "OldIndependenceDetection.h"
 
-IndependenceDetection::IndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
-        : SimpleIndependenceDetection(problem, typeOfHeuristic)
+OldIndependenceDetection::OldIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
+        : OldSimpleIndependenceDetection(problem, typeOfHeuristic)
 {}
 
 
-bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB){
+bool OldIndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB){
     std::set<VertexConstraint> vertexIllegalTable;
     std::set<EdgeConstraint> edgeIllegalTable;
     for (auto a : groupB->getSolution()->getPositions()){
@@ -28,7 +28,7 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> gr
     std::set<VertexConstraint> vertexConflictAvoidanceTable;
     std::set<EdgeConstraint> edgeConflictAvoidanceTable;
     for (auto group : groups){
-        if (group != groupA){
+        if (*group != *groupA){
             for (auto a : group->getSolution()->getPositions()){
                 vector<int> pathOfAgent = a.second;
                 for (int agentA : groupA->getAgents()){
@@ -66,7 +66,7 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> gr
     return false;
 }
 
-bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB) {
+bool OldIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB) {
     groups.erase(groupA);
     groups.erase(groupB);
     std::set<int> agents(groupA->getAgents());
@@ -86,7 +86,7 @@ bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> gr
     std::set<VertexConstraint> vertexConflictAvoidanceTable;
     std::set<EdgeConstraint> edgeConflictAvoidanceTable;
     for (auto group : groups){
-        if (group != newGroup){
+        if (*group != *newGroup){
             for (auto a : group->getSolution()->getPositions()){
                 vector<int> pathOfAgent = a.second;
                 for (int agent : newGroup->getAgents()){
@@ -110,12 +110,12 @@ bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> gr
     return true;
 }
 
-std::shared_ptr<Solution> IndependenceDetection::solve() {
+std::shared_ptr<Solution> OldIndependenceDetection::solve() {
 
-    std::cout << "===== Independent Detection Search ====" << std::endl;
+    LOG("===== Independent Detection Search ====");
 
     if (problem->isImpossible()){
-        return std::make_shared<Solution>();
+        return {};
     }
 
     // Assign each agent to a singleton group
@@ -151,9 +151,8 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
             std::cout << agent << std::endl;
         }*/
 
-        // TODO : does alreadyConflictedBefore work ??
-        if (alreadyConflictedBefore.count(std::pair <std::shared_ptr<Group>, std::shared_ptr<Group>>(groupA, groupB))==0){
-            alreadyConflictedBefore.insert(std::pair <std::shared_ptr<Group>, std::shared_ptr<Group>>(groupA, groupB));
+        if (alreadyConflictedBefore.count({groupA, groupB})==0){
+            alreadyConflictedBefore.insert({groupA, groupB});
             if (not replanGroupAAvoidingGroupB(groupA, groupB)){
                 if (not replanGroupAAvoidingGroupB(groupB, groupA)) {
                     if (not mergeGroupsAndPlanNewGroup(groupA, groupB)){

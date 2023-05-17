@@ -6,14 +6,14 @@
 #define BOOST_TEST_MAIN  // in only one cpp file
 #include <boost/test/unit_test.hpp>
 
-#include "../Solvers/AStar.h"
+#include "../Solvers/AStar/AStar.h"
 #include "../Solvers/CooperativeAStar.h"
 #include "../Problems/MultiAgentProblemWithConstraints.h"
 #include "../GraphParser/Parser.h"
-#include "../Solvers/ReverseResumableAStar.h"
+#include "../Solvers/AStar/ReverseResumableAStar.h"
 #include "../Problems/SingleAgentProblem.h"
 #include "../Problems/SingleAgentProblemWithConstraints.h"
-#include "../Solvers/IndependenceDetection.h"
+#include "../Solvers/ID/IndependenceDetection.h"
 #include "../Solution/Solution.h"
 
 #include <chrono>

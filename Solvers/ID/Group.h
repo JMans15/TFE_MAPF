@@ -24,6 +24,23 @@ public:
     std::shared_ptr<Solution> getSolution() {
         return solution;
     }
+
+    bool operator!=(Group other) const {
+        return agents != other.getAgents();
+    }
+
+    bool operator==(Group other) const {
+        return agents == other.getAgents();
+    }
+
+    const std::size_t getHash() const {
+        std::size_t hash_value = agents.size();
+        for (int agent : agents) {
+            hash_value ^= std::hash<int>()(agent) + 0x9e3779b9 + (hash_value << 6) + (hash_value >> 2);
+        }
+        return hash_value;
+    }
+
 private:
     std::set<int> agents;
     std::shared_ptr<Solution> solution;
@@ -31,18 +48,13 @@ private:
 
 struct GroupHasher {
     std::size_t operator()(const std::shared_ptr<Group>& group) const {
-        size_t result = 0;
-        // TODO : we need to iterate through the set always in the same order, is it the case here??
-        for (int i : group->getAgents()){
-            boost::hash_combine(result, i);
-        }
-        return result;
+        return group->getHash();
     }
 };
 
 struct GroupEquality {
     bool operator()(const std::shared_ptr<Group>& a, const std::shared_ptr<Group>& b) const {
-        return a->getAgents()==b->getAgents();
+        return *a==*b;
     }
 };
 

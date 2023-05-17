@@ -8,7 +8,6 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <set>
 
 Solution::Solution() {
     foundPath = false;
@@ -83,6 +82,9 @@ void Solution::print() {
         std::cout << " ( = goal tested states if solution of a single joint A*" << std::endl;
         std::cout << "  or conflict tree nodes if solution of conflict based search)" << std::endl;
         std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
+        std::cout << " - SumOfCosts cost of the solution = " << getSumOfCostsCost() << std::endl;
+        std::cout << " - Fuel cost of the solution = " << getFuelCost() << std::endl;
+        std::cout << " - Makespan cost of the solution = " << getMakespanCost() << std::endl;
         std::cout << " " << std::endl;
         std::cout << " -> Position of every agent at each time : " << std::endl;
         for (int t = 0; t < positions.begin()->second.size(); t++){

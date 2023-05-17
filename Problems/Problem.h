@@ -6,11 +6,12 @@
 #define TFE_MAPF_PROBLEM_H
 
 #include "../GraphParser/Graph.h"
-#include "../ConflictConstraints/VertexConstraint.h"
-#include "../ConflictConstraints/EdgeConstraint.h"
+#include "../Constraints/VertexConstraint.h"
+#include "../Constraints/EdgeConstraint.h"
 
 #include <iostream>
 #include <memory>
+#include <utility>
 #include "unordered_map"
 
 //#define DEBUG
@@ -29,8 +30,8 @@ template <class S>
 class Problem {
 public:
 
-    Problem(std::shared_ptr<Graph> graph, int numberOfAgents, int maxCost) : graph(graph), numberOfAgents(numberOfAgents), maxCost(maxCost) {}
-    ~Problem() {}
+    Problem(std::shared_ptr<Graph> graph, int numberOfAgents, int maxCost) : graph(std::move(graph)), numberOfAgents(numberOfAgents), maxCost(maxCost) {}
+    ~Problem() = default;
 
     std::shared_ptr<Graph> getGraph() const {
         return graph;

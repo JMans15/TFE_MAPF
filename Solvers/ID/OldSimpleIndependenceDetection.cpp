@@ -2,15 +2,15 @@
 // Created by Arthur Mahy on 27/03/2023.
 //
 
-#include "SimpleIndependenceDetection.h"
+#include "OldSimpleIndependenceDetection.h"
 #include <unordered_map>
 
-SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
+OldSimpleIndependenceDetection::OldSimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
         : problem(problem)
         , typeOfHeuristic(typeOfHeuristic)
 {}
 
-bool SimpleIndependenceDetection::planSingletonGroups() {
+bool OldSimpleIndependenceDetection::planSingletonGroups() {
     for (std::shared_ptr<Group> group : groups){
         int agentId = *group->getAgents().begin();
         auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), agentId);
@@ -24,7 +24,27 @@ bool SimpleIndependenceDetection::planSingletonGroups() {
     return true;
 }
 
-std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndependenceDetection::findAConflict() {
+struct PairHasher {
+    std::size_t operator()(const std::pair<int, int> &pair) const {
+        size_t result = 0;
+        if (pair.first<pair.second){
+            boost::hash_combine(result, pair.first);
+            boost::hash_combine(result, pair.second);
+        } else {
+            boost::hash_combine(result, pair.second);
+            boost::hash_combine(result, pair.first);
+        }
+        return result;
+    }
+};
+
+struct PairEquality {
+    bool operator()(const std::pair<int, int> &a, const std::pair<int, int> &b) const {
+        return (a.first==b.first && a.second==b.second) or (a.first==b.second && a.second==b.first);
+    }
+};
+
+std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> OldSimpleIndependenceDetection::findAConflict() {
     int numberOfTimesteps = 0;
     for (const std::shared_ptr<Group>& group : groups){
         for (int agent : group->getAgents()){
@@ -50,7 +70,7 @@ std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndepende
     }
     // Edge conflict
     for (int t = 0; t < numberOfTimesteps-1; t++){
-        std::unordered_map<std::pair<int, int>, std::shared_ptr<Group>, PairHasher<int>, PairEquality<int>> edgesAtThisTimestep;
+        std::unordered_map<std::pair<int, int>, std::shared_ptr<Group>, PairHasher, PairEquality> edgesAtThisTimestep;
         for (const std::shared_ptr<Group>& group : groups){
             for (int agent : group->getAgents()){
                 auto pathOfAgent = group->getSolution()->getPositions()[agent];
@@ -65,7 +85,7 @@ std::tuple<bool, std::shared_ptr<Group>, std::shared_ptr<Group>> SimpleIndepende
     return {false, {}, {}};
 }
 
-bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB) {
+bool OldSimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB) {
     groups.erase(groupA);
     groups.erase(groupB);
     std::set<int> agents(groupA->getAgents());
@@ -91,7 +111,7 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
     return true;
 }
 
-std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
+std::shared_ptr<Solution> OldSimpleIndependenceDetection::combineSolutions() {
     std::unordered_map<int, vector<int>> positions;
     vector<int> ids = problem->getAgentIds();
     for (const std::shared_ptr<Group>& group : groups){
@@ -103,12 +123,12 @@ std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
     return std::make_shared<Solution>(numberOfTimesteps, positions);
 }
 
-std::shared_ptr<Solution> SimpleIndependenceDetection::solve() {
+std::shared_ptr<Solution> OldSimpleIndependenceDetection::solve() {
 
-    std::cout << "===== Simple Independent Detection Search ====" << std::endl;
+    LOG("===== Simple Independent Detection Search ====");
 
     if (problem->isImpossible()){
-        return std::make_shared<Solution>();
+        return {};
     }
 
     // Assign each agent to a singleton group
@@ -116,6 +136,7 @@ std::shared_ptr<Solution> SimpleIndependenceDetection::solve() {
         groups.insert(std::make_shared<Group>(std::set<int>{agent}));
     }
 
+    // Plan a path for each group
     if (not planSingletonGroups()){
         return {};
     }
