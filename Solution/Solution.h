@@ -21,7 +21,7 @@ public:
     std::vector<int> getPathOfAgent(int id);
     bool getFoundPath();
     void print();
-    void write(std::string filename, int w);
+    void write(const std::string& filename, int w);
 
     // Fuel : Total amount of distance traveled by all agents
     int getFuelCost();

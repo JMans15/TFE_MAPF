@@ -15,16 +15,13 @@
 // Only for multi agent problem
 //
 // typeOfHeuristic is the heuristic for the A* searches
-//
-// We don't take into account the setOfConstraints attributes of problem
-// We don't take into account the maxCost attribute of problem
 class ConflictBasedSearch {
 public:
     ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic);
     std::shared_ptr<Solution> solve();
 
 protected:
-    std::shared_ptr<MultiAgentProblemWithConstraints> problem;
+    static std::shared_ptr<MultiAgentProblemWithConstraints> problem;
     TypeOfHeuristic typeOfHeuristic;
     std::multiset<std::shared_ptr<ConflictTreeNode>, ConflictTreeNodeComparator> fringe; // the open list
     int numberOfVisitedNodes;

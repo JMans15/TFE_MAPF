@@ -27,7 +27,7 @@ public:
         LOG("===== A* Search ====");
 
         if (problem->isImpossible()){
-            return {};
+            return std::make_shared<Solution>();
         }
 
         LOG("Beginning the A* search. ");

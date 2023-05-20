@@ -15,9 +15,6 @@
 // Only for multi agent problem
 //
 // typeOfHeuristic is the heuristic for the A* searches
-//
-// We don't take into account the setOfConstraints attributes of problem
-// We don't take into account the maxCost attribute of problem
 class OldIndependenceDetection : OldSimpleIndependenceDetection {
 public:
     OldIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic);

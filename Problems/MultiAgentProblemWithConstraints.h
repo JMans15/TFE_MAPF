@@ -31,6 +31,8 @@ public:
     ObjectiveFunction getObjFunction();
     std::set<VertexConstraint> getSetOfHardVertexConstraints() const;
     std::set<EdgeConstraint> getSetOfHardEdgeConstraints() const;
+    std::set<VertexConstraint> getSetOfSoftVertexConstraints() const;
+    std::set<EdgeConstraint> getSetOfSoftEdgeConstraints() const;
 
     int getStartOf(int id);
     int getTargetOf(int id);
@@ -46,7 +48,8 @@ private:
     std::unordered_map<int, int> idToIndex; // Id to index
 
     // true if a start or a target position is unreachable
-    // or if 2 agents have the same start or target position
+    // or if 2 agents have the same start position or the same target position (or the same id)
+    // or if the starts, targets and agentIds vectors doesn't have the same size
     bool impossible;
 
     // The objective function to minimize : Fuel or Makespan or SumOfCosts

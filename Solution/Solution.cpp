@@ -54,7 +54,7 @@ std::vector<int> Solution::getPathOfAgent(int id) {
     return positions[id];
 }
 
-void Solution::write(std::string filename, int width) {
+void Solution::write(const std::string& filename, int width) {
     std::ofstream file(filename.c_str());
     if (foundPath) {
         int A = static_cast<int>(positions.size());

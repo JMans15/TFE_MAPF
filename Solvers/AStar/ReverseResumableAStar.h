@@ -24,7 +24,7 @@ class Heuristic;
 // We don't take into account the maxCost attribute of problem
 class ReverseResumableAStar {
 public:
-    ReverseResumableAStar(std::shared_ptr<SingleAgentProblem> problem);
+    explicit ReverseResumableAStar(std::shared_ptr<SingleAgentProblem> problem);
 
     // Continues the search from target to start until state is met
     // Returns the optimal cost between goal state and state

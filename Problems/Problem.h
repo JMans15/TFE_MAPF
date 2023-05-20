@@ -48,7 +48,7 @@ public:
     // Returns the start state for the search problem
     virtual std::shared_ptr<S> getStartState() const = 0;
 
-    // Returns True if the state is a valid goal state
+    // Returns true if the state is a valid goal state
     virtual bool isGoalState(std::shared_ptr<S> state) const = 0;
 
     // For a given state, getSuccessors returns a list of pairs (successor, stepcost, numberOfViolations)

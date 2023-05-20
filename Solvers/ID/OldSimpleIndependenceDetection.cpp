@@ -4,17 +4,18 @@
 
 #include "OldSimpleIndependenceDetection.h"
 #include <unordered_map>
+#include <utility>
 
 OldSimpleIndependenceDetection::OldSimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
-        : problem(problem)
+        : problem(std::move(problem))
         , typeOfHeuristic(typeOfHeuristic)
 {}
 
 bool OldSimpleIndependenceDetection::planSingletonGroups() {
-    for (std::shared_ptr<Group> group : groups){
+    for (const std::shared_ptr<Group>& group : groups){
         int agentId = *group->getAgents().begin();
-        auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), agentId);
-        auto search = AStar<SingleAgentProblem, SingleAgentState>(prob, typeOfHeuristic);
+        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
+        auto search = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic);
         auto solution = search.solve();
         group->putSolution(solution);
         if (not solution->getFoundPath()){
@@ -102,7 +103,7 @@ bool OldSimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<
         targets.push_back(problem->getTargetOf(agentId));
         agentIds.push_back(agentId);
     }
-    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds);
+    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
     if (not solution->getFoundPath() or not solution->isValid()){
@@ -120,7 +121,23 @@ std::shared_ptr<Solution> OldSimpleIndependenceDetection::combineSolutions() {
         }
     }
     int numberOfTimesteps = positions.begin()->second.size();
-    return std::make_shared<Solution>(numberOfTimesteps, positions);
+    auto solution = std::make_shared<Solution>(numberOfTimesteps, positions);
+    if (problem->getMaxCost()!=INT_MAX){
+        if (problem->getObjFunction()==Makespan){
+            if (solution->getMakespanCost()>problem->getMaxCost()){
+                return std::make_shared<Solution>();
+            }
+        } else if (problem->getObjFunction()==SumOfCosts){
+            if (solution->getSumOfCostsCost()>problem->getMaxCost()){
+                return std::make_shared<Solution>();
+            }
+        } else {
+            if (solution->getFuelCost()>problem->getMaxCost()){
+                return std::make_shared<Solution>();
+            }
+        }
+    }
+    return solution;
 }
 
 std::shared_ptr<Solution> OldSimpleIndependenceDetection::solve() {
@@ -128,7 +145,7 @@ std::shared_ptr<Solution> OldSimpleIndependenceDetection::solve() {
     LOG("===== Simple Independent Detection Search ====");
 
     if (problem->isImpossible()){
-        return {};
+        return std::make_shared<Solution>();
     }
 
     // Assign each agent to a singleton group
@@ -138,7 +155,7 @@ std::shared_ptr<Solution> OldSimpleIndependenceDetection::solve() {
 
     // Plan a path for each group
     if (not planSingletonGroups()){
-        return {};
+        return std::make_shared<Solution>();
     }
     auto conflict = findAConflict();
     while (std::get<0>(conflict)){
@@ -146,7 +163,7 @@ std::shared_ptr<Solution> OldSimpleIndependenceDetection::solve() {
         auto groupB = std::get<2>(conflict);
 
         if (not mergeGroupsAndPlanNewGroup(groupA, groupB)){
-            return {};
+            return std::make_shared<Solution>();
         }
 
         conflict = findAConflict();

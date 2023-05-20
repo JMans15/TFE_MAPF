@@ -18,8 +18,8 @@ std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int
     int cost = 0;
     for (int i = 0; i < problem->getNumberOfAgents(); i++){
         int agentId = problem->getAgentIds()[i];
-        auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStarts()[i], problem->getTargets()[i], agentId);
-        auto solution = AStar<SingleAgentProblem, SingleAgentState>(prob, typeOfHeuristic).solve();
+        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStarts()[i], problem->getTargets()[i], problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
+        auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
         if (not solution->getFoundPath()){
             return {solutions, -1, costs};
         }
@@ -88,8 +88,8 @@ std::set<AgentConflict> ConflictBasedSearch::updateSetOfConflicts(const std::uno
 }
 
 std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> ConflictBasedSearch::retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node) {
-    std::set<VertexConstraint> fullSetOfVertexConstraints;
-    std::set<EdgeConstraint> fullSetOfEdgeConstraints;
+    std::set<VertexConstraint> fullSetOfVertexConstraints = problem->getSetOfHardVertexConstraints();
+    std::set<EdgeConstraint> fullSetOfEdgeConstraints = problem->getSetOfHardEdgeConstraints();
     std::unordered_map<int, int> fullCosts;
     std::unordered_map<int, std::vector<int>> fullSolutions;
 
@@ -154,17 +154,19 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
     LOG("===== Conflict Based Search ====");
 
     if (problem->isImpossible()){
-        return {};
+        return std::make_shared<Solution>();
     }
 
     auto [solution, cost, costs] = planIndividualPaths();
     if (cost == -1){
-        return {};
+        return std::make_shared<Solution>();
     }
 
     std::set<AgentConflict> setOfConflicts = calculateSetOfConflicts(solution);
 
-    fringe.insert(std::make_shared<ConflictTreeNode>(nullptr, nullptr, solution, costs, cost, nullptr, setOfConflicts));
+    if (cost <= problem->getMaxCost()){
+        fringe.insert(std::make_shared<ConflictTreeNode>(nullptr, nullptr, solution, costs, cost, nullptr, setOfConflicts));
+    }
 
     while (!fringe.empty()){
         auto it = fringe.begin();
@@ -203,7 +205,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
                     newFullSetOfEdgeConstraints.insert({agentId, conflict.getPosition2(), conflict.getPosition1(), conflict.getTime()});
                 }
             }
-            auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints);
+            auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
             auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
             if (solution->getFoundPath()){
                 std::unordered_map<int,int> successorCosts;
@@ -223,11 +225,13 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
                 } else {
                     successorCost = node->getCost() - fullCosts[agentId] + solution->getCost();
                 }
-                auto successorSetOfConflicts = updateSetOfConflicts(fullSolutions, node->getSetOfConflicts(), successorSolution);
-                fringe.insert(std::make_shared<ConflictTreeNode>(successorEdgeConstraint, successorVertexConstraint, successorSolution, successorCosts, successorCost, node, successorSetOfConflicts));
+                if (successorCost <= problem->getMaxCost()){
+                    auto successorSetOfConflicts = updateSetOfConflicts(fullSolutions, node->getSetOfConflicts(), successorSolution);
+                    fringe.insert(std::make_shared<ConflictTreeNode>(successorEdgeConstraint, successorVertexConstraint, successorSolution, successorCosts, successorCost, node, successorSetOfConflicts));
+                }
             }
         }
     }
     LOG("No path has been found.");
-    return {};
+    return std::make_shared<Solution>();
 }

@@ -10,8 +10,8 @@ IndependenceDetection::IndependenceDetection(std::shared_ptr<MultiAgentProblemWi
 
 
 bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB){
-    std::set<VertexConstraint> vertexIllegalTable;
-    std::set<EdgeConstraint> edgeIllegalTable;
+    std::set<VertexConstraint> vertexIllegalTable = problem->getSetOfHardVertexConstraints();
+    std::set<EdgeConstraint> edgeIllegalTable = problem->getSetOfHardEdgeConstraints();
     for (auto a : groupB->getSolution()->getPositions()){
         vector<int> pathOfAgent = a.second;
         for (int agentA : groupA->getAgents()){
@@ -25,8 +25,8 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> gr
             }
         }
     }
-    std::set<VertexConstraint> vertexConflictAvoidanceTable;
-    std::set<EdgeConstraint> edgeConflictAvoidanceTable;
+    std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+    std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
     for (auto group : groups){
         if (*group != *groupA){
             for (auto a : group->getSolution()->getPositions()){
@@ -114,9 +114,9 @@ bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> gr
         targets.push_back(problem->getTargetOf(agentId));
         agentIds.push_back(agentId);
     }
-    std::set<VertexConstraint> vertexConflictAvoidanceTable;
-    std::set<EdgeConstraint> edgeConflictAvoidanceTable;
-    for (auto group : groups){
+    std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+    std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+    for (const auto& group : groups){
         if (*group != *newGroup){
             for (auto a : group->getSolution()->getPositions()){
                 vector<int> pathOfAgent = a.second;
@@ -132,7 +132,7 @@ bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> gr
             }
         }
     }
-    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, std::set<VertexConstraint>(), std::set<EdgeConstraint>(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
     if (not solution->getFoundPath() or not solution->isValid()){
@@ -180,7 +180,7 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
     LOG("===== Independent Detection Search (with set of conflicts) ====");
 
     if (problem->isImpossible()){
-        return {};
+        return std::make_shared<Solution>();
     }
 
     // Assign each agent to a singleton group
@@ -190,7 +190,7 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
 
     // Plan a path for each group
     if (not planSingletonGroups()){
-        return {};
+        return std::make_shared<Solution>();
     }
 
     /*std::cout << "The groups are the following:" << std::endl;
@@ -224,7 +224,7 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
             if (not replanGroupAAvoidingGroupB(groupA, groupB)){
                 if (not replanGroupAAvoidingGroupB(groupB, groupA)) {
                     if (not mergeGroupsAndPlanNewGroup(groupA, groupB)){
-                        return {};
+                        return std::make_shared<Solution>();
                     }
                     //std::cout << "We couldn't find an alternate optimal solution for group A and group B -> we merge." << std::endl;
                 } else {
@@ -244,7 +244,7 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
         } else {
             //std::cout << "Group A and group B already conflicted before -> we merge." << std::endl;
             if (not mergeGroupsAndPlanNewGroup(groupA, groupB)){
-                return {};
+                return std::make_shared<Solution>();
             }
         }
 

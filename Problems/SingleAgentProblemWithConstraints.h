@@ -43,7 +43,7 @@ private:
 
     // The objective function to minimize : Fuel or Makespan
     // - Fuel : Total amount of distance traveled by the agent (costWait = 0)
-    // - Makespan : Total time for the agent to reach its goal (costWait = 1)
+    // - Makespan or SumOfCosts : Total time for the agent to reach its goal (costWait = 1)
     ObjectiveFunction objective;
 
     // set of vertex constraints like (a, p, t) meaning agent a can't be at position p at time t

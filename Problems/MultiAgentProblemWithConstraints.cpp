@@ -12,7 +12,7 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(const std::sh
                                                                    const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
                                                                    const std::set<VertexConstraint> &setOfSoftVertexConstraints,
                                                                    const std::set<EdgeConstraint> &setOfSoftEdgeConstraints)
-    : Problem(graph, starts.size(), maxCost)
+    : Problem(graph, (int)starts.size(), maxCost)
     , starts(starts)
     , targets(targets)
     , agentIds(m_agentIds)
@@ -37,6 +37,13 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(const std::sh
     } else {
         LOG("Objective function : Fuel");
     }
+    impossible = false;
+    if ((not m_agentIds.empty()) and ((int)m_agentIds.size() != numberOfAgents)){
+        impossible = true;
+    }
+    if (numberOfAgents != (int)targets.size()){
+        impossible = true;
+    }
     if (m_agentIds.empty()){
         for (int a = 0; a < numberOfAgents; a++){
             agentIds.emplace_back(a);
@@ -45,7 +52,13 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(const std::sh
     for (int i = 0; i < numberOfAgents; i++){
         idToIndex[agentIds[i]] = i;
     }
-    impossible = false;
+    for (int agentId : agentIds){
+        if (std::count(agentIds.begin(), agentIds.end(), agentId)>1){
+            LOG("2 or more agents have the same id.");
+            impossible = true;
+            break;
+        }
+    }
     LOG("Start position of each agent :");
     for (int i = 0; i < numberOfAgents; i++) {
         LOG(" - Agent " << agentIds[i] << " : " << starts[i]);
@@ -328,5 +341,13 @@ int MultiAgentProblemWithConstraints::getTargetOf(int id) {
 
 bool MultiAgentProblemWithConstraints::isImpossible() const {
     return impossible;
+}
+
+std::set<VertexConstraint> MultiAgentProblemWithConstraints::getSetOfSoftVertexConstraints() const {
+    return setOfSoftVertexConstraints;
+}
+
+std::set<EdgeConstraint> MultiAgentProblemWithConstraints::getSetOfSoftEdgeConstraints() const {
+    return setOfSoftEdgeConstraints;
 }
 

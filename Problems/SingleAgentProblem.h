@@ -10,7 +10,7 @@
 
 class SingleAgentProblem : public Problem<SingleAgentState> {
 public:
-    SingleAgentProblem(std::shared_ptr<Graph> graph, int start, int target, int agentId = 0, int maxCost = INT_MAX);
+    SingleAgentProblem(const std::shared_ptr<Graph>& graph, int start, int target, int agentId = 0, int maxCost = INT_MAX);
 
     std::shared_ptr<SingleAgentState> getStartState() const override;
     std::shared_ptr<SingleAgentState> getGoalState() const;

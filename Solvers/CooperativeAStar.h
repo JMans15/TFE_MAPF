@@ -24,10 +24,7 @@
 // - Agents don't cooperate once they have a planned path (for example, problem if narrow corridor)
 //   Ideally, agent should allow to move of its target to allow others to pass.
 // - It depends on the order of the agents (see prioritized planning Latombe 1991)
-// Could be improved with WINDOWED Hierarchical Cooperative A*
-//
-// We don't take into account the setOfSoftConstraints attribute of problem
-// We don't take into account the maxCost attribute of problem
+// Could be improved with WINDOWED Hierarchical Cooperative A*)
 class CooperativeAStar {
 public:
     CooperativeAStar(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
@@ -43,22 +40,16 @@ public:
             LOG("===== Hierarchical cooperative A* Search ====");
         } else {
             LOG("Not a valid heuristic.");
-            return {};
+            return std::make_shared<Solution>();
         }
 
         if (problem->isImpossible()){
-            return {};
-        }
-
-        ObjectiveFunction objectiveFunction;
-        if (problem->getObjFunction() == Makespan || problem->getObjFunction() == SumOfCosts){
-            objectiveFunction = Makespan;
-        } else {
-            objectiveFunction = Fuel;
+            return std::make_shared<Solution>();
         }
 
         auto verticesReservationTable = problem->getSetOfHardVertexConstraints();
         auto edgesReservationTable = problem->getSetOfHardEdgeConstraints();
+        auto maxCost = problem->getMaxCost();
 
         int numberOfTimesteps = 0;
         std::unordered_map<int, std::vector<int>> positions;
@@ -66,7 +57,7 @@ public:
         for (int a = 0; a < problem->getNumberOfAgents(); a++){
 
             // Single agent A* search for agent a
-            auto singleAgentProblem = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], objectiveFunction, problem->getAgentIds()[a], verticesReservationTable, edgesReservationTable);
+            auto singleAgentProblem = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], problem->getObjFunction(), problem->getAgentIds()[a], verticesReservationTable, edgesReservationTable, maxCost, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
             auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic).solve();
 
             if (solution->getFoundPath()) {
@@ -84,9 +75,11 @@ public:
                 }
                 numberOfTimesteps = std::max(numberOfTimesteps, solution->getNumberOfTimesteps());
                 positions[problem->getAgentIds()[a]]=pathOfAgent;
+                if (problem->getObjFunction() != Makespan){
+                    maxCost = maxCost - solution->getCost();
+                }
             } else {
                 LOG("No path has been found for agent " << problem->getAgentIds()[a]);
-                LOG("The solution is not valid");
                 return std::make_shared<Solution>();
             }
         }
