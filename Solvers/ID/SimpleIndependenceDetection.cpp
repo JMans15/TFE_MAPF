@@ -6,9 +6,10 @@
 #include <unordered_map>
 #include <utility>
 
-SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
+SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT)
         : problem(std::move(problem))
         , typeOfHeuristic(typeOfHeuristic)
+        , CAT(CAT)
 {}
 
 bool SimpleIndependenceDetection::planSingletonGroups() {
@@ -71,7 +72,27 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
         targets.push_back(problem->getTargetOf(agentId));
         agentIds.push_back(agentId);
     }
-    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
+    std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+    std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+    if (CAT){
+        for (const auto& group : groups){
+            if (*group != *newGroup){
+                for (const auto& a : group->getSolution()->getPositions()){
+                    vector<int> pathOfAgent = a.second;
+                    for (int agent : newGroup->getAgents()){
+                        for (int t = 0; t < pathOfAgent.size(); t++){
+                            vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
+                        }
+                        for (int t = 1; t < pathOfAgent.size(); t++){
+                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
+                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
+                        }
+                    }
+                }
+            }
+        }
+    }
+    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
     if (not solution->getFoundPath() or not solution->isValid()){

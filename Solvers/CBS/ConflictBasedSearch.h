@@ -15,16 +15,18 @@
 // Only for multi agent problem
 //
 // typeOfHeuristic is the heuristic for the A* searches
+// If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to avoid planned paths (if possible with optimal cost)
 class ConflictBasedSearch {
 public:
-    ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic);
+    ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT = true);
     std::shared_ptr<Solution> solve();
 
 protected:
-    static std::shared_ptr<MultiAgentProblemWithConstraints> problem;
+    std::shared_ptr<MultiAgentProblemWithConstraints> problem;
     TypeOfHeuristic typeOfHeuristic;
     std::multiset<std::shared_ptr<ConflictTreeNode>, ConflictTreeNodeComparator> fringe; // the open list
     int numberOfVisitedNodes;
+    bool CAT;
 
     // Plans a path for each agent
     // Returns a tuple {solutions, cost, costs} where
@@ -47,7 +49,7 @@ protected:
     // - fullSetOfVertexConstraints and fullSetOfEdgeConstraints are the sets of constraints from the root node to this node
     // - fullCosts is a map from the id of an agent to the cost of the latest path of this agent
     // - fullSolutions is a map from the id of an agent to the latest path of this agent
-    static std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node);
+    std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node);
 
     // Retrieves the paths from the parent nodes
     // Returns fullSolutions

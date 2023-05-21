@@ -4,12 +4,14 @@
 
 #include "IndependenceDetection.h"
 
-IndependenceDetection::IndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
-        : SimpleIndependenceDetection(problem, typeOfHeuristic)
+#include <utility>
+
+IndependenceDetection::IndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT)
+        : SimpleIndependenceDetection(std::move(problem), typeOfHeuristic), CAT(CAT)
 {}
 
 
-bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB){
+bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Group>& groupA, const std::shared_ptr<Group>& groupB){
     std::set<VertexConstraint> vertexIllegalTable = problem->getSetOfHardVertexConstraints();
     std::set<EdgeConstraint> edgeIllegalTable = problem->getSetOfHardEdgeConstraints();
     for (auto a : groupB->getSolution()->getPositions()){
@@ -27,17 +29,19 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> gr
     }
     std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
     std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
-    for (auto group : groups){
-        if (*group != *groupA){
-            for (auto a : group->getSolution()->getPositions()){
-                vector<int> pathOfAgent = a.second;
-                for (int agentA : groupA->getAgents()){
-                    for (int t = 0; t < pathOfAgent.size(); t++){
-                        vertexConflictAvoidanceTable.insert({agentA, pathOfAgent[t], t});
-                    }
-                    for (int t = 1; t < pathOfAgent.size(); t++){
-                        edgeConflictAvoidanceTable.insert({agentA, pathOfAgent[t], pathOfAgent[t-1], t});
-                        edgeConflictAvoidanceTable.insert({agentA, pathOfAgent[t-1], pathOfAgent[t], t});
+    if (CAT){
+        for (const auto& group : groups){
+            if (*group != *groupA){
+                for (const auto& a : group->getSolution()->getPositions()){
+                    vector<int> pathOfAgent = a.second;
+                    for (int agentA : groupA->getAgents()){
+                        for (int t = 0; t < pathOfAgent.size(); t++){
+                            vertexConflictAvoidanceTable.insert({agentA, pathOfAgent[t], t});
+                        }
+                        for (int t = 1; t < pathOfAgent.size(); t++){
+                            edgeConflictAvoidanceTable.insert({agentA, pathOfAgent[t], pathOfAgent[t-1], t});
+                            edgeConflictAvoidanceTable.insert({agentA, pathOfAgent[t-1], pathOfAgent[t], t});
+                        }
                     }
                 }
             }
@@ -116,17 +120,19 @@ bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> gr
     }
     std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
     std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
-    for (const auto& group : groups){
-        if (*group != *newGroup){
-            for (auto a : group->getSolution()->getPositions()){
-                vector<int> pathOfAgent = a.second;
-                for (int agent : newGroup->getAgents()){
-                    for (int t = 0; t < pathOfAgent.size(); t++){
-                        vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
-                    }
-                    for (int t = 1; t < pathOfAgent.size(); t++){
-                        edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
-                        edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
+    if (CAT){
+        for (const auto& group : groups){
+            if (*group != *newGroup){
+                for (auto a : group->getSolution()->getPositions()){
+                    vector<int> pathOfAgent = a.second;
+                    for (int agent : newGroup->getAgents()){
+                        for (int t = 0; t < pathOfAgent.size(); t++){
+                            vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
+                        }
+                        for (int t = 1; t < pathOfAgent.size(); t++){
+                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
+                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
+                        }
                     }
                 }
             }

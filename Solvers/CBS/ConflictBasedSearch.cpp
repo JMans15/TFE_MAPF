@@ -6,10 +6,11 @@
 
 #include <utility>
 
-ConflictBasedSearch::ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
+ConflictBasedSearch::ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT)
     : problem(std::move(problem))
     , typeOfHeuristic(typeOfHeuristic)
     , numberOfVisitedNodes(0)
+    , CAT(CAT)
     {}
 
 std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int, int>> ConflictBasedSearch::planIndividualPaths() {
@@ -205,7 +206,22 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
                     newFullSetOfEdgeConstraints.insert({agentId, conflict.getPosition2(), conflict.getPosition1(), conflict.getTime()});
                 }
             }
-            auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
+            std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+            std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+            if (CAT){
+                for (auto [agent, pathOfAgent] : fullSolutions){
+                    if (agent != agentId){
+                        for (int t = 0; t < pathOfAgent.size(); t++){
+                            vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
+                        }
+                        for (int t = 1; t < pathOfAgent.size(); t++){
+                            edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t], pathOfAgent[t-1], t});
+                            edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1], pathOfAgent[t], t});
+                        }
+                    }
+                }
+            }
+            auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
             auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
             if (solution->getFoundPath()){
                 std::unordered_map<int,int> successorCosts;

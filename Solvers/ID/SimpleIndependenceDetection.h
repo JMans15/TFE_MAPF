@@ -14,9 +14,10 @@
 // Only for multi agent problem
 //
 // typeOfHeuristic is the heuristic for the A* searches
+// If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to avoid planned paths (if possible with optimal cost)
 class SimpleIndependenceDetection {
 public:
-    SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic);
+    SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT = false);
 
     virtual std::shared_ptr<Solution> solve();
 
@@ -25,6 +26,7 @@ protected:
     TypeOfHeuristic typeOfHeuristic;
     std::unordered_set<std::shared_ptr<Group>, GroupHasher, GroupEquality> groups;
     std::set<GroupConflict> setOfConflicts;
+    bool CAT;
 
     // Plans a path for each singleton group
     // Returns true if it found a solution for each agent (false otherwise)
