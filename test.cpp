@@ -5,6 +5,7 @@
 #include "Solvers/AStar/AStar.h"
 #include "Solvers/CooperativeAStar.h"
 #include "Problems/MultiAgentProblemWithConstraints.h"
+#include "Problems/StandardMultiAgentProblemWithConstraints.h"
 #include "GraphParser/Parser.h"
 #include "Solvers/AStar/ReverseResumableAStar.h"
 #include "Problems/SingleAgentProblem.h"
@@ -436,7 +437,7 @@ int main() {
     std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
 
     // TEST 15 : maxCost in CBS
-    auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     auto problem1 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
     auto solution1 = ConflictBasedSearch(problem1, Manhattan).solve();
     std::cout << solution1->getFoundPath() << std::endl; // foundPath = true
@@ -448,6 +449,69 @@ int main() {
     std::cout << solution3->getFoundPath() << std::endl; // foundPath = true
     auto problem4 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
     auto solution4 = ConflictBasedSearch(problem4, Manhattan).solve();
-    std::cout << solution4->getFoundPath() << std::endl; // foundPath = false
+    std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
+
+    // TEST X : StandardMultiAgent : 2 agents can't be at the same vertex at the same time
+    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
+    vector<int> starts;
+    starts.push_back(4);
+    starts.push_back(9);
+    vector<int> targets;
+    targets.push_back(6);
+    targets.push_back(1);
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    // makespan cost = 3, fuel cost = 4,  sumofcosts cost = 5
+    solution->print();*/
+
+    // TEST X : StandardMultiAgent : 2 agents can't traverse the same edge between successive time steps
+    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
+    vector<int> starts;
+    starts.push_back(0);
+    starts.push_back(3);
+    vector<int> targets;
+    targets.push_back(3);
+    targets.push_back(0);
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    // makespan cost = 5, fuel cost = 8,  sumofcosts cost = 8
+    solution->print();*/
+
+    // TEST X : StandardMultiAgent : 2 agents
+    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    vector<int> starts;
+    starts.push_back(48);
+    starts.push_back(17);
+    vector<int> targets;
+    targets.push_back(17);
+    targets.push_back(20);
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
+    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
+    solution->print();
+
+    // TEST X : StandardMultiAgent and a hard vertex constraint
+    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{4}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{{0,5,1}});
+    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    solution->print();*/
+
+    // TEST X : StandardMultiAgent and a hard edge constraint
+    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{4}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{0, 4, 5, 1}});
+    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    solution->print();*/
+
+    // TEST X : StandardMultiAgent and a soft vertex constraint
+    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{{0,5,1}});
+    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    solution->print();*/
+
+    // TEST X : StandardMultiAgent and a soft edge constraint
+    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{1,1,5,1}});
+    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    solution->print();*/
 
 }

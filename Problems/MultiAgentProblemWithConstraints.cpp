@@ -22,7 +22,7 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(const std::sh
     , setOfSoftVertexConstraints(setOfSoftVertexConstraints)
     , setOfSoftEdgeConstraints(setOfSoftEdgeConstraints)
 {
-    LOG("==== Multi Agent Problem With Constraints ====");
+    LOG("==== Multi Agent Problem With Constraints (for a Operator Decomposition A*) ====");
     LOG("Number of agents : " << numberOfAgents)
     
     if (objective != SumOfCosts && objective != Makespan && objective != Fuel) {

@@ -13,7 +13,7 @@
 #include <unordered_map>
 
 // Basic A* search
-// Can be applied for multi agent (operator decomposition) and single agent problems
+// Can be applied for multi agent and single agent problems
 template <class P, class S>
 class AStar {
 public:

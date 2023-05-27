@@ -1,29 +1,29 @@
 //
-// Created by Arthur Mahy on 04/01/2023.
+// Created by Arthur Mahy on 23/05/2023.
 //
 
-#ifndef TFE_MAPF_MULTIAGENTPROBLEMWITHCONSTRAINTS_H
-#define TFE_MAPF_MULTIAGENTPROBLEMWITHCONSTRAINTS_H
+#ifndef TFE_MAPF_STANDARDMULTIAGENTPROBLEMWITHCONSTRAINTS_H
+#define TFE_MAPF_STANDARDMULTIAGENTPROBLEMWITHCONSTRAINTS_H
 
 #include "Problem.h"
-#include "../States/MultiAgentState.h"
+#include "../States/StandardMultiAgentState.h"
 
 #include <set>
 
-// Multi Agent Problem solved with Operator Decomposition A* (>< Standard A*)
-class MultiAgentProblemWithConstraints : public Problem<MultiAgentState> {
+// Multi Agent Problem solved with Standard A* (>< Operator Decomposition A*)
+class StandardMultiAgentProblemWithConstraints : public Problem<StandardMultiAgentState> {
 public:
-    MultiAgentProblemWithConstraints(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
+    StandardMultiAgentProblemWithConstraints(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
                                      ObjectiveFunction objective = Fuel, const std::vector<int>& agentIds = std::vector<int>(),
                                      const std::set<VertexConstraint> &setOfHardVertexConstraints = std::set<VertexConstraint>(),
                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX,
                                      const std::set<VertexConstraint> &setOfSoftVertexConstraints = std::set<VertexConstraint>(),
                                      const std::set<EdgeConstraint> &setOfSoftEdgeConstraints = std::set<EdgeConstraint>());
 
-    std::shared_ptr<MultiAgentState> getStartState() const override;
-    bool isGoalState(std::shared_ptr<MultiAgentState> state) const override;
-    std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> getSuccessors(std::shared_ptr<MultiAgentState> state) const override;
-    std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const override;
+    std::shared_ptr<StandardMultiAgentState> getStartState() const override;
+    bool isGoalState(std::shared_ptr<StandardMultiAgentState> state) const override;
+    std::vector<std::tuple<std::shared_ptr<StandardMultiAgentState>, int, int>> getSuccessors(std::shared_ptr<StandardMultiAgentState> state) const override;
+    std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<StandardMultiAgentState>> states) const override;
     std::vector<int> getAgentIds() const override;
     bool isImpossible() const override;
 
@@ -83,7 +83,10 @@ private:
     // (according to the soft vertex constraints of the problem)
     int numberOfViolations(int agent, int newPosition, int time) const;
 
+    // Recursive fun
+    void recursiveAssignAMoveToAnAgent(int agentToAssign, std::vector<std::tuple<std::shared_ptr<StandardMultiAgentState>, int, int>>* successors, int cost, std::vector<int> positions, const std::vector<int>& prePositions, int t, int violations, std::vector<int> cannotMove = std::vector<int>()) const ;
+
 };
 
 
-#endif //TFE_MAPF_MULTIAGENTPROBLEMWITHCONSTRAINTS_H
+#endif //TFE_MAPF_STANDARDMULTIAGENTPROBLEMWITHCONSTRAINTS_H

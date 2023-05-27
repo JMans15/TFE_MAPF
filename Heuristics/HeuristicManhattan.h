@@ -8,6 +8,8 @@
 #include "../GraphParser/Graph.h"
 #include "../Problems/MultiAgentProblemWithConstraints.h"
 #include "../States/MultiAgentState.h"
+#include "../States/StandardMultiAgentState.h"
+#include "../Problems/StandardMultiAgentProblemWithConstraints.h"
 #include "../Solvers/AStar/ReverseResumableAStar.h"
 #include "../Problems/SingleAgentProblem.h"
 #include "../States/SingleAgentState.h"
@@ -56,7 +58,7 @@ private:
 // where cost is the Manhattan distance (ignoring walls and other agents)
 // - for SumOfCosts and Fuel objective functions
 // - for multi agent problem
-template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value>::type* = nullptr>
+template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value or std::is_base_of<StandardMultiAgentState, S>::value>::type* = nullptr>
 class SICheuristic : public Heuristic<S> {
 public:
     SICheuristic(std::vector<int> targets, int width) : targets(targets), width(width) {}
@@ -91,6 +93,24 @@ public:
         }
         for (int i = state->getAgentToAssign(); i < positions.size(); i++){
             maxDistance = std::max(maxDistance, manhattanDistance(positions[i], targets[i], width) - 1);
+        }
+        return maxDistance;
+    }
+private:
+    std::vector<int> targets;
+    int width;
+};
+
+template<typename S, typename std::enable_if<std::is_base_of<StandardMultiAgentState, S>::value>::type* = nullptr>
+class MICheuristic2 : public Heuristic<S> {
+public:
+    MICheuristic2(std::vector<int> targets, int width) : targets(targets), width(width) {}
+
+    int heuristicFunction(std::shared_ptr<S> state) {
+        int maxDistance = 0;
+        auto positions = state->getPositions();
+        for (int i = 0; i < positions.size(); i++){
+            maxDistance = std::max(maxDistance, manhattanDistance(positions[i], targets[i], width));
         }
         return maxDistance;
     }
