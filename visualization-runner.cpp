@@ -53,6 +53,9 @@ int main(int argc, const char** argv) {
         COOP,
         ID,
         SID,
+        DSCBS,
+        StandardAStar,
+        EID
     };
 
     std::map<string, Algo> mAlgo({
@@ -60,10 +63,13 @@ int main(int argc, const char** argv) {
         {"CBS", CBS},
         {"Coop", COOP},
         {"ID", ID},
-        {"SID", SID}
+        {"SID", SID},
+        {"DSCBS", DSCBS},
+        {"StandardAStar", StandardAStar},
+        {"EID", EID}
     });
 
-    if (!mAlgo.contains(result["algo"].as<string>())) {
+    if (mAlgo.count(result["algo"].as<string>())==0) {
         printf("Given algo is invalid, use -h or --help");
         exit(0);
     }
@@ -74,7 +80,7 @@ int main(int argc, const char** argv) {
         {"Manhattan", Manhattan}
     });
 
-    if (!mHeuristic.contains(result["heuristic"].as<string>())) {
+    if (mHeuristic.count(result["heuristic"].as<string>())==0) {
         printf("Given heuristic is invalid, use -h or --help");
         exit(0);
     }
@@ -87,7 +93,7 @@ int main(int argc, const char** argv) {
         {"SumOfCosts", SumOfCosts}
     });
 
-    if (!mObjective.contains(result["objective"].as<string>())) {
+    if (mObjective.count(result["objective"].as<string>())==0) {
         printf("Given objective is invalid, use -h or --help");
         exit(0);
     }
@@ -180,8 +186,18 @@ int main(int argc, const char** argv) {
         case ID:
             solution = IndependenceDetection(problem, heuristic).solve();
             break;
+        case EID:
+            solution = IndependenceDetection(problem, heuristic, false).solve();
+            break;
         case SID:
             solution = SimpleIndependenceDetection(problem, heuristic).solve();
+            break;
+        case DSCBS:
+            solution = ConflictBasedSearch(problem, heuristic, false, true).solve();
+            break;
+        case StandardAStar:
+            auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, objective);
+            solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, heuristic).solve();
             break;
     }
 

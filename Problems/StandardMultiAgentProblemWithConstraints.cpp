@@ -134,7 +134,7 @@ bool StandardMultiAgentProblemWithConstraints::isGoalState(std::shared_ptr<Stand
 }
 
 // Returns true if position is not already occupied by assigned agents
-bool notAlreadyOccupiedPosition(int position, std::vector<int> &positions, int agentToAssign) {
+bool StandardMultiAgentProblemWithConstraints::notAlreadyOccupiedPosition(int position, std::vector<int> &positions, int agentToAssign) const {
     for (int i = 0; i < agentToAssign; i++){
         if (positions[i] == position){
             return false;
@@ -144,7 +144,7 @@ bool notAlreadyOccupiedPosition(int position, std::vector<int> &positions, int a
 }
 
 // Returns true if the edge (position, positions[agentToAssign]) is not already occupied by assigned agents
-bool notAlreadyOccupiedEdge(int position, const std::vector<int> &positions, int agentToAssign, const std::vector<int> &prePositions) {
+bool StandardMultiAgentProblemWithConstraints::notAlreadyOccupiedEdge(int position, const std::vector<int> &positions, int agentToAssign, const std::vector<int> &prePositions) const {
     for (int i = 0; i < agentToAssign; i++) {
         if (prePositions[i] == position && positions[i] == positions[agentToAssign]){
             return false;

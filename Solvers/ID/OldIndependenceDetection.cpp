@@ -61,7 +61,7 @@ bool OldIndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group>
         auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost(), vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
         solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     }
-    if (solution->getFoundPath() and solution->isValid()) {
+    if (solution->getFoundPath()) {
         groupA->putSolution(solution);
         return true;
     }
@@ -106,7 +106,7 @@ bool OldIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group>
     auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
-    if (not solution->getFoundPath() or not solution->isValid()){
+    if (not solution->getFoundPath()){
         return false;
     }
     return true;

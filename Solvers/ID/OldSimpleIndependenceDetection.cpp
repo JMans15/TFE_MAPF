@@ -106,7 +106,7 @@ bool OldSimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<
     auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
-    if (not solution->getFoundPath() or not solution->isValid()){
+    if (not solution->getFoundPath()){
         return false;
     }
     return true;

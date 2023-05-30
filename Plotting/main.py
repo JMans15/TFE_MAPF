@@ -2,13 +2,13 @@ import os
 import subprocess
 import numpy as np
 from matplotlib import pyplot as plt
-from multiprocessing import Pool
+from multiprocessing import Pool, freeze_support
 import sys, os
 
 directory = '../mapf-map/Paris/scen-random'
 program = '../cmake-build-debug/TFE_MAPF_visu'
 timeout = 2  # Timeout in seconds
-args = ['-m', '--map', '../mapf-map/Paris/Paris_1_256.map']
+args = ['--map', '../mapf-map/Paris/Paris_1_256.map']
 num_threads = 1  # Number of threads to use (do not use too much because of RAM usage of mapf)
 
 def check_solution(file):
@@ -22,6 +22,7 @@ def check_solution(file):
         uniques, c = np.unique(step, return_counts=True)
         doubles = uniques[c > 1]
         if doubles.size > 0:
+            print("vertex conflict")
             print(doubles)
             return False
     # Edge conflicts
@@ -37,6 +38,7 @@ def check_solution(file):
         uniques, c = np.unique(move, return_counts=True)
         doubles = uniques[c > 1]
         if doubles.size > 0:
+            print("edge conflict")
             print(doubles)
             return False
     return True
@@ -63,7 +65,7 @@ def check_start_and_target(file, scenario_filename, nagents):
 
 def run_program(file_path, a, i, algo):
     try:
-        subprocess.run([program, '--scen', f'{file_path}', '-a', f'{a}', '--outfile', f'../Plotting/result_{i}.txt', algo] + args, timeout=timeout)
+        subprocess.run([program, '--scen', f'{file_path}', '-n', f'{a}', '--outfile', f'../Plotting/result_{i}.txt', '-a', f'{algo}'] + args, timeout=timeout)
         with open(f"result_{i}.txt", 'r') as file:
             if not check_solution(file):
                 print(f"failed with scenario {file_path}")
@@ -77,7 +79,7 @@ def run_program(file_path, a, i, algo):
 
 def data_for_algo(algo):
     data = []
-    for a in range(1, 26): #max 1002
+    for a in range(1, 20): #max 1002
         files = os.listdir(directory)
         with Pool(num_threads) as p:
             results = [p.apply_async(run_program, (os.path.join(directory, filename), a, i, algo)) for i, filename in enumerate(files)]
@@ -90,24 +92,37 @@ def data_for_algo(algo):
 
     return data
 
-fig = plt.figure(figsize=(16, 8))
-ax = fig.subplots(1,1)
+if __name__ == '__main__':
+    freeze_support()
+    fig =plt.figure(figsize=(16, 8))
+    ax = fig.subplots(1,1)
 
-data = data_for_algo('')
+    ax.set_title(f"Timeout = {timeout}, random scenarios")
+    ax.set_xlabel("Number of agents")
+    ax.set_ylabel("Success rate [%]")
 
-ax.set_title(f"Timeout = {timeout}, random scenarios")
-ax.set_xlabel("Number of agents")
-ax.set_ylabel("Success rate [%]")
+    #data = data_for_algo('StandardAStar')
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Standard)")
 
-ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A*")
+    #data = data_for_algo('AStar')
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Operator Decomposition)")
 
-data = data_for_algo("--sid")
-ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Simple Independence Detection")
+    data = data_for_algo("SID")
+    ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Simple Independence Detection")
 
-data = data_for_algo("--id")
-ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Independence Detection")
+    data = data_for_algo("EID")
+    ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Enhanced version of ID (EID)")
 
-ax.grid(axis='both')
+    #data = data_for_algo("ID")
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Independence Detection")
 
-plt.legend()
-plt.show()
+    #data = data_for_algo("CBS")
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Conflict Based Search")
+
+    #data = data_for_algo("DSCBS")
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Disjoint Splitting CBS")
+
+    ax.grid(axis='both')
+
+    plt.legend()
+    plt.show()

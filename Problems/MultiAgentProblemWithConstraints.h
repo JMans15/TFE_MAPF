@@ -83,6 +83,12 @@ private:
     // (according to the soft vertex constraints of the problem)
     int numberOfViolations(int agent, int newPosition, int time) const;
 
+    // Returns true if position is not already occupied by assigned agents
+    bool notAlreadyOccupiedPosition(int position, std::vector<int> &positions, int agentToAssign) const;
+
+    // Returns true if the edge (position, positions[agentToAssign]) is not already occupied by assigned agents
+    bool notAlreadyOccupiedEdge(int position, const std::vector<int> &positions, int agentToAssign, const std::vector<int> &prePositions) const;
+
 };
 
 

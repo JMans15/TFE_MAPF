@@ -32,15 +32,21 @@ void SimpleIndependenceDetection::calculateSetOfConflicts() {
             if (*groupA!=*groupB){
                 for (auto [agentA, pathA] : groupA->getSolution()->getPositions()){
                     for (auto [agentB, pathB] : groupB->getSolution()->getPositions()){
-                        if (agentA<agentB){
+                        if (pathA.size() < pathB.size()){
                             // Vertex conflict
-                            for (int t = 0; t < std::min(pathA.size(), pathB.size()); t++){
+                            for (int t = 0; t < pathA.size(); t++){
                                 if (pathA[t]==pathB[t]){
                                     setOfConflicts.insert({groupA, groupB, t});
                                 }
                             }
+                            int targetA = problem->getTargetOf(agentA);
+                            for (int t = pathA.size(); t < pathB.size(); t++){
+                                if (targetA==pathB[t]){
+                                    setOfConflicts.insert({groupA, groupB, t});
+                                }
+                            }
                             // Edge conflict
-                            for (int t = 0; t < std::min(pathA.size(), pathB.size())-1; t++){
+                            for (int t = 0; t < pathA.size()-1; t++){
                                 // We only add an edge conflict if 2 agents are traversing the edge with different directions
                                 // The other case is already token into account with 2 vertex conflicts
                                 if (pathA[t]==pathB[t+1] and pathA[t+1]==pathB[t]){
@@ -95,7 +101,7 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
     auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
-    if (not solution->getFoundPath() or not solution->isValid()){
+    if (not solution->getFoundPath()){
         return false;
     }
 
@@ -116,9 +122,29 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
             for (auto [agentA, pathA] : group->getSolution()->getPositions()){
                 for (auto [agentB, pathB] : newGroup->getSolution()->getPositions()){
                     // Vertex conflict
-                    for (int t = 0; t < std::min(pathA.size(), pathB.size()); t++){
-                        if (pathA[t]==pathB[t]){
-                            setOfConflicts.insert({group, newGroup, t});
+                    if (pathA.size() < pathB.size()){
+                        for (int t = 0; t < pathA.size(); t++){
+                            if (pathA[t]==pathB[t]){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
+                        }
+                        int targetA = problem->getTargetOf(agentA);
+                        for (int t = pathA.size(); t < pathB.size(); t++){
+                            if (targetA==pathB[t]){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
+                        }
+                    } else {
+                        for (int t = 0; t < pathB.size(); t++){
+                            if (pathA[t]==pathB[t]){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
+                        }
+                        int targetB = problem->getTargetOf(agentB);
+                        for (int t = pathB.size(); t < pathA.size(); t++){
+                            if (pathA[t]==targetB){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
                         }
                     }
                     // Edge conflict

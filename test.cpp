@@ -284,7 +284,7 @@ int main() {
     auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
     auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
     solution1->print();
-    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    auto solution2 = ConflictBasedSearch(problem, Manhattan).solve();
     solution2->print();*/
 
     // TEST 16 : Conflict Based Search
@@ -329,37 +329,25 @@ int main() {
     solution1->print();
     solution2->print();*/
 
-    // TEST 6 : 1 agent and a hard vertex constraint
-    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    int start = 4;
-    int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{{0,5,1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
-    solution->print();*/
-
-    // TEST 6 BIS : 1 agent and a hard edge constraint
-    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    int start = 4;
-    int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{0, 4, 5, 1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
-    solution->print();*/
-
-    // TEST 7 : 1 agent and a soft vertex constraint
-    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    int start = 1;
-    int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{{0,5,1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
-    solution->print();*/
-
-    // TEST 7 BIS : 1 agent and a soft edge constraint
-    /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    int start = 1;
-    int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{0,1,5,1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
-    solution->print();*/
+    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    vector<int> starts;
+    int w = 256;
+    starts.push_back(124*w+186);
+    starts.push_back(69*w+168);
+    starts.push_back(94*w+72);
+    starts.push_back(179*w+204);
+    starts.push_back(125*w+38);
+    vector<int> targets;
+    targets.push_back(190*w+109);
+    targets.push_back(34*w+199);
+    targets.push_back(95*w+174);
+    targets.push_back(27*w+56);
+    targets.push_back(36*w+236);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    solution1->print();
+    solution2->print();*/
 
     // TEST 15 : maxCost in a Cooperative A*
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
@@ -478,7 +466,7 @@ int main() {
     solution->print();*/
 
     // TEST X : StandardMultiAgent : 2 agents
-    auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
+    /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     vector<int> starts;
     starts.push_back(48);
     starts.push_back(17);
@@ -488,7 +476,7 @@ int main() {
     auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
     auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
-    solution->print();
+    solution->print();*/
 
     // TEST X : StandardMultiAgent and a hard vertex constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
@@ -514,4 +502,53 @@ int main() {
     auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
     solution->print();*/
 
+    // TEST X : Disjoint splitting conflict based search
+    /*auto g = Parser::parse("../mapf-map/empty-5-5.map");
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{5, 1}, vector<int>{9, 13}, SumOfCosts);
+    auto solution = ConflictBasedSearch(problem, Manhattan, false, true).solve();
+    solution->print();*/
+
+    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    vector<int> starts;
+    int w = 256;
+    starts.push_back(31+w*131);
+    starts.push_back(169+w*31);
+    starts.push_back(192+w*252);
+    starts.push_back(140+w*135);
+    starts.push_back(162+w*225);
+    starts.push_back(153+w*255);
+    starts.push_back(252+w*42);
+    starts.push_back(64+w*70);
+    starts.push_back(216+w*229);
+    starts.push_back(110+w*235);
+    starts.push_back(209+w*138);
+    starts.push_back(140+w*205);
+    starts.push_back(31+w*7);
+    starts.push_back(215+w*25);
+    starts.push_back(3+w*36);
+    starts.push_back(14+w*97);
+    starts.push_back(104+w*204);
+    starts.push_back(227+w*30);
+    vector<int> targets;
+    targets.push_back(158+w*235);
+    targets.push_back(187+w*112);
+    targets.push_back(63+w*138);
+    targets.push_back(129+w*77);
+    targets.push_back(222+w*102);
+    targets.push_back(32+w*162);
+    targets.push_back(53+w*193);
+    targets.push_back(180+w*185);
+    targets.push_back(101+w*187);
+    targets.push_back(131+w*198);
+    targets.push_back(150+w*81);
+    targets.push_back(152+w*110);
+    targets.push_back(131+w*194);
+    targets.push_back(124+w*139);
+    targets.push_back(188+w*24);
+    targets.push_back(174+w*155);
+    targets.push_back(199+w*252);
+    targets.push_back(177+w*180);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance, false, true).solve();
+    solution2->print();*/
 }

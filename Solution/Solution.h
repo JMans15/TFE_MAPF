@@ -8,12 +8,14 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include "../Constraints/VertexConstraint.h"
+#include "set"
 
 class Solution {
 public:
     Solution();
     Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
-    Solution(int cost, int numberOfVisitedNodes, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
+    Solution(int cost, int numberOfVisitedNodes, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe);
 
     int getCost() const;
     int getNumberOfVisitedNodes() const;
@@ -40,6 +42,9 @@ public:
     // Lengthens the matrix positions so that the length of a path is length
     void lengthenPositions(int length);
 
+    // Returns true if all paths are consistent according to the positive constraints
+    bool isConsistent(const std::set<VertexConstraint>& setOfPositiveConstraints);
+
 private:
 
     // Cost of the solution / value of the objective function for this solution (if solution of a single joint A* or conflict based search)
@@ -49,6 +54,9 @@ private:
     // - goal tested states if solution of a single joint A*
     // - conflict tree nodes if solution of conflict based search
     int numberOfVisitedNodes;
+
+    // The number of nodes left in the fringe/open list at the end of the search
+    int numberOfNodesLeftInTheFringe;
 
     // The number of needed timesteps from all agents to reach their target position
     int numberOfTimesteps;

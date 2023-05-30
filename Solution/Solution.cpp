@@ -20,22 +20,23 @@ Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<in
 , numberOfTimesteps(numberOfTimesteps)
 , positions(positions)
 {
-    if (not isValid()){
+    /*if (not isValid()){
         std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
-    }
+    }*/
 }
 
 Solution::Solution(int cost, int numberOfVisitedNodes,
-                   int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions)
+                   int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe)
     : foundPath(true)
     , cost(cost)
     , numberOfVisitedNodes(numberOfVisitedNodes)
     , numberOfTimesteps(numberOfTimesteps)
     , positions(positions)
+    , numberOfNodesLeftInTheFringe(numberOfNodesLeftInTheFringe)
 {
-    if (not isValid()){
+    /*if (not isValid()){
         std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
-    }
+    }*/
 }
 
 int Solution::getCost() const {
@@ -81,6 +82,7 @@ void Solution::print() {
         std::cout << numberOfVisitedNodes << " visited nodes " << std::endl;
         std::cout << " ( = goal tested states if solution of a single joint A*" << std::endl;
         std::cout << "  or conflict tree nodes if solution of conflict based search)" << std::endl;
+        std::cout << numberOfNodesLeftInTheFringe << " nodes left at the end of the search in the fringe/open list " << std::endl;
         std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
         std::cout << " - SumOfCosts cost of the solution = " << getSumOfCostsCost() << std::endl;
         std::cout << " - Fuel cost of the solution = " << getFuelCost() << std::endl;
@@ -155,6 +157,18 @@ bool Solution::isValid() {
                         return false;
                     }
                 }
+            }
+        }
+    }
+    return true;
+}
+
+bool Solution::isConsistent(const std::set<VertexConstraint>& setOfPositiveConstraints) {
+    for (const auto& constraint : setOfPositiveConstraints){
+        if (!positions[constraint.getAgent()].empty()){
+            if (positions[constraint.getAgent()][constraint.getTime()]!=constraint.getPosition()){
+                // std::cout << "solution inconsistent with the positive constraints" << std::endl;
+                return false;
             }
         }
     }

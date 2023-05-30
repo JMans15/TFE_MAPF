@@ -4,7 +4,7 @@
 
 #include "SingleAgentProblemWithConstraints.h"
 
-SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
+SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction m_objective,
                                                                      int agentId, const std::set<VertexConstraint> &setOfHardVertexConstraints,
                                                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
                                                                      const std::set<VertexConstraint> &setOfSoftVertexConstraints,
@@ -13,17 +13,17 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
     , start(start)
     , target(target)
     , agentId(agentId)
-    , objective(objective)
+    , objective(m_objective)
     , setOfHardVertexConstraints(setOfHardVertexConstraints)
     , setOfHardEdgeConstraints(setOfHardEdgeConstraints)
     , setOfSoftVertexConstraints(setOfSoftVertexConstraints)
     , setOfSoftEdgeConstraints(setOfSoftEdgeConstraints)
 {
     LOG("==== Single Agent Problem With Constraints ====");
-    if (objective == SumOfCosts){
+    if (m_objective == SumOfCosts){
         objective = Makespan;
     }
-    if (objective != Makespan && objective != Fuel){
+    if (m_objective != Makespan && m_objective != Fuel){
         LOG("The input for the objective function is not correct.");
         LOG("So, the default objective function will be applied.");
         objective = Fuel;

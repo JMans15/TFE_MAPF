@@ -10,8 +10,9 @@
 class VertexConstraint {
 public:
 
-    // agent cannot be at position at time
-    VertexConstraint(int agent, int position, int time) : agent(agent), position(position), time(time) {}
+    // agent cannot be at position at time (if positive is false)
+    // agent has to be at position at time (otherwise)
+    VertexConstraint(int agent, int position, int time, bool positive = false) : agent(agent), position(position), time(time), positive(positive) {}
     ~VertexConstraint() {}
 
     int getAgent() const {
@@ -24,17 +25,27 @@ public:
         return time;
     }
     void print() const {
-        std::cout << "Vertex constraint : agent " << agent << " cannot be at position " << position << " at time " << time << "." << std::endl;
+        if (positive){
+            std::cout << "Positive vertex constraint : agent " << agent << " has to be at position " << position << " at time " << time << "." << std::endl;
+        } else {
+            std::cout << "Vertex constraint : agent " << agent << " cannot be at position " << position << " at time " << time << "." << std::endl;
+        }
+    }
+    bool isPositive(){
+        return positive;
     }
 
     bool operator<(const VertexConstraint &other) const {
-        if (agent == other.agent) {
-            if (position == other.position) {
-                return time < other.time;
+        if (positive == other.positive){
+            if (agent == other.agent) {
+                if (position == other.position) {
+                    return time < other.time;
+                }
+                return position < other.position;
             }
-            return position < other.position;
+            return agent < other.agent;
         }
-        return agent < other.agent;
+        return positive < other.positive;
     }
 
 private:
@@ -42,6 +53,7 @@ private:
     int agent;
     int position;
     int time;
+    int positive;
 };
 
 

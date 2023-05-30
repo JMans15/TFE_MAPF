@@ -49,6 +49,7 @@ public:
             numberOfVisitedStates += 1;
 
             if (problem->isGoalState(nodeState)){
+                numberOfNodesLeftInTheFringe = (int) fringe.size();
                 return retrieveSolution(node);
             }
 
@@ -77,6 +78,7 @@ private:
     std::multiset<std::shared_ptr<Node<S>>, NodeComparator<S>> fringe; // the open list
     std::unordered_map<std::shared_ptr<S>, int, StateHasher<S>, StateEquality<S>> distance; // the closed list
     int numberOfVisitedStates;
+    int numberOfNodesLeftInTheFringe;
 
     std::shared_ptr<Solution> retrieveSolution(std::shared_ptr<Node<S>> node) {
         int cost = node->getCost();
@@ -91,7 +93,7 @@ private:
         auto positions = problem->getPositions(states);
         int numberOfTimesteps = positions.begin()->second.size();
         
-        return std::make_shared<Solution>(cost, numberOfVisitedStates, numberOfTimesteps, positions);
+        return std::make_shared<Solution>(cost, numberOfVisitedStates, numberOfTimesteps, positions, numberOfNodesLeftInTheFringe);
     }
 };
 

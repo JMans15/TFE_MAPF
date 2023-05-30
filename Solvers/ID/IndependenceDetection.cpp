@@ -80,9 +80,29 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Gro
                 for (auto [agent, path] : group->getSolution()->getPositions()){
                     for (auto [agentA, pathA] : groupA->getSolution()->getPositions()){
                         // Vertex conflict
-                        for (int t = 0; t < std::min(path.size(), pathA.size()); t++){
-                            if (path[t]==pathA[t]){
-                                setOfConflicts.insert({group, groupA, t});
+                        if (pathA.size() < path.size()){
+                            for (int t = 0; t < pathA.size(); t++){
+                                if (pathA[t]==path[t]){
+                                    setOfConflicts.insert({group, groupA, t});
+                                }
+                            }
+                            int targetA = problem->getTargetOf(agentA);
+                            for (int t = pathA.size(); t < path.size(); t++){
+                                if (targetA==path[t]){
+                                    setOfConflicts.insert({group, groupA, t});
+                                }
+                            }
+                        } else {
+                            for (int t = 0; t < path.size(); t++){
+                                if (pathA[t]==path[t]){
+                                    setOfConflicts.insert({group, groupA, t});
+                                }
+                            }
+                            int target = problem->getTargetOf(agent);
+                            for (int t = path.size(); t < pathA.size(); t++){
+                                if (pathA[t]==target){
+                                    setOfConflicts.insert({group, groupA, t});
+                                }
                             }
                         }
                         // Edge conflict
@@ -141,7 +161,7 @@ bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> gr
     auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
     newGroup->putSolution(solution);
-    if (not solution->getFoundPath() or not solution->isValid()){
+    if (not solution->getFoundPath()){
         return false;
     }
 
@@ -162,9 +182,29 @@ bool IndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> gr
             for (auto [agentA, pathA] : group->getSolution()->getPositions()){
                 for (auto [agentB, pathB] : newGroup->getSolution()->getPositions()){
                     // Vertex conflict
-                    for (int t = 0; t < std::min(pathA.size(), pathB.size()); t++){
-                        if (pathA[t]==pathB[t]){
-                            setOfConflicts.insert({group, newGroup, t});
+                    if (pathA.size() < pathB.size()){
+                        for (int t = 0; t < pathA.size(); t++){
+                            if (pathA[t]==pathB[t]){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
+                        }
+                        int targetA = problem->getTargetOf(agentA);
+                        for (int t = pathA.size(); t < pathB.size(); t++){
+                            if (targetA==pathB[t]){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
+                        }
+                    } else {
+                        for (int t = 0; t < pathB.size(); t++){
+                            if (pathA[t]==pathB[t]){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
+                        }
+                        int targetB = problem->getTargetOf(agentB);
+                        for (int t = pathB.size(); t < pathA.size(); t++){
+                            if (pathA[t]==targetB){
+                                setOfConflicts.insert({group, newGroup, t});
+                            }
                         }
                     }
                     // Edge conflict
