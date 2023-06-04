@@ -19,6 +19,7 @@ Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<in
 , numberOfVisitedNodes(-1)
 , numberOfTimesteps(numberOfTimesteps)
 , positions(positions)
+, startTime(0)
 {
     /*if (not isValid()){
         std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
@@ -26,13 +27,15 @@ Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<in
 }
 
 Solution::Solution(int cost, int numberOfVisitedNodes,
-                   int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe)
+                   int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe,
+                   int startTime)
     : foundPath(true)
     , cost(cost)
     , numberOfVisitedNodes(numberOfVisitedNodes)
     , numberOfTimesteps(numberOfTimesteps)
     , positions(positions)
     , numberOfNodesLeftInTheFringe(numberOfNodesLeftInTheFringe)
+    , startTime(startTime)
 {
     /*if (not isValid()){
         std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
@@ -89,18 +92,22 @@ void Solution::print() {
         std::cout << " - Makespan cost of the solution = " << getMakespanCost() << std::endl;
         std::cout << " " << std::endl;
         std::cout << " -> Position of every agent at each time : " << std::endl;
+        int realTime = startTime;
         for (int t = 0; t < positions.begin()->second.size(); t++){
-            std::cout << " -- Time " << t << " : " << std::endl;
+            std::cout << " -- Time " << realTime << " : " << std::endl;
             for (auto i : positions){
                 std::cout << " --- Agent " << i.first << " : position " << i.second[t] << std::endl;
             }
+            realTime++;
         }
         std::cout << " " << std::endl;
         std::cout << " -> Path of each agent : " << std::endl;
         for (auto i : positions){
             std::cout << " -- Agent " << i.first << " : " << std::endl;
+            realTime = startTime;
             for (int t = 0; t < i.second.size(); t++){
-                std::cout << " --- Time " << t << " : position " << i.second[t] << std::endl;
+                std::cout << " --- Time " << realTime << " : position " << i.second[t] << std::endl;
+                realTime++;
             }
         }
     }
@@ -186,4 +193,18 @@ void Solution::lengthenPositions(int length) {
             positions[i.first].resize(length, i.second[actualLength-1]);
         }
     }
+}
+
+int fuelCost(std::vector<int> path){
+    int cost = 0;
+    for (int t = 1; t < (int) path.size(); t++) {
+        if (path[t] != path[t-1]) {
+            cost += 1;
+        }
+    }
+    return cost;
+}
+
+int makespanCost(const std::vector<int>& path){
+    return (int) path.size()-1;
 }

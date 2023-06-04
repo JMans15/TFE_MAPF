@@ -11,8 +11,9 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(const std::sh
                                                                    const std::set<VertexConstraint> &setOfHardVertexConstraints,
                                                                    const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
                                                                    const std::set<VertexConstraint> &setOfSoftVertexConstraints,
-                                                                   const std::set<EdgeConstraint> &setOfSoftEdgeConstraints)
-    : Problem(graph, (int)starts.size(), maxCost)
+                                                                   const std::set<EdgeConstraint> &setOfSoftEdgeConstraints,
+                                                                   int startTime)
+    : Problem(graph, (int)starts.size(), maxCost, startTime)
     , starts(starts)
     , targets(targets)
     , agentIds(m_agentIds)
@@ -116,11 +117,14 @@ MultiAgentProblemWithConstraints::MultiAgentProblemWithConstraints(const std::sh
     if (maxCost!=INT_MAX){
         LOG("The solution of this problem must have a cost inferior or equal to " << maxCost);
     }
+    if (startTime!=0){
+        LOG("The start time of the problem is " << startTime);
+    }
     LOG(" ");
 }
 
 std::shared_ptr<MultiAgentState> MultiAgentProblemWithConstraints::getStartState() const {
-    return std::make_shared<MultiAgentState>(starts, starts, 0 , 0, true);
+    return std::make_shared<MultiAgentState>(starts, starts, startTime, 0, true);
 }
 
 bool MultiAgentProblemWithConstraints::isGoalState(std::shared_ptr<MultiAgentState> state) const {

@@ -17,6 +17,7 @@
 // typeOfHeuristic is the heuristic for the A* searches
 // If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to avoid planned paths (if possible with optimal cost)
 // If disjointSplitting is true, we use a disjoint splitting strategy (branches on 1 positive and 1 negative constraint instead of 2 negative constraints)
+// (DS is a technique designed to ensure that expanding a CT node N creates a disjoint partition of the space of solutions that satisfy the constraints of N. That is, every solution that satisfies the constraints of N is in exactly one of its children.)
 class ConflictBasedSearch {
 public:
     ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT = true, bool disjointSplitting = false);
@@ -68,6 +69,9 @@ protected:
     std::shared_ptr<Solution> combineSolutions(const std::shared_ptr<ConflictTreeNode>& node);
 
     std::shared_ptr<Solution> disjointSplittingSolve();
+
+    // Returns true if agentId can be at position between t1 and t2 according to the setOfVertexConstraints
+    static bool okForHardConstraints(std::set<VertexConstraint> setOfVertexConstraints, int t1, int t2, int position, int agentId);
 };
 
 

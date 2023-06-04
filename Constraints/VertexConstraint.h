@@ -36,16 +36,13 @@ public:
     }
 
     bool operator<(const VertexConstraint &other) const {
-        if (positive == other.positive){
-            if (agent == other.agent) {
-                if (position == other.position) {
-                    return time < other.time;
-                }
+        if (agent == other.agent) {
+            if (time == other.time) {
                 return position < other.position;
             }
-            return agent < other.agent;
+            return time < other.time;
         }
-        return positive < other.positive;
+        return agent < other.agent;
     }
 
 private:
@@ -53,7 +50,7 @@ private:
     int agent;
     int position;
     int time;
-    int positive;
+    bool positive;
 };
 
 

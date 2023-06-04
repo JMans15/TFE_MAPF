@@ -298,17 +298,17 @@ int main() {
     auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
+    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
     solution1->print();
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds1 = end - start;
     start = std::chrono::system_clock::now();
-    auto solution2 = IndependenceDetection(problem, Manhattan).solve();
+    auto solution2 = IndependenceDetection(problem, OptimalDistance).solve();
     solution2->print();
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds2 = end - start;
     start = std::chrono::system_clock::now();
-    auto solution3 = ConflictBasedSearch(problem, Manhattan).solve();
+    auto solution3 = ConflictBasedSearch(problem, OptimalDistance).solve();
     solution3->print();
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds3 = end - start;
@@ -504,9 +504,57 @@ int main() {
 
     // TEST X : Disjoint splitting conflict based search
     /*auto g = Parser::parse("../mapf-map/empty-5-5.map");
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{5, 1}, vector<int>{9, 13}, SumOfCosts);
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{5, 1}, vector<int>{9, 13}, Fuel);
     auto solution = ConflictBasedSearch(problem, Manhattan, false, true).solve();
     solution->print();*/
+
+    // TEST X : CBS vs Disjoint Splitting CBS
+    // Disjoint Splitting doesn't work with Fuel cost, don't know why
+    auto g = Parser::parse("../mapf-map/corridor.map");
+    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{0, 14}, vector<int>{4, 10}, Makespan);
+    auto solution = ConflictBasedSearch(problem, OptimalDistance,false, false).solve(); // numberOfVisitedNodes=252
+    solution->print();
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance, false, true).solve(); // numberOfVisitedNodes=120
+    solution2->print();
+
+    // TEST X : Find the interval to replan between 2 landmarks
+    /*std::set<VertexConstraint> setOfPositiveConstraints;
+    setOfPositiveConstraints.insert({1, 2, 3});
+    setOfPositiveConstraints.insert({1, 0, 4});
+    setOfPositiveConstraints.insert({1, 4, 7});
+    setOfPositiveConstraints.insert({0, 5, 8});
+    setOfPositiveConstraints.insert({2, 6, 9});
+    int agentId = 3;
+    int time = 4;
+    int t1;
+    int t2;
+    int position1;
+    int position2;
+    auto next = setOfPositiveConstraints.lower_bound(VertexConstraint{agentId, 0, time});
+    if (next != setOfPositiveConstraints.end() and next->getAgent()==agentId){
+        t2 = next->getTime();
+        position2 = next->getPosition();
+    } else {
+        t2 = INT_MAX;
+        position2 = 20; // target of agentId
+    }
+    if (next != setOfPositiveConstraints.begin()){
+        auto previous = --next;
+        if (previous->getAgent()==agentId){
+            t1 = previous->getTime();
+            position1 = previous->getPosition();
+        } else {
+            t1 = 0;
+            position1 = 10; // start of agentId
+        }
+    } else {
+        t1 = 0;
+        position1 = 10; // start of agentId
+    }
+    std::cout << t1 << std::endl;
+    std::cout << position1 << std::endl;
+    std::cout << t2 << std::endl;
+    std::cout << position2 << std::endl;*/
 
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     vector<int> starts;

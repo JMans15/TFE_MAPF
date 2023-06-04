@@ -8,8 +8,9 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
                                                                      int agentId, const std::set<VertexConstraint> &setOfHardVertexConstraints,
                                                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
                                                                      const std::set<VertexConstraint> &setOfSoftVertexConstraints,
-                                                                     const std::set<EdgeConstraint> &setOfSoftEdgeConstraints)
-    : Problem(graph, 1, maxCost)
+                                                                     const std::set<EdgeConstraint> &setOfSoftEdgeConstraints,
+                                                                     int startTime)
+    : Problem(graph, 1, maxCost, startTime)
     , start(start)
     , target(target)
     , agentId(agentId)
@@ -23,7 +24,7 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
     if (m_objective == SumOfCosts){
         objective = Makespan;
     }
-    if (m_objective != Makespan && m_objective != Fuel){
+    if (m_objective != Makespan && m_objective != Fuel && m_objective != SumOfCosts){
         LOG("The input for the objective function is not correct.");
         LOG("So, the default objective function will be applied.");
         objective = Fuel;
@@ -72,12 +73,15 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
     if (maxCost!=INT_MAX){
         LOG("The solution of this problem must have a cost inferior or equal to " << maxCost);
     }
+    if (startTime!=0){
+        LOG("The start time of the problem is " << startTime);
+    }
     LOG(" ");
 
 }
 
 std::shared_ptr<SingleAgentSpaceTimeState> SingleAgentProblemWithConstraints::getStartState() const {
-    return std::make_shared<SingleAgentSpaceTimeState>(start, 0);
+    return std::make_shared<SingleAgentSpaceTimeState>(start, startTime);
 }
 
 bool SingleAgentProblemWithConstraints::isGoalState(std::shared_ptr<SingleAgentSpaceTimeState> state) const {

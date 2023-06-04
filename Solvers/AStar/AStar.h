@@ -92,8 +92,9 @@ private:
 
         auto positions = problem->getPositions(states);
         int numberOfTimesteps = positions.begin()->second.size();
-        
-        return std::make_shared<Solution>(cost, numberOfVisitedStates, numberOfTimesteps, positions, numberOfNodesLeftInTheFringe);
+
+        LOG("The search is over. We found an optimal solution. ");
+        return std::make_shared<Solution>(cost, numberOfVisitedStates, numberOfTimesteps, positions, numberOfNodesLeftInTheFringe, problem->getStartTime());
     }
 };
 

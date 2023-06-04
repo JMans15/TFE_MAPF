@@ -40,7 +40,7 @@ std::set<AgentConflict> ConflictBasedSearch::calculateSetOfConflicts(const std::
     std::set<AgentConflict> setOfConflicts;
     for (auto [agentA, pathA] : solutions){
         for (auto [agentB, pathB] : solutions){
-            if (pathA.size() < pathB.size()){
+            if (agentA!=agentB and pathA.size() <= pathB.size()){
                 // Vertex conflict
                 for (int t = 0; t < pathA.size(); t++){
                     if (pathA[t]==pathB[t]){
@@ -326,6 +326,28 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
                 }
                 if (successorCost <= problem->getMaxCost()){
                     auto successorSetOfConflicts = updateSetOfConflicts(fullSolutions, node->getSetOfConflicts(), agentId, solution->getPathOfAgent(agentId));
+                    /*std::cout << "we add a node" << std::endl;
+                    for (auto constraint : newFullSetOfEdgeConstraints){
+                        constraint.print();
+                    }
+                    for (auto constraint : newFullSetOfVertexConstraints){
+                        constraint.print();
+                    }
+                    for (auto[agent, path] : fullSolutions){
+                        std::cout << "path of " << agent << std::endl;
+                        if (agent==agentId){
+                            for (int t = 0 ; t < successorSolution[agentId].size(); t++){
+                                std::cout << t << " : " << successorSolution[agentId][t] << std::endl;
+                            }
+                        } else {
+                            for (int t = 0 ; t < path.size(); t++){
+                                std::cout << t << " : " << path[t] << std::endl;
+                            }
+                        }
+                    }
+                    for (auto conflict : successorSetOfConflicts){
+                        conflict.print();
+                    }*/
                     fringe.insert(std::make_shared<ConflictTreeNode>(successorEdgeConstraint, successorVertexConstraint, successorSolution, successorCosts, successorCost, node, successorSetOfConflicts));
                 }
             }
@@ -351,6 +373,16 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
     std::set<AgentConflict> setOfConflicts = calculateSetOfConflicts(solution);
 
     if (cost <= problem->getMaxCost()){
+        /*std::cout << "we add a node" << std::endl;
+        for (auto[agent, path] : solution){
+            std::cout << "path of " << agent << std::endl;
+            for (int t = 0 ; t < path.size(); t++){
+                std::cout << t << " : " << path[t] << std::endl;
+            }
+        }
+        for (auto conflict : setOfConflicts){
+            conflict.print();
+        }*/
         fringe.insert(std::make_shared<ConflictTreeNode>(nullptr, nullptr, solution, costs, cost, nullptr, setOfConflicts));
     }
 
@@ -372,6 +404,27 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
         int agent2 = conflict.getAgent2();
 
         auto [fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions, setOfPositiveConstraints] = retrieveSetsOfConstraintsAndCostsAndSolutionsDisjointSplitting(node);
+
+        /*std::cout << "we pull a node" << std::endl;
+        std::cout << node->getCost() << std::endl;
+        for (auto constraint : fullSetOfEdgeConstraints){
+            constraint.print();
+        }
+        for (auto constraint : fullSetOfVertexConstraints){
+            constraint.print();
+        }
+        for (auto constraint : setOfPositiveConstraints){
+            constraint.print();
+        }
+        for (auto[agent, path] : fullSolutions){
+            std::cout << "path of " << agent << std::endl;
+            for (int t = 0 ; t < path.size(); t++){
+                std::cout << t << " : " << path[t] << std::endl;
+            }
+        }
+        for (auto conflict : node->getSetOfConflicts()){
+            conflict.print();
+        }*/
 
         int agentId = (std::rand()<RAND_MAX/2) ? agent1 : agent2;; // choose random agent
         // int agentId = agent1;
@@ -410,27 +463,78 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                 }
             }
         }
-        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+
+        // Find the interval to replan between 2 landmarks
+        int t1;
+        int t2;
+        int position1;
+        int position2;
+        auto next = setOfPositiveConstraints.lower_bound(VertexConstraint{agentId, 0, conflict.getTime()});
+        if (next != setOfPositiveConstraints.end() and next->getAgent()==agentId){
+            t2 = next->getTime();
+            position2 = next->getPosition();
+        } else {
+            t2 = INT_MAX;
+            position2 = problem->getTargetOf(agentId);
+        }
+        if (next != setOfPositiveConstraints.begin()){
+            auto previous = --next;
+            if (previous->getAgent()==agentId){
+                t1 = previous->getTime();
+                position1 = previous->getPosition();
+            } else {
+                t1 = 0;
+                position1 = problem->getStartOf(agentId);
+            }
+        } else {
+            t1 = 0;
+            position1 = problem->getStartOf(agentId);
+        }
+        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), position1, position2, Makespan, agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable, t1);
         auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
-        if (solution->getFoundPath() and solution->isConsistent(setOfPositiveConstraints)){
-            std::unordered_map<int,int> successorCosts;
-            successorCosts[agentId] = solution->getCost();
+        if (solution->getFoundPath() and t1+solution->getMakespanCost()<=t2 and okForHardConstraints(newFullSetOfVertexConstraints, t1+solution->getMakespanCost()+1, t2-1, position2, agentId)){
             std::unordered_map<int, std::vector<int>> successorSolution;
-            successorSolution[agentId] = solution->getPathOfAgent(agentId);
+            successorSolution[agentId] = fullSolutions[agentId];
+            auto newPath = solution->getPathOfAgent(agentId);
+            if (t2!=INT_MAX){
+                for (int t = 1; t < newPath.size(); t++){
+                    successorSolution[agentId][t+t1] = newPath[t];
+                }
+                if (t1+solution->getMakespanCost()<t2){
+                    for (int t = t1+newPath.size()-1; t < t2; t++){
+                        successorSolution[agentId][t]=position2;
+                    }
+                }
+            } else {
+                // Last interval
+                for (int t = 1; t+t1 < successorSolution[agentId].size(); t++){
+                    successorSolution[agentId][t+t1] = newPath[t];
+                }
+                for (int t = successorSolution[agentId].size()-t1; t < newPath.size(); t++){
+                    successorSolution[agentId].emplace_back(newPath[t]);
+                }
+            }
+            std::unordered_map<int,int> successorCosts;
+            if (problem->getObjFunction()==Fuel){
+                successorCosts[agentId] = fuelCost(successorSolution[agentId]);
+            } else {
+                successorCosts[agentId] = makespanCost(successorSolution[agentId]);
+            }
             int successorCost;
             if (problem->getObjFunction() == Makespan){
                 successorCost = 0;
                 for (auto a : fullCosts){
                     if (a.first == agentId){
-                        successorCost = std::max(successorCost, solution->getCost());
+                        successorCost = std::max(successorCost, successorCosts[agentId]);
                     } else {
                         successorCost = std::max(successorCost, a.second);
                     }
                 }
             } else {
-                successorCost = node->getCost() - fullCosts[agentId] + solution->getCost();
+                successorCost = node->getCost() - fullCosts[agentId] + successorCosts[agentId];
             }
             if (successorCost <= problem->getMaxCost()){
+                auto successorSetOfConflicts = updateSetOfConflicts(fullSolutions, node->getSetOfConflicts(), agentId, successorSolution[agentId]);
                 /*std::cout << "we add a node" << std::endl;
                 for (auto constraint : newFullSetOfEdgeConstraints){
                     constraint.print();
@@ -444,16 +548,18 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                 for (auto[agent, path] : fullSolutions){
                     std::cout << "path of " << agent << std::endl;
                     if (agent==agentId){
-                        for (int t = 0 ; t < solution->getPathOfAgent(agentId).size(); t++){
-                            std::cout << t << " : " << solution->getPathOfAgent(agentId)[t] << std::endl;
+                        for (int t = 0 ; t < successorSolution[agentId].size(); t++){
+                            std::cout << t << " : " << successorSolution[agentId][t] << std::endl;
                         }
                     } else {
                         for (int t = 0 ; t < path.size(); t++){
                             std::cout << t << " : " << path[t] << std::endl;
                         }
                     }
+                }
+                for (auto conflict : successorSetOfConflicts){
+                    conflict.print();
                 }*/
-                auto successorSetOfConflicts = updateSetOfConflicts(fullSolutions, node->getSetOfConflicts(), agentId, solution->getPathOfAgent(agentId));
                 fringe.insert(std::make_shared<ConflictTreeNode>(successorEdgeConstraint, successorVertexConstraint, successorSolution, successorCosts, successorCost, node, successorSetOfConflicts));
             }
         }
@@ -495,6 +601,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
             }
         }
         std::set<int> agentsToReplan;
+        auto oldFullSolutions = fullSolutions;
         for (auto agentK : problem->getAgentIds()) {
             if (agentK != agentId){
                 if (conflict.isVertexConflict()) {
@@ -516,6 +623,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
         std::unordered_map<int,int> successorCosts;
         std::unordered_map<int, std::vector<int>> successorSolution;
         auto successorSetOfConflicts = node->getSetOfConflicts();
+        bool solutionOk;
         for (auto agentK : agentsToReplan){
             vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
             edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
@@ -532,19 +640,65 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                     }
                 }
             }
-            auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentK), problem->getTargetOf(agentK), problem->getObjFunction(), agentK, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+            // Find the interval to replan between 2 landmarks
+            auto next = setOfPositiveConstraints.lower_bound(VertexConstraint{agentK, 0, conflict.getTime()});
+            if (next != setOfPositiveConstraints.end() and next->getAgent()==agentK){
+                t2 = next->getTime();
+                position2 = next->getPosition();
+            } else {
+                t2 = INT_MAX;
+                position2 = problem->getTargetOf(agentK);
+            }
+            if (next != setOfPositiveConstraints.begin()){
+                auto previous = --next;
+                if (previous->getAgent()==agentK){
+                    t1 = previous->getTime();
+                    position1 = previous->getPosition();
+                } else {
+                    t1 = 0;
+                    position1 = problem->getStartOf(agentK);
+                }
+            } else {
+                t1 = 0;
+                position1 = problem->getStartOf(agentK);
+            }
+            auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), position1, position2, Makespan, agentK, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable, t1);
             auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
-            if (solution->getFoundPath() and solution->isConsistent(setOfPositiveConstraints)){
-                successorCosts[agentK] = solution->getCost();
-                successorSolution[agentK] = solution->getPathOfAgent(agentK);
-                fullSolutions[agentK] = solution->getPathOfAgent(agentK);
-                fullCosts[agentK] = solution->getCost();
-                successorSetOfConflicts = updateSetOfConflicts(fullSolutions, successorSetOfConflicts, agentK, solution->getPathOfAgent(agentK));
+            solutionOk = solution->getFoundPath() and t1+solution->getMakespanCost()<=t2 and okForHardConstraints(newFullSetOfVertexConstraints, t1+solution->getMakespanCost()+1, t2-1, position2, agentK);
+            if (solutionOk){
+                successorSolution[agentK] = oldFullSolutions[agentK];
+                auto newPath = solution->getPathOfAgent(agentK);
+                if (t2!=INT_MAX){
+                    for (int t = 1; t < newPath.size(); t++){
+                        successorSolution[agentK][t+t1] = newPath[t];
+                    }
+                    if (t1+solution->getMakespanCost()<t2){
+                        for (int t = t1+newPath.size()-1; t < t2; t++){
+                            successorSolution[agentK][t]=position2;
+                        }
+                    }
+                } else {
+                    // Last interval
+                    for (int t = 1; t+t1 < successorSolution[agentK].size(); t++){
+                        successorSolution[agentK][t+t1] = newPath[t];
+                    }
+                    for (int t = successorSolution[agentK].size()-t1; t < newPath.size(); t++){
+                        successorSolution[agentK].emplace_back(newPath[t]);
+                    }
+                }
+                fullSolutions[agentK] = successorSolution[agentK];
+                if (problem->getObjFunction()==Fuel){
+                    successorCosts[agentK] = fuelCost(successorSolution[agentK]);
+                } else {
+                    successorCosts[agentK] = makespanCost(successorSolution[agentK]);
+                }
+                fullCosts[agentK] = successorCosts[agentK];
+                successorSetOfConflicts = updateSetOfConflicts(fullSolutions, successorSetOfConflicts, agentK, successorSolution[agentK]);
             } else {
                 break;
             }
         }
-        if (not solution->getFoundPath()){
+        if (not solutionOk){
             continue;
         }
         int successorCost = 0;
@@ -573,6 +727,9 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                 for (int t = 0 ; t < path.size(); t++){
                     std::cout << t << " : " << path[t] << std::endl;
                 }
+            }
+            for (auto conflict : successorSetOfConflicts){
+                conflict.print();
             }*/
             fringe.insert(std::make_shared<ConflictTreeNode>(successorEdgeConstraint, successorVertexConstraint, successorSolution, successorCosts, successorCost, node, successorSetOfConflicts));
         }
@@ -580,4 +737,19 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
     }
     LOG("No path has been found.");
     return std::make_shared<Solution>();
+}
+
+bool ConflictBasedSearch::okForHardConstraints(std::set<VertexConstraint> setOfVertexConstraints, int t1, int t2,
+                                               int position, int agentId) {
+    if(t2+1==INT_MAX){
+        return true;
+    }
+    if (t1<=t2){
+        for (int t=t1; t<=t2; t++){
+            if (setOfVertexConstraints.find({agentId, position, t}) != setOfVertexConstraints.end()){
+                return false;
+            }
+        }
+    }
+    return true;
 }

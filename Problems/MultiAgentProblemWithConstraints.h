@@ -18,7 +18,7 @@ public:
                                      const std::set<VertexConstraint> &setOfHardVertexConstraints = std::set<VertexConstraint>(),
                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX,
                                      const std::set<VertexConstraint> &setOfSoftVertexConstraints = std::set<VertexConstraint>(),
-                                     const std::set<EdgeConstraint> &setOfSoftEdgeConstraints = std::set<EdgeConstraint>());
+                                     const std::set<EdgeConstraint> &setOfSoftEdgeConstraints = std::set<EdgeConstraint>(), int startTime = 0);
 
     std::shared_ptr<MultiAgentState> getStartState() const override;
     bool isGoalState(std::shared_ptr<MultiAgentState> state) const override;

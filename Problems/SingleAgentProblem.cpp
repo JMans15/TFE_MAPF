@@ -5,7 +5,7 @@
 #include "SingleAgentProblem.h"
 
 SingleAgentProblem::SingleAgentProblem(const std::shared_ptr<Graph>& graph, int start, int target, int agentId, int maxCost)
-    : Problem(graph, 1, maxCost)
+    : Problem(graph, 1, maxCost, 0)
     , start(start)
     , target(target)
     , agentId(agentId)

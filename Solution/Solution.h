@@ -15,7 +15,7 @@ class Solution {
 public:
     Solution();
     Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
-    Solution(int cost, int numberOfVisitedNodes, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe);
+    Solution(int cost, int numberOfVisitedNodes, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe, int startTime=0);
 
     int getCost() const;
     int getNumberOfVisitedNodes() const;
@@ -68,7 +68,12 @@ private:
 
     // true if this solution contains a path
     bool foundPath;
+
+    int startTime;
 };
+
+int fuelCost(std::vector<int> path);
+int makespanCost(const std::vector<int>& path);
 
 
 #endif //TFE_MAPF_SOLUTION_H

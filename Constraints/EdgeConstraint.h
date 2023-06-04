@@ -39,19 +39,16 @@ public:
     }
 
     bool operator<(const EdgeConstraint &other) const {
-        if (positive == other.positive){
-            if (agent == other.agent) {
-                if (position1 == other.position1) {
-                    if (position2 == other.position2) {
-                        return time < other.time;
-                    }
-                    return position2 < other.position2;
+        if (agent == other.agent) {
+            if (time == other.time) {
+                if (position2 == other.position2) {
+                    return position1 < other.position1;
                 }
-                return position1 < other.position1;
+                return position2 < other.position2;
             }
-            return agent < other.agent;
+            return time < other.time;
         }
-        return positive < other.positive;
+        return agent < other.agent;
     }
 
 private:

@@ -32,7 +32,7 @@ void SimpleIndependenceDetection::calculateSetOfConflicts() {
             if (*groupA!=*groupB){
                 for (auto [agentA, pathA] : groupA->getSolution()->getPositions()){
                     for (auto [agentB, pathB] : groupB->getSolution()->getPositions()){
-                        if (pathA.size() < pathB.size()){
+                        if (agentA!=agentB and pathA.size() <= pathB.size()){
                             // Vertex conflict
                             for (int t = 0; t < pathA.size(); t++){
                                 if (pathA[t]==pathB[t]){
