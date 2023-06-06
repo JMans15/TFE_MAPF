@@ -50,9 +50,12 @@ int main(int argc, const char** argv) {
     enum Algo {
         ASTAR,
         CBS,
+        CBSCAT,
         COOP,
         ID,
+        IDCAT,
         SID,
+        SIDCAT,
         DSCBS,
         StandardAStar,
         EID
@@ -61,9 +64,12 @@ int main(int argc, const char** argv) {
     std::map<string, Algo> mAlgo({
         {"AStar", ASTAR},
         {"CBS", CBS},
+        {"CBSCAT", CBSCAT},
         {"Coop", COOP},
         {"ID", ID},
+        {"IDCAT", IDCAT},
         {"SID", SID},
+        {"SIDCAT", SIDCAT},
         {"DSCBS", DSCBS},
         {"StandardAStar", StandardAStar},
         {"EID", EID}
@@ -178,19 +184,28 @@ int main(int argc, const char** argv) {
             solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, heuristic).solve();
             break;
         case CBS:
-            solution = ConflictBasedSearch(problem, heuristic).solve();
+            solution = ConflictBasedSearch(problem, heuristic, false).solve();
+            break;
+        case CBSCAT:
+            solution = ConflictBasedSearch(problem, heuristic, true).solve();
             break;
         case COOP:
             solution = CooperativeAStar(problem, heuristic).solve();
             break;
         case ID:
-            solution = IndependenceDetection(problem, heuristic).solve();
+            solution = IndependenceDetection(problem, heuristic, false).solve();
+            break;
+        case IDCAT:
+            solution = IndependenceDetection(problem, heuristic, true).solve();
             break;
         case EID:
             solution = IndependenceDetection(problem, heuristic, false).solve();
             break;
         case SID:
-            solution = SimpleIndependenceDetection(problem, heuristic).solve();
+            solution = SimpleIndependenceDetection(problem, heuristic, false).solve();
+            break;
+        case SIDCAT:
+            solution = SimpleIndependenceDetection(problem, heuristic, true).solve();
             break;
         case DSCBS:
             solution = ConflictBasedSearch(problem, heuristic, false, true).solve();

@@ -15,12 +15,11 @@ bool OldSimpleIndependenceDetection::planSingletonGroups() {
     for (const std::shared_ptr<Group>& group : groups){
         int agentId = *group->getAgents().begin();
         auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
-        auto search = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic);
-        auto solution = search.solve();
-        group->putSolution(solution);
+        auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
         if (not solution->getFoundPath()){
             return false;
         }
+        group->putSolution(solution);
     }
     return true;
 }

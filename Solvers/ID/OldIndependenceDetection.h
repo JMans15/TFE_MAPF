@@ -21,6 +21,8 @@ public:
     std::shared_ptr<Solution> solve();
 private:
     std::unordered_set<std::set<std::shared_ptr<Group>, PointerGroupEquality>, SetOfPointersHasher, SetOfPointersEquality> alreadyConflictedBefore;
+    SoftVertexConstraintsMultiSet vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+    SoftEdgeConstraintsMultiSet edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
 
     // Find another optimal solution for groupA
     // - with the same cost as the previous one
@@ -28,6 +30,7 @@ private:
     // Returns true if success (false otherwise)
     bool replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB);
 
+    bool planSingletonGroups();
     bool mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB);
 };
 

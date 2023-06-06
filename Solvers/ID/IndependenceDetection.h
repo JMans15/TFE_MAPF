@@ -21,15 +21,12 @@ public:
     std::shared_ptr<Solution> solve();
 private:
     std::unordered_set<std::set<std::shared_ptr<Group>, PointerGroupEquality>, SetOfPointersHasher, SetOfPointersEquality> alreadyConflictedBefore;
-    bool CAT;
 
     // Find another optimal solution for groupA
     // - with the same cost as the previous one
     // - avoiding the solution of groupB with an illegal move table
     // Returns true if success (false otherwise)
     bool replanGroupAAvoidingGroupB(const std::shared_ptr<Group>& groupA, const std::shared_ptr<Group>& groupB);
-
-    bool mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB) override;
 };
 
 

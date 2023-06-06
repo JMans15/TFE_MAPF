@@ -17,8 +17,8 @@ public:
                                      ObjectiveFunction objective = Fuel, const std::vector<int>& agentIds = std::vector<int>(),
                                      const std::set<VertexConstraint> &setOfHardVertexConstraints = std::set<VertexConstraint>(),
                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX,
-                                     const std::set<VertexConstraint> &setOfSoftVertexConstraints = std::set<VertexConstraint>(),
-                                     const std::set<EdgeConstraint> &setOfSoftEdgeConstraints = std::set<EdgeConstraint>(), int startTime = 0);
+                                     const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints = SoftVertexConstraintsMultiSet(),
+                                     const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints = SoftEdgeConstraintsMultiSet(), int startTime = 0);
 
     std::shared_ptr<StandardMultiAgentState> getStartState() const override;
     bool isGoalState(std::shared_ptr<StandardMultiAgentState> state) const override;
@@ -32,8 +32,8 @@ public:
     ObjectiveFunction getObjFunction();
     std::set<VertexConstraint> getSetOfHardVertexConstraints() const;
     std::set<EdgeConstraint> getSetOfHardEdgeConstraints() const;
-    std::set<VertexConstraint> getSetOfSoftVertexConstraints() const;
-    std::set<EdgeConstraint> getSetOfSoftEdgeConstraints() const;
+    SoftVertexConstraintsMultiSet getSetOfSoftVertexConstraints() const;
+    SoftEdgeConstraintsMultiSet getSetOfSoftEdgeConstraints() const;
 
     int getStartOf(int id);
     int getTargetOf(int id);
@@ -59,13 +59,16 @@ private:
     // - SumOfCosts : The sum of the time steps required for every agent to reach its goal and never leave it again
     ObjectiveFunction objective;
 
-    // set of vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
+    // Set of hard vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
     std::set<VertexConstraint> setOfHardVertexConstraints;
-    // set of edge constraints
+    // Set of hard edge constraints
     std::set<EdgeConstraint> setOfHardEdgeConstraints;
 
-    std::set<VertexConstraint> setOfSoftVertexConstraints;
-    std::set<EdgeConstraint> setOfSoftEdgeConstraints;
+    // Set of soft vertex constraints like (a, p, t) meaning agent a is occupying position p at time t
+    // This problem will try to avoid these position-timestep points. So, it's better to not put any (a,p,t) constraint when planning agent a.
+    SoftVertexConstraintsMultiSet setOfSoftVertexConstraints;
+    // Set of soft edge constraints
+    SoftEdgeConstraintsMultiSet setOfSoftEdgeConstraints;
 
     // Returns true if the agent is allowed to go from position to newPosition between time-1 and time
     // (according to the hard vertex constraints and the hard edge constraints of the problem)
@@ -77,11 +80,11 @@ private:
 
     // The number of violated soft constraints if agent go from position to newPosition between time-1 and time
     // (according to the soft vertex constraints and the soft edge constraints of the problem)
-    int numberOfViolations(int agent, int position, int newPosition, int time) const;
+    int numberOfViolations(int position, int newPosition, int time) const;
 
     // The number of violated soft constraints if agent is at newPosition at time
     // (according to the soft vertex constraints of the problem)
-    int numberOfViolations(int agent, int newPosition, int time) const;
+    int numberOfViolations(int newPosition, int time) const;
 
     // Returns true if position is not already occupied by assigned agents
     bool notAlreadyOccupiedPosition(int position, std::vector<int> &positions, int agentToAssign) const;

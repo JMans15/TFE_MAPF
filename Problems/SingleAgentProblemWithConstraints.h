@@ -15,8 +15,8 @@ public:
     SingleAgentProblemWithConstraints(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
                                       int agentId = 0, const std::set<VertexConstraint> &setOfHardVertexConstraints = std::set<VertexConstraint>(),
                                       const std::set<EdgeConstraint> &setOfHardEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX,
-                                      const std::set<VertexConstraint> &setOfSoftVertexConstraints = std::set<VertexConstraint>(),
-                                      const std::set<EdgeConstraint> &setOfSoftEdgeConstraints = std::set<EdgeConstraint>(), int startTime = 0);
+                                      const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints = SoftVertexConstraintsMultiSet(),
+                                      const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints = SoftEdgeConstraintsMultiSet(), int startTime = 0);
 
     std::shared_ptr<SingleAgentSpaceTimeState> getStartState() const override;
     bool isGoalState(std::shared_ptr<SingleAgentSpaceTimeState> state) const override;
@@ -46,13 +46,16 @@ private:
     // - Makespan or SumOfCosts : Total time for the agent to reach its goal (costWait = 1)
     ObjectiveFunction objective;
 
-    // set of vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
+    // Set of hard vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
     std::set<VertexConstraint> setOfHardVertexConstraints;
-    // set of edge constraints
+    // Set of hard edge constraints
     std::set<EdgeConstraint> setOfHardEdgeConstraints;
 
-    std::set<VertexConstraint> setOfSoftVertexConstraints;
-    std::set<EdgeConstraint> setOfSoftEdgeConstraints;
+    // Set of soft vertex constraints like (a, p, t) meaning agent a is occupying position p at time t
+    // This problem will try to avoid these position-timestep points. So, it's better to not put any (a,p,t) constraint when planning agent a.
+    SoftVertexConstraintsMultiSet setOfSoftVertexConstraints;
+    // Set of soft edge constraints
+    SoftEdgeConstraintsMultiSet setOfSoftEdgeConstraints;
 
     // Returns true if the agent is allowed to go from position to newPosition between time-1 and time
     // (according to the hard vertex constraints and the hard edge constraints of the problem)

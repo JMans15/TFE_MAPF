@@ -26,6 +26,8 @@ protected:
     TypeOfHeuristic typeOfHeuristic;
     std::unordered_set<std::shared_ptr<Group>, GroupHasher, GroupEquality> groups;
     std::set<GroupConflict> setOfConflicts;
+    SoftVertexConstraintsMultiSet vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+    SoftEdgeConstraintsMultiSet edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
     bool CAT;
 
     // Plans a path for each singleton group

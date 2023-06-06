@@ -10,8 +10,12 @@
 class VertexConstraint {
 public:
 
+    // IF IN A SET OF HARD CONSTRAINTS :
     // agent cannot be at position at time (if positive is false)
     // agent has to be at position at time (otherwise)
+    //
+    // IF IN A SET OF SOFT CONSTRAINTS :
+    // agent is at position at time
     VertexConstraint(int agent, int position, int time, bool positive = false) : agent(agent), position(position), time(time), positive(positive) {}
     ~VertexConstraint() {}
 
@@ -24,6 +28,7 @@ public:
     int getTime() const {
         return time;
     }
+    // print method is not accurate in a set of soft constraints
     void print() const {
         if (positive){
             std::cout << "Positive vertex constraint : agent " << agent << " has to be at position " << position << " at time " << time << "." << std::endl;

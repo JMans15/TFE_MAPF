@@ -7,8 +7,8 @@
 SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction m_objective,
                                                                      int agentId, const std::set<VertexConstraint> &setOfHardVertexConstraints,
                                                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
-                                                                     const std::set<VertexConstraint> &setOfSoftVertexConstraints,
-                                                                     const std::set<EdgeConstraint> &setOfSoftEdgeConstraints,
+                                                                     const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints,
+                                                                     const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints,
                                                                      int startTime)
     : Problem(graph, 1, maxCost, startTime)
     , start(start)
@@ -61,13 +61,13 @@ SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared
     if (!setOfSoftVertexConstraints.empty()){
         LOG("The problem has the following soft vertex constraints :");
         for (const auto& constraint : setOfSoftVertexConstraints){
-            LOG("   Agent " << constraint.getAgent() << " cannot be at position " << constraint.getPosition() << " at time " << constraint.getTime() << ".");
+            LOG("   Agent " << constraint.getAgent() << " is at position " << constraint.getPosition() << " at time " << constraint.getTime() << ".");
         }
     }
     if (!setOfSoftEdgeConstraints.empty()){
         LOG("The problem has the following soft edge constraints :");
         for (const auto& constraint : setOfSoftEdgeConstraints){
-            LOG("   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
+            LOG("   Agent " << constraint.getAgent() << " is occupying the edge (" << constraint.getPosition1() << ", " << constraint.getPosition2() << ") between time " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
         }
     }
     if (maxCost!=INT_MAX){
@@ -101,17 +101,17 @@ bool SingleAgentProblemWithConstraints::okForConstraints(int newPosition, int ti
 
 int SingleAgentProblemWithConstraints::numberOfViolations(int position, int newPosition, int time) const {
     int count = 0;
-    if (setOfSoftVertexConstraints.find({agentId, newPosition, time}) != setOfSoftVertexConstraints.end()){
+    if (setOfSoftVertexConstraints.find({0, newPosition, time}) != setOfSoftVertexConstraints.end()){
         count += 1;
     }
-    if (setOfSoftEdgeConstraints.find({agentId, position, newPosition, time}) != setOfSoftEdgeConstraints.end()){
+    if (setOfSoftEdgeConstraints.find({0, position, newPosition, time}) != setOfSoftEdgeConstraints.end()){
         count += 1;
     }
     return count;
 }
 
 int SingleAgentProblemWithConstraints::numberOfViolations(int newPosition, int time) const {
-    if (setOfSoftVertexConstraints.find({agentId, newPosition, time}) == setOfSoftVertexConstraints.end()){
+    if (setOfSoftVertexConstraints.find({0, newPosition, time}) == setOfSoftVertexConstraints.end()){
         return 0;
     }
     return 1;

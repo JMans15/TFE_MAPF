@@ -7,7 +7,7 @@ import sys, os
 
 directory = '../mapf-map/Paris/scen-random'
 program = '../cmake-build-debug/TFE_MAPF_visu'
-timeout = 5  # Timeout in seconds
+timeout = 10  # Timeout in seconds
 args = ['--map', '../mapf-map/Paris/Paris_1_256.map']
 num_threads = 1  # Number of threads to use (do not use too much because of RAM usage of mapf)
 
@@ -79,7 +79,7 @@ def run_program(file_path, a, i, algo):
 
 def data_for_algo(algo):
     data = []
-    for a in range(1, 20): #max 1002
+    for a in range(10, 25): #max 1002
         files = os.listdir(directory)
         with Pool(num_threads) as p:
             results = [p.apply_async(run_program, (os.path.join(directory, filename), a, i, algo)) for i, filename in enumerate(files)]
@@ -107,20 +107,29 @@ if __name__ == '__main__':
     #data = data_for_algo('AStar')
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Operator Decomposition)")
 
-    #data = data_for_algo("SID")
-    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Simple Independence Detection")
+    data = data_for_algo("SID")
+    ax.plot(range(10, 25), data, marker='x', label="SID")
+
+    data = data_for_algo("SIDCAT")
+    ax.plot(range(10, 25), data, marker='x', label="SID+CAT")
 
     #data = data_for_algo("EID")
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Enhanced version of ID (EID)")
 
-    #data = data_for_algo("ID")
-    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Independence Detection")
+    data = data_for_algo("ID")
+    ax.plot(range(10, 25), data, marker='x', label="ID")
 
-    #data = data_for_algo("CBS")
-    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Conflict Based Search")
+    data = data_for_algo("IDCAT")
+    ax.plot(range(10, 25), data, marker='x', label="ID+CAT")
 
-    data = data_for_algo("DSCBS")
-    ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Disjoint Splitting CBS")
+    data = data_for_algo("CBS")
+    ax.plot(range(10, 25), data, marker='x', label="CBS")
+
+    data = data_for_algo("CBSCAT")
+    ax.plot(range(10, 25), data, marker='x', label="CBS+CAT")
+
+    #data = data_for_algo("DSCBS")
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Disjoint Splitting CBS")
 
     ax.grid(axis='both')
 

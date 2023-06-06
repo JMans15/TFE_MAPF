@@ -18,12 +18,24 @@ std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int
     std::unordered_map<int, std::vector<int>> solutions;
     std::unordered_map<int, int> costs;
     int cost = 0;
+    SoftEdgeConstraintsMultiSet edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+    SoftVertexConstraintsMultiSet vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
     for (int i = 0; i < problem->getNumberOfAgents(); i++){
         int agentId = problem->getAgentIds()[i];
-        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStarts()[i], problem->getTargets()[i], problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
+        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStarts()[i], problem->getTargets()[i], problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
         auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
         if (not solution->getFoundPath()){
             return {solutions, -1, costs};
+        }
+        if (CAT){
+            vector<int> pathOfAgent = solution->getPathOfAgent(agentId);
+            for (int t = 0; t < pathOfAgent.size(); t++){
+                vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
+            }
+            for (int t = 1; t < pathOfAgent.size(); t++){
+                edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t], pathOfAgent[t-1], t});
+                // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1], pathOfAgent[t], t});
+            }
         }
         solutions[agentId] = solution->getPathOfAgent(agentId);
         costs[agentId] = solution->getCost();
@@ -289,17 +301,17 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
                     newFullSetOfEdgeConstraints.insert({agentId, conflict.getPosition2(), conflict.getPosition1(), conflict.getTime()});
                 }
             }
-            std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
-            std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+            SoftVertexConstraintsMultiSet vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+            SoftEdgeConstraintsMultiSet edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
             if (CAT){
                 for (auto [agent, pathOfAgent] : fullSolutions){
                     if (agent != agentId){
                         for (int t = 0; t < pathOfAgent.size(); t++){
-                            vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
+                            vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
                         }
                         for (int t = 1; t < pathOfAgent.size(); t++){
-                            edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t], pathOfAgent[t-1], t});
-                            edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1], pathOfAgent[t], t});
+                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
+                            // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
                         }
                     }
                 }
@@ -448,17 +460,17 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                 newFullSetOfEdgeConstraints.insert({agentId, conflict.getPosition2(), conflict.getPosition1(), conflict.getTime()});
             }
         }
-        std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
-        std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+        SoftVertexConstraintsMultiSet vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+        SoftEdgeConstraintsMultiSet edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
         if (CAT){
             for (auto [agent, pathOfAgent] : fullSolutions){
                 if (agent != agentId){
                     for (int t = 0; t < pathOfAgent.size(); t++){
-                        vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
+                        vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
                     }
                     for (int t = 1; t < pathOfAgent.size(); t++){
-                        edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t], pathOfAgent[t-1], t});
-                        edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1], pathOfAgent[t], t});
+                        edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
+                        // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
                     }
                 }
             }
@@ -620,26 +632,24 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                 }
             }
         }
+        vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+        edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+        if (CAT){
+            for (auto [agent, pathOfAgent] : fullSolutions){
+                for (int t = 0; t < pathOfAgent.size(); t++){
+                    vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
+                }
+                for (int t = 1; t < pathOfAgent.size(); t++){
+                    edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
+                    // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
+                }
+            }
+        }
         std::unordered_map<int,int> successorCosts;
         std::unordered_map<int, std::vector<int>> successorSolution;
         auto successorSetOfConflicts = node->getSetOfConflicts();
         bool solutionOk;
         for (auto agentK : agentsToReplan){
-            vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
-            edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
-            if (CAT){
-                for (auto [agent, pathOfAgent] : fullSolutions){
-                    if (agent != agentK){
-                        for (int t = 0; t < pathOfAgent.size(); t++){
-                            vertexConflictAvoidanceTable.insert({agentK, pathOfAgent[t], t});
-                        }
-                        for (int t = 1; t < pathOfAgent.size(); t++){
-                            edgeConflictAvoidanceTable.insert({agentK, pathOfAgent[t], pathOfAgent[t-1], t});
-                            edgeConflictAvoidanceTable.insert({agentK, pathOfAgent[t-1], pathOfAgent[t], t});
-                        }
-                    }
-                }
-            }
             // Find the interval to replan between 2 landmarks
             auto next = setOfPositiveConstraints.lower_bound(VertexConstraint{agentK, 0, conflict.getTime()});
             if (next != setOfPositiveConstraints.end() and next->getAgent()==agentK){
@@ -694,6 +704,15 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                 }
                 fullCosts[agentK] = successorCosts[agentK];
                 successorSetOfConflicts = updateSetOfConflicts(fullSolutions, successorSetOfConflicts, agentK, successorSolution[agentK]);
+                if (CAT){
+                    for (int t = 0; t < fullSolutions[agentK].size(); t++){
+                        vertexConflictAvoidanceTable.insert({agentK, fullSolutions[agentK][t], t});
+                    }
+                    for (int t = 1; t < fullSolutions[agentK].size(); t++){
+                        edgeConflictAvoidanceTable.insert({agentK, fullSolutions[agentK][t], fullSolutions[agentK][t-1], t});
+                        // edgeConflictAvoidanceTable.insert({agentK, fullSolutions[agentK][t-1], fullSolutions[agentK][t], t});
+                    }
+                }
             } else {
                 break;
             }

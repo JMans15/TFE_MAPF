@@ -15,12 +15,21 @@ SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAg
 bool SimpleIndependenceDetection::planSingletonGroups() {
     for (const std::shared_ptr<Group>& group : groups){
         int agentId = *group->getAgents().begin();
-        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
-        auto search = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic);
-        auto solution = search.solve();
-        group->putSolution(solution);
+        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+        auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
         if (not solution->getFoundPath()){
             return false;
+        }
+        group->putSolution(solution);
+        if (CAT){
+            vector<int> pathOfAgent = solution->getPositions().begin()->second;
+            for (int t = 0; t < pathOfAgent.size(); t++){
+                vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
+            }
+            for (int t = 1; t < pathOfAgent.size(); t++){
+                edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t], pathOfAgent[t-1], t});
+                // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1], pathOfAgent[t], t});
+            }
         }
     }
     return true;
@@ -78,31 +87,41 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
         targets.push_back(problem->getTargetOf(agentId));
         agentIds.push_back(agentId);
     }
-    std::set<VertexConstraint> vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
-    std::set<EdgeConstraint> edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
     if (CAT){
-        for (const auto& group : groups){
-            if (*group != *newGroup){
-                for (const auto& a : group->getSolution()->getPositions()){
-                    vector<int> pathOfAgent = a.second;
-                    for (int agent : newGroup->getAgents()){
-                        for (int t = 0; t < pathOfAgent.size(); t++){
-                            vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
-                        }
-                        for (int t = 1; t < pathOfAgent.size(); t++){
-                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
-                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
-                        }
-                    }
-                }
+        auto setOfAgentsToReplan = newGroup->getAgents();
+        auto it = vertexConflictAvoidanceTable.begin();
+        while (it != vertexConflictAvoidanceTable.end()) {
+            if (setOfAgentsToReplan.find(it->getAgent())!=setOfAgentsToReplan.end()) {
+                it = vertexConflictAvoidanceTable.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        auto it2 = edgeConflictAvoidanceTable.begin();
+        while (it2 != edgeConflictAvoidanceTable.end()) {
+            if (setOfAgentsToReplan.find(it2->getAgent())!=setOfAgentsToReplan.end()) {
+                it2 = edgeConflictAvoidanceTable.erase(it2);
+            } else {
+                ++it2;
             }
         }
     }
     auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
     auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
-    newGroup->putSolution(solution);
     if (not solution->getFoundPath()){
         return false;
+    }
+    newGroup->putSolution(solution);
+    if (CAT){
+        for (auto [agentId, pathOfAgent] : solution->getPositions()){
+            for (int t = 0; t < pathOfAgent.size(); t++){
+                vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
+            }
+            for (int t = 1; t < pathOfAgent.size(); t++){
+                edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t], pathOfAgent[t-1], t});
+                // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1], pathOfAgent[t], t});
+            }
+        }
     }
 
     // update the set of conflicts
