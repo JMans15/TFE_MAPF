@@ -54,11 +54,11 @@ protected:
     // - fullSetOfVertexConstraints and fullSetOfEdgeConstraints are the sets of constraints from the root node to this node
     // - fullCosts is a map from the id of an agent to the cost of the latest path of this agent
     // - fullSolutions is a map from the id of an agent to the latest path of this agent
-    std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node);
+    std::tuple<HardVertexConstraintsSet, HardEdgeConstraintsSet, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node);
 
     // Returns a tuple {fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions, setOfPositiveConstraints}
     // - setOfPositiveConstraints is the set of positive constraints from the root node to this node
-    std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>, std::set<VertexConstraint>> retrieveSetsOfConstraintsAndCostsAndSolutionsDisjointSplitting(std::shared_ptr<ConflictTreeNode> node);
+    std::tuple<HardVertexConstraintsSet, HardEdgeConstraintsSet, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>, std::set<VertexConstraint>> retrieveSetsOfConstraintsAndCostsAndSolutionsDisjointSplitting(std::shared_ptr<ConflictTreeNode> node);
 
     // Retrieves the paths from the parent nodes
     // Returns fullSolutions
@@ -71,7 +71,7 @@ protected:
     std::shared_ptr<Solution> disjointSplittingSolve();
 
     // Returns true if agentId can be at position between t1 and t2 according to the setOfVertexConstraints
-    static bool okForHardConstraints(std::set<VertexConstraint> setOfVertexConstraints, int t1, int t2, int position, int agentId);
+    static bool okForHardConstraints(HardVertexConstraintsSet setOfVertexConstraints, int t1, int t2, int position, int agentId);
 };
 
 

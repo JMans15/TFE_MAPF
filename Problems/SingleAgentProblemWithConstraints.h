@@ -13,8 +13,8 @@
 class SingleAgentProblemWithConstraints : public Problem<SingleAgentSpaceTimeState> {
 public:
     SingleAgentProblemWithConstraints(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction objective,
-                                      int agentId = 0, const std::set<VertexConstraint> &setOfHardVertexConstraints = std::set<VertexConstraint>(),
-                                      const std::set<EdgeConstraint> &setOfHardEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX,
+                                      int agentId = 0, const HardVertexConstraintsSet &setOfHardVertexConstraints = HardVertexConstraintsSet(),
+                                      const HardEdgeConstraintsSet &setOfHardEdgeConstraints = HardEdgeConstraintsSet(), int maxCost = INT_MAX,
                                       const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints = SoftVertexConstraintsMultiSet(),
                                       const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints = SoftEdgeConstraintsMultiSet(), int startTime = 0);
 
@@ -47,9 +47,9 @@ private:
     ObjectiveFunction objective;
 
     // Set of hard vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
-    std::set<VertexConstraint> setOfHardVertexConstraints;
+    HardVertexConstraintsSet setOfHardVertexConstraints;
     // Set of hard edge constraints
-    std::set<EdgeConstraint> setOfHardEdgeConstraints;
+    HardEdgeConstraintsSet setOfHardEdgeConstraints;
 
     // Set of soft vertex constraints like (a, p, t) meaning agent a is occupying position p at time t
     // We ignore constraints from agent a when planning agent a

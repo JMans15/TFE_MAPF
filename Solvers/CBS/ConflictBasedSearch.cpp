@@ -125,9 +125,9 @@ std::set<AgentConflict> ConflictBasedSearch::updateSetOfConflicts(const std::uno
     return successorSetOfConflicts;
 }
 
-std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> ConflictBasedSearch::retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node) {
-    std::set<VertexConstraint> fullSetOfVertexConstraints = problem->getSetOfHardVertexConstraints();
-    std::set<EdgeConstraint> fullSetOfEdgeConstraints = problem->getSetOfHardEdgeConstraints();
+std::tuple<HardVertexConstraintsSet, HardEdgeConstraintsSet, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>> ConflictBasedSearch::retrieveSetsOfConstraintsAndCostsAndSolutions(std::shared_ptr<ConflictTreeNode> node) {
+    HardVertexConstraintsSet fullSetOfVertexConstraints = problem->getSetOfHardVertexConstraints();
+    HardEdgeConstraintsSet fullSetOfEdgeConstraints = problem->getSetOfHardEdgeConstraints();
     std::unordered_map<int, int> fullCosts;
     std::unordered_map<int, std::vector<int>> fullSolutions;
 
@@ -155,9 +155,9 @@ std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_
     return {fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions};
 }
 
-std::tuple<std::set<VertexConstraint>, std::set<EdgeConstraint>, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>, std::set<VertexConstraint>> ConflictBasedSearch::retrieveSetsOfConstraintsAndCostsAndSolutionsDisjointSplitting(std::shared_ptr<ConflictTreeNode> node) {
-    std::set<VertexConstraint> fullSetOfVertexConstraints = problem->getSetOfHardVertexConstraints();
-    std::set<EdgeConstraint> fullSetOfEdgeConstraints = problem->getSetOfHardEdgeConstraints();
+std::tuple<HardVertexConstraintsSet, HardEdgeConstraintsSet, std::unordered_map<int, int>, std::unordered_map<int, vector<int>>, std::set<VertexConstraint>> ConflictBasedSearch::retrieveSetsOfConstraintsAndCostsAndSolutionsDisjointSplitting(std::shared_ptr<ConflictTreeNode> node) {
+    HardVertexConstraintsSet fullSetOfVertexConstraints = problem->getSetOfHardVertexConstraints();
+    HardEdgeConstraintsSet fullSetOfEdgeConstraints = problem->getSetOfHardEdgeConstraints();
     std::set<VertexConstraint> setOfPositiveConstraints;
     std::unordered_map<int, int> fullCosts;
     std::unordered_map<int, std::vector<int>> fullSolutions;
@@ -757,7 +757,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
     return std::make_shared<Solution>();
 }
 
-bool ConflictBasedSearch::okForHardConstraints(std::set<VertexConstraint> setOfVertexConstraints, int t1, int t2,
+bool ConflictBasedSearch::okForHardConstraints(HardVertexConstraintsSet setOfVertexConstraints, int t1, int t2,
                                                int position, int agentId) {
     if(t2+1==INT_MAX){
         return true;

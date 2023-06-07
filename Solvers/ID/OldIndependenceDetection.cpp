@@ -32,8 +32,8 @@ bool OldIndependenceDetection::planSingletonGroups() {
 }
 
 bool OldIndependenceDetection::replanGroupAAvoidingGroupB(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB){
-    std::set<VertexConstraint> vertexIllegalTable = problem->getSetOfHardVertexConstraints();
-    std::set<EdgeConstraint> edgeIllegalTable = problem->getSetOfHardEdgeConstraints();
+    HardVertexConstraintsSet vertexIllegalTable = problem->getSetOfHardVertexConstraints();
+    HardEdgeConstraintsSet edgeIllegalTable = problem->getSetOfHardEdgeConstraints();
     for (const auto& a : groupB->getSolution()->getPositions()){
         vector<int> pathOfAgent = a.second;
         for (int agentA : groupA->getAgents()){

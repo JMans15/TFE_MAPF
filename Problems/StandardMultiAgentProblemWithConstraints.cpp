@@ -8,8 +8,8 @@
 
 StandardMultiAgentProblemWithConstraints::StandardMultiAgentProblemWithConstraints(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
                                                                    ObjectiveFunction objective, const std::vector<int>& m_agentIds,
-                                                                   const std::set<VertexConstraint> &setOfHardVertexConstraints,
-                                                                   const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
+                                                                   const HardVertexConstraintsSet &setOfHardVertexConstraints,
+                                                                   const HardEdgeConstraintsSet &setOfHardEdgeConstraints, int maxCost,
                                                                    const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints,
                                                                    const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints,
                                                                    int startTime)
@@ -370,11 +370,11 @@ ObjectiveFunction StandardMultiAgentProblemWithConstraints::getObjFunction() {
     return objective;
 }
 
-std::set<VertexConstraint> StandardMultiAgentProblemWithConstraints::getSetOfHardVertexConstraints() const {
+HardVertexConstraintsSet StandardMultiAgentProblemWithConstraints::getSetOfHardVertexConstraints() const {
     return setOfHardVertexConstraints;
 }
 
-std::set<EdgeConstraint> StandardMultiAgentProblemWithConstraints::getSetOfHardEdgeConstraints() const {
+HardEdgeConstraintsSet StandardMultiAgentProblemWithConstraints::getSetOfHardEdgeConstraints() const {
     return setOfHardEdgeConstraints;
 }
 

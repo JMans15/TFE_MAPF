@@ -120,12 +120,12 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         auto g = Parser::parse("../../mapf-map/empty-4-4.map");
         int start = 4;
         int target = 6;
-        auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{VertexConstraint{0, 5, 1}});
+        auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, HardVertexConstraintsSet{VertexConstraint{0, 5, 1}});
         auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getMakespanCost() == 3, "MakespanCost = " << solution->getMakespanCost() << " tested against 3");
 
-        problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Fuel, 0, std::set<VertexConstraint>{VertexConstraint{0, 5, 1}});
+        problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Fuel, 0, HardVertexConstraintsSet{VertexConstraint{0, 5, 1}});
         solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getFuelCost() == 2, "FuelCost = " << solution->getFuelCost() << " tested against 2");

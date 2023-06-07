@@ -15,8 +15,8 @@ class StandardMultiAgentProblemWithConstraints : public Problem<StandardMultiAge
 public:
     StandardMultiAgentProblemWithConstraints(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
                                      ObjectiveFunction objective = Fuel, const std::vector<int>& agentIds = std::vector<int>(),
-                                     const std::set<VertexConstraint> &setOfHardVertexConstraints = std::set<VertexConstraint>(),
-                                     const std::set<EdgeConstraint> &setOfHardEdgeConstraints = std::set<EdgeConstraint>(), int maxCost = INT_MAX,
+                                     const HardVertexConstraintsSet &setOfHardVertexConstraints = HardVertexConstraintsSet(),
+                                     const HardEdgeConstraintsSet &setOfHardEdgeConstraints = HardEdgeConstraintsSet(), int maxCost = INT_MAX,
                                      const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints = SoftVertexConstraintsMultiSet(),
                                      const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints = SoftEdgeConstraintsMultiSet(), int startTime = 0);
 
@@ -30,8 +30,8 @@ public:
     const std::vector<int>& getStarts() const;
     const std::vector<int>& getTargets() const;
     ObjectiveFunction getObjFunction();
-    std::set<VertexConstraint> getSetOfHardVertexConstraints() const;
-    std::set<EdgeConstraint> getSetOfHardEdgeConstraints() const;
+    HardVertexConstraintsSet getSetOfHardVertexConstraints() const;
+    HardEdgeConstraintsSet getSetOfHardEdgeConstraints() const;
     SoftVertexConstraintsMultiSet getSetOfSoftVertexConstraints() const;
     SoftEdgeConstraintsMultiSet getSetOfSoftEdgeConstraints() const;
 
@@ -60,9 +60,9 @@ private:
     ObjectiveFunction objective;
 
     // Set of hard vertex constraints like (a, p, t) meaning agent a can't be at position p at time t
-    std::set<VertexConstraint> setOfHardVertexConstraints;
+    HardVertexConstraintsSet setOfHardVertexConstraints;
     // Set of hard edge constraints
-    std::set<EdgeConstraint> setOfHardEdgeConstraints;
+    HardEdgeConstraintsSet setOfHardEdgeConstraints;
 
     // Set of soft vertex constraints like (a, p, t) meaning agent a is occupying position p at time t
     // We ignore constraints from agent a when planning agent a

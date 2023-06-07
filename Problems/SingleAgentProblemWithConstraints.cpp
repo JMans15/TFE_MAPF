@@ -5,8 +5,8 @@
 #include "SingleAgentProblemWithConstraints.h"
 
 SingleAgentProblemWithConstraints::SingleAgentProblemWithConstraints(std::shared_ptr<Graph> graph, int start, int target, ObjectiveFunction m_objective,
-                                                                     int agentId, const std::set<VertexConstraint> &setOfHardVertexConstraints,
-                                                                     const std::set<EdgeConstraint> &setOfHardEdgeConstraints, int maxCost,
+                                                                     int agentId, const HardVertexConstraintsSet &setOfHardVertexConstraints,
+                                                                     const HardEdgeConstraintsSet &setOfHardEdgeConstraints, int maxCost,
                                                                      const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints,
                                                                      const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints,
                                                                      int startTime)
