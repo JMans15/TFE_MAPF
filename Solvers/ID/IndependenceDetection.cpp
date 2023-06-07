@@ -27,25 +27,6 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Gro
             }
         }
     }
-    if (CAT){
-        auto setOfAgentsToReplan = groupA->getAgents();
-        auto it = vertexConflictAvoidanceTable.begin();
-        while (it != vertexConflictAvoidanceTable.end()) {
-            if (setOfAgentsToReplan.find(it->getAgent())!=setOfAgentsToReplan.end()) {
-                it = vertexConflictAvoidanceTable.erase(it);
-            } else {
-                ++it;
-            }
-        }
-        auto it2 = edgeConflictAvoidanceTable.begin();
-        while (it2 != edgeConflictAvoidanceTable.end()) {
-            if (setOfAgentsToReplan.find(it2->getAgent())!=setOfAgentsToReplan.end()) {
-                it2 = edgeConflictAvoidanceTable.erase(it2);
-            } else {
-                ++it2;
-            }
-        }
-    }
     vector<int> starts;
     vector<int> targets;
     vector<int> agentIds;
@@ -65,6 +46,23 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Gro
     if (solution->getFoundPath()) {
         groupA->putSolution(solution);
         if (CAT){
+            auto setOfAgentsToReplan = groupA->getAgents();
+            auto it = vertexConflictAvoidanceTable.begin();
+            while (it != vertexConflictAvoidanceTable.end()) {
+                if (setOfAgentsToReplan.find(it->getAgent())!=setOfAgentsToReplan.end()) {
+                    it = vertexConflictAvoidanceTable.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+            auto it2 = edgeConflictAvoidanceTable.begin();
+            while (it2 != edgeConflictAvoidanceTable.end()) {
+                if (setOfAgentsToReplan.find(it2->getAgent())!=setOfAgentsToReplan.end()) {
+                    it2 = edgeConflictAvoidanceTable.erase(it2);
+                } else {
+                    ++it2;
+                }
+            }
             for (auto [agentId, pathOfAgent] : solution->getPositions()){
                 for (int t = 0; t < pathOfAgent.size(); t++){
                     vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
@@ -127,17 +125,6 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Gro
         }
 
         return true;
-    }
-    if (CAT){
-        for (auto [agentId, pathOfAgent] : groupA->getSolution()->getPositions()){
-            for (int t = 0; t < pathOfAgent.size(); t++){
-                vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
-            }
-            for (int t = 1; t < pathOfAgent.size(); t++){
-                edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t], pathOfAgent[t-1], t});
-                // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1], pathOfAgent[t], t});
-            }
-        }
     }
     return false;
 }

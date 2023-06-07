@@ -168,22 +168,32 @@ bool StandardMultiAgentProblemWithConstraints::okForConstraints(int agent, int n
     return setOfHardVertexConstraints.find({agentIds[agent], newPosition, time}) == setOfHardVertexConstraints.end();
 }
 
-int StandardMultiAgentProblemWithConstraints::numberOfViolations(int position, int newPosition, int time) const {
+int StandardMultiAgentProblemWithConstraints::numberOfViolations(int agent, int position, int newPosition, int time) const {
     int count = 0;
-    if (setOfSoftVertexConstraints.find({0, newPosition, time}) != setOfSoftVertexConstraints.end()){
-        count += 1;
+    auto range = setOfSoftVertexConstraints.equal_range({0, newPosition, time});
+    for (auto it = range.first; it != range.second; ++it) {
+        if (it->getAgent()!=agentIds[agent]){
+            count += 1;
+        }
     }
-    if (setOfSoftEdgeConstraints.find({0, position, newPosition, time}) != setOfSoftEdgeConstraints.end()){
-        count += 1;
+    auto range2 = setOfSoftEdgeConstraints.equal_range({0, position, newPosition, time});
+    for (auto it = range2.first; it != range2.second; ++it) {
+        if (it->getAgent()!=agentIds[agent]){
+            count += 1;
+        }
     }
     return count;
 }
 
-int StandardMultiAgentProblemWithConstraints::numberOfViolations(int newPosition, int time) const {
-    if (setOfSoftVertexConstraints.find({0, newPosition, time}) == setOfSoftVertexConstraints.end()){
-        return 0;
+int StandardMultiAgentProblemWithConstraints::numberOfViolations(int agent, int newPosition, int time) const {
+    int count = 0;
+    auto range = setOfSoftVertexConstraints.equal_range({0, newPosition, time});
+    for (auto it = range.first; it != range.second; ++it) {
+        if (it->getAgent()!=agentIds[agent]){
+            count += 1;
+        }
     }
-    return 1;
+    return count;
 }
 
 void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int agentToAssign, std::vector<std::tuple<std::shared_ptr<StandardMultiAgentState>, int, int>>* successors, int cost, std::vector<int> positions, const std::vector<int>& prePositions, int t, int violations, std::vector<int> cannotMove) const {
@@ -213,13 +223,13 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                 newpositions[agentToAssign] = j;
                 if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && okForConstraints(agentToAssign, positions[agentToAssign], j, t+1)) {
                     auto successor = std::make_shared<StandardMultiAgentState>(newpositions, t+1);
-                    successors->emplace_back(successor, cost+costMovement, violations+numberOfViolations(positions[agentToAssign], j, t+1));
+                    successors->emplace_back(successor, cost+costMovement, violations+numberOfViolations(agentToAssign, positions[agentToAssign], j, t+1));
                 }
             }
             // Wait
             if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
                 auto successor = std::make_shared<StandardMultiAgentState>(positions, t+1);
-                successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(positions[agentToAssign], t+1));
+                successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1));
             }
         } else {
             // Move
@@ -227,12 +237,12 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                 vector<int> newpositions(positions);
                 newpositions[agentToAssign] = j;
                 if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && okForConstraints(agentToAssign, positions[agentToAssign], j, t+1)) {
-                    recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costMovement, newpositions, prePositions, t, violations+numberOfViolations(positions[agentToAssign], j, t+1));
+                    recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costMovement, newpositions, prePositions, t, violations+numberOfViolations(agentToAssign, positions[agentToAssign], j, t+1));
                 }
             }
             // Wait
             if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
-                recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(positions[agentToAssign], t+1));
+                recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1));
             }
         }
     } else { // obj_function=="SumOfCosts"
@@ -245,7 +255,7 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                     newpositions[agentToAssign] = j;
                     if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && okForConstraints(agentToAssign, positions[agentToAssign], j, t+1)) {
                         auto successor = std::make_shared<StandardMultiAgentState>(newpositions, t+1, cannotMove);
-                        successors->emplace_back(successor, cost+costMovement, violations+numberOfViolations(positions[agentToAssign], j, t+1));
+                        successors->emplace_back(successor, cost+costMovement, violations+numberOfViolations(agentToAssign, positions[agentToAssign], j, t+1));
                     }
                 }
 
@@ -254,14 +264,14 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                     costWait = 1;
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
                         auto successor = std::make_shared<StandardMultiAgentState>(positions, t+1, cannotMove);
-                        successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(positions[agentToAssign], t+1));
+                        successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1));
                     }
                 } else { // agentToAssign is at his target position
                     // agentToAssign can still move in the future
                     costWait = 1;
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
                         auto successor = std::make_shared<StandardMultiAgentState>(positions, t+1, cannotMove);
-                        successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(positions[agentToAssign], t+1));
+                        successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1));
                     }
 
                     // we are forcing agentToAssign to not move in the future
@@ -269,7 +279,7 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                     cannotMove.push_back(agentToAssign);
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
                         auto successor = std::make_shared<StandardMultiAgentState>(positions, t+1, cannotMove);
-                        successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(positions[agentToAssign], t+1));
+                        successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1));
                     }
                 }
 
@@ -278,7 +288,7 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                 costWait = 0;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
                     auto successor = std::make_shared<StandardMultiAgentState>(positions, t+1, cannotMove);
-                    successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(positions[agentToAssign], t+1));
+                    successors->emplace_back(successor, cost+costWait, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1));
                 }
             }
         } else {
@@ -289,7 +299,7 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                     vector<int> newpositions(positions);
                     newpositions[agentToAssign] = j;
                     if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && okForConstraints(agentToAssign, positions[agentToAssign], j, t+1)) {
-                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costMovement, newpositions, prePositions, t, violations+numberOfViolations(positions[agentToAssign], j, t+1), cannotMove);
+                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costMovement, newpositions, prePositions, t, violations+numberOfViolations(agentToAssign, positions[agentToAssign], j, t+1), cannotMove);
                     }
                 }
 
@@ -297,20 +307,20 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
                 if (positions[agentToAssign]!=targets[agentToAssign]) { // agentToAssign not at his target position
                     costWait = 1;
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
-                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(positions[agentToAssign], t+1), cannotMove);
+                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1), cannotMove);
                     }
                 } else { // agentToAssign is at his target position
                     // agentToAssign can still move in the future
                     costWait = 1;
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
-                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(positions[agentToAssign], t+1), cannotMove);
+                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1), cannotMove);
                     }
 
                     // we are forcing agentToAssign to not move in the future
                     costWait = 0;
                     cannotMove.push_back(agentToAssign);
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
-                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(positions[agentToAssign], t+1), cannotMove);
+                        recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1), cannotMove);
                     }
                 }
 
@@ -318,7 +328,7 @@ void StandardMultiAgentProblemWithConstraints::recursiveAssignAMoveToAnAgent(int
             } else { // agentToAssign is not allowed to move
                 costWait = 0;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && okForConstraints(agentToAssign, positions[agentToAssign], t+1)) {
-                    recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(positions[agentToAssign], t+1), cannotMove);
+                    recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, t, violations+numberOfViolations(agentToAssign, positions[agentToAssign], t+1), cannotMove);
                 }
             }
         }

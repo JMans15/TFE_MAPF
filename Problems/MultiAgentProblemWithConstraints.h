@@ -65,7 +65,7 @@ private:
     std::set<EdgeConstraint> setOfHardEdgeConstraints;
 
     // Set of soft vertex constraints like (a, p, t) meaning agent a is occupying position p at time t
-    // This problem will try to avoid these position-timestep points. So, it's better to not put any (a,p,t) constraint when planning agent a.
+    // We ignore constraints from agent a when planning agent a
     SoftVertexConstraintsMultiSet setOfSoftVertexConstraints;
     // Set of soft edge constraints
     SoftEdgeConstraintsMultiSet setOfSoftEdgeConstraints;
@@ -80,11 +80,11 @@ private:
 
     // The number of violated soft constraints if agent go from position to newPosition between time-1 and time
     // (according to the soft vertex constraints and the soft edge constraints of the problem)
-    int numberOfViolations(int position, int newPosition, int time) const;
+    int numberOfViolations(int agent, int position, int newPosition, int time) const;
 
     // The number of violated soft constraints if agent is at newPosition at time
     // (according to the soft vertex constraints of the problem)
-    int numberOfViolations(int newPosition, int time) const;
+    int numberOfViolations(int agent, int newPosition, int time) const;
 
     // Returns true if position is not already occupied by assigned agents
     bool notAlreadyOccupiedPosition(int position, std::vector<int> &positions, int agentToAssign) const;

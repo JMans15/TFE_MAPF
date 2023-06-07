@@ -282,6 +282,20 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
 
         auto [fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions] = retrieveSetsOfConstraintsAndCostsAndSolutions(node);
 
+        SoftVertexConstraintsMultiSet vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+        SoftEdgeConstraintsMultiSet edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+        if (CAT){
+            for (auto [agent, pathOfAgent] : fullSolutions){
+                for (int t = 0; t < pathOfAgent.size(); t++){
+                    vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
+                }
+                for (int t = 1; t < pathOfAgent.size(); t++){
+                    edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
+                    // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
+                }
+            }
+        }
+
         for (int agentId : {agent1, agent2}){
             std::shared_ptr<EdgeConstraint> successorEdgeConstraint;
             std::shared_ptr<VertexConstraint> successorVertexConstraint;
@@ -299,21 +313,6 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
                 } else {
                     successorEdgeConstraint = std::make_shared<EdgeConstraint>(agentId, conflict.getPosition2(), conflict.getPosition1(), conflict.getTime());
                     newFullSetOfEdgeConstraints.insert({agentId, conflict.getPosition2(), conflict.getPosition1(), conflict.getTime()});
-                }
-            }
-            SoftVertexConstraintsMultiSet vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
-            SoftEdgeConstraintsMultiSet edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
-            if (CAT){
-                for (auto [agent, pathOfAgent] : fullSolutions){
-                    if (agent != agentId){
-                        for (int t = 0; t < pathOfAgent.size(); t++){
-                            vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
-                        }
-                        for (int t = 1; t < pathOfAgent.size(); t++){
-                            edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t], pathOfAgent[t-1], t});
-                            // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1], pathOfAgent[t], t});
-                        }
-                    }
                 }
             }
             auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);

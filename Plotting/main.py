@@ -107,11 +107,11 @@ if __name__ == '__main__':
     #data = data_for_algo('AStar')
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Operator Decomposition)")
 
-    data = data_for_algo("SID")
-    ax.plot(range(10, 25), data, marker='x', label="SID")
+    #data = data_for_algo("SID")
+    #ax.plot(range(10, 25), data, marker='x', label="SID")
 
-    data = data_for_algo("SIDCAT")
-    ax.plot(range(10, 25), data, marker='x', label="SID+CAT")
+    #data = data_for_algo("SIDCAT")
+    #ax.plot(range(10, 25), data, marker='x', label="SID+CAT")
 
     #data = data_for_algo("EID")
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Enhanced version of ID (EID)")
@@ -122,11 +122,11 @@ if __name__ == '__main__':
     data = data_for_algo("IDCAT")
     ax.plot(range(10, 25), data, marker='x', label="ID+CAT")
 
-    data = data_for_algo("CBS")
-    ax.plot(range(10, 25), data, marker='x', label="CBS")
+    #data = data_for_algo("CBS")
+    #ax.plot(range(10, 25), data, marker='x', label="CBS")
 
-    data = data_for_algo("CBSCAT")
-    ax.plot(range(10, 25), data, marker='x', label="CBS+CAT")
+    #data = data_for_algo("CBSCAT")
+    #ax.plot(range(10, 25), data, marker='x', label="CBS+CAT")
 
     #data = data_for_algo("DSCBS")
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Disjoint Splitting CBS")

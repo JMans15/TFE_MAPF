@@ -101,7 +101,7 @@ int main() {
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
     solution->print();*/
 
-    // TEST 6 : 1 agent and a hard vertex constraint
+    // TEST 6 : 1 agent and a hard vertex constraint : agent 0 cannot be at postion 5 at time 1
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
@@ -109,7 +109,7 @@ int main() {
     auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
     solution->print();*/
 
-    // TEST 6 BIS : 1 agent and a hard edge constraint
+    // TEST 6 BIS : 1 agent and a hard edge constraint : agent 0 cannot go from postion 4 to position 5 from time 0 to time 1
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
@@ -117,19 +117,19 @@ int main() {
     auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
     solution->print();*/
 
-    // TEST 7 : 1 agent and a soft vertex constraint
+    // TEST 7 : 1 agent and a soft vertex constraint : agent 1 is at position 5 at time 1, agent 0 will thus try to avoid this position-time point.
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 1;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{{0,5,1}});
+    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
     auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
     solution->print();*/
 
-    // TEST 7 BIS : 1 agent and a soft edge constraint
+    // TEST 7 BIS : 1 agent and a soft edge constraint : agent 1 is occupying the edge (1,5) between time 0 and time 1, agent 0 will thus try to avoid this edge at this timestep.
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 1;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{0,1,5,1}});
+    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
     auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
     solution->print();*/
 
@@ -492,13 +492,13 @@ int main() {
 
     // TEST X : StandardMultiAgent and a soft vertex constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{{0,5,1}});
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
     auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
     solution->print();*/
 
     // TEST X : StandardMultiAgent and a soft edge constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{1,1,5,1}});
+    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
     auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
     solution->print();*/
 
@@ -509,13 +509,13 @@ int main() {
     solution->print();*/
 
     // TEST X : CBS vs Disjoint Splitting CBS
-    // Disjoint Splitting doesn't work with Fuel cost, don't know why
-    auto g = Parser::parse("../mapf-map/corridor.map");
+    // Disjoint Splitting doesn't work here with Fuel cost, don't know why
+    /*auto g = Parser::parse("../mapf-map/corridor.map");
     auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{0, 14}, vector<int>{4, 10}, Makespan);
     auto solution = ConflictBasedSearch(problem, OptimalDistance,false, false).solve(); // numberOfVisitedNodes=252
     solution->print();
     auto solution2 = ConflictBasedSearch(problem, OptimalDistance, false, true).solve(); // numberOfVisitedNodes=120
-    solution2->print();
+    solution2->print();*/
 
     // TEST X : Find the interval to replan between 2 landmarks
     /*std::set<VertexConstraint> setOfPositiveConstraints;

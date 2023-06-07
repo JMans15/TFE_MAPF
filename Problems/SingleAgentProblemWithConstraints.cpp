@@ -101,20 +101,30 @@ bool SingleAgentProblemWithConstraints::okForConstraints(int newPosition, int ti
 
 int SingleAgentProblemWithConstraints::numberOfViolations(int position, int newPosition, int time) const {
     int count = 0;
-    if (setOfSoftVertexConstraints.find({0, newPosition, time}) != setOfSoftVertexConstraints.end()){
-        count += 1;
+    auto range = setOfSoftVertexConstraints.equal_range({0, newPosition, time});
+    for (auto it = range.first; it != range.second; ++it) {
+        if (it->getAgent()!=agentId){
+            count += 1;
+        }
     }
-    if (setOfSoftEdgeConstraints.find({0, position, newPosition, time}) != setOfSoftEdgeConstraints.end()){
-        count += 1;
+    auto range2 = setOfSoftEdgeConstraints.equal_range({0, position, newPosition, time});
+    for (auto it = range2.first; it != range2.second; ++it) {
+        if (it->getAgent()!=agentId){
+            count += 1;
+        }
     }
     return count;
 }
 
 int SingleAgentProblemWithConstraints::numberOfViolations(int newPosition, int time) const {
-    if (setOfSoftVertexConstraints.find({0, newPosition, time}) == setOfSoftVertexConstraints.end()){
-        return 0;
+    int count = 0;
+    auto range = setOfSoftVertexConstraints.equal_range({0, newPosition, time});
+    for (auto it = range.first; it != range.second; ++it) {
+        if (it->getAgent()!=agentId){
+            count += 1;
+        }
     }
-    return 1;
+    return count;
 }
 
 std::vector<std::tuple<std::shared_ptr<SingleAgentSpaceTimeState>, int, int>> SingleAgentProblemWithConstraints::getSuccessors(std::shared_ptr<SingleAgentSpaceTimeState> state) const {

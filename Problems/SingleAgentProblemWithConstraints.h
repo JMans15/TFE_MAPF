@@ -52,7 +52,7 @@ private:
     std::set<EdgeConstraint> setOfHardEdgeConstraints;
 
     // Set of soft vertex constraints like (a, p, t) meaning agent a is occupying position p at time t
-    // This problem will try to avoid these position-timestep points. So, it's better to not put any (a,p,t) constraint when planning agent a.
+    // We ignore constraints from agent a when planning agent a
     SoftVertexConstraintsMultiSet setOfSoftVertexConstraints;
     // Set of soft edge constraints
     SoftEdgeConstraintsMultiSet setOfSoftEdgeConstraints;
