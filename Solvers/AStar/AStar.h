@@ -6,14 +6,12 @@
 #define TFE_MAPF_ASTAR_H
 
 #include "../../Heuristics/HeuristicOptimal.h"
-#include "../../Problems/Problem.h"
+#include "../../AStarProblems/AStarProblem.h"
 #include "../../Solution/Solution.h"
 
 #include <algorithm>
 #include <unordered_map>
 
-// Basic A* search
-// Can be applied for multi agent and single agent problems
 template <class P, class S>
 class AStar {
 public:
@@ -25,10 +23,6 @@ public:
 
     std::shared_ptr<Solution> solve() {
         LOG("===== A* Search ====");
-
-        if (problem->isImpossible()){
-            return std::make_shared<Solution>();
-        }
 
         LOG("Beginning the A* search. ");
 

@@ -13,18 +13,15 @@ Solution::Solution() {
     foundPath = false;
 }
 
-Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions)
+Solution::Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfResolvedConflicts, int sizeOfLargerGroup)
 : foundPath(true)
-, cost(-1)
-, numberOfVisitedNodes(-1)
 , numberOfTimesteps(numberOfTimesteps)
 , positions(positions)
 , startTime(0)
-{
-    /*if (not isValid()){
-        std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
-    }*/
-}
+, numberOfResolvedConflicts(numberOfResolvedConflicts)
+, sizeOfLargerGroup(sizeOfLargerGroup)
+, solutionOfId(true)
+{}
 
 Solution::Solution(int cost, int numberOfVisitedNodes,
                    int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe,
@@ -36,6 +33,7 @@ Solution::Solution(int cost, int numberOfVisitedNodes,
     , positions(positions)
     , numberOfNodesLeftInTheFringe(numberOfNodesLeftInTheFringe)
     , startTime(startTime)
+    , solutionOfId(false)
 {
     /*if (not isValid()){
         std::cout << "This solution is not valid ! There are conflicts between the paths. " << std::endl;
@@ -73,8 +71,7 @@ void Solution::write(const std::string& filename, int width) {
                 x = p % width;
                 file << x << "," << y << std::endl;
             }
-        }
-    }
+        }}
     file.close();
 }
 
@@ -82,11 +79,16 @@ void Solution::print() {
     if (foundPath){
         std::cout << " " << std::endl;
         std::cout << "==== Solution ====" << std::endl;
-        std::cout << numberOfVisitedNodes << " visited nodes " << std::endl;
-        std::cout << " ( = goal tested states if solution of a single joint A*" << std::endl;
-        std::cout << "  or conflict tree nodes if solution of conflict based search)" << std::endl;
-        std::cout << numberOfNodesLeftInTheFringe << " nodes left at the end of the search in the fringe/open list " << std::endl;
-        std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
+        if (not solutionOfId){
+            std::cout << numberOfVisitedNodes << " visited nodes " << std::endl;
+            std::cout << " ( = goal tested states if solution of a single joint A*" << std::endl;
+            std::cout << "  or conflict tree nodes if solution of conflict based search)" << std::endl;
+            std::cout << numberOfNodesLeftInTheFringe << " nodes left at the end of the search in the fringe/open list " << std::endl;
+            std::cout << "Cost of the solution = " << cost << " (value of the objective function for this solution)" << std::endl;
+        } else {
+            std::cout << numberOfResolvedConflicts << " solved conflicts (merging or replanning) until a solution without any conflict is found" << std::endl;
+            std::cout << sizeOfLargerGroup << " is the size of the largest group of agents (solved by a single low-level search) " << std::endl;
+        }
         std::cout << " - SumOfCosts cost of the solution = " << getSumOfCostsCost() << std::endl;
         std::cout << " - Fuel cost of the solution = " << getFuelCost() << std::endl;
         std::cout << " - Makespan cost of the solution = " << getMakespanCost() << std::endl;

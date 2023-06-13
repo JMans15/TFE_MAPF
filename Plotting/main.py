@@ -79,7 +79,7 @@ def run_program(file_path, a, i, algo):
 
 def data_for_algo(algo):
     data = []
-    for a in range(10, 25): #max 1002
+    for a in range(1, 20): #max 1002
         files = os.listdir(directory)
         with Pool(num_threads) as p:
             results = [p.apply_async(run_program, (os.path.join(directory, filename), a, i, algo)) for i, filename in enumerate(files)]
@@ -104,29 +104,35 @@ if __name__ == '__main__':
     #data = data_for_algo('StandardAStar')
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Standard)")
 
-    #data = data_for_algo('AStar')
-    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Operator Decomposition)")
+    data = data_for_algo('AStar')
+    ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Operator Decomposition)")
 
-    data = data_for_algo("SID")
-    ax.plot(range(10, 25), data, marker='x', label="SID")
+    #data = data_for_algo("SIDAStar")
+    #ax.plot(range(15, 30), data, marker='x', label="SID+A*")
 
-    data = data_for_algo("SIDCAT")
-    ax.plot(range(10, 25), data, marker='x', label="SID+CAT")
+    #data = data_for_algo("SIDCATAStar")
+    #ax.plot(range(15, 30), data, marker='x', label="(SID+CAT)+A*")
+
+    #data = data_for_algo("SIDCBS")
+    #ax.plot(range(15, 30), data, marker='x', label="SID+CBS")
+
+    #data = data_for_algo("SIDCATCBS")
+    #ax.plot(range(15, 30), data, marker='x', label="(SID+CAT)+CBS")
 
     #data = data_for_algo("EID")
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Enhanced version of ID (EID)")
 
-    data = data_for_algo("ID")
-    ax.plot(range(10, 25), data, marker='x', label="ID")
+    #data = data_for_algo("ID")
+    #ax.plot(range(10, 25), data, marker='x', label="ID")
 
-    data = data_for_algo("IDCAT")
-    ax.plot(range(10, 25), data, marker='x', label="ID+CAT")
+    #data = data_for_algo("IDCAT")
+    #ax.plot(range(10, 25), data, marker='x', label="ID+CAT")
 
     data = data_for_algo("CBS")
-    ax.plot(range(10, 25), data, marker='x', label="CBS")
+    ax.plot(list(range(1, len(data)+1)), data, marker='x', label="CBS")
 
-    data = data_for_algo("CBSCAT")
-    ax.plot(range(10, 25), data, marker='x', label="CBS+CAT")
+    #data = data_for_algo("CBSCAT")
+    #ax.plot(range(10, 25), data, marker='x', label="CBS+CAT")
 
     #data = data_for_algo("DSCBS")
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Disjoint Splitting CBS")

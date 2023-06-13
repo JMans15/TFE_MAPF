@@ -2,30 +2,22 @@
 // Created by Arthur Mahy on 04/01/2023.
 //
 
-#ifndef TFE_MAPF_MULTIAGENTPROBLEMWITHCONSTRAINTS_H
-#define TFE_MAPF_MULTIAGENTPROBLEMWITHCONSTRAINTS_H
+#ifndef TFE_MAPF_MULTIAGENTPROBLEM_H
+#define TFE_MAPF_MULTIAGENTPROBLEM_H
 
 #include "Problem.h"
-#include "../States/MultiAgentState.h"
 
-#include <set>
-
-// Multi Agent Problem solved with Operator Decomposition A* (>< Standard A*)
-class MultiAgentProblemWithConstraints : public Problem<MultiAgentState> {
+// Multi Agent Problem
+class MultiAgentProblem : public Problem{
 public:
-    MultiAgentProblemWithConstraints(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
+    MultiAgentProblem(const std::shared_ptr<Graph>& graph, std::vector<int> starts, std::vector<int> targets,
                                      ObjectiveFunction objective = Fuel, const std::vector<int>& agentIds = std::vector<int>(),
                                      const HardVertexConstraintsSet& setOfHardVertexConstraints = HardVertexConstraintsSet(),
                                      const HardEdgeConstraintsSet& setOfHardEdgeConstraints = HardEdgeConstraintsSet(), int maxCost = INT_MAX,
                                      const SoftVertexConstraintsMultiSet& setOfSoftVertexConstraints = SoftVertexConstraintsMultiSet(),
                                      const SoftEdgeConstraintsMultiSet& setOfSoftEdgeConstraints = SoftEdgeConstraintsMultiSet(), int startTime = 0);
 
-    std::shared_ptr<MultiAgentState> getStartState() const override;
-    bool isGoalState(std::shared_ptr<MultiAgentState> state) const override;
-    std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> getSuccessors(std::shared_ptr<MultiAgentState> state) const override;
-    std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const override;
-    std::vector<int> getAgentIds() const override;
-    bool isImpossible() const override;
+    std::vector<int> getAgentIds() const;
 
     const std::vector<int>& getStarts() const;
     const std::vector<int>& getTargets() const;
@@ -34,11 +26,40 @@ public:
     HardEdgeConstraintsSet getSetOfHardEdgeConstraints() const;
     SoftVertexConstraintsMultiSet getSetOfSoftVertexConstraints() const;
     SoftEdgeConstraintsMultiSet getSetOfSoftEdgeConstraints() const;
+    std::shared_ptr<Graph> getGraph() const;
+    int getNumberOfAgents() const;
+    int getMaxCost() const;
+    int getStartTime() const;
+    bool hasTimeConstraints() const;
+    bool isMultiAgentProblem() const;
+    bool isImpossible() const;
 
     int getStartOf(int id);
     int getTargetOf(int id);
 
+    // Returns true if the agent is allowed to go from position to newPosition between time-1 and time
+    // (according to the hard vertex constraints and the hard edge constraints of the problem)
+    bool okForConstraints(int agent, int position, int newPosition, int time) const;
+
+    // Returns true if the agent is allowed to be at newPosition at time
+    // (according to the hard vertex constraints of the problem)
+    bool okForConstraints(int agent, int newPosition, int time) const;
+
+    // The number of violated soft constraints if agent go from position to newPosition between time-1 and time
+    // (according to the soft vertex constraints and the soft edge constraints of the problem)
+    int numberOfViolations(int agent, int position, int newPosition, int time) const;
+
+    // The number of violated soft constraints if agent is at newPosition at time
+    // (according to the soft vertex constraints of the problem)
+    int numberOfViolations(int agent, int newPosition, int time) const;
+
 private:
+
+    // Graph with the possible positions and transitions for the agents
+    std::shared_ptr<Graph> graph;
+
+    int numberOfAgents;
+
     // starts is a list of length numberOfAgents with the start position of each agent
     std::vector<int> starts;
 
@@ -70,29 +91,11 @@ private:
     // Set of soft edge constraints
     SoftEdgeConstraintsMultiSet setOfSoftEdgeConstraints;
 
-    // Returns true if the agent is allowed to go from position to newPosition between time-1 and time
-    // (according to the hard vertex constraints and the hard edge constraints of the problem)
-    bool okForConstraints(int agent, int position, int newPosition, int time) const;
+    // The solution of this problem must have a cost inferior or equal to maxCost
+    int maxCost;
 
-    // Returns true if the agent is allowed to be at newPosition at time
-    // (according to the hard vertex constraints of the problem)
-    bool okForConstraints(int agent, int newPosition, int time) const;
-
-    // The number of violated soft constraints if agent go from position to newPosition between time-1 and time
-    // (according to the soft vertex constraints and the soft edge constraints of the problem)
-    int numberOfViolations(int agent, int position, int newPosition, int time) const;
-
-    // The number of violated soft constraints if agent is at newPosition at time
-    // (according to the soft vertex constraints of the problem)
-    int numberOfViolations(int agent, int newPosition, int time) const;
-
-    // Returns true if position is not already occupied by assigned agents
-    bool notAlreadyOccupiedPosition(int position, std::vector<int> &positions, int agentToAssign) const;
-
-    // Returns true if the edge (position, positions[agentToAssign]) is not already occupied by assigned agents
-    bool notAlreadyOccupiedEdge(int position, const std::vector<int> &positions, int agentToAssign, const std::vector<int> &prePositions) const;
-
+    int startTime;
 };
 
 
-#endif //TFE_MAPF_MULTIAGENTPROBLEMWITHCONSTRAINTS_H
+#endif //TFE_MAPF_MULTIAGENTPROBLEM_H

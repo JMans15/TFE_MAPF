@@ -7,8 +7,6 @@
 
 #include "State.h"
 
-#include <vector>
-
 class SingleAgentSpaceTimeState : public State {
 public:
 

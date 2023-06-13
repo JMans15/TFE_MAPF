@@ -5,8 +5,8 @@
 #ifndef TFE_MAPF_CONFLICTBASEDSEARCH_H
 #define TFE_MAPF_CONFLICTBASEDSEARCH_H
 
-#include "../../Problems/MultiAgentProblemWithConstraints.h"
-#include "../AStar/AStar.h"
+#include "../../Problems/MultiAgentProblem.h"
+#include "../AStar/GeneralAStar.h"
 #include "ConflictTreeNode.h"
 
 // Conflict Based Search
@@ -20,11 +20,14 @@
 // (DS is a technique designed to ensure that expanding a CT node N creates a disjoint partition of the space of solutions that satisfy the constraints of N. That is, every solution that satisfies the constraints of N is in exactly one of its children.)
 class ConflictBasedSearch {
 public:
-    ConflictBasedSearch(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT = true, bool disjointSplitting = false);
+    ConflictBasedSearch(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic, bool CAT = true, bool disjointSplitting = false);
     std::shared_ptr<Solution> solve();
 
+    ConflictBasedSearch(TypeOfHeuristic typeOfHeuristic, bool CAT = true, bool disjointSplitting = false);
+    std::shared_ptr<Solution> solve(std::shared_ptr<MultiAgentProblem> problem);
+
 protected:
-    std::shared_ptr<MultiAgentProblemWithConstraints> problem;
+    std::shared_ptr<MultiAgentProblem> problem;
     TypeOfHeuristic typeOfHeuristic;
     std::multiset<std::shared_ptr<ConflictTreeNode>, ConflictTreeNodeComparator> fringe; // the open list
     int numberOfVisitedNodes; // number of nodes for which we tested if the set of conflicts is empty or not

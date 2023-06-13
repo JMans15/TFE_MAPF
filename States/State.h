@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <vector>
 
 class State {
 public:

@@ -1,5 +1,5 @@
 //
-// Created by Arthur Mahy on 23/05/2023.
+// Created by Arthur Mahy on 11/06/2023.
 //
 
 #include "StandardMultiAgentState.h"
@@ -7,18 +7,13 @@
 #include <boost/functional/hash.hpp>
 #include <utility>
 
-StandardMultiAgentState::StandardMultiAgentState(std::vector<int> positions, int timestep, const std::vector<int>& cannotMove)
-        : positions(positions)
-        , timestep(timestep)
+StandardMultiAgentState::StandardMultiAgentState(std::vector<int> positions, const std::vector<int>& cannotMove)
+        : positions(std::move(positions))
         , cannotMove(cannotMove)
 {}
 
 const std::vector<int>& StandardMultiAgentState::getPositions() const {
     return positions;
-}
-
-int StandardMultiAgentState::getTimestep() const {
-    return timestep;
 }
 
 const std::vector<int>& StandardMultiAgentState::getCannotMove() const {

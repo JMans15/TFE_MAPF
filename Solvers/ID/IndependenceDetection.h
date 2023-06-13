@@ -13,11 +13,12 @@
 //
 // Only for multi agent problem
 //
-// typeOfHeuristic is the heuristic for the A* searches
 // If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to avoid planned paths (if possible with optimal cost)
-class IndependenceDetection : SimpleIndependenceDetection {
+// lowLevelSearch is the solver that will be used for the low-level searches
+template <class MultiAgentSolver>
+class IndependenceDetection : SimpleIndependenceDetection<MultiAgentSolver> {
 public:
-    IndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT = true);
+    IndependenceDetection(std::shared_ptr<MultiAgentProblem> problem, std::shared_ptr<MultiAgentSolver> lowLevelSearch, bool CAT = true);
     std::shared_ptr<Solution> solve();
 private:
     std::unordered_set<std::set<std::shared_ptr<Group>, PointerGroupEquality>, SetOfPointersHasher, SetOfPointersEquality> alreadyConflictedBefore;
@@ -27,6 +28,19 @@ private:
     // - avoiding the solution of groupB with an illegal move table
     // Returns true if success (false otherwise)
     bool replanGroupAAvoidingGroupB(const std::shared_ptr<Group>& groupA, const std::shared_ptr<Group>& groupB);
+
+    using SimpleIndependenceDetection<MultiAgentSolver>::problem;
+    using SimpleIndependenceDetection<MultiAgentSolver>::lowLevelSearch;
+    using SimpleIndependenceDetection<MultiAgentSolver>::CAT;
+    using SimpleIndependenceDetection<MultiAgentSolver>::numberOfResolvedConflicts;
+    using SimpleIndependenceDetection<MultiAgentSolver>::vertexConflictAvoidanceTable;
+    using SimpleIndependenceDetection<MultiAgentSolver>::edgeConflictAvoidanceTable;
+    using SimpleIndependenceDetection<MultiAgentSolver>::setOfConflicts;
+    using SimpleIndependenceDetection<MultiAgentSolver>::groups;
+    using SimpleIndependenceDetection<MultiAgentSolver>::planSingletonGroups;
+    using SimpleIndependenceDetection<MultiAgentSolver>::calculateSetOfConflicts;
+    using SimpleIndependenceDetection<MultiAgentSolver>::mergeGroupsAndPlanNewGroup;
+    using SimpleIndependenceDetection<MultiAgentSolver>::combineSolutions;
 };
 
 

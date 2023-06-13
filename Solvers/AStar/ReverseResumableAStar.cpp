@@ -4,9 +4,9 @@
 
 #include "ReverseResumableAStar.h"
 
-ReverseResumableAStar::ReverseResumableAStar(std::shared_ptr<SingleAgentProblem> problem) : problem(problem) {
+ReverseResumableAStar::ReverseResumableAStar(std::shared_ptr<SingleAgentAStarProblem> problem) : problem(problem) {
     LOG("===== Reverse Resumable A* Search ====");
-    heuristic = std::make_shared<ManhattanHeuristic<SingleAgentState>>(problem->getStart(), problem->getGraph()->getWidth());
+    heuristic = std::make_shared<ManhattanHeuristic<SingleAgentState>>(problem->getProblem()->getStart(), problem->getProblem()->getGraph()->getWidth());
     auto start = problem->getStartState();
     auto goal = problem->getGoalState();
     fringe.insert(std::make_shared<Node<SingleAgentState>>(goal, 0, heuristic->heuristicFunction(goal)));

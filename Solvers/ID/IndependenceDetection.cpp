@@ -4,14 +4,13 @@
 
 #include "IndependenceDetection.h"
 
-#include <utility>
+template<class MultiAgentSolver>
+IndependenceDetection<MultiAgentSolver>::IndependenceDetection(std::shared_ptr<MultiAgentProblem> problem, std::shared_ptr<MultiAgentSolver> lowLevelSearch, bool CAT)
+        : SimpleIndependenceDetection<MultiAgentSolver>(problem, lowLevelSearch, CAT)
+                {}
 
-IndependenceDetection::IndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT)
-        : SimpleIndependenceDetection(std::move(problem), typeOfHeuristic, CAT)
-{}
-
-
-bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Group>& groupA, const std::shared_ptr<Group>& groupB){
+template<class MultiAgentSolver>
+bool IndependenceDetection<MultiAgentSolver>::replanGroupAAvoidingGroupB(const std::shared_ptr<Group>& groupA, const std::shared_ptr<Group>& groupB){
     HardVertexConstraintsSet vertexIllegalTable = problem->getSetOfHardVertexConstraints();
     HardEdgeConstraintsSet edgeIllegalTable = problem->getSetOfHardEdgeConstraints();
     for (auto a : groupB->getSolution()->getPositions()){
@@ -37,11 +36,11 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Gro
     }
     std::shared_ptr<Solution> solution;
     if (groupA->getAgents().size()==1){
-        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), starts[0], targets[0], problem->getObjFunction(), agentIds[0], vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost(), vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-        solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
+        auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), starts[0], targets[0], problem->getObjFunction(), agentIds[0], vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost(), vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+        solution = GeneralAStar(prob, OptimalDistance).solve();
     } else {
-        auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost(), vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-        solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
+        auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost(), vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+        solution = lowLevelSearch->solve(prob);
     }
     if (solution->getFoundPath()) {
         groupA->putSolution(solution);
@@ -129,7 +128,8 @@ bool IndependenceDetection::replanGroupAAvoidingGroupB(const std::shared_ptr<Gro
     return false;
 }
 
-std::shared_ptr<Solution> IndependenceDetection::solve() {
+template<class MultiAgentSolver>
+std::shared_ptr<Solution> IndependenceDetection<MultiAgentSolver>::solve() {
 
     LOG("===== Independent Detection Search (with set of conflicts) ====");
 
@@ -201,6 +201,7 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
                 return std::make_shared<Solution>();
             }
         }
+        numberOfResolvedConflicts += 1;
 
         /*std::cout << "The groups are the following:" << std::endl;
         for (auto group : groups){
@@ -214,3 +215,6 @@ std::shared_ptr<Solution> IndependenceDetection::solve() {
     return combineSolutions();
 
 }
+
+template class IndependenceDetection<GeneralAStar>;
+template class IndependenceDetection<ConflictBasedSearch>;

@@ -4,15 +4,11 @@
 
 #include "Solvers/AStar/AStar.h"
 #include "Solvers/CooperativeAStar.h"
-#include "Problems/MultiAgentProblemWithConstraints.h"
-#include "Problems/StandardMultiAgentProblemWithConstraints.h"
+#include "Problems/MultiAgentProblem.h"
 #include "GraphParser/Parser.h"
 #include "Solvers/AStar/ReverseResumableAStar.h"
 #include "Problems/SingleAgentProblem.h"
-#include "Problems/SingleAgentProblemWithConstraints.h"
-#include "Solvers/ID/OldSimpleIndependenceDetection.h"
 #include "Solvers/ID/SimpleIndependenceDetection.h"
-#include "Solvers/ID/OldIndependenceDetection.h"
 #include "Solvers/ID/IndependenceDetection.h"
 #include "Solvers/CBS/ConflictBasedSearch.h"
 
@@ -46,7 +42,7 @@ int main() {
     int start = 7;
     int target = 17;
     auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
-    auto solution = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan).solve();
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     // cost = 18, numberOfVisitedStates = 25
     solution->print();*/
 
@@ -54,13 +50,13 @@ int main() {
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     int start = 1;
     int target = 256*200-100;
-    timer.tick();
-    auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
-    auto solution = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan).solve();
-    timer.tack();
+    //timer.tick();
+    auto problem = std::make_shared<SingleAgentAStarProblem>(std::make_shared<SingleAgentProblem>(g, start, target));
+    auto solution = GeneralAStar(problem, Manhattan).solve();
+    //timer.tack();
     // cost = 354
     solution->print();
-    timer.print();*/
+    //timer.print();*/
 
     // TEST 3 : 2 agents can't be at the same vertex at the same time
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
@@ -70,8 +66,8 @@ int main() {
     vector<int> targets;
     targets.push_back(6);
     targets.push_back(1);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
-    auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     // makespan cost = 3, fuel cost = 4,  sumofcosts cost = 5
     solution->print();*/
 
@@ -83,8 +79,8 @@ int main() {
     vector<int> targets;
     targets.push_back(3);
     targets.push_back(0);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     // makespan cost = 5, fuel cost = 8,  sumofcosts cost = 8
     solution->print();*/
 
@@ -96,41 +92,41 @@ int main() {
     vector<int> targets;
     targets.push_back(17);
     targets.push_back(20);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
-    auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
     solution->print();*/
 
-    // TEST 6 : 1 agent and a hard vertex constraint : agent 0 cannot be at postion 5 at time 1
+    // TEST 6 : 1 agent and a hard vertex constraint : agent 0 cannot be at position 5 at time 1
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{{0,5,1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet{{0,5,1}});
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
-    // TEST 6 BIS : 1 agent and a hard edge constraint : agent 0 cannot go from postion 4 to position 5 from time 0 to time 1
+    // TEST 6 BIS : 1 agent and a hard edge constraint : agent 0 cannot go from position 4 to position 5 from time 0 to time 1
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{0, 4, 5, 1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet{{1, 4, 5, 1}});
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
     // TEST 7 : 1 agent and a soft vertex constraint : agent 1 is at position 5 at time 1, agent 0 will thus try to avoid this position-time point.
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 1;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
     // TEST 7 BIS : 1 agent and a soft edge constraint : agent 1 is occupying the edge (1,5) between time 0 and time 1, agent 0 will thus try to avoid this edge at this timestep.
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 1;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan, 0, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
-    auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
+    auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
     // TEST 8 : Reverse Resumable A*
@@ -156,9 +152,9 @@ int main() {
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     int start = 7;
     int target = 17;
-    auto problem = std::make_shared<SingleAgentProblemWithConstraints>(g, start, target, Makespan);
-    auto solution1 = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, Manhattan).solve();
-    auto solution2 = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan);
+    auto solution1 = GeneralAStar(problem, Manhattan, true).solve();
+    auto solution2 = GeneralAStar(problem, OptimalDistance, true).solve();
     // makespan cost = 18, fuel cost = 18
     solution1->print(); // numberOfVisitedStates = 177
     solution2->print(); // numberOfVisitedStates = 19*/
@@ -171,11 +167,11 @@ int main() {
     vector<int> targets;
     targets.push_back(7);
     targets.push_back(6);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
     auto solution1 = CooperativeAStar(problem, Manhattan).solve();
     auto solution2 = CooperativeAStar(problem, OptimalDistance).solve();
-    solution1->print(); // numberOfVisitedStates = 389
-    solution2->print(); // numberOfVisitedStates = 142*/
+    solution1->print();
+    solution2->print();*/
 
     // TEST 11 : 2 agents and comparaison between Manhattan and OptimalDistance
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
@@ -185,9 +181,9 @@ int main() {
     vector<int> targets;
     targets.push_back(17);
     targets.push_back(20);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
-    auto solution2 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto solution1 = GeneralAStar(problem, Manhattan).solve();
+    auto solution2 = GeneralAStar(problem, OptimalDistance).solve();
     solution1->print(); // numberOfVisitedStates = 17
     solution2->print(); // numberOfVisitedStates = 17*/
 
@@ -199,11 +195,11 @@ int main() {
     std::vector<int> targets;
     targets.push_back(150);
     targets.push_back(1);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, Manhattan).solve();
-    solution1->print(); // numberOfVisitedStates = 690412
-    auto solution2 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
-    solution2->print(); // numberOfVisitedStates = 331*/
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto solution1 = GeneralAStar(problem, Manhattan).solve();
+    solution1->print(); // numberOfVisitedStates = 690412 (Space), numberOfVisitedStates = 2993934 (SpaceTime)
+    auto solution2 = GeneralAStar(problem, OptimalDistance).solve();
+    solution2->print(); // numberOfVisitedStates = 331 (SpaceTime and Space)*/
 
     // TEST 13 : Small simple independence detection test
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
@@ -215,9 +211,10 @@ int main() {
     targets.push_back(21);
     targets.push_back(5);
     targets.push_back(4);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{1,3,4});
-    auto solution = SimpleIndependenceDetection(problem, OptimalDistance).solve();
-    auto solution2 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{1,3,4});
+    auto search = std::make_shared<GeneralAStar>(OptimalDistance, true, true);
+    auto solution = SimpleIndependenceDetection(problem, search).solve();
+    auto solution2 = GeneralAStar(problem, OptimalDistance).solve();
     solution->print();
     solution2->print();*/
 
@@ -229,15 +226,16 @@ int main() {
     std::vector<int> targets;
     targets.push_back(150);
     targets.push_back(1);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan, std::vector<int>{5,10});
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan, std::vector<int>{5,10});
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
-    auto solution1 = SimpleIndependenceDetection(problem, OptimalDistance).solve();
+    auto search = std::make_shared<GeneralAStar>(OptimalDistance, true, true);
+    auto solution1 = SimpleIndependenceDetection<GeneralAStar>(problem, search).solve();
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end - start;
     std::cout << elapsed_seconds.count() << std::endl;
     start = std::chrono::system_clock::now();
-    auto solution2 = AStar<MultiAgentProblemWithConstraints,MultiAgentState>(problem, OptimalDistance).solve();
+    auto solution2 = GeneralAStar(problem, OptimalDistance).solve();
     end = std::chrono::system_clock::now();
     elapsed_seconds = end - start;
     std::cout << elapsed_seconds.count() << std::endl;
@@ -249,10 +247,10 @@ int main() {
     int start = 1;
     int target = 256*200-100;
     auto problem1 = std::make_shared<SingleAgentProblem>(g, start, target, 0, 354);
-    auto solution1 = AStar<SingleAgentProblem, SingleAgentState>(problem1, Manhattan).solve();
+    auto solution1 = GeneralAStar(problem1, Manhattan).solve();
     solution1->print(); // foundPath = true
     auto problem2 = std::make_shared<SingleAgentProblem>(g, start, target, 0, 353);
-    auto solution2 = AStar<SingleAgentProblem, SingleAgentState>(problem2, Manhattan).solve();
+    auto solution2 = GeneralAStar(problem2, Manhattan).solve();
     solution2->print(); // foundPath = false*/
 
     // TEST 16 : Small independence detection test
@@ -265,10 +263,11 @@ int main() {
     targets.push_back(21);
     targets.push_back(11);
     targets.push_back(5);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
-    auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
+    auto solution = GeneralAStar(problem, OptimalDistance).solve();
     solution->print();
-    auto solution2 = IndependenceDetection(problem, OptimalDistance).solve();
+    auto search = std::make_shared<ConflictBasedSearch>(OptimalDistance, true, true);
+    auto solution2 = IndependenceDetection<ConflictBasedSearch>(problem, search, true).solve();
     solution2->print();*/
 
     // TEST 15 : Conflict Based Search
@@ -281,8 +280,8 @@ int main() {
     targets.push_back(21);
     targets.push_back(11);
     targets.push_back(5);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts, vector<int>{3,4,5});
+    auto solution1 = GeneralAStar(problem, OptimalDistance).solve();
     solution1->print();
     auto solution2 = ConflictBasedSearch(problem, Manhattan).solve();
     solution2->print();*/
@@ -295,15 +294,16 @@ int main() {
     vector<int> targets;
     targets.push_back(7);
     targets.push_back(6);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
     std::chrono::time_point<std::chrono::system_clock> start, end;
     start = std::chrono::system_clock::now();
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto solution1 = GeneralAStar(problem, OptimalDistance).solve();
     solution1->print();
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds1 = end - start;
     start = std::chrono::system_clock::now();
-    auto solution2 = IndependenceDetection(problem, OptimalDistance).solve();
+    auto search = std::make_shared<GeneralAStar>(OptimalDistance, true, true);
+    auto solution2 = IndependenceDetection(problem, search).solve();
     solution2->print();
     end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds2 = end - start;
@@ -323,9 +323,9 @@ int main() {
     vector<int> targets;
     targets.push_back(26);
     targets.push_back(20);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
-    auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto solution1 = GeneralAStar(problem, OptimalDistance).solve();
+    auto solution2 = ConflictBasedSearch(problem, OptimalDistance, false).solve();
     solution1->print();
     solution2->print();*/
 
@@ -343,99 +343,99 @@ int main() {
     targets.push_back(95*w+174);
     targets.push_back(27*w+56);
     targets.push_back(36*w+236);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution1 = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto solution1 = GeneralAStar(problem, OptimalDistance).solve();
     auto solution2 = ConflictBasedSearch(problem, OptimalDistance).solve();
     solution1->print();
     solution2->print();*/
 
     // TEST 15 : maxCost in a Cooperative A*
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
-    auto problem1 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem1 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution1 = CooperativeAStar(problem1, Manhattan).solve();
     std::cout << solution1->getFoundPath() << std::endl; // foundPath = true
-    auto problem2 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 353);
+    auto problem2 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 353);
     auto solution2 = CooperativeAStar(problem2, Manhattan).solve();
     std::cout << solution2->getFoundPath() << std::endl; // foundPath = false
-    auto problem3 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 355);
+    auto problem3 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 355);
     auto solution3 = CooperativeAStar(problem3, Manhattan).solve();
     std::cout << solution3->getFoundPath() << std::endl; // foundPath = true
-    auto problem4 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem4 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution4 = CooperativeAStar(problem4, Manhattan).solve();
     std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
 
     // TEST 15 : maxCost in SID
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
-    auto problem1 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem1 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution1 = SimpleIndependenceDetection(problem1, Manhattan).solve();
     std::cout << solution1->getFoundPath() << std::endl; // foundPath = true
-    auto problem2 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 353);
+    auto problem2 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 353);
     auto solution2 = SimpleIndependenceDetection(problem2, Manhattan).solve();
     std::cout << solution2->getFoundPath() << std::endl; // foundPath = false
-    auto problem3 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 355);
+    auto problem3 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 355);
     auto solution3 = SimpleIndependenceDetection(problem3, Manhattan).solve();
     std::cout << solution3->getFoundPath() << std::endl; // foundPath = true
-    auto problem4 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem4 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution4 = SimpleIndependenceDetection(problem4, Manhattan).solve();
     std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
 
     // TEST 15 : maxCost in OldSID
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
-    auto problem1 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem1 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution1 = OldSimpleIndependenceDetection(problem1, Manhattan).solve();
     std::cout << solution1->getFoundPath() << std::endl; // foundPath = true
-    auto problem2 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 353);
+    auto problem2 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 353);
     auto solution2 = OldSimpleIndependenceDetection(problem2, Manhattan).solve();
     std::cout << solution2->getFoundPath() << std::endl; // foundPath = false
-    auto problem3 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 355);
+    auto problem3 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 355);
     auto solution3 = OldSimpleIndependenceDetection(problem3, Manhattan).solve();
     std::cout << solution3->getFoundPath() << std::endl; // foundPath = true
-    auto problem4 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem4 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution4 = OldSimpleIndependenceDetection(problem4, Manhattan).solve();
     std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
 
     // TEST 15 : maxCost in ID
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
-    auto problem1 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem1 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution1 = IndependenceDetection(problem1, Manhattan).solve();
     std::cout << solution1->getFoundPath() << std::endl; // foundPath = true
-    auto problem2 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 353);
+    auto problem2 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 353);
     auto solution2 = IndependenceDetection(problem2, Manhattan).solve();
     std::cout << solution2->getFoundPath() << std::endl; // foundPath = false
-    auto problem3 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 355);
+    auto problem3 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 355);
     auto solution3 = IndependenceDetection(problem3, Manhattan).solve();
     std::cout << solution3->getFoundPath() << std::endl; // foundPath = true
-    auto problem4 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem4 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution4 = IndependenceDetection(problem4, Manhattan).solve();
     std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
 
     // TEST 15 : maxCost in OldID
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
-    auto problem1 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem1 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution1 = OldIndependenceDetection(problem1, Manhattan).solve();
     std::cout << solution1->getFoundPath() << std::endl; // foundPath = true
-    auto problem2 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 353);
+    auto problem2 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 353);
     auto solution2 = OldIndependenceDetection(problem2, Manhattan).solve();
     std::cout << solution2->getFoundPath() << std::endl; // foundPath = false
-    auto problem3 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 355);
+    auto problem3 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 355);
     auto solution3 = OldIndependenceDetection(problem3, Manhattan).solve();
     std::cout << solution3->getFoundPath() << std::endl; // foundPath = true
-    auto problem4 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem4 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution4 = OldIndependenceDetection(problem4, Manhattan).solve();
     std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
 
     // TEST 15 : maxCost in CBS
     /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
-    auto problem1 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem1 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution1 = ConflictBasedSearch(problem1, Manhattan).solve();
     std::cout << solution1->getFoundPath() << std::endl; // foundPath = true
-    auto problem2 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 353);
+    auto problem2 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, Makespan, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 353);
     auto solution2 = ConflictBasedSearch(problem2, Manhattan).solve();
     std::cout << solution2->getFoundPath() << std::endl; // foundPath = false
-    auto problem3 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 355);
+    auto problem3 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 355);
     auto solution3 = ConflictBasedSearch(problem3, Manhattan).solve();
     std::cout << solution3->getFoundPath() << std::endl; // foundPath = true
-    auto problem4 = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, 354);
+    auto problem4 = std::make_shared<MultiAgentProblem>(g, vector<int>{1,2}, vector<int>{256*200-100,1}, SumOfCosts, vector<int>{0,1}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), 354);
     auto solution4 = ConflictBasedSearch(problem4, Manhattan).solve();
     std::cout << solution4->getFoundPath() << std::endl; // foundPath = false*/
 
@@ -447,8 +447,8 @@ int main() {
     vector<int> targets;
     targets.push_back(6);
     targets.push_back(1);
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto solution = GeneralAStar(problem, Manhattan, false, false).solve();
     // makespan cost = 3, fuel cost = 4,  sumofcosts cost = 5
     solution->print();*/
 
@@ -460,8 +460,8 @@ int main() {
     vector<int> targets;
     targets.push_back(3);
     targets.push_back(0);
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
-    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
+    auto solution = GeneralAStar(problem, Manhattan, false, false).solve();
     // makespan cost = 5, fuel cost = 8,  sumofcosts cost = 8
     solution->print();*/
 
@@ -473,46 +473,46 @@ int main() {
     vector<int> targets;
     targets.push_back(17);
     targets.push_back(20);
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
-    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
+    auto solution = GeneralAStar(problem, Manhattan, false, false).solve();
     // makespan cost = 7, fuel cost = 10,  sumofcosts cost = 10
     solution->print();*/
 
     // TEST X : StandardMultiAgent and a hard vertex constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{4}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{{0,5,1}});
-    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{4}, vector<int>{6}, Makespan, vector<int>{0}, HardVertexConstraintsSet{{0,5,1}});
+    auto solution = GeneralAStar(problem, Manhattan, true, false).solve();
     solution->print();*/
 
     // TEST X : StandardMultiAgent and a hard edge constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{4}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{{0, 4, 5, 1}});
-    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{4}, vector<int>{6}, Fuel, vector<int>{0}, HardVertexConstraintsSet(), HardEdgeConstraintsSet{{0, 4, 5, 1}});
+    auto solution = GeneralAStar(problem, Manhattan, true, false).solve();
     solution->print();*/
 
     // TEST X : StandardMultiAgent and a soft vertex constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
-    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
+    auto solution = GeneralAStar(problem, Manhattan, true, false).solve();
     solution->print();*/
 
     // TEST X : StandardMultiAgent and a soft edge constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, std::set<VertexConstraint>{}, std::set<EdgeConstraint>{}, INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
-    auto solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, Manhattan).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
+    auto solution = GeneralAStar(problem, Manhattan, true, false).solve();
     solution->print();*/
 
     // TEST X : Disjoint splitting conflict based search
     /*auto g = Parser::parse("../mapf-map/empty-5-5.map");
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{5, 1}, vector<int>{9, 13}, Fuel);
+    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{5, 1}, vector<int>{9, 13}, Fuel);
     auto solution = ConflictBasedSearch(problem, Manhattan, false, true).solve();
     solution->print();*/
 
     // TEST X : CBS vs Disjoint Splitting CBS
     // Disjoint Splitting doesn't work here with Fuel cost, don't know why
     /*auto g = Parser::parse("../mapf-map/corridor.map");
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, vector<int>{0, 14}, vector<int>{4, 10}, Makespan);
-    auto solution = ConflictBasedSearch(problem, OptimalDistance,false, false).solve(); // numberOfVisitedNodes=252
+    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{0, 14}, vector<int>{4, 10}, Makespan);
+    auto solution = ConflictBasedSearch(problem, OptimalDistance, false, false).solve(); // numberOfVisitedNodes=252
     solution->print();
     auto solution2 = ConflictBasedSearch(problem, OptimalDistance, false, true).solve(); // numberOfVisitedNodes=120
     solution2->print();*/
@@ -556,7 +556,7 @@ int main() {
     std::cout << t2 << std::endl;
     std::cout << position2 << std::endl;*/
 
-    /*auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     vector<int> starts;
     int w = 256;
     starts.push_back(31+w*131);
@@ -596,7 +596,8 @@ int main() {
     targets.push_back(174+w*155);
     targets.push_back(199+w*252);
     targets.push_back(177+w*180);
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, Makespan);
-    auto solution2 = ConflictBasedSearch(problem, OptimalDistance, false, true).solve();
-    solution2->print();*/
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
+    auto search = std::make_shared<GeneralAStar>(OptimalDistance);
+    auto solution2 = SimpleIndependenceDetection(problem, search, true).solve();
+    solution2->print();
 }

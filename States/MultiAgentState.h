@@ -1,5 +1,5 @@
 //
-// Created by Arthur Mahy on 18/01/2023.
+// Created by Arthur Mahy on 08/06/2023.
 //
 
 #ifndef TFE_MAPF_MULTIAGENTSTATE_H
@@ -7,26 +7,22 @@
 
 #include "State.h"
 
-#include <vector>
-
 class MultiAgentState : public State {
 public:
 
-    MultiAgentState(std::vector<int> positions, std::vector<int> prePositions, int timestep, int agentToAssign, bool standard, const std::vector<int>& cannotMove = std::vector<int>());
-    
+    MultiAgentState(std::vector<int> positions, std::vector<int> prePositions, int agentToAssign, bool standard, const std::vector<int>& cannotMove = std::vector<int>());
+
     const std::size_t getHash() const override;
     const bool isEqual(const MultiAgentState &other) const;
 
     const std::vector<int>& getPositions() const;
     const std::vector<int>& getPrePositions() const;
     int getAgentToAssign() const;
-    int getTimestep() const;
     bool isStandard() const;
-    void makeStandard();
     const std::vector<int>& getCannotMove() const;
     bool canMove(int agent);
 
-private:
+protected:
 
     // The positions of every agent in this state.
     // positions[:agentToAssign] are the assigned positions.
@@ -34,9 +30,6 @@ private:
     // positions[agentToAssign] is not yet assigned but will be in the successor state.
     std::vector<int> positions;
     int agentToAssign;
-
-    // Number of timesteps since the agents started
-    int timestep;
 
     // A state is standard or regular when all agents have been assigned.
     // When a state is not standard, it is intermediate. (Operator Decomposition)

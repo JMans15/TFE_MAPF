@@ -7,7 +7,7 @@
 
 #include "../../Heuristics/HeuristicManhattan.h"
 #include "Node.h"
-#include "../../Problems/SingleAgentProblem.h"
+#include "../../AStarProblems/SingleAgentAStarProblem.h"
 
 #include <queue>
 #include <unordered_map>
@@ -24,7 +24,7 @@ class Heuristic;
 // We don't take into account the maxCost attribute of problem
 class ReverseResumableAStar {
 public:
-    explicit ReverseResumableAStar(std::shared_ptr<SingleAgentProblem> problem);
+    explicit ReverseResumableAStar(std::shared_ptr<SingleAgentAStarProblem> problem);
 
     // Continues the search from target to start until state is met
     // Returns the optimal cost between goal state and state
@@ -36,7 +36,7 @@ public:
     std::unordered_map<std::shared_ptr<SingleAgentState>, int, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> getDistance();
 
 private:
-    std::shared_ptr<SingleAgentProblem> problem;
+    std::shared_ptr<SingleAgentAStarProblem> problem;
     std::shared_ptr<Heuristic<SingleAgentState>> heuristic;
     std::multiset<std::shared_ptr<Node<SingleAgentState>>, NodeComparator<SingleAgentState>> fringe;
     std::unordered_map<std::shared_ptr<SingleAgentState>, int, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> distance;

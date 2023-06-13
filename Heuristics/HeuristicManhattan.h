@@ -5,17 +5,12 @@
 #ifndef TFE_MAPF_HEURISTICMANHATTAN_H
 #define TFE_MAPF_HEURISTICMANHATTAN_H
 
-#include "../GraphParser/Graph.h"
-#include "../Problems/MultiAgentProblemWithConstraints.h"
-#include "../States/MultiAgentState.h"
-#include "../States/StandardMultiAgentState.h"
-#include "../Problems/StandardMultiAgentProblemWithConstraints.h"
-#include "../Solvers/AStar/ReverseResumableAStar.h"
-#include "../Problems/SingleAgentProblem.h"
-#include "../States/SingleAgentState.h"
-#include "../Problems/SingleAgentProblemWithConstraints.h"
-#include "../States/SingleAgentSpaceTimeState.h"
-#include "../States/State.h"
+#include "../AStarProblems/SingleAgentAStarProblem.h"
+#include "../AStarProblems/SingleAgentAStarProblemWithConstraints.h"
+#include "../AStarProblems/ODMultiAgentAStarProblem.h"
+#include "../AStarProblems/ODMultiAgentAStarProblemWithConstraints.h"
+#include "../AStarProblems/StandardMultiAgentAStarProblem.h"
+#include "../AStarProblems/StandardMultiAgentAStarProblemWithConstraints.h"
 
 #include <memory>
 

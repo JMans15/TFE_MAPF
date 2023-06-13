@@ -1,5 +1,5 @@
 //
-// Created by Arthur Mahy on 18/01/2023.
+// Created by Arthur Mahy on 08/06/2023.
 //
 
 #include "MultiAgentState.h"
@@ -7,12 +7,11 @@
 #include <boost/functional/hash.hpp>
 #include <utility>
 
-MultiAgentState::MultiAgentState(std::vector<int> positions, std::vector<int> prePositions_, int timestep, int agentToAssign, bool standard, const std::vector<int>& cannotMove)
-    : positions(positions)
-    , timestep(timestep)
-    , agentToAssign(agentToAssign)
-    , standard(standard)
-    , cannotMove(cannotMove)
+MultiAgentState::MultiAgentState(std::vector<int> positions, std::vector<int> prePositions_, int agentToAssign, bool standard, const std::vector<int>& cannotMove)
+        : positions(positions)
+        , agentToAssign(agentToAssign)
+        , standard(standard)
+        , cannotMove(cannotMove)
 {
     if (standard) {
         prePositions = positions;
@@ -33,16 +32,8 @@ int MultiAgentState::getAgentToAssign() const {
     return agentToAssign;
 }
 
-int MultiAgentState::getTimestep() const {
-    return timestep;
-}
-
 bool MultiAgentState::isStandard() const {
     return standard;
-}
-
-void MultiAgentState::makeStandard() {
-    standard = true;
 }
 
 const std::vector<int>& MultiAgentState::getCannotMove() const {

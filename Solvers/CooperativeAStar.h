@@ -7,9 +7,9 @@
 
 #include <utility>
 
-#include "AStar/AStar.h"
-#include "../Problems/MultiAgentProblemWithConstraints.h"
-#include "../Problems/SingleAgentProblemWithConstraints.h"
+#include "AStar/GeneralAStar.h"
+#include "../Problems/MultiAgentProblem.h"
+#include "../Problems/SingleAgentProblem.h"
 
 // Cooperative A* search - not optimal
 // Only for multi agent problem
@@ -27,7 +27,7 @@
 // Could be improved with WINDOWED Hierarchical Cooperative A*)
 class CooperativeAStar {
 public:
-    CooperativeAStar(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic)
+    CooperativeAStar(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic)
             : problem(std::move(problem))
             , typeOfHeuristic(typeOfHeuristic)
     {}
@@ -57,8 +57,8 @@ public:
         for (int a = 0; a < problem->getNumberOfAgents(); a++){
 
             // Single agent A* search for agent a
-            auto singleAgentProblem = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], problem->getObjFunction(), problem->getAgentIds()[a], verticesReservationTable, edgesReservationTable, maxCost, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
-            auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(singleAgentProblem, typeOfHeuristic).solve();
+            auto singleAgentProblem = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStarts()[a], problem->getTargets()[a], problem->getObjFunction(), problem->getAgentIds()[a], verticesReservationTable, edgesReservationTable, maxCost, problem->getSetOfSoftVertexConstraints(), problem->getSetOfSoftEdgeConstraints());
+            auto solution = GeneralAStar(singleAgentProblem, typeOfHeuristic).solve();
 
             if (solution->getFoundPath()) {
                 auto pathOfAgent = solution->getPathOfAgent(problem->getAgentIds()[a]);
@@ -89,10 +89,10 @@ public:
                 positions[agentId].emplace_back(problem->getTargetOf(agentId));
             }
         }
-        return std::make_shared<Solution>(numberOfTimesteps, positions);
+        return std::make_shared<Solution>(numberOfTimesteps, positions,0,0);
     }
 private:
-    std::shared_ptr<MultiAgentProblemWithConstraints> problem;
+    std::shared_ptr<MultiAgentProblem> problem;
     TypeOfHeuristic typeOfHeuristic;
 };
 

@@ -7,6 +7,7 @@
 
 #include <boost/functional/hash.hpp>
 #include <utility>
+#include "../../Solution/Solution.h"
 
 class Group {
 public:

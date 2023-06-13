@@ -6,17 +6,22 @@
 #include <unordered_map>
 #include <utility>
 
-SimpleIndependenceDetection::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblemWithConstraints> problem, TypeOfHeuristic typeOfHeuristic, bool CAT)
-        : problem(std::move(problem))
-        , typeOfHeuristic(typeOfHeuristic)
-        , CAT(CAT)
-{}
+template<class MultiAgentSolver>
+SimpleIndependenceDetection<MultiAgentSolver>::SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblem> problem,
+                                                                 std::shared_ptr<MultiAgentSolver> lowLevelSearch, bool CAT)
+                                                                 : problem(std::move(problem))
+                                                                 , CAT(CAT)
+                                                                 , lowLevelSearch(lowLevelSearch)
+                                                                 , numberOfResolvedConflicts(0)
+                                                                 , sizeOfLargerGroup(1)
+                                                                 {}
 
-bool SimpleIndependenceDetection::planSingletonGroups() {
+template<class MultiAgentSolver>
+bool SimpleIndependenceDetection<MultiAgentSolver>::planSingletonGroups() {
     for (const std::shared_ptr<Group>& group : groups){
         int agentId = *group->getAgents().begin();
-        auto prob = std::make_shared<SingleAgentProblemWithConstraints>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-        auto solution = AStar<SingleAgentProblemWithConstraints, SingleAgentSpaceTimeState>(prob, typeOfHeuristic).solve();
+        auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+        auto solution = GeneralAStar(prob, OptimalDistance).solve();
         if (not solution->getFoundPath()){
             return false;
         }
@@ -35,7 +40,8 @@ bool SimpleIndependenceDetection::planSingletonGroups() {
     return true;
 }
 
-void SimpleIndependenceDetection::calculateSetOfConflicts() {
+template<class MultiAgentSolver>
+void SimpleIndependenceDetection<MultiAgentSolver>::calculateSetOfConflicts() {
     for (const auto& groupA : groups){
         for (const auto& groupB : groups){
             if (*groupA!=*groupB){
@@ -70,7 +76,8 @@ void SimpleIndependenceDetection::calculateSetOfConflicts() {
     }
 }
 
-bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB) {
+template<class MultiAgentSolver>
+bool SimpleIndependenceDetection<MultiAgentSolver>::mergeGroupsAndPlanNewGroup(std::shared_ptr<Group> groupA, std::shared_ptr<Group> groupB) {
     groups.erase(groupA);
     groups.erase(groupB);
     std::set<int> agents(groupA->getAgents());
@@ -106,8 +113,8 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
             }
         }
     }
-    auto prob = std::make_shared<MultiAgentProblemWithConstraints>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-    auto solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(prob, typeOfHeuristic).solve();
+    auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
+    auto solution = lowLevelSearch->solve(prob);
     if (not solution->getFoundPath()){
         return false;
     }
@@ -179,7 +186,8 @@ bool SimpleIndependenceDetection::mergeGroupsAndPlanNewGroup(std::shared_ptr<Gro
     return true;
 }
 
-std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
+template<class MultiAgentSolver>
+std::shared_ptr<Solution> SimpleIndependenceDetection<MultiAgentSolver>::combineSolutions() {
     int numberOfTimesteps = 0;
     for (const std::shared_ptr<Group>& group : groups){
         for (int agent : group->getAgents()){
@@ -196,7 +204,10 @@ std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
             positions[agentId] = group->getSolution()->getPathOfAgent(agentId);
         }
     }
-    auto solution = std::make_shared<Solution>(numberOfTimesteps, positions);
+    for (const auto& group : groups){
+        sizeOfLargerGroup = std::max(sizeOfLargerGroup, (int)group->getAgents().size());
+    }
+    auto solution = std::make_shared<Solution>(numberOfTimesteps, positions, numberOfResolvedConflicts, sizeOfLargerGroup);
     if (problem->getMaxCost()!=INT_MAX){
         if (problem->getObjFunction()==Makespan){
             if (solution->getMakespanCost()>problem->getMaxCost()){
@@ -215,7 +226,8 @@ std::shared_ptr<Solution> SimpleIndependenceDetection::combineSolutions() {
     return solution;
 }
 
-std::shared_ptr<Solution> SimpleIndependenceDetection::solve() {
+template<class MultiAgentSolver>
+std::shared_ptr<Solution> SimpleIndependenceDetection<MultiAgentSolver>::solve() {
 
     LOG("===== Simple Independent Detection Search (with set of conflicts) ====");
 
@@ -240,7 +252,11 @@ std::shared_ptr<Solution> SimpleIndependenceDetection::solve() {
         if (not mergeGroupsAndPlanNewGroup(conflict->getGroupA(), conflict->getGroupB())){
             return std::make_shared<Solution>();
         }
+        numberOfResolvedConflicts += 1;
     }
     return combineSolutions();
 
 }
+
+template class SimpleIndependenceDetection<GeneralAStar>;
+template class SimpleIndependenceDetection<ConflictBasedSearch>;

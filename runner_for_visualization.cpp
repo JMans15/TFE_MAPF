@@ -5,7 +5,7 @@
 #include "Solvers/AStar/AStar.h"
 #include "Solvers/ID/SimpleIndependenceDetection.h"
 #include "Solvers/ID/IndependenceDetection.h"
-#include "Problems/MultiAgentProblemWithConstraints.h"
+#include "Problems/MultiAgentProblem.h"
 #include "GraphParser/Parser.h"
 #include "Problems/SingleAgentProblem.h"
 #include "Solution/Solution.h"
@@ -146,7 +146,7 @@ int main(int argc, const char** argv) {
             }
         }
 
-        auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, SumOfCosts);
+        auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
         if (result.count("sid")) {
             auto solver = SimpleIndependenceDetection(problem, OptimalDistance);
             solution = solver.solve();
@@ -156,7 +156,7 @@ int main(int argc, const char** argv) {
             solution = solver.solve();
         }
         else {
-            auto solver = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, OptimalDistance);
+            auto solver = GeneralAStar(problem, OptimalDistance);
             solution = solver.solve();
         }
     } else {
@@ -166,7 +166,7 @@ int main(int argc, const char** argv) {
 
         // Solving and printing problem
         auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
-        auto aStar = AStar<SingleAgentProblem, SingleAgentState>(problem, Manhattan);
+        auto aStar = GeneralAStar(problem, Manhattan);
         solution = aStar.solve();
     }
 

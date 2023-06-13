@@ -20,7 +20,7 @@
 #include "Solvers/ID/IndependenceDetection.h"
 #include "Solvers/CBS/ConflictBasedSearch.h"
 #include "Solvers/CooperativeAStar.h"
-#include "Problems/MultiAgentProblemWithConstraints.h"
+#include "Problems/MultiAgentProblem.h"
 #include "GraphParser/Parser.h"
 #include "Problems/SingleAgentProblem.h"
 #include "Solution/Solution.h"
@@ -58,7 +58,11 @@ int main(int argc, const char** argv) {
         SIDCAT,
         DSCBS,
         StandardAStar,
-        EID
+        EID,
+        SIDAStar,
+        SIDCBS,
+        SIDCATAStar,
+        SIDCATCBS
     };
 
     std::map<string, Algo> mAlgo({
@@ -72,7 +76,11 @@ int main(int argc, const char** argv) {
         {"SIDCAT", SIDCAT},
         {"DSCBS", DSCBS},
         {"StandardAStar", StandardAStar},
-        {"EID", EID}
+        {"EID", EID},
+        {"SIDAStar", SIDAStar},
+        {"SIDCBS", SIDCBS},
+        {"SIDCATAStar", SIDCATAStar},
+        {"SIDCATCBS", SIDCATCBS}
     });
 
     if (mAlgo.count(result["algo"].as<string>())==0) {
@@ -177,14 +185,16 @@ int main(int argc, const char** argv) {
         }
     }
 
-    auto problem = std::make_shared<MultiAgentProblemWithConstraints>(g, starts, targets, objective);
+    auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, objective);
+    auto astarsearch = std::make_shared<GeneralAStar>(heuristic);
+    auto cbssearch = std::make_shared<ConflictBasedSearch>(heuristic, false, false);
 
     switch (algo) {
         case ASTAR:
-            solution = AStar<MultiAgentProblemWithConstraints, MultiAgentState>(problem, heuristic).solve();
+            solution = GeneralAStar(heuristic).solve(problem);
             break;
         case CBS:
-            solution = ConflictBasedSearch(problem, heuristic, false).solve();
+            solution = ConflictBasedSearch(heuristic, false, false).solve(problem);
             break;
         case CBSCAT:
             solution = ConflictBasedSearch(problem, heuristic, true).solve();
@@ -193,26 +203,37 @@ int main(int argc, const char** argv) {
             solution = CooperativeAStar(problem, heuristic).solve();
             break;
         case ID:
-            solution = IndependenceDetection(problem, heuristic, false).solve();
+            solution = IndependenceDetection(problem, astarsearch, false).solve();
             break;
         case IDCAT:
-            solution = IndependenceDetection(problem, heuristic, true).solve();
+            solution = IndependenceDetection(problem, astarsearch, true).solve();
             break;
         case EID:
-            solution = IndependenceDetection(problem, heuristic, false).solve();
+            solution = IndependenceDetection(problem, astarsearch, false).solve();
             break;
         case SID:
-            solution = SimpleIndependenceDetection(problem, heuristic, false).solve();
+            solution = SimpleIndependenceDetection(problem, astarsearch, false).solve();
             break;
         case SIDCAT:
-            solution = SimpleIndependenceDetection(problem, heuristic, true).solve();
+            solution = SimpleIndependenceDetection(problem, astarsearch, true).solve();
+            break;
+        case SIDAStar:
+            solution = SimpleIndependenceDetection(problem, astarsearch, false).solve();
+            break;
+        case SIDCATAStar:
+            solution = SimpleIndependenceDetection(problem, astarsearch, true).solve();
+            break;
+        case SIDCBS:
+            solution = SimpleIndependenceDetection(problem, cbssearch, false).solve();
+            break;
+        case SIDCATCBS:
+            solution = SimpleIndependenceDetection(problem, cbssearch, true).solve();
             break;
         case DSCBS:
             solution = ConflictBasedSearch(problem, heuristic, false, true).solve();
             break;
         case StandardAStar:
-            auto problem = std::make_shared<StandardMultiAgentProblemWithConstraints>(g, starts, targets, objective);
-            solution = AStar<StandardMultiAgentProblemWithConstraints, StandardMultiAgentState>(problem, heuristic).solve();
+            solution = GeneralAStar(problem, heuristic,false,false).solve();
             break;
     }
 

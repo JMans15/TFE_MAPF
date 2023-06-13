@@ -14,7 +14,11 @@
 class Solution {
 public:
     Solution();
-    Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions);
+
+    // Solutions of ID
+    Solution(int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfResolvedConflicts, int sizeOfLargerGroup);
+
+    // Solutions of CBS or A*
     Solution(int cost, int numberOfVisitedNodes, int numberOfTimesteps, std::unordered_map<int, std::vector<int>> positions, int numberOfNodesLeftInTheFringe, int startTime=0);
 
     int getCost() const;
@@ -50,13 +54,23 @@ private:
     // Cost of the solution / value of the objective function for this solution (if solution of a single joint A* or conflict based search)
     int cost;
 
+    // For solutions of CBS or A* :
     // The number of visited nodes
     // - goal tested states if solution of a single joint A*
     // - conflict tree nodes if solution of conflict based search
     int numberOfVisitedNodes;
 
+    // For solutions of CBS or A* :
     // The number of nodes left in the fringe/open list at the end of the search
     int numberOfNodesLeftInTheFringe;
+
+    // For solutions of ID :
+    // The number of solved conflicts (merging or replanning) until a solution without any conflict is found
+    int numberOfResolvedConflicts;
+
+    // For solutions of ID :
+    // The size of the largest group of agents (solved by a single low-level search)
+    int sizeOfLargerGroup;
 
     // The number of needed timesteps from all agents to reach their target position
     int numberOfTimesteps;
@@ -68,6 +82,9 @@ private:
 
     // true if this solution contains a path
     bool foundPath;
+
+    // true if solution of ID (false if solution of CBS or A*)
+    bool solutionOfId;
 
     int startTime;
 };

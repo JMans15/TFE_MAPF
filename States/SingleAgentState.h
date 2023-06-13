@@ -7,8 +7,6 @@
 
 #include "State.h"
 
-#include <vector>
-
 class SingleAgentState : public State {
 public:
 
