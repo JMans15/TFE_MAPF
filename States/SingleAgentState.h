@@ -10,23 +10,19 @@
 class SingleAgentState : public State {
 public:
 
-    SingleAgentState(int position) : position(position) {}
-    ~SingleAgentState() {}
+    explicit SingleAgentState(int position) : position(position) {}
+    ~SingleAgentState() = default;
 
-    inline const std::size_t getHash() const {
+    inline std::size_t getHash() const override {
         return position;
     }
 
-    inline const bool isEqual(const SingleAgentState &other) const {
+    inline bool isEqual(const SingleAgentState &other) const {
         return position == other.position;
     }
 
-    inline const int getPosition() const {
+    inline int getPosition() const {
         return position;
-    }
-
-    const std::vector<int> getPositions() const {
-        return { position };
     }
 
 private:

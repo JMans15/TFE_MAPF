@@ -2,15 +2,15 @@
 // Created by mansj on 31/01/23.
 //
 
-#include "Solvers/AStar/AStar.h"
-#include "Solvers/ID/SimpleIndependenceDetection.h"
-#include "Solvers/ID/IndependenceDetection.h"
-#include "Problems/MultiAgentProblem.h"
-#include "GraphParser/Parser.h"
-#include "Problems/SingleAgentProblem.h"
-#include "Solution/Solution.h"
+#include "../Solvers/AStar/AStar.h"
+#include "../Solvers/ID/SimpleIndependenceDetection.h"
+#include "../Solvers/ID/IndependenceDetection.h"
+#include "../Problems/MultiAgentProblem.h"
+#include "../GraphParser/Parser.h"
+#include "../Problems/SingleAgentProblem.h"
+#include "../Solution/Solution.h"
 
-#include "external-headers/cxxopts.hpp"
+#include "../external-headers/cxxopts.hpp"
 
 #include <fstream>
 

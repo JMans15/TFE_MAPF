@@ -11,7 +11,7 @@
 
 class State {
 public:
-    const virtual std::size_t getHash() const = 0;
+    virtual std::size_t getHash() const = 0;
 };
 
 template<class S>

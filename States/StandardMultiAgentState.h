@@ -10,23 +10,23 @@
 class StandardMultiAgentState : public State {
 public:
 
-    StandardMultiAgentState(std::vector<int> positions, const std::vector<int>& cannotMove = std::vector<int>());
+    explicit StandardMultiAgentState(const std::vector<int>& positions, const std::vector<u_int8_t>& cannotMove = std::vector<u_int8_t>());
 
-    const std::size_t getHash() const override;
-    const bool isEqual(const StandardMultiAgentState &other) const;
+    std::size_t getHash() const override;
+    bool isEqual(const StandardMultiAgentState &other) const;
 
-    const std::vector<int>& getPositions() const;
-    const std::vector<int>& getCannotMove() const;
-    bool canMove(int agent);
+    std::vector<int> getPositions() const;
+    std::vector<u_int8_t> getCannotMove() const;
 
 protected:
 
     // The positions of every agent in this state.
     std::vector<int> positions;
 
-    // list of agents which are at their target positions
+    // vector of size numberOfAgents
+    // cannotMove[i] is true if agent i is at its target position
     // and cannot move anymore (for the SumOfCosts objective function)
-    std::vector<int> cannotMove;
+    std::vector<u_int8_t> cannotMove;
 };
 
 

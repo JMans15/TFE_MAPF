@@ -20,14 +20,14 @@
 #endif
 
 enum ObjectiveFunction {
-    Fuel, Makespan, SumOfCosts
+    Fuel, Makespan, SumOfCosts,
 };
 
 class Problem {
 public:
 
-    virtual bool hasTimeConstraints() const = 0;
-    virtual bool isMultiAgentProblem() const = 0;
+    virtual bool hasExternalConstraints() const = 0;
+    virtual int getNumberOfAgents() const = 0;
     virtual bool isImpossible() const = 0;
 
 };

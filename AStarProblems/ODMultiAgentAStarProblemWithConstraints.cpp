@@ -7,15 +7,15 @@
 #include <utility>
 
 ODMultiAgentAStarProblemWithConstraints::ODMultiAgentAStarProblemWithConstraints(std::shared_ptr<MultiAgentProblem>  problem)
-        : AStarProblem<MultiAgentSpaceTimeState>()
+        : AStarProblem<ODMultiAgentSpaceTimeState>()
         , problem(std::move(problem))
 {}
 
-std::shared_ptr<MultiAgentSpaceTimeState> ODMultiAgentAStarProblemWithConstraints::getStartState() const {
-    return std::make_shared<MultiAgentSpaceTimeState>(problem->getStarts(), problem->getStarts(), problem->getStartTime(), 0, true);
+std::shared_ptr<ODMultiAgentSpaceTimeState> ODMultiAgentAStarProblemWithConstraints::getStartState() const {
+    return std::make_shared<ODMultiAgentSpaceTimeState>(problem->getStarts(), problem->getStarts(), problem->getStartTime(), 0, true);
 }
 
-bool ODMultiAgentAStarProblemWithConstraints::isGoalState(std::shared_ptr<MultiAgentSpaceTimeState> state) const {
+bool ODMultiAgentAStarProblemWithConstraints::isGoalState(std::shared_ptr<ODMultiAgentSpaceTimeState> state) const {
     auto positions = state->getPrePositions();
     for (int i = 0; i < problem->getNumberOfAgents(); i++) {
         if (positions[i] != problem->getTargets()[i]) {
@@ -45,8 +45,8 @@ bool ODMultiAgentAStarProblemWithConstraints::notAlreadyOccupiedEdge(int positio
     return true;
 }
 
-std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> ODMultiAgentAStarProblemWithConstraints::getSuccessors(std::shared_ptr<MultiAgentSpaceTimeState> state) const {
-    std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> successors;
+std::vector<std::tuple<std::shared_ptr<ODMultiAgentSpaceTimeState>, int, int>> ODMultiAgentAStarProblemWithConstraints::getSuccessors(std::shared_ptr<ODMultiAgentSpaceTimeState> state) const {
+    std::vector<std::tuple<std::shared_ptr<ODMultiAgentSpaceTimeState>, int, int>> successors;
     auto positions = state->getPositions();
     auto prePositions = state->getPrePositions();
     int agentToAssign = state->getAgentToAssign();
@@ -94,14 +94,14 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> ODM
             vector<int> newpositions(positions);
             newpositions[agentToAssign] = j;
             if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && problem->okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
-                auto successor = std::make_shared<MultiAgentSpaceTimeState>(newpositions, prePositions, nextT, nextAgentToAssign, isStandard);
+                auto successor = std::make_shared<ODMultiAgentSpaceTimeState>(newpositions, prePositions, nextT, nextAgentToAssign, isStandard);
                 successors.emplace_back(successor, costMovement, problem->numberOfViolations(agentToAssign, positions[agentToAssign], j, nextT));
             }
         }
 
         // Wait
         if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && problem->okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-            auto successor = std::make_shared<MultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard);
+            auto successor = std::make_shared<ODMultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard);
             successors.emplace_back(successor, costWait, problem->numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
         }
 
@@ -114,7 +114,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> ODM
                 vector<int> newpositions(positions);
                 newpositions[agentToAssign] = j;
                 if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions) && problem->okForConstraints(agentToAssign, positions[agentToAssign], j, nextT)) {
-                    auto successor = std::make_shared<MultiAgentSpaceTimeState>(newpositions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentSpaceTimeState>(newpositions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costMovement, problem->numberOfViolations(agentToAssign, positions[agentToAssign], j, nextT));
                 }
             }
@@ -123,22 +123,22 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> ODM
             if (positions[agentToAssign]!=problem->getTargets()[agentToAssign]) { // agentToAssign not at his target position
                 costWait = 1;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && problem->okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                    auto successor = std::make_shared<MultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, problem->numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
                 }
             } else { // agentToAssign is at his target position
                 // agentToAssign can still move in the future
                 costWait = 1;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && problem->okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                    auto successor = std::make_shared<MultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, problem->numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
                 }
 
                 // we are forcing agentToAssign to not move in the future
                 costWait = 0;
-                cannotMove.push_back(agentToAssign);
+                cannotMove[agentToAssign] = true;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && problem->okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                    auto successor = std::make_shared<MultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, problem->numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
                 }
             }
@@ -147,7 +147,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> ODM
         } else { // agentToAssign is not allowed to move
             costWait = 0;
             if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign) && problem->okForConstraints(agentToAssign, positions[agentToAssign], nextT)) {
-                auto successor = std::make_shared<MultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
+                auto successor = std::make_shared<ODMultiAgentSpaceTimeState>(positions, prePositions, nextT, nextAgentToAssign, isStandard, cannotMove);
                 successors.emplace_back(successor, costWait, problem->numberOfViolations(agentToAssign, positions[agentToAssign], nextT));
             }
         }
@@ -155,7 +155,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> ODM
     return successors;
 }
 
-std::unordered_map<int, std::vector<int>> ODMultiAgentAStarProblemWithConstraints::getPositions(std::vector<std::shared_ptr<MultiAgentSpaceTimeState>> states) const {
+std::unordered_map<int, std::vector<int>> ODMultiAgentAStarProblemWithConstraints::getPositions(std::vector<std::shared_ptr<ODMultiAgentSpaceTimeState>> states) const {
     std::unordered_map<int, std::vector<int>> positions;
 
     for (const auto& state : states) {

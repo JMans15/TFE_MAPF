@@ -14,6 +14,8 @@
 //
 // Only for multi agent problem
 //
+// Only takes in account negative constraints of problem (what about startTime ?)
+//
 // typeOfHeuristic is the heuristic for the A* searches
 // If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to avoid planned paths (if possible with optimal cost)
 // If disjointSplitting is true, we use a disjoint splitting strategy (branches on 1 positive and 1 negative constraint instead of 2 negative constraints)
@@ -23,7 +25,7 @@ public:
     ConflictBasedSearch(std::shared_ptr<MultiAgentProblem> problem, TypeOfHeuristic typeOfHeuristic, bool CAT = true, bool disjointSplitting = false);
     std::shared_ptr<Solution> solve();
 
-    ConflictBasedSearch(TypeOfHeuristic typeOfHeuristic, bool CAT = true, bool disjointSplitting = false);
+    explicit ConflictBasedSearch(TypeOfHeuristic typeOfHeuristic, bool CAT = true, bool disjointSplitting = false);
     std::shared_ptr<Solution> solve(std::shared_ptr<MultiAgentProblem> problem);
 
 protected:

@@ -17,11 +17,32 @@ SimpleIndependenceDetection<MultiAgentSolver>::SimpleIndependenceDetection(std::
                                                                  {}
 
 template<class MultiAgentSolver>
+SimpleIndependenceDetection<MultiAgentSolver>::SimpleIndependenceDetection(std::shared_ptr<MultiAgentSolver> lowLevelSearch, bool CAT)
+        : problem(nullptr)
+        , CAT(CAT)
+        , lowLevelSearch(lowLevelSearch)
+        , numberOfResolvedConflicts(0)
+        , sizeOfLargerGroup(1)
+{}
+
+template<class MultiAgentSolver>
+std::shared_ptr<Solution>
+SimpleIndependenceDetection<MultiAgentSolver>::solve(std::shared_ptr<MultiAgentProblem> m_problem) {
+    problem=std::move(m_problem);
+    groups = std::unordered_set<std::shared_ptr<Group>, GroupHasher, GroupEquality>();
+    setOfConflicts = std::set<GroupConflict>();
+    vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+    edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+    numberOfResolvedConflicts = 0;
+    return solve();
+}
+
+template<class MultiAgentSolver>
 bool SimpleIndependenceDetection<MultiAgentSolver>::planSingletonGroups() {
     for (const std::shared_ptr<Group>& group : groups){
         int agentId = *group->getAgents().begin();
         auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-        auto solution = GeneralAStar(prob, OptimalDistance).solve();
+        auto solution = AStar<SingleAgentAStarProblemWithConstraints, SingleAgentSpaceTimeState>(std::make_shared<SingleAgentAStarProblemWithConstraints>(prob), OptimalDistance).solve();
         if (not solution->getFoundPath()){
             return false;
         }
@@ -230,6 +251,10 @@ template<class MultiAgentSolver>
 std::shared_ptr<Solution> SimpleIndependenceDetection<MultiAgentSolver>::solve() {
 
     LOG("===== Simple Independent Detection Search (with set of conflicts) ====");
+
+    if (problem==nullptr){
+        return std::make_shared<Solution>();
+    }
 
     if (problem->isImpossible()){
         return std::make_shared<Solution>();

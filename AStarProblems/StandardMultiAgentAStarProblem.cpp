@@ -45,7 +45,7 @@ bool StandardMultiAgentAStarProblem::notAlreadyOccupiedEdge(int position, const 
     return true;
 }
 
-void StandardMultiAgentAStarProblem::recursiveAssignAMoveToAnAgent(int agentToAssign, std::vector<std::tuple<std::shared_ptr<StandardMultiAgentState>, int, int>>* successors, int cost, std::vector<int> positions, const std::vector<int>& prePositions, std::vector<int> cannotMove) const {
+void StandardMultiAgentAStarProblem::recursiveAssignAMoveToAnAgent(int agentToAssign, std::vector<std::tuple<std::shared_ptr<StandardMultiAgentState>, int, int>>* successors, int cost, std::vector<int> positions, const std::vector<int>& prePositions, std::vector<u_int8_t> cannotMove) const {
     int costMovement;
     int costWait;
     if (problem->getObjFunction() == Fuel){
@@ -96,7 +96,7 @@ void StandardMultiAgentAStarProblem::recursiveAssignAMoveToAnAgent(int agentToAs
         }
     } else { // obj_function=="SumOfCosts"
         if (agentToAssign==problem->getNumberOfAgents()-1){
-            if (not (std::find(cannotMove.begin(), cannotMove.end(), agentToAssign) != cannotMove.end())){ // agentToAssign is allowed to move
+            if (not cannotMove[agentToAssign]){ // agentToAssign is allowed to move
 
                 // Move
                 for (int j : problem->getGraph()->getNeighbors(positions[agentToAssign])) {
@@ -125,7 +125,7 @@ void StandardMultiAgentAStarProblem::recursiveAssignAMoveToAnAgent(int agentToAs
 
                     // we are forcing agentToAssign to not move in the future
                     costWait = 0;
-                    cannotMove.push_back(agentToAssign);
+                    cannotMove[agentToAssign] = true;
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)) {
                         auto successor = std::make_shared<StandardMultiAgentState>(positions, cannotMove);
                         successors->emplace_back(successor, cost+costWait, 0);
@@ -141,7 +141,7 @@ void StandardMultiAgentAStarProblem::recursiveAssignAMoveToAnAgent(int agentToAs
                 }
             }
         } else {
-            if (not (std::find(cannotMove.begin(), cannotMove.end(), agentToAssign) != cannotMove.end())){ // agentToAssign is allowed to move
+            if (not cannotMove[agentToAssign]){ // agentToAssign is allowed to move
 
                 // Move
                 for (int j : problem->getGraph()->getNeighbors(positions[agentToAssign])) {
@@ -167,7 +167,7 @@ void StandardMultiAgentAStarProblem::recursiveAssignAMoveToAnAgent(int agentToAs
 
                     // we are forcing agentToAssign to not move in the future
                     costWait = 0;
-                    cannotMove.push_back(agentToAssign);
+                    cannotMove[agentToAssign]=true;
                     if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)) {
                         recursiveAssignAMoveToAnAgent(agentToAssign+1, successors, cost+costWait, positions, prePositions, cannotMove);
                     }

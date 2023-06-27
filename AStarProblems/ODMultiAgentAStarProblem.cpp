@@ -5,15 +5,15 @@
 #include "ODMultiAgentAStarProblem.h"
 
 ODMultiAgentAStarProblem::ODMultiAgentAStarProblem(std::shared_ptr<MultiAgentProblem>  problem)
-        : AStarProblem<MultiAgentState>()
+        : AStarProblem<ODMultiAgentState>()
         , problem(std::move(problem))
 {}
 
-std::shared_ptr<MultiAgentState> ODMultiAgentAStarProblem::getStartState() const {
-    return std::make_shared<MultiAgentState>(problem->getStarts(), problem->getStarts(), 0, true);
+std::shared_ptr<ODMultiAgentState> ODMultiAgentAStarProblem::getStartState() const {
+    return std::make_shared<ODMultiAgentState>(problem->getStarts(), problem->getStarts(), 0, true);
 }
 
-bool ODMultiAgentAStarProblem::isGoalState(std::shared_ptr<MultiAgentState> state) const {
+bool ODMultiAgentAStarProblem::isGoalState(std::shared_ptr<ODMultiAgentState> state) const {
     auto positions = state->getPrePositions();
     for (int i = 0; i < problem->getNumberOfAgents(); i++) {
         if (positions[i] != problem->getTargets()[i]) {
@@ -43,8 +43,8 @@ bool ODMultiAgentAStarProblem::notAlreadyOccupiedEdge(int position, const std::v
     return true;
 }
 
-std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> ODMultiAgentAStarProblem::getSuccessors(std::shared_ptr<MultiAgentState> state) const {
-    std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> successors;
+std::vector<std::tuple<std::shared_ptr<ODMultiAgentState>, int, int>> ODMultiAgentAStarProblem::getSuccessors(std::shared_ptr<ODMultiAgentState> state) const {
+    std::vector<std::tuple<std::shared_ptr<ODMultiAgentState>, int, int>> successors;
     auto positions = state->getPositions();
     auto prePositions = state->getPrePositions();
     int agentToAssign = state->getAgentToAssign();
@@ -85,14 +85,14 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> ODMultiAgent
             vector<int> newpositions(positions);
             newpositions[agentToAssign] = j;
             if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions)) {
-                auto successor = std::make_shared<MultiAgentState>(newpositions, prePositions, nextAgentToAssign, isStandard);
+                auto successor = std::make_shared<ODMultiAgentState>(newpositions, prePositions, nextAgentToAssign, isStandard);
                 successors.emplace_back(successor, costMovement, 0);
             }
         }
 
         // Wait
         if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)) {
-            auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard);
+            auto successor = std::make_shared<ODMultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard);
             successors.emplace_back(successor, costWait, 0);
         }
 
@@ -105,7 +105,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> ODMultiAgent
                 vector<int> newpositions(positions);
                 newpositions[agentToAssign] = j;
                 if (notAlreadyOccupiedPosition(j, positions, agentToAssign) && notAlreadyOccupiedEdge(j, positions, agentToAssign, prePositions)) {
-                    auto successor = std::make_shared<MultiAgentState>(newpositions, prePositions, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentState>(newpositions, prePositions, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costMovement, 0);
                 }
             }
@@ -114,22 +114,22 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> ODMultiAgent
             if (positions[agentToAssign]!=problem->getTargets()[agentToAssign]) { // agentToAssign not at his target position
                 costWait = 1;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)) {
-                    auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, 0);
                 }
             } else { // agentToAssign is at his target position
                 // agentToAssign can still move in the future
                 costWait = 1;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)) {
-                    auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, 0);
                 }
 
                 // we are forcing agentToAssign to not move in the future
                 costWait = 0;
-                cannotMove.push_back(agentToAssign);
+                cannotMove[agentToAssign] = true;
                 if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)) {
-                    auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
+                    auto successor = std::make_shared<ODMultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
                     successors.emplace_back(successor, costWait, 0);
                 }
             }
@@ -138,7 +138,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> ODMultiAgent
         } else { // agentToAssign is not allowed to move
             costWait = 0;
             if (notAlreadyOccupiedPosition(positions[agentToAssign], positions, agentToAssign)) {
-                auto successor = std::make_shared<MultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
+                auto successor = std::make_shared<ODMultiAgentState>(positions, prePositions, nextAgentToAssign, isStandard, cannotMove);
                 successors.emplace_back(successor, costWait, 0);
             }
         }
@@ -146,7 +146,7 @@ std::vector<std::tuple<std::shared_ptr<MultiAgentState>, int, int>> ODMultiAgent
     return successors;
 }
 
-std::unordered_map<int, std::vector<int>> ODMultiAgentAStarProblem::getPositions(std::vector<std::shared_ptr<MultiAgentState>> states) const {
+std::unordered_map<int, std::vector<int>> ODMultiAgentAStarProblem::getPositions(std::vector<std::shared_ptr<ODMultiAgentState>> states) const {
     std::unordered_map<int, std::vector<int>> positions;
 
     for (const auto& state : states) {

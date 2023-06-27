@@ -15,7 +15,8 @@ ConflictBasedSearch::ConflictBasedSearch(std::shared_ptr<MultiAgentProblem> prob
     {}
 
 ConflictBasedSearch::ConflictBasedSearch(TypeOfHeuristic typeOfHeuristic, bool CAT, bool disjointSplitting)
-        : typeOfHeuristic(typeOfHeuristic)
+        : problem(nullptr)
+        , typeOfHeuristic(typeOfHeuristic)
         , numberOfVisitedNodes(0)
         , CAT(CAT)
         , disjointSplitting(disjointSplitting)
@@ -30,7 +31,7 @@ std::tuple<std::unordered_map<int, std::vector<int>>,int, std::unordered_map<int
     for (int i = 0; i < problem->getNumberOfAgents(); i++){
         int agentId = problem->getAgentIds()[i];
         auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStarts()[i], problem->getTargets()[i], problem->getObjFunction(), agentId, problem->getSetOfHardVertexConstraints(), problem->getSetOfHardEdgeConstraints(), INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-        auto solution = GeneralAStar(prob, typeOfHeuristic).solve();
+        auto solution = AStar<SingleAgentAStarProblemWithConstraints, SingleAgentSpaceTimeState>(std::make_shared<SingleAgentAStarProblemWithConstraints>(prob), typeOfHeuristic).solve();
         if (not solution->getFoundPath()){
             return {solutions, -1, costs};
         }
@@ -249,6 +250,10 @@ std::shared_ptr<Solution> ConflictBasedSearch::combineSolutions(const std::share
 std::shared_ptr<Solution> ConflictBasedSearch::solve() {
     LOG("===== Conflict Based Search ====");
 
+    if (problem==nullptr){
+        return std::make_shared<Solution>();
+    }
+
     if (disjointSplitting){
         return disjointSplittingSolve();
     }
@@ -323,7 +328,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
                 }
             }
             auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), problem->getStartOf(agentId), problem->getTargetOf(agentId), problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-            auto solution = GeneralAStar(prob, typeOfHeuristic).solve();
+            auto solution = AStar<SingleAgentAStarProblemWithConstraints, SingleAgentSpaceTimeState>(std::make_shared<SingleAgentAStarProblemWithConstraints>(prob), typeOfHeuristic).solve();
             if (solution->getFoundPath()){
                 std::unordered_map<int,int> successorCosts;
                 successorCosts[agentId] = solution->getCost();
@@ -508,8 +513,8 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
             t1 = 0;
             position1 = problem->getStartOf(agentId);
         }
-        auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), position1, position2, Makespan, agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable, t1);
-        auto solution = GeneralAStar(prob, typeOfHeuristic).solve();
+        auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), position1, position2, problem->getObjFunction(), agentId, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable, t1);
+        auto solution = AStar<SingleAgentAStarProblemWithConstraints, SingleAgentSpaceTimeState>(std::make_shared<SingleAgentAStarProblemWithConstraints>(prob), typeOfHeuristic).solve();
         if (solution->getFoundPath() and t1+solution->getMakespanCost()<=t2 and okForHardConstraints(newFullSetOfVertexConstraints, t1+solution->getMakespanCost()+1, t2-1, position2, agentId)){
             std::unordered_map<int, std::vector<int>> successorSolution;
             successorSolution[agentId] = fullSolutions[agentId];
@@ -678,8 +683,8 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
                 t1 = 0;
                 position1 = problem->getStartOf(agentK);
             }
-            auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), position1, position2, Makespan, agentK, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable, t1);
-            auto solution = GeneralAStar(prob, typeOfHeuristic).solve();
+            auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), position1, position2, problem->getObjFunction(), agentK, newFullSetOfVertexConstraints, newFullSetOfEdgeConstraints, INT_MAX, vertexConflictAvoidanceTable, edgeConflictAvoidanceTable, t1);
+            auto solution = AStar<SingleAgentAStarProblemWithConstraints, SingleAgentSpaceTimeState>(std::make_shared<SingleAgentAStarProblemWithConstraints>(prob), typeOfHeuristic).solve();
             solutionOk = solution->getFoundPath() and t1+solution->getMakespanCost()<=t2 and okForHardConstraints(newFullSetOfVertexConstraints, t1+solution->getMakespanCost()+1, t2-1, position2, agentK);
             if (solutionOk){
                 successorSolution[agentK] = oldFullSolutions[agentK];
@@ -780,7 +785,7 @@ bool ConflictBasedSearch::okForHardConstraints(HardVertexConstraintsSet setOfVer
 }
 
 std::shared_ptr<Solution> ConflictBasedSearch::solve(std::shared_ptr<MultiAgentProblem> m_problem) {
-    problem = m_problem;
+    problem = std::move(m_problem);
     numberOfVisitedNodes = 0;
     fringe = std::multiset<std::shared_ptr<ConflictTreeNode>, ConflictTreeNodeComparator>();
     return solve();

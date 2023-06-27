@@ -17,7 +17,7 @@ public:
     // IF IN A SET OF SOFT CONSTRAINTS :
     // agent is at position at time
     VertexConstraint(int agent, int position, int time, bool positive = false) : agent(agent), position(position), time(time), positive(positive) {}
-    ~VertexConstraint() {}
+    ~VertexConstraint() = default;
 
     int getAgent() const {
         return agent;
@@ -36,7 +36,7 @@ public:
             std::cout << "Vertex constraint : agent " << agent << " cannot be at position " << position << " at time " << time << "." << std::endl;
         }
     }
-    bool isPositive(){
+    bool isPositive() const{
         return positive;
     }
 

@@ -7,7 +7,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../Solvers/AStar/AStar.h"
-#include "../Solvers/CooperativeAStar.h"
+#include "../Solvers/SuboptimalSolver/CooperativeAStar.h"
 #include "../Problems/MultiAgentProblem.h"
 #include "../GraphParser/Parser.h"
 #include "../Solvers/AStar/ReverseResumableAStar.h"
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         int start = 7;
         int target = 17;
         auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
-        auto solution = GeneralAStar(problem, Manhattan).solve();
+        auto solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getNumberOfVisitedNodes() == 25, "NumberOfVisitedStates = " << solution->getNumberOfVisitedNodes() << " tested against 25");
         BOOST_CHECK_MESSAGE(solution->getCost() == 18, "Cost = " << solution->getCost() << " tested against 18");
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         int start = 1;
         int target = 256*200-100;
         auto problem = std::make_shared<SingleAgentProblem>(g, start, target);
-        auto solution = GeneralAStar(problem, Manhattan).solve();
+        auto solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getCost() == 354, "Cost = " << solution->getCost() << " tested against 354");
     }
@@ -52,17 +52,17 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         targets.push_back(1);
 
         auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
-        auto solution = GeneralAStar(problem, Manhattan).solve();
+        auto solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getMakespanCost() == 3, "MakespanCost = " << solution->getMakespanCost() << " tested against 3");
 
         problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Fuel);
-        solution = GeneralAStar(problem, Manhattan).solve();
+        solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getFuelCost() == 4, "FuelCost = " << solution->getFuelCost() << " tested against 4");
 
         problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-        solution = GeneralAStar(problem, Manhattan).solve();
+        solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getSumOfCostsCost() == 5, "SumOfCostsCost = " << solution->getSumOfCostsCost() << " tested against 5");
     }
@@ -76,17 +76,17 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         targets.push_back(3);
         targets.push_back(0);
         auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
-        auto solution = GeneralAStar(problem, Manhattan).solve();
+        auto solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getMakespanCost() == 5, "MakespanCost = " << solution->getMakespanCost() << " tested against 5");
 
         problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Fuel);
-        solution = GeneralAStar(problem, Manhattan).solve();
+        solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getFuelCost() == 8, "FuelCost = " << solution->getFuelCost() << " tested against 8");
 
         problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-        solution = GeneralAStar(problem, Manhattan).solve();
+        solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getSumOfCostsCost() == 8, "SumOfCostsCost = " << solution->getSumOfCostsCost() << " tested against 8");
     }
@@ -100,17 +100,17 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         targets.push_back(17);
         targets.push_back(20);
         auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
-        auto solution = GeneralAStar(problem, Manhattan).solve();
+        auto solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getMakespanCost() == 7, "MakespanCost = " << solution->getMakespanCost() << " tested against 7");
 
         problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Fuel);
-        solution = GeneralAStar(problem, Manhattan).solve();
+        solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getFuelCost() == 10, "FuelCost = " << solution->getFuelCost() << " tested against 10");
 
         problem = std::make_shared<MultiAgentProblem>(g, starts, targets, SumOfCosts);
-        solution = GeneralAStar(problem, Manhattan).solve();
+        solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getSumOfCostsCost() == 10, "SumOfCostsCost = " << solution->getSumOfCostsCost() << " tested against 10");
     }
@@ -120,12 +120,12 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         int start = 4;
         int target = 6;
         auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet{VertexConstraint{0, 5, 1}});
-        auto solution = GeneralAStar(problem, Manhattan).solve();
+        auto solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
-        BOOST_CHECK_MESSAGE(solution->getMakespanCost() == 3, "MakespanCost = " << solution->getMakespanCost() << " tested against 3");
+        BOOST_CHECK_MESSAGE(solution->getMakespanCost() == 3, "TimeCost = " << solution->getMakespanCost() << " tested against 3");
 
         problem = std::make_shared<SingleAgentProblem>(g, start, target, Fuel, 0, HardVertexConstraintsSet{VertexConstraint{0, 5, 1}});
-        solution = GeneralAStar(problem, Manhattan).solve();
+        solution = GeneralAStar(Manhattan).solve(problem);
         BOOST_REQUIRE_MESSAGE(solution->getFoundPath(), "Found a path");
         BOOST_CHECK_MESSAGE(solution->getFuelCost() == 2, "FuelCost = " << solution->getFuelCost() << " tested against 2");
     }
@@ -165,13 +165,13 @@ BOOST_AUTO_TEST_SUITE(globalTests)
         int target = 17;
 
         auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Fuel);
-        auto solution1 = GeneralAStar(problem, OptimalDistance, true).solve();
+        auto solution1 = GeneralAStar(OptimalDistance, true).solve(problem);
         BOOST_CHECK_MESSAGE(solution1->getFuelCost() == 18, "FuelCost = " << solution1->getFuelCost() << " tested against 18");
 
         problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan);
-        solution1 = GeneralAStar(problem, Manhattan, true).solve();
-        auto solution2 = GeneralAStar(problem, OptimalDistance, true).solve();
-        BOOST_CHECK_MESSAGE(solution1->getMakespanCost() == 18, "MakespanCost = " << solution1->getMakespanCost() << " tested against 18");
+        solution1 = GeneralAStar(Manhattan, true).solve(problem);
+        auto solution2 = GeneralAStar(OptimalDistance, true).solve(problem);
+        BOOST_CHECK_MESSAGE(solution1->getMakespanCost() == 18, "TimeCost = " << solution1->getMakespanCost() << " tested against 18");
 
         BOOST_CHECK_MESSAGE(solution1->getNumberOfVisitedNodes() == 177, "NumberOfVisitedStates = " << solution1->getNumberOfVisitedNodes() << " for Manhattan, tested against 177");
         BOOST_CHECK_MESSAGE(solution2->getNumberOfVisitedNodes() == 19, "NumberOfVisitedStates = " << solution2->getNumberOfVisitedNodes() << " for OptimalDistance, tested against 19");

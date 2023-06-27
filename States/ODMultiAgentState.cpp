@@ -2,49 +2,54 @@
 // Created by Arthur Mahy on 08/06/2023.
 //
 
-#include "MultiAgentState.h"
+#include "ODMultiAgentState.h"
 
 #include <boost/functional/hash.hpp>
 #include <utility>
 
-MultiAgentState::MultiAgentState(std::vector<int> positions, std::vector<int> prePositions_, int agentToAssign, bool standard, const std::vector<int>& cannotMove)
+ODMultiAgentState::ODMultiAgentState(const std::vector<int> &positions, std::vector<int> prePositions_,
+                                                     int agentToAssign, bool standard,
+                                                     const std::vector<u_int8_t>& cannotMove_)
         : positions(positions)
         , agentToAssign(agentToAssign)
         , standard(standard)
-        , cannotMove(cannotMove)
+        , cannotMove(cannotMove_)
 {
     if (standard) {
         prePositions = positions;
     } else {
         prePositions = std::move(prePositions_);
     }
+    if (cannotMove_.empty()){
+        cannotMove = std::vector<u_int8_t>(positions.size(), false);
+    }
 }
 
-const std::vector<int>& MultiAgentState::getPositions() const {
+std::vector<int> ODMultiAgentState::getPositions() const {
     return positions;
 }
 
-const std::vector<int>& MultiAgentState::getPrePositions() const {
+std::vector<int> ODMultiAgentState::getPrePositions() const {
     return prePositions;
 }
 
-int MultiAgentState::getAgentToAssign() const {
+int ODMultiAgentState::getAgentToAssign() const {
     return agentToAssign;
 }
 
-bool MultiAgentState::isStandard() const {
+bool ODMultiAgentState::isStandard() const {
     return standard;
 }
 
-const std::vector<int>& MultiAgentState::getCannotMove() const {
+std::vector<u_int8_t> ODMultiAgentState::getCannotMove() const {
     return cannotMove;
 }
 
-bool MultiAgentState::canMove(int agent) {
-    return not (std::find(cannotMove.begin(), cannotMove.end(), agent) != cannotMove.end());
+bool ODMultiAgentState::canMove(int agent) const {
+    return not cannotMove[agent];
 }
 
-const std::size_t MultiAgentState::getHash() const {
+std::size_t ODMultiAgentState::getHash() const {
     size_t result = 0;
     for (const auto& val : prePositions) {
         boost::hash_combine(result, val);
@@ -59,15 +64,11 @@ const std::size_t MultiAgentState::getHash() const {
     return result;
 }
 
-const bool MultiAgentState::isEqual(const MultiAgentState &other) const {
+bool ODMultiAgentState::isEqual(const ODMultiAgentState &other) const {
     for (int i = 0; i < prePositions.size(); i++) {
         if (prePositions[i] != other.prePositions[i] || positions[i] != other.positions[i]) {
             return false;
         }
-    }
-
-    if (cannotMove.size() != other.cannotMove.size()) {
-        return false;
     }
 
     for (int i = 0; i < cannotMove.size(); i++) {

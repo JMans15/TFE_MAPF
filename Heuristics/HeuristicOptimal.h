@@ -27,7 +27,7 @@ private:
 // A reverse resumable A* search per agent will be run in addition to the search which this heuristic is used for.
 // - for SumOfCosts and Fuel objective functions
 // - for multi agent problem
-template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value or std::is_base_of<StandardMultiAgentState, S>::value>::type* = nullptr>
+template<typename S, typename std::enable_if<std::is_base_of<ODMultiAgentState, S>::value or std::is_base_of<StandardMultiAgentState, S>::value>::type* = nullptr>
 class SIOCheuristic : public Heuristic<S> {
 public:
     SIOCheuristic(std::vector<int> starts, std::vector<int> targets, std::shared_ptr<Graph> graph) {
@@ -54,7 +54,7 @@ private:
 // A reverse resumable A* search per agent will be run in addition to the search which this heuristic is used for.
 // - for Makespan objective function
 // - for multi agent problem
-template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value>::type* = nullptr>
+template<typename S, typename std::enable_if<std::is_base_of<ODMultiAgentState, S>::value>::type* = nullptr>
 class MIOCheuristic : public Heuristic<S> {
 public:
     MIOCheuristic(std::vector<int> starts, std::vector<int> targets, std::shared_ptr<Graph> graph) {

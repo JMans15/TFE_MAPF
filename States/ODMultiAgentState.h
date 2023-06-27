@@ -2,25 +2,25 @@
 // Created by Arthur Mahy on 08/06/2023.
 //
 
-#ifndef TFE_MAPF_MULTIAGENTSTATE_H
-#define TFE_MAPF_MULTIAGENTSTATE_H
+#ifndef TFE_MAPF_ODMULTIAGENTSTATE_H
+#define TFE_MAPF_ODMULTIAGENTSTATE_H
 
 #include "State.h"
 
-class MultiAgentState : public State {
+class ODMultiAgentState : public State {
 public:
 
-    MultiAgentState(std::vector<int> positions, std::vector<int> prePositions, int agentToAssign, bool standard, const std::vector<int>& cannotMove = std::vector<int>());
+    ODMultiAgentState(const std::vector<int>& positions, std::vector<int> prePositions, int agentToAssign, bool standard, const std::vector<u_int8_t>& cannotMove = std::vector<u_int8_t>());
 
-    const std::size_t getHash() const override;
-    const bool isEqual(const MultiAgentState &other) const;
+    std::size_t getHash() const override;
+    bool isEqual(const ODMultiAgentState &other) const;
 
-    const std::vector<int>& getPositions() const;
-    const std::vector<int>& getPrePositions() const;
+    std::vector<int> getPositions() const;
+    std::vector<int> getPrePositions() const;
     int getAgentToAssign() const;
     bool isStandard() const;
-    const std::vector<int>& getCannotMove() const;
-    bool canMove(int agent);
+    std::vector<u_int8_t> getCannotMove() const;
+    bool canMove(int agent) const;
 
 protected:
 
@@ -40,10 +40,11 @@ protected:
     // prePositions is just needed to avoid Edge Conflict (implemented in the getSuccessors function).
     std::vector<int> prePositions;
 
-    // list of agents which are at their target positions
+    // vector of size numberOfAgents
+    // cannotMove[i] is true if agent i is at its target position
     // and cannot move anymore (for the SumOfCosts objective function)
-    std::vector<int> cannotMove;
+    std::vector<u_int8_t> cannotMove;
 };
 
 
-#endif //TFE_MAPF_MULTIAGENTSTATE_H
+#endif //TFE_MAPF_ODMULTIAGENTSTATE_H

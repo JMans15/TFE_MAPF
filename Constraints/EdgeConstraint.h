@@ -17,7 +17,7 @@ public:
     // IF IN A SET OF SOFT CONSTRAINTS :
     // agent is occupying the edge (position1, position2) between time-1 and time
     EdgeConstraint(int agent, int position1, int position2, int time, bool positive = false) : agent(agent), position1(position1), position2(position2), time(time), positive(positive) {}
-    ~EdgeConstraint() {}
+    ~EdgeConstraint() = default;
 
     int getAgent() const {
         return agent;
@@ -39,21 +39,8 @@ public:
             std::cout << "Edge constraint : agent " << agent << " cannot go from position " << position1 << " to position " << position2 << " between time " << time-1 << " and time " << time << "." << std::endl;
         }
     }
-    bool isPositive(){
+    bool isPositive() const{
         return positive;
-    }
-
-    bool operator<(const EdgeConstraint &other) const {
-        if (agent == other.agent) {
-            if (time == other.time) {
-                if (position2 == other.position2) {
-                    return position1 < other.position1;
-                }
-                return position2 < other.position2;
-            }
-            return time < other.time;
-        }
-        return agent < other.agent;
     }
 
 private:

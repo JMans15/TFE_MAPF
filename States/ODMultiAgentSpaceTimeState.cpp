@@ -2,17 +2,17 @@
 // Created by Arthur Mahy on 18/01/2023.
 //
 
-#include "MultiAgentSpaceTimeState.h"
+#include "ODMultiAgentSpaceTimeState.h"
 
 #include <boost/functional/hash.hpp>
 #include <utility>
 
-MultiAgentSpaceTimeState::MultiAgentSpaceTimeState(std::vector<int> positions, std::vector<int> prePositions_, int timestep, int agentToAssign, bool standard, const std::vector<int>& cannotMove)
-    : MultiAgentState(std::move(positions), std::move(prePositions_), agentToAssign, standard, cannotMove)
+ODMultiAgentSpaceTimeState::ODMultiAgentSpaceTimeState(const std::vector<int>& positions, std::vector<int> prePositions_, int timestep, int agentToAssign, bool standard, const std::vector<u_int8_t>& cannotMove)
+    : ODMultiAgentState(positions, std::move(prePositions_), agentToAssign, standard, cannotMove)
     , timestep(timestep)
 {}
 
-const std::size_t MultiAgentSpaceTimeState::getHash() const {
+std::size_t ODMultiAgentSpaceTimeState::getHash() const {
     size_t result = 0;
     boost::hash_combine(result, timestep);
     for (const auto& val : prePositions) {
@@ -28,7 +28,7 @@ const std::size_t MultiAgentSpaceTimeState::getHash() const {
     return result;
 }
 
-const bool MultiAgentSpaceTimeState::isEqual(const MultiAgentSpaceTimeState &other) const {
+bool ODMultiAgentSpaceTimeState::isEqual(const ODMultiAgentSpaceTimeState &other) const {
 
     if (timestep!=other.timestep){
         return false;
@@ -40,10 +40,6 @@ const bool MultiAgentSpaceTimeState::isEqual(const MultiAgentSpaceTimeState &oth
         }
     }
 
-    if (cannotMove.size() != other.cannotMove.size()) {
-        return false;
-    }
-
     for (int i = 0; i < cannotMove.size(); i++) {
         if (cannotMove[i] != other.cannotMove[i]) {
             return false;
@@ -53,6 +49,6 @@ const bool MultiAgentSpaceTimeState::isEqual(const MultiAgentSpaceTimeState &oth
     return true;
 }
 
-int MultiAgentSpaceTimeState::getTimestep() const {
+int ODMultiAgentSpaceTimeState::getTimestep() const {
     return timestep;
 }

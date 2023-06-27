@@ -10,10 +10,10 @@
 class StandardMultiAgentSpaceTimeState : public StandardMultiAgentState {
 public:
 
-    StandardMultiAgentSpaceTimeState(std::vector<int> positions, int timestep, const std::vector<int>& cannotMove = std::vector<int>());
+    StandardMultiAgentSpaceTimeState(std::vector<int> positions, int timestep, const std::vector<u_int8_t>& cannotMove = std::vector<u_int8_t>());
 
-    const std::size_t getHash() const override;
-    const bool isEqual(const StandardMultiAgentSpaceTimeState &other) const;
+    std::size_t getHash() const override;
+    bool isEqual(const StandardMultiAgentSpaceTimeState &other) const;
 
     int getTimestep() const;
 

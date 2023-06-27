@@ -6,18 +6,18 @@
 #define TFE_MAPF_ODMULTIAGENTASTARPROBLEMWITHCONSTRAINTS_H
 
 #include "AStarProblem.h"
-#include "../States/MultiAgentSpaceTimeState.h"
+#include "../States/ODMultiAgentSpaceTimeState.h"
 #include "../Problems/MultiAgentProblem.h"
 
 // Multi Agent Problem solved with Operator Decomposition A* (>< Standard A*)
-class ODMultiAgentAStarProblemWithConstraints : AStarProblem<MultiAgentSpaceTimeState>{
+class ODMultiAgentAStarProblemWithConstraints : AStarProblem<ODMultiAgentSpaceTimeState>{
 public:
     ODMultiAgentAStarProblemWithConstraints(std::shared_ptr<MultiAgentProblem>  problem);
 
-    std::shared_ptr<MultiAgentSpaceTimeState> getStartState() const override;
-    bool isGoalState(std::shared_ptr<MultiAgentSpaceTimeState> state) const override;
-    std::vector<std::tuple<std::shared_ptr<MultiAgentSpaceTimeState>, int, int>> getSuccessors(std::shared_ptr<MultiAgentSpaceTimeState> state) const override;
-    std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<MultiAgentSpaceTimeState>> states) const override;
+    std::shared_ptr<ODMultiAgentSpaceTimeState> getStartState() const override;
+    bool isGoalState(std::shared_ptr<ODMultiAgentSpaceTimeState> state) const override;
+    std::vector<std::tuple<std::shared_ptr<ODMultiAgentSpaceTimeState>, int, int>> getSuccessors(std::shared_ptr<ODMultiAgentSpaceTimeState> state) const override;
+    std::unordered_map<int, std::vector<int>> getPositions(std::vector<std::shared_ptr<ODMultiAgentSpaceTimeState>> states) const override;
     int getMaxCost() const override;
     int getStartTime() const override;
 

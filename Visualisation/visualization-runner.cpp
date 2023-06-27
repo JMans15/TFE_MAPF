@@ -15,17 +15,17 @@
 // -> Heuristics
 // -> Objective functions
 
-#include "Solvers/AStar/AStar.h"
-#include "Solvers/ID/SimpleIndependenceDetection.h"
-#include "Solvers/ID/IndependenceDetection.h"
-#include "Solvers/CBS/ConflictBasedSearch.h"
-#include "Solvers/CooperativeAStar.h"
-#include "Problems/MultiAgentProblem.h"
-#include "GraphParser/Parser.h"
-#include "Problems/SingleAgentProblem.h"
-#include "Solution/Solution.h"
+#include "../Solvers/AStar/AStar.h"
+#include "../Solvers/ID/SimpleIndependenceDetection.h"
+#include "../Solvers/ID/IndependenceDetection.h"
+#include "../Solvers/CBS/ConflictBasedSearch.h"
+#include "../Solvers/SuboptimalSolver/CooperativeAStar.h"
+#include "../Problems/MultiAgentProblem.h"
+#include "../GraphParser/Parser.h"
+#include "../Problems/SingleAgentProblem.h"
+#include "../Solution/Solution.h"
 
-#include "external-headers/cxxopts.hpp"
+#include "../external-headers/cxxopts.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -186,18 +186,18 @@ int main(int argc, const char** argv) {
     }
 
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, objective);
-    auto astarsearch = std::make_shared<GeneralAStar>(heuristic);
+    auto astarsearch = std::make_shared<GeneralAStar>(heuristic, true, true);
     auto cbssearch = std::make_shared<ConflictBasedSearch>(heuristic, false, false);
 
     switch (algo) {
         case ASTAR:
-            solution = GeneralAStar(heuristic).solve(problem);
+            solution = GeneralAStar(heuristic,false,true).solve(problem);
             break;
         case CBS:
             solution = ConflictBasedSearch(heuristic, false, false).solve(problem);
             break;
         case CBSCAT:
-            solution = ConflictBasedSearch(problem, heuristic, true).solve();
+            solution = ConflictBasedSearch(heuristic, true, false).solve(problem);
             break;
         case COOP:
             solution = CooperativeAStar(problem, heuristic).solve();
@@ -233,7 +233,7 @@ int main(int argc, const char** argv) {
             solution = ConflictBasedSearch(problem, heuristic, false, true).solve();
             break;
         case StandardAStar:
-            solution = GeneralAStar(problem, heuristic,false,false).solve();
+            solution = GeneralAStar(heuristic,false,false).solve(problem);
             break;
     }
 

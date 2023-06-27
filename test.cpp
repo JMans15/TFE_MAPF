@@ -3,7 +3,7 @@
 //
 
 #include "Solvers/AStar/AStar.h"
-#include "Solvers/CooperativeAStar.h"
+#include "Solvers/SuboptimalSolver/CooperativeAStar.h"
 #include "Problems/MultiAgentProblem.h"
 #include "GraphParser/Parser.h"
 #include "Solvers/AStar/ReverseResumableAStar.h"
@@ -101,7 +101,7 @@ int main() {
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet{{0,5,1}});
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Time, 0, HardVertexConstraintsSet{{0,5,1}});
     auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
@@ -109,7 +109,7 @@ int main() {
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 4;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet{{1, 4, 5, 1}});
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Time, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet{{1, 4, 5, 1}});
     auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
@@ -117,7 +117,7 @@ int main() {
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 1;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Time, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
     auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
@@ -125,7 +125,7 @@ int main() {
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
     int start = 1;
     int target = 6;
-    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Time, 0, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet(), SoftEdgeConstraintsMultiSet{{1,1,5,1}});
     auto solution = GeneralAStar(problem, Manhattan).solve();
     solution->print();*/
 
@@ -148,16 +148,20 @@ int main() {
         std::cout << key->getPosition() << " - " << value << std::endl;
     }*/
 
-    // TEST 9 : Single agent space time search, comparaison between Manhattan distance and Optimal distance (RRA*)
+    // TEST 9 : Single agent search, comparaison between Manhattan distance and Optimal distance (RRA*)
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
     int start = 7;
     int target = 17;
-    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Makespan);
-    auto solution1 = GeneralAStar(problem, Manhattan, true).solve();
-    auto solution2 = GeneralAStar(problem, OptimalDistance, true).solve();
-    // makespan cost = 18, fuel cost = 18
-    solution1->print(); // numberOfVisitedStates = 177
-    solution2->print(); // numberOfVisitedStates = 19*/
+    auto problem = std::make_shared<SingleAgentProblem>(g, start, target, Fuel);
+    auto solution1 = GeneralAStar(Manhattan, false).solve(problem); // space search
+    auto solution2 = GeneralAStar(Manhattan, true).solve(problem); // space time search
+    auto solution3 = GeneralAStar(OptimalDistance, false).solve(problem); // space search
+    auto solution4 = GeneralAStar(OptimalDistance, true).solve(problem); // space time search
+    // time cost = 18, fuel cost = 18
+    solution1->print(); // numberOfVisitedStates = 25, numberOfNodesLeftInTheFringe = 5
+    solution2->print(); // numberOfVisitedStates = 177, numberOfNodesLeftInTheFringe = 49
+    solution3->print(); // numberOfVisitedStates = 19, numberOfNodesLeftInTheFringe = 10
+    solution4->print(); // numberOfVisitedStates = 19, numberOfNodesLeftInTheFringe = 47*/
 
     // TEST 10 : Comparaison between cooperative A* (Manhattan for the single agent A*) and hierarchical cooperative A* (Optimal distance RRA* for the single agent A*)
     /*auto g = Parser::parse("../mapf-map/AssignmentIACourse.map");
@@ -492,8 +496,8 @@ int main() {
 
     // TEST X : StandardMultiAgent and a soft vertex constraint
     /*auto g = Parser::parse("../mapf-map/empty-4-4.map");
-    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{1}, vector<int>{6}, Fuel, vector<int>{0}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
-    auto solution = GeneralAStar(problem, Manhattan, true, false).solve();
+    auto problem = std::make_shared<MultiAgentProblem>(g, vector<int>{1}, vector<int>{6}, SumOfCosts, vector<int>{0}, HardVertexConstraintsSet(), HardEdgeConstraintsSet(), INT_MAX, SoftVertexConstraintsMultiSet{{1,5,1}});
+    auto solution = GeneralAStar(Manhattan, true, false).solve(problem);
     solution->print();*/
 
     // TEST X : StandardMultiAgent and a soft edge constraint
@@ -556,7 +560,7 @@ int main() {
     std::cout << t2 << std::endl;
     std::cout << position2 << std::endl;*/
 
-    auto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
+    /*uto g = Parser::parse("../mapf-map/Paris/Paris_1_256.map");
     vector<int> starts;
     int w = 256;
     starts.push_back(31+w*131);
@@ -599,5 +603,5 @@ int main() {
     auto problem = std::make_shared<MultiAgentProblem>(g, starts, targets, Makespan);
     auto search = std::make_shared<GeneralAStar>(OptimalDistance);
     auto solution2 = SimpleIndependenceDetection(problem, search, true).solve();
-    solution2->print();
+    solution2->print();*/
 }

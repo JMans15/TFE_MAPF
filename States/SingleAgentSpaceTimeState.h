@@ -11,16 +11,14 @@ class SingleAgentSpaceTimeState : public State {
 public:
 
     SingleAgentSpaceTimeState(int position, int timestep);
-    ~SingleAgentSpaceTimeState();
+    ~SingleAgentSpaceTimeState() = default;
     
-    const std::size_t getHash() const;
+    std::size_t getHash() const override;
 
-    const bool isEqual(const SingleAgentSpaceTimeState &other) const;
+    bool isEqual(const SingleAgentSpaceTimeState &other) const;
 
-    const int getPosition() const;
-    const int getTimestep() const;
-
-    const std::vector<int> getPositions() const;
+    int getPosition() const;
+    int getTimestep() const;
 
 private:
 

@@ -8,7 +8,7 @@
 
 SingleAgentAStarProblem::SingleAgentAStarProblem(const std::shared_ptr<SingleAgentProblem>&  problem)
     : AStarProblem<SingleAgentState>()
-    , problem(std::move(problem))
+    , problem(problem)
 {}
 
 std::shared_ptr<SingleAgentState> SingleAgentAStarProblem::getStartState() const {

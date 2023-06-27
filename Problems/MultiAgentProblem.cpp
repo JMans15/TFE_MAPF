@@ -24,20 +24,8 @@ MultiAgentProblem::MultiAgentProblem(const std::shared_ptr<Graph>& graph, std::v
     , maxCost(maxCost)
     , startTime(startTime)
 {
-    LOG("==== Multi Agent Problem With Constraints ====");
-    LOG("Number of agents : " << numberOfAgents)
-    
     if (objective != SumOfCosts && objective != Makespan && objective != Fuel) {
-        LOG("The input for the objective function is not correct.");
-        LOG("So, the default objective function will be applied.");
-        objective = Fuel;
-    }
-    if (objective == SumOfCosts){
-        LOG("Objective function : SumOfCosts");
-    } else if (objective == Makespan){
-        LOG("Objective function : Makespan");
-    } else {
-        LOG("Objective function : Fuel");
+        objective = Makespan;
     }
     impossible = false;
     if ((not m_agentIds.empty()) and ((int)m_agentIds.size() != numberOfAgents)){
@@ -56,72 +44,45 @@ MultiAgentProblem::MultiAgentProblem(const std::shared_ptr<Graph>& graph, std::v
     }
     for (int agentId : agentIds){
         if (std::count(agentIds.begin(), agentIds.end(), agentId)>1){
-            LOG("2 or more agents have the same id.");
             impossible = true;
             break;
         }
     }
-    LOG("Start position of each agent :");
     for (int i = 0; i < numberOfAgents; i++) {
-        LOG(" - Agent " << agentIds[i] << " : " << starts[i]);
         if (graph->getNeighbors(starts[i]).empty()) {
-            LOG("   The start position of agent "<< agentIds[i] << " is unreachable.");
             impossible = true;
         }
     }
-    LOG("Target position of each agent :");
     for (int i = 0; i < numberOfAgents; i++) {
-        LOG(" - Agent " << agentIds[i] << " : " << targets[i]);
         if (graph->getNeighbors(targets[i]).empty()) {
-            LOG("   The target position of agent "<< agentIds[i] << " is unreachable.");
             impossible = true;
         }
     }
     for (int start : starts){
         if (std::count(starts.begin(), starts.end(), start)>1){
-            LOG("   2 or more agents have the same start position.");
             impossible = true;
             break;
         }
     }
     for (int target : targets){
         if (std::count(targets.begin(), targets.end(), target)>1){
-            LOG("   2 or more agents have the same target position.");
             impossible = true;
             break;
         }
     }
-    if (!setOfHardVertexConstraints.empty()){
-        LOG("The problem has the following hard vertex constraints :");
-        for (const auto& constraint : setOfHardVertexConstraints){
-            LOG("   Agent " << constraint.getAgent() << " cannot be at position " << constraint.getPosition() << " at time " << constraint.getTime() << ".");
-        }
+    externalConstraints = false;
+    if (not setOfHardVertexConstraints.empty()){
+        externalConstraints = true;
     }
-    if (!setOfHardEdgeConstraints.empty()){
-        LOG("The problem has the following hard edge constraints :");
-        for (const auto& constraint : setOfHardEdgeConstraints){
-            LOG("   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
-        }
+    if (not setOfHardEdgeConstraints.empty()){
+        externalConstraints = true;
     }
-    if (!setOfSoftVertexConstraints.empty()){
-        LOG("The problem has the following soft vertex constraints :");
-        for (const auto& constraint : setOfSoftVertexConstraints){
-            LOG("   Agent " << constraint.getAgent() << " is at position " << constraint.getPosition() << " at time " << constraint.getTime() << ".");
-        }
+    if (not setOfSoftVertexConstraints.empty()){
+        externalConstraints = true;
     }
-    if (!setOfSoftEdgeConstraints.empty()){
-        LOG("The problem has the following soft edge constraints :");
-        for (const auto& constraint : setOfSoftEdgeConstraints){
-            LOG("   Agent " << constraint.getAgent() << " is occupying the edge (" << constraint.getPosition1() << ", " << constraint.getPosition2() << ") between time " << constraint.getTime()-1 << " and time "<< constraint.getTime() << ".");
-        }
+    if (not setOfSoftEdgeConstraints.empty()){
+        externalConstraints = true;
     }
-    if (maxCost!=INT_MAX){
-        LOG("The solution of this problem must have a cost inferior or equal to " << maxCost);
-    }
-    if (startTime!=0){
-        LOG("The start time of the problem is " << startTime);
-    }
-    LOG(" ");
 }
 
 bool MultiAgentProblem::okForConstraints(int agent, int position, int newPosition, int time) const {
@@ -163,11 +124,11 @@ int MultiAgentProblem::numberOfViolations(int agent, int newPosition, int time) 
     return count;
 }
 
-const std::vector<int>& MultiAgentProblem::getStarts() const {
+std::vector<int> MultiAgentProblem::getStarts() const {
     return starts;
 }
 
-const std::vector<int>& MultiAgentProblem::getTargets() const {
+std::vector<int> MultiAgentProblem::getTargets() const {
     return targets;
 }
 
@@ -223,23 +184,78 @@ int MultiAgentProblem::getStartTime() const {
     return startTime;
 }
 
-bool MultiAgentProblem::hasTimeConstraints() const {
-    if (not setOfHardVertexConstraints.empty()){
-        return true;
-    }
-    if (not setOfHardEdgeConstraints.empty()){
-        return true;
-    }
-    if (not setOfSoftVertexConstraints.empty()){
-        return true;
-    }
-    if (not setOfSoftEdgeConstraints.empty()){
-        return true;
-    }
-    return false;
+bool MultiAgentProblem::hasExternalConstraints() const {
+    return externalConstraints;
 }
 
-bool MultiAgentProblem::isMultiAgentProblem() const {
-    return true;
+void MultiAgentProblem::print() const {
+    std::cout<<"==== Multi Agent Problem ===="<<std::endl;
+    std::cout<<"Number of agents : " << numberOfAgents<<std::endl;
+    if (objective == SumOfCosts){
+        std::cout<<"Objective function : SumOfCosts"<<std::endl;
+    } else if (objective == Makespan){
+        std::cout<<"Objective function : Makespan"<<std::endl;
+    } else {
+        std::cout<<"Objective function : Fuel"<<std::endl;
+    }
+    for (int agentId : agentIds){
+        if (std::count(agentIds.begin(), agentIds.end(), agentId)>1){
+            std::cout<<"2 or more agents have the same id."<<std::endl;
+        }
+    }
+    std::cout<<"Start position of each agent :"<<std::endl;
+    for (int i = 0; i < numberOfAgents; i++) {
+        std::cout<<" - Agent " << agentIds[i] << " : " << starts[i]<<std::endl;
+        if (graph->getNeighbors(starts[i]).empty()) {
+            std::cout<<"   The start position of agent "<< agentIds[i] << " is unreachable."<<std::endl;
+        }
+    }
+    std::cout<<"Target position of each agent :"<<std::endl;
+    for (int i = 0; i < numberOfAgents; i++) {
+        std::cout<<" - Agent " << agentIds[i] << " : " << targets[i]<<std::endl;
+        if (graph->getNeighbors(targets[i]).empty()) {
+            std::cout<<"   The target position of agent "<< agentIds[i] << " is unreachable."<<std::endl;
+        }
+    }
+    for (int start : starts){
+        if (std::count(starts.begin(), starts.end(), start)>1){
+            std::cout<<"   2 or more agents have the same start position."<<std::endl;
+        }
+    }
+    for (int target : targets){
+        if (std::count(targets.begin(), targets.end(), target)>1){
+            std::cout<<"   2 or more agents have the same target position."<<std::endl;
+        }
+    }
+    if (!setOfHardVertexConstraints.empty()){
+        std::cout<<"The problem has the following hard vertex constraints :"<<std::endl;
+        for (const auto& constraint : setOfHardVertexConstraints){
+            std::cout<<"   Agent " << constraint.getAgent() << " cannot be at position " << constraint.getPosition() << " at time " << constraint.getTime() << "."<<std::endl;
+        }
+    }
+    if (!setOfHardEdgeConstraints.empty()){
+        std::cout<<"The problem has the following hard edge constraints :"<<std::endl;
+        for (const auto& constraint : setOfHardEdgeConstraints){
+            std::cout<<"   Agent " << constraint.getAgent() << " cannot go from position " << constraint.getPosition1() << " to position " << constraint.getPosition2() << " between " << constraint.getTime()-1 << " and time "<< constraint.getTime() << "."<<std::endl;
+        }
+    }
+    if (!setOfSoftVertexConstraints.empty()){
+        std::cout<<"The problem has the following soft vertex constraints :"<<std::endl;
+        for (const auto& constraint : setOfSoftVertexConstraints){
+            std::cout<<"   Agent " << constraint.getAgent() << " is at position " << constraint.getPosition() << " at time " << constraint.getTime() << "."<<std::endl;
+        }
+    }
+    if (!setOfSoftEdgeConstraints.empty()){
+        std::cout<<"The problem has the following soft edge constraints :"<<std::endl;
+        for (const auto& constraint : setOfSoftEdgeConstraints){
+            std::cout<<"   Agent " << constraint.getAgent() << " is occupying the edge (" << constraint.getPosition1() << ", " << constraint.getPosition2() << ") between time " << constraint.getTime()-1 << " and time "<< constraint.getTime() << "."<<std::endl;
+        }
+    }
+    if (maxCost!=INT_MAX){
+        std::cout<<"The solution of this problem must have a cost inferior or equal to " << maxCost<<std::endl;
+    }
+    if (startTime!=0){
+        std::cout<<"The start time of the problem is " << startTime<<std::endl;
+    }
 }
 

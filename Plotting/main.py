@@ -5,10 +5,12 @@ from matplotlib import pyplot as plt
 from multiprocessing import Pool, freeze_support
 import sys, os
 
-directory = '../mapf-map/Paris/scen-random'
+# Faire des plots sur le success rate de l'algorithme (étant donné un temps limite) en fonction du nombre d'agents
+
+directory = '../mapf-map/Orz/scen-random'
 program = '../cmake-build-debug/TFE_MAPF_visu'
 timeout = 10  # Timeout in seconds
-args = ['--map', '../mapf-map/Paris/Paris_1_256.map']
+args = ['--map', '../mapf-map/Orz/orz900d.map']
 num_threads = 1  # Number of threads to use (do not use too much because of RAM usage of mapf)
 
 def check_solution(file):
@@ -79,7 +81,7 @@ def run_program(file_path, a, i, algo):
 
 def data_for_algo(algo):
     data = []
-    for a in range(1, 20): #max 1002
+    for a in range(10, 25, 2): #max 1002
         files = os.listdir(directory)
         with Pool(num_threads) as p:
             results = [p.apply_async(run_program, (os.path.join(directory, filename), a, i, algo)) for i, filename in enumerate(files)]
@@ -97,7 +99,7 @@ if __name__ == '__main__':
     fig =plt.figure(figsize=(16, 8))
     ax = fig.subplots(1,1)
 
-    ax.set_title(f"Timeout = {timeout}, random scenarios")
+    ax.set_title(f"Timeout = {timeout}s, random scenarios in orz900d.map")
     ax.set_xlabel("Number of agents")
     ax.set_ylabel("Success rate [%]")
 
@@ -107,14 +109,20 @@ if __name__ == '__main__':
     data = data_for_algo('AStar')
     ax.plot(list(range(1, len(data)+1)), data, marker='x', label="A* (Operator Decomposition)")
 
+    #data = data_for_algo("SID")
+    #ax.plot(range(10, 25, 2), data, marker='x', label="SID")
+
+    #data = data_for_algo("SIDCAT")
+    #ax.plot(range(10, 25, 2), data, marker='x', label="SID+CAT")
+
     #data = data_for_algo("SIDAStar")
-    #ax.plot(range(15, 30), data, marker='x', label="SID+A*")
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="SID+A*")
 
     #data = data_for_algo("SIDCATAStar")
     #ax.plot(range(15, 30), data, marker='x', label="(SID+CAT)+A*")
 
     #data = data_for_algo("SIDCBS")
-    #ax.plot(range(15, 30), data, marker='x', label="SID+CBS")
+    #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="SID+CBS")
 
     #data = data_for_algo("SIDCATCBS")
     #ax.plot(range(15, 30), data, marker='x', label="(SID+CAT)+CBS")
@@ -123,16 +131,16 @@ if __name__ == '__main__':
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Enhanced version of ID (EID)")
 
     #data = data_for_algo("ID")
-    #ax.plot(range(10, 25), data, marker='x', label="ID")
+    #ax.plot(range(10, 25, 2), data, marker='x', label="ID")
 
     #data = data_for_algo("IDCAT")
-    #ax.plot(range(10, 25), data, marker='x', label="ID+CAT")
+    #ax.plot(range(10, 25, 2), data, marker='x', label="ID+CAT")
 
-    data = data_for_algo("CBS")
-    ax.plot(list(range(1, len(data)+1)), data, marker='x', label="CBS")
+    #data = data_for_algo("CBS")
+    #ax.plot(range(10, 25, 2), data, marker='x', label="CBS")
 
     #data = data_for_algo("CBSCAT")
-    #ax.plot(range(10, 25), data, marker='x', label="CBS+CAT")
+    #ax.plot(range(10, 25, 2), data, marker='x', label="CBS+CAT")
 
     #data = data_for_algo("DSCBS")
     #ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Disjoint Splitting CBS")

@@ -43,8 +43,8 @@ private:
     //
     // prePositions is the positions of the agents in state
     // cost is the cost of assigning the agents from 0 to agentToAssign
-    // cannotMove is the list of agents which are at their target positions and cannot move anymore (for the SumOfCosts objective function)
-    void recursiveAssignAMoveToAnAgent(int agentToAssign, std::vector<std::tuple<std::shared_ptr<StandardMultiAgentState>, int, int>>* successors, int cost, std::vector<int> positions, const std::vector<int>& prePositions, std::vector<int> cannotMove = std::vector<int>()) const ;
+    // cannotMove[i] is true if agent i is at its target position and cannot move anymore (for the SumOfCosts objective function)
+    void recursiveAssignAMoveToAnAgent(int agentToAssign, std::vector<std::tuple<std::shared_ptr<StandardMultiAgentState>, int, int>>* successors, int cost, std::vector<int> positions, const std::vector<int>& prePositions, std::vector<u_int8_t> cannotMove = std::vector<u_int8_t>()) const ;
 
 };
 

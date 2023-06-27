@@ -10,6 +10,23 @@ IndependenceDetection<MultiAgentSolver>::IndependenceDetection(std::shared_ptr<M
                 {}
 
 template<class MultiAgentSolver>
+IndependenceDetection<MultiAgentSolver>::IndependenceDetection(std::shared_ptr<MultiAgentSolver> lowLevelSearch, bool CAT)
+        : SimpleIndependenceDetection<MultiAgentSolver>(nullptr, lowLevelSearch, CAT)
+{}
+
+template<class MultiAgentSolver>
+std::shared_ptr<Solution> IndependenceDetection<MultiAgentSolver>::solve(std::shared_ptr<MultiAgentProblem> m_problem) {
+    problem=std::move(m_problem);
+    groups = std::unordered_set<std::shared_ptr<Group>, GroupHasher, GroupEquality>();
+    setOfConflicts = std::set<GroupConflict>();
+    vertexConflictAvoidanceTable = problem->getSetOfSoftVertexConstraints();
+    edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
+    numberOfResolvedConflicts = 0;
+    alreadyConflictedBefore = std::unordered_set<std::set<std::shared_ptr<Group>, PointerGroupEquality>, SetOfPointersHasher, SetOfPointersEquality>();
+    return solve();
+}
+
+template<class MultiAgentSolver>
 bool IndependenceDetection<MultiAgentSolver>::replanGroupAAvoidingGroupB(const std::shared_ptr<Group>& groupA, const std::shared_ptr<Group>& groupB){
     HardVertexConstraintsSet vertexIllegalTable = problem->getSetOfHardVertexConstraints();
     HardEdgeConstraintsSet edgeIllegalTable = problem->getSetOfHardEdgeConstraints();
@@ -37,7 +54,7 @@ bool IndependenceDetection<MultiAgentSolver>::replanGroupAAvoidingGroupB(const s
     std::shared_ptr<Solution> solution;
     if (groupA->getAgents().size()==1){
         auto prob = std::make_shared<SingleAgentProblem>(problem->getGraph(), starts[0], targets[0], problem->getObjFunction(), agentIds[0], vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost(), vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
-        solution = GeneralAStar(prob, OptimalDistance).solve();
+        solution = AStar<SingleAgentAStarProblemWithConstraints, SingleAgentSpaceTimeState>(std::make_shared<SingleAgentAStarProblemWithConstraints>(prob), OptimalDistance).solve();
     } else {
         auto prob = std::make_shared<MultiAgentProblem>(problem->getGraph(), starts, targets, problem->getObjFunction(), agentIds, vertexIllegalTable, edgeIllegalTable, groupA->getSolution()->getCost(), vertexConflictAvoidanceTable, edgeConflictAvoidanceTable);
         solution = lowLevelSearch->solve(prob);
@@ -132,6 +149,10 @@ template<class MultiAgentSolver>
 std::shared_ptr<Solution> IndependenceDetection<MultiAgentSolver>::solve() {
 
     LOG("===== Independent Detection Search (with set of conflicts) ====");
+
+    if (problem==nullptr){
+        return std::make_shared<Solution>();
+    }
 
     if (problem->isImpossible()){
         return std::make_shared<Solution>();

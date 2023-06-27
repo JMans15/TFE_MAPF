@@ -53,7 +53,7 @@ private:
 // where cost is the Manhattan distance (ignoring walls and other agents)
 // - for SumOfCosts and Fuel objective functions
 // - for multi agent problem
-template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value or std::is_base_of<StandardMultiAgentState, S>::value>::type* = nullptr>
+template<typename S, typename std::enable_if<std::is_base_of<ODMultiAgentState, S>::value or std::is_base_of<StandardMultiAgentState, S>::value>::type* = nullptr>
 class SICheuristic : public Heuristic<S> {
 public:
     SICheuristic(std::vector<int> targets, int width) : targets(targets), width(width) {}
@@ -75,7 +75,7 @@ private:
 // where cost is the Manhattan distance (ignoring walls and other agents)
 // - for Makespan objective function
 // - for multi agent problem
-template<typename S, typename std::enable_if<std::is_base_of<MultiAgentState, S>::value>::type* = nullptr>
+template<typename S, typename std::enable_if<std::is_base_of<ODMultiAgentState, S>::value>::type* = nullptr>
 class MICheuristic : public Heuristic<S> {
 public:
     MICheuristic(std::vector<int> targets, int width) : targets(targets), width(width) {}

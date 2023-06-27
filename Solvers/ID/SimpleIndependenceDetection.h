@@ -15,14 +15,18 @@
 // Simple Independence Detection search (with an updated set of conflicts)
 // Only for multi agent problem
 //
+// Only takes in account negative constraints of problem (what about startTime ?)
+//
 // If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to avoid planned paths (if possible with optimal cost)
 // lowLevelSearch is the solver that will be used for the low-level searches
 template<class MultiAgentSolver>
 class SimpleIndependenceDetection {
 public:
     SimpleIndependenceDetection(std::shared_ptr<MultiAgentProblem> problem, std::shared_ptr<MultiAgentSolver> lowLevelSearch, bool CAT = false);
+    virtual std::shared_ptr<Solution> solve();
 
-    std::shared_ptr<Solution> solve();
+    explicit SimpleIndependenceDetection(std::shared_ptr<MultiAgentSolver> lowLevelSearch, bool CAT = false);
+    virtual std::shared_ptr<Solution> solve(std::shared_ptr<MultiAgentProblem> problem);
 
 protected:
     std::shared_ptr<MultiAgentProblem> problem;
