@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include "unordered_map"
+#include <memory>
+#include <vector>
 
 template <class S>
 class AStarProblem {

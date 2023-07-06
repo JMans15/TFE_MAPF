@@ -9,3 +9,7 @@ Makefile
 libTFE_MAPF.a
 TFE_MAPF_test
 TFE_MAPF_visu
+cmake-build
+cmake-build-debug-coverage
+.vim
+Plotting/result*
