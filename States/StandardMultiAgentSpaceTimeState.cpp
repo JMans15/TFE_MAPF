@@ -3,7 +3,6 @@
 //
 
 #include "StandardMultiAgentSpaceTimeState.h"
-#include <sys/types.h>
 
 #include <boost/functional/hash.hpp>
 #include <utility>
