@@ -9,28 +9,20 @@
 
 class SingleAgentState : public State {
 public:
+  explicit SingleAgentState(int position) : position(position) {}
+  ~SingleAgentState() = default;
 
-    explicit SingleAgentState(int position) : position(position) {}
-    ~SingleAgentState() = default;
+  inline std::size_t getHash() const override { return position; }
 
-    inline std::size_t getHash() const override {
-        return position;
-    }
+  inline bool isEqual(const SingleAgentState &other) const {
+    return position == other.position;
+  }
 
-    inline bool isEqual(const SingleAgentState &other) const {
-        return position == other.position;
-    }
-
-    inline int getPosition() const {
-        return position;
-    }
+  inline int getPosition() const { return position; }
 
 private:
-
-    // Position of the agent in this state
-    int position;
-
+  // Position of the agent in this state
+  int position;
 };
 
-
-#endif //TFE_MAPF_SINGLEAGENTSTATE_H
+#endif // TFE_MAPF_SINGLEAGENTSTATE_H

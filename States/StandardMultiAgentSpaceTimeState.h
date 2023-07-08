@@ -9,18 +9,18 @@
 
 class StandardMultiAgentSpaceTimeState : public StandardMultiAgentState {
 public:
+  StandardMultiAgentSpaceTimeState(
+      std::vector<int> positions, int timestep,
+      const std::vector<u_int8_t> &cannotMove = std::vector<u_int8_t>());
 
-    StandardMultiAgentSpaceTimeState(std::vector<int> positions, int timestep, const std::vector<u_int8_t>& cannotMove = std::vector<u_int8_t>());
+  std::size_t getHash() const override;
+  bool isEqual(const StandardMultiAgentSpaceTimeState &other) const;
 
-    std::size_t getHash() const override;
-    bool isEqual(const StandardMultiAgentSpaceTimeState &other) const;
-
-    int getTimestep() const;
+  int getTimestep() const;
 
 private:
-    // Number of timesteps since the agents started
-    int timestep;
+  // Number of timesteps since the agents started
+  int timestep;
 };
 
-
-#endif //TFE_MAPF_STANDARDMULTIAGENTSPACETIMESTATE_H
+#endif // TFE_MAPF_STANDARDMULTIAGENTSPACETIMESTATE_H

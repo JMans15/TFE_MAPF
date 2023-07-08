@@ -9,26 +9,22 @@
 
 class SingleAgentSpaceTimeState : public State {
 public:
+  SingleAgentSpaceTimeState(int position, int timestep);
+  ~SingleAgentSpaceTimeState() = default;
 
-    SingleAgentSpaceTimeState(int position, int timestep);
-    ~SingleAgentSpaceTimeState() = default;
-    
-    std::size_t getHash() const override;
+  std::size_t getHash() const override;
 
-    bool isEqual(const SingleAgentSpaceTimeState &other) const;
+  bool isEqual(const SingleAgentSpaceTimeState &other) const;
 
-    int getPosition() const;
-    int getTimestep() const;
+  int getPosition() const;
+  int getTimestep() const;
 
 private:
+  // Position of the agent in this state
+  int position;
 
-    // Position of the agent in this state
-    int position;
-
-    // Number of timesteps since the agent started
-    int timestep;
-
+  // Number of timesteps since the agent started
+  int timestep;
 };
 
-
-#endif //TFE_MAPF_SINGLEAGENTSPACETIMESTATE_H
+#endif // TFE_MAPF_SINGLEAGENTSPACETIMESTATE_H

@@ -2,8 +2,8 @@ import os
 import subprocess
 import numpy as np
 from matplotlib import pyplot as plt
-from multiprocessing import Pool, freeze_support
-import sys, os
+from multiprocessing import freeze_support
+import os
 import time
 import random
 
@@ -184,13 +184,13 @@ def data_for_algo2(algo):
         if bool:
             data.append(time)
         number_of_instances += 1
-    directory = '../mapf-map/32-32-1/scen-even'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # directory = '../mapf-map/32-32-1/scen-even'
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
 
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
@@ -204,12 +204,12 @@ def data_for_algo2(algo):
             data.append(time)
         number_of_instances += 1
     directory = '../mapf-map/32-32-2/scen-even'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
 
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
@@ -223,69 +223,69 @@ def data_for_algo2(algo):
             data.append(time)
         number_of_instances += 1
     directory = '../mapf-map/32-32-3/scen-even'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
 
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
     args = ['--map', '../mapf-map/32-32-4/random-32-32-10.map']
     directory = '../mapf-map/32-32-4/scen-random'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
     directory = '../mapf-map/32-32-4/scen-even'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
 
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
     args = ['--map', '../mapf-map/32-32-5/random-32-32-20.map']
     directory = '../mapf-map/32-32-5/scen-random'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
-    directory = '../mapf-map/32-32-5/scen-even'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
+    # directory = '../mapf-map/32-32-5/scen-even'
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
 
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-6/room-32-32-4.map']
-    directory = '../mapf-map/32-32-6/scen-random'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # args = ['--map', '../mapf-map/32-32-6/room-32-32-4.map']
+    # directory = '../mapf-map/32-32-6/scen-random'
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
     directory = '../mapf-map/32-32-6/scen-even'
-    files = os.listdir(directory)
-    for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
-        if bool:
-            data.append(time)
-        number_of_instances += 1
+    # files = os.listdir(directory)
+    # for i, filename in enumerate(files):
+    #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+    #     if bool:
+    #         data.append(time)
+    #     number_of_instances += 1
 
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
@@ -297,7 +297,7 @@ def data_for_algo2(algo):
 if __name__ == '__main__':
     freeze_support()
     fig = plt.figure(figsize=(16, 8))
-    ax = fig.subplots(1, 1)
+    ax = fig.subplots(1, 1)[0]
 
     ax.set_title(f"Performance curves (timeout={timeout}s, random scenarios in several 32x32 grids)")
     ax.set_xlabel("Number of solved problems")

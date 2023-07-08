@@ -6,28 +6,28 @@
 #define TFE_MAPF_STANDARDMULTIAGENTSTATE_H
 
 #include "State.h"
+#include <sys/types.h>
 
 class StandardMultiAgentState : public State {
 public:
+  explicit StandardMultiAgentState(
+      const std::vector<int> &positions,
+      const std::vector<u_int8_t> &cannotMove = std::vector<u_int8_t>());
 
-    explicit StandardMultiAgentState(const std::vector<int>& positions, const std::vector<u_int8_t>& cannotMove = std::vector<u_int8_t>());
+  std::size_t getHash() const override;
+  bool isEqual(const StandardMultiAgentState &other) const;
 
-    std::size_t getHash() const override;
-    bool isEqual(const StandardMultiAgentState &other) const;
-
-    std::vector<int> getPositions() const;
-    std::vector<u_int8_t> getCannotMove() const;
+  std::vector<int> getPositions() const;
+  std::vector<u_int8_t> getCannotMove() const;
 
 protected:
+  // The positions of every agent in this state.
+  std::vector<int> positions;
 
-    // The positions of every agent in this state.
-    std::vector<int> positions;
-
-    // vector of size numberOfAgents
-    // cannotMove[i] is true if agent i is at its target position
-    // and cannot move anymore (for the SumOfCosts objective function)
-    std::vector<u_int8_t> cannotMove;
+  // vector of size numberOfAgents
+  // cannotMove[i] is true if agent i is at its target position
+  // and cannot move anymore (for the SumOfCosts objective function)
+  std::vector<u_int8_t> cannotMove;
 };
 
-
-#endif //TFE_MAPF_STANDARDMULTIAGENTSTATE_H
+#endif // TFE_MAPF_STANDARDMULTIAGENTSTATE_H

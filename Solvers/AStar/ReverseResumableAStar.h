@@ -5,43 +5,56 @@
 #ifndef TFE_MAPF_REVERSERESUMABLEASTAR_H
 #define TFE_MAPF_REVERSERESUMABLEASTAR_H
 
+#include "../../AStarProblems/SingleAgentAStarProblem.h"
 #include "../../Heuristics/HeuristicManhattan.h"
 #include "Node.h"
-#include "../../AStarProblems/SingleAgentAStarProblem.h"
 
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>
 
-template <class S>
-class Heuristic;
+template <class S> class Heuristic;
 
 // Reverse Resumable A* search
 // Only for single agent problem
-// Consists of a single agent search where the beginning of the search is the goal state (target position) of the problem
-// Possibility to continue the search (with the resume method) even when the start state of the problem is goal tested
+// Consists of a single agent search where the beginning of the search is the
+// goal state (target position) of the problem Possibility to continue the
+// search (with the resume method) even when the start state of the problem is
+// goal tested
 // (https://www.davidsilver.uk/wp-content/uploads/2020/03/coop-path-AIWisdom.pdf)
 // We don't take into account the maxCost attribute of problem
 class ReverseResumableAStar {
 public:
-    explicit ReverseResumableAStar(std::shared_ptr<SingleAgentAStarProblem> problem);
+  explicit ReverseResumableAStar(
+      std::shared_ptr<SingleAgentAStarProblem> problem);
 
-    // Continues the search from target to start until state is met
-    // Returns the optimal cost between goal state and state
-    int resume(const std::shared_ptr<SingleAgentState>& state);
+  // Continues the search from target to start until state is met
+  // Returns the optimal cost between goal state and state
+  int resume(const std::shared_ptr<SingleAgentState> &state);
 
-    // Returns the optimal distance (walls are taken into account) between position and target
-    int optimalDistance(int position);
+  // Returns the optimal distance (walls are taken into account) between
+  // position and target
+  int optimalDistance(int position);
 
-    std::unordered_map<std::shared_ptr<SingleAgentState>, int, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> getDistance();
+  std::unordered_map<std::shared_ptr<SingleAgentState>, int,
+                     StateHasher<SingleAgentState>,
+                     StateEquality<SingleAgentState>>
+  getDistance();
 
 private:
-    std::shared_ptr<SingleAgentAStarProblem> problem;
-    std::shared_ptr<Heuristic<SingleAgentState>> heuristic;
-    std::multiset<std::shared_ptr<Node<SingleAgentState>>, NodeComparator<SingleAgentState>> fringe;
-    std::unordered_map<std::shared_ptr<SingleAgentState>, int, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> distance;
-    std::unordered_set<std::shared_ptr<SingleAgentState>, StateHasher<SingleAgentState>, StateEquality<SingleAgentState>> closed;
+  std::shared_ptr<SingleAgentAStarProblem> problem;
+  std::shared_ptr<Heuristic<SingleAgentState>> heuristic;
+  std::multiset<std::shared_ptr<Node<SingleAgentState>>,
+                NodeComparator<SingleAgentState>>
+      fringe;
+  std::unordered_map<std::shared_ptr<SingleAgentState>, int,
+                     StateHasher<SingleAgentState>,
+                     StateEquality<SingleAgentState>>
+      distance;
+  std::unordered_set<std::shared_ptr<SingleAgentState>,
+                     StateHasher<SingleAgentState>,
+                     StateEquality<SingleAgentState>>
+      closed;
 };
 
-
-#endif //TFE_MAPF_REVERSERESUMABLEASTAR_H
+#endif // TFE_MAPF_REVERSERESUMABLEASTAR_H

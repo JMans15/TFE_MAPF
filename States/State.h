@@ -11,21 +11,20 @@
 
 class State {
 public:
-    virtual std::size_t getHash() const = 0;
+  virtual std::size_t getHash() const = 0;
 };
 
-template<class S>
-struct StateHasher {
-    std::size_t operator()(const std::shared_ptr<S> &state) const {
-        return state->getHash();
-    }
+template <class S> struct StateHasher {
+  std::size_t operator()(const std::shared_ptr<S> &state) const {
+    return state->getHash();
+  }
 };
 
-template<class S>
-struct StateEquality {
-    bool operator()(const std::shared_ptr<S> &a, const std::shared_ptr<S> &b) const {
-        return a->isEqual(*b);
-    }
+template <class S> struct StateEquality {
+  bool operator()(const std::shared_ptr<S> &a,
+                  const std::shared_ptr<S> &b) const {
+    return a->isEqual(*b);
+  }
 };
 
-#endif //TFE_MAPF_STATE_H
+#endif // TFE_MAPF_STATE_H
