@@ -3,6 +3,7 @@
 //
 
 #include "MultiAgentProblem.h"
+#include <algorithm>
 
 MultiAgentProblem::MultiAgentProblem(
     const std::shared_ptr<Graph> &graph, std::vector<int> starts,
