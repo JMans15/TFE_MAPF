@@ -124,7 +124,7 @@ int main(int argc, const char **argv) {
   // Parsing the graph from the map file
   auto g = Parser::parse(file.c_str());
   std::shared_ptr<Solution> solution;
-  int w;
+  int w = 0;
 
   auto scenfile = std::filesystem::path(result["scen"].as<std::string>());
   if (scenfile.extension() != ".scen") {
@@ -142,8 +142,7 @@ int main(int argc, const char **argv) {
   string line;
   getline(infile, line);
   std::vector<int> starts, targets;
-  int n, h, sx, sy, tx, ty;
-  double d;
+  int sx, sy, tx, ty;
   std::string map;
   int count = 0;
   while (getline(infile, line)) {
@@ -152,7 +151,7 @@ int main(int argc, const char **argv) {
     ss.str(line);
     std::string item;
     getline(ss, item, '\t');
-    n = stoi(item);
+    // n = stoi(item);
     getline(ss, item, '\t');
     if (map_filename != item) {
       printf("The map file doesn't correspond to the scen file");
@@ -161,7 +160,7 @@ int main(int argc, const char **argv) {
     getline(ss, item, '\t');
     w = stoi(item);
     getline(ss, item, '\t');
-    h = stoi(item);
+    // h = stoi(item);
     getline(ss, item, '\t');
     sx = stoi(item);
     getline(ss, item, '\t');

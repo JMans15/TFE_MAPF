@@ -46,12 +46,12 @@ ConflictBasedSearch::planIndividualPaths() {
     }
     if (CAT) {
       vector<int> pathOfAgent = solution->getPathOfAgent(agentId);
-      for (int t = 0; t < pathOfAgent.size(); t++) {
-        vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
+      for (long unsigned int t = 0; t < pathOfAgent.size(); t++) {
+        vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], (int)t});
       }
-      for (int t = 1; t < pathOfAgent.size(); t++) {
+      for (long unsigned int t = 1; t < pathOfAgent.size(); t++) {
         edgeConflictAvoidanceTable.insert(
-            {agentId, pathOfAgent[t], pathOfAgent[t - 1], t});
+            {agentId, pathOfAgent[t], pathOfAgent[t - 1], (int)t});
         // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1],
         // pathOfAgent[t], t});
       }
@@ -74,25 +74,25 @@ std::set<AgentConflict> ConflictBasedSearch::calculateSetOfConflicts(
     for (auto [agentB, pathB] : solutions) {
       if (agentA != agentB and pathA.size() <= pathB.size()) {
         // Vertex conflict
-        for (int t = 0; t < pathA.size(); t++) {
+        for (long unsigned int t = 0; t < pathA.size(); t++) {
           if (pathA[t] == pathB[t]) {
-            setOfConflicts.insert({agentA, agentB, pathA[t], t});
+            setOfConflicts.insert({agentA, agentB, pathA[t], (int)t});
           }
         }
         int targetA = problem->getTargetOf(agentA);
-        for (int t = pathA.size(); t < pathB.size(); t++) {
+        for (long unsigned int t = pathA.size(); t < pathB.size(); t++) {
           if (targetA == pathB[t]) {
-            setOfConflicts.insert({agentA, agentB, targetA, t});
+            setOfConflicts.insert({agentA, agentB, targetA, (int)t});
           }
         }
         // Edge conflict
-        for (int t = 0; t < pathA.size() - 1; t++) {
+        for (long unsigned int t = 0; t < pathA.size() - 1; t++) {
           // We only add an edge conflict if 2 agents are traversing the edge
           // with different directions The other case is already token into
           // account with 2 vertex conflicts
           if (pathA[t] == pathB[t + 1] and pathA[t + 1] == pathB[t]) {
             setOfConflicts.insert(
-                {agentA, agentB, pathA[t], pathA[t + 1], t + 1});
+                {agentA, agentB, pathA[t], pathA[t + 1], (int)t + 1});
           }
         }
       }
@@ -115,32 +115,33 @@ std::set<AgentConflict> ConflictBasedSearch::updateSetOfConflicts(
     if (agentA != agentId) {
       // Vertex conflict
       if (pathA.size() < newPath.size()) {
-        for (int t = 0; t < pathA.size(); t++) {
+        for (long unsigned int t = 0; t < pathA.size(); t++) {
           if (pathA[t] == newPath[t]) {
-            successorSetOfConflicts.insert({agentA, agentId, pathA[t], t});
+            successorSetOfConflicts.insert({agentA, agentId, pathA[t], (int)t});
           }
         }
         int targetA = problem->getTargetOf(agentA);
-        for (int t = pathA.size(); t < newPath.size(); t++) {
+        for (int t = pathA.size(); t < (int)newPath.size(); t++) {
           if (targetA == newPath[t]) {
             successorSetOfConflicts.insert({agentA, agentId, targetA, t});
           }
         }
       } else {
-        for (int t = 0; t < newPath.size(); t++) {
+        for (int t = 0; t < (int)newPath.size(); t++) {
           if (pathA[t] == newPath[t]) {
             successorSetOfConflicts.insert({agentA, agentId, pathA[t], t});
           }
         }
         int target = problem->getTargetOf(agentId);
-        for (int t = newPath.size(); t < pathA.size(); t++) {
+        for (int t = newPath.size(); t < (int)pathA.size(); t++) {
           if (pathA[t] == target) {
             successorSetOfConflicts.insert({agentA, agentId, pathA[t], t});
           }
         }
       }
       // Edge conflict
-      for (int t = 0; t < std::min(pathA.size(), newPath.size()) - 1; t++) {
+      for (int t = 0; t < (int)std::min(pathA.size(), newPath.size()) - 1;
+           t++) {
         if (pathA[t] == newPath[t + 1] and pathA[t + 1] == newPath[t]) {
           successorSetOfConflicts.insert(
               {agentA, agentId, pathA[t], pathA[t + 1], t + 1});
@@ -352,10 +353,10 @@ std::shared_ptr<Solution> ConflictBasedSearch::solve() {
         problem->getSetOfSoftEdgeConstraints();
     if (CAT) {
       for (auto [agent, pathOfAgent] : fullSolutions) {
-        for (int t = 0; t < pathOfAgent.size(); t++) {
+        for (int t = 0; t < (int)pathOfAgent.size(); t++) {
           vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
         }
-        for (int t = 1; t < pathOfAgent.size(); t++) {
+        for (int t = 1; t < (int)pathOfAgent.size(); t++) {
           edgeConflictAvoidanceTable.insert(
               {agent, pathOfAgent[t], pathOfAgent[t - 1], t});
           // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1],
@@ -574,10 +575,10 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
     if (CAT) {
       for (auto [agent, pathOfAgent] : fullSolutions) {
         if (agent != agentId) {
-          for (int t = 0; t < pathOfAgent.size(); t++) {
+          for (int t = 0; t < (int)pathOfAgent.size(); t++) {
             vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
           }
-          for (int t = 1; t < pathOfAgent.size(); t++) {
+          for (int t = 1; t < (int)pathOfAgent.size(); t++) {
             edgeConflictAvoidanceTable.insert(
                 {agent, pathOfAgent[t], pathOfAgent[t - 1], t});
             // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1],
@@ -633,7 +634,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
       successorSolution[agentId] = fullSolutions[agentId];
       auto newPath = solution->getPathOfAgent(agentId);
       if (t2 != INT_MAX) {
-        for (int t = 1; t < newPath.size(); t++) {
+        for (int t = 1; t < (int)newPath.size(); t++) {
           successorSolution[agentId][t + t1] = newPath[t];
         }
         if (t1 + solution->getMakespanCost() < t2) {
@@ -643,11 +644,11 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
         }
       } else {
         // Last interval
-        for (int t = 1; t + t1 < successorSolution[agentId].size(); t++) {
+        for (int t = 1; t + t1 < (int)successorSolution[agentId].size(); t++) {
           successorSolution[agentId][t + t1] = newPath[t];
         }
-        for (int t = successorSolution[agentId].size() - t1; t < newPath.size();
-             t++) {
+        for (int t = successorSolution[agentId].size() - t1;
+             t < (int)newPath.size(); t++) {
           successorSolution[agentId].emplace_back(newPath[t]);
         }
       }
@@ -794,10 +795,10 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
     edgeConflictAvoidanceTable = problem->getSetOfSoftEdgeConstraints();
     if (CAT) {
       for (auto [agent, pathOfAgent] : fullSolutions) {
-        for (int t = 0; t < pathOfAgent.size(); t++) {
+        for (int t = 0; t < (int)pathOfAgent.size(); t++) {
           vertexConflictAvoidanceTable.insert({agent, pathOfAgent[t], t});
         }
-        for (int t = 1; t < pathOfAgent.size(); t++) {
+        for (int t = 1; t < (int)pathOfAgent.size(); t++) {
           edgeConflictAvoidanceTable.insert(
               {agent, pathOfAgent[t], pathOfAgent[t - 1], t});
           // edgeConflictAvoidanceTable.insert({agent, pathOfAgent[t-1],
@@ -808,7 +809,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
     std::unordered_map<int, int> successorCosts;
     std::unordered_map<int, std::vector<int>> successorSolution;
     auto successorSetOfConflicts = node->getSetOfConflicts();
-    bool solutionOk;
+    bool solutionOk = false;
     for (auto agentK : agentsToReplan) {
       // Find the interval to replan between 2 landmarks
       auto next = setOfPositiveConstraints.lower_bound(
@@ -854,7 +855,7 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
         successorSolution[agentK] = oldFullSolutions[agentK];
         auto newPath = solution->getPathOfAgent(agentK);
         if (t2 != INT_MAX) {
-          for (int t = 1; t < newPath.size(); t++) {
+          for (int t = 1; t < (int)newPath.size(); t++) {
             successorSolution[agentK][t + t1] = newPath[t];
           }
           if (t1 + solution->getMakespanCost() < t2) {
@@ -864,11 +865,11 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
           }
         } else {
           // Last interval
-          for (int t = 1; t + t1 < successorSolution[agentK].size(); t++) {
+          for (int t = 1; t + t1 < (int)successorSolution[agentK].size(); t++) {
             successorSolution[agentK][t + t1] = newPath[t];
           }
           for (int t = successorSolution[agentK].size() - t1;
-               t < newPath.size(); t++) {
+               t < (int)newPath.size(); t++) {
             successorSolution[agentK].emplace_back(newPath[t]);
           }
         }
@@ -883,11 +884,11 @@ std::shared_ptr<Solution> ConflictBasedSearch::disjointSplittingSolve() {
             updateSetOfConflicts(fullSolutions, successorSetOfConflicts, agentK,
                                  successorSolution[agentK]);
         if (CAT) {
-          for (int t = 0; t < fullSolutions[agentK].size(); t++) {
+          for (int t = 0; t < (int)fullSolutions[agentK].size(); t++) {
             vertexConflictAvoidanceTable.insert(
                 {agentK, fullSolutions[agentK][t], t});
           }
-          for (int t = 1; t < fullSolutions[agentK].size(); t++) {
+          for (int t = 1; t < (int)fullSolutions[agentK].size(); t++) {
             edgeConflictAvoidanceTable.insert({agentK, fullSolutions[agentK][t],
                                                fullSolutions[agentK][t - 1],
                                                t});

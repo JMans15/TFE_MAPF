@@ -44,11 +44,11 @@ bool IndependenceDetection<MultiAgentSolver>::replanGroupAAvoidingGroupB(
   for (auto a : groupB->getSolution()->getPositions()) {
     vector<int> pathOfAgent = a.second;
     for (int agentA : groupA->getAgents()) {
-      for (int t = 0; t < pathOfAgent.size(); t++) {
+      for (int t = 0; t < (int)pathOfAgent.size(); t++) {
         // agent cannot go at position pathofagent[t] at time t
         vertexIllegalTable.insert({agentA, pathOfAgent[t], t});
       }
-      for (int t = 1; t < pathOfAgent.size(); t++) {
+      for (int t = 1; t < (int)pathOfAgent.size(); t++) {
         // to avoid edge conflict
         edgeIllegalTable.insert(
             {agentA, pathOfAgent[t], pathOfAgent[t - 1], t});
@@ -107,10 +107,10 @@ bool IndependenceDetection<MultiAgentSolver>::replanGroupAAvoidingGroupB(
         }
       }
       for (auto [agentId, pathOfAgent] : solution->getPositions()) {
-        for (int t = 0; t < pathOfAgent.size(); t++) {
+        for (int t = 0; t < (int)pathOfAgent.size(); t++) {
           vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
         }
-        for (int t = 1; t < pathOfAgent.size(); t++) {
+        for (int t = 1; t < (int)pathOfAgent.size(); t++) {
           edgeConflictAvoidanceTable.insert(
               {agentId, pathOfAgent[t], pathOfAgent[t - 1], t});
           // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1],
@@ -135,32 +135,33 @@ bool IndependenceDetection<MultiAgentSolver>::replanGroupAAvoidingGroupB(
           for (auto [agentA, pathA] : groupA->getSolution()->getPositions()) {
             // Vertex conflict
             if (pathA.size() < path.size()) {
-              for (int t = 0; t < pathA.size(); t++) {
+              for (int t = 0; t < (int)pathA.size(); t++) {
                 if (pathA[t] == path[t]) {
                   setOfConflicts.insert({group, groupA, t});
                 }
               }
               int targetA = problem->getTargetOf(agentA);
-              for (int t = pathA.size(); t < path.size(); t++) {
+              for (int t = pathA.size(); t < (int)path.size(); t++) {
                 if (targetA == path[t]) {
                   setOfConflicts.insert({group, groupA, t});
                 }
               }
             } else {
-              for (int t = 0; t < path.size(); t++) {
+              for (int t = 0; t < (int)path.size(); t++) {
                 if (pathA[t] == path[t]) {
                   setOfConflicts.insert({group, groupA, t});
                 }
               }
               int target = problem->getTargetOf(agent);
-              for (int t = path.size(); t < pathA.size(); t++) {
+              for (int t = path.size(); t < (int)pathA.size(); t++) {
                 if (pathA[t] == target) {
                   setOfConflicts.insert({group, groupA, t});
                 }
               }
             }
             // Edge conflict
-            for (int t = 0; t < std::min(path.size(), pathA.size()) - 1; t++) {
+            for (int t = 0; t < (int)std::min(path.size(), pathA.size()) - 1;
+                 t++) {
               if (path[t] == pathA[t + 1] and path[t + 1] == pathA[t]) {
                 setOfConflicts.insert({group, groupA, t + 1});
               }

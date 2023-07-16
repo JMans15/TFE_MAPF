@@ -54,10 +54,10 @@ bool SimpleIndependenceDetection<MultiAgentSolver>::planSingletonGroups() {
     group->putSolution(solution);
     if (CAT) {
       vector<int> pathOfAgent = solution->getPositions().begin()->second;
-      for (int t = 0; t < pathOfAgent.size(); t++) {
+      for (int t = 0; t < (int)pathOfAgent.size(); t++) {
         vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
       }
-      for (int t = 1; t < pathOfAgent.size(); t++) {
+      for (int t = 1; t < (int)pathOfAgent.size(); t++) {
         edgeConflictAvoidanceTable.insert(
             {agentId, pathOfAgent[t], pathOfAgent[t - 1], t});
         // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1],
@@ -77,19 +77,19 @@ void SimpleIndependenceDetection<MultiAgentSolver>::calculateSetOfConflicts() {
           for (auto [agentB, pathB] : groupB->getSolution()->getPositions()) {
             if (agentA != agentB and pathA.size() <= pathB.size()) {
               // Vertex conflict
-              for (int t = 0; t < pathA.size(); t++) {
+              for (int t = 0; t < (int)pathA.size(); t++) {
                 if (pathA[t] == pathB[t]) {
                   setOfConflicts.insert({groupA, groupB, t});
                 }
               }
               int targetA = problem->getTargetOf(agentA);
-              for (int t = pathA.size(); t < pathB.size(); t++) {
+              for (int t = pathA.size(); t < (int)pathB.size(); t++) {
                 if (targetA == pathB[t]) {
                   setOfConflicts.insert({groupA, groupB, t});
                 }
               }
               // Edge conflict
-              for (int t = 0; t < pathA.size() - 1; t++) {
+              for (int t = 0; t < (int)pathA.size() - 1; t++) {
                 // We only add an edge conflict if 2 agents are traversing the
                 // edge with different directions The other case is already
                 // token into account with 2 vertex conflicts
@@ -157,10 +157,10 @@ bool SimpleIndependenceDetection<MultiAgentSolver>::mergeGroupsAndPlanNewGroup(
   newGroup->putSolution(solution);
   if (CAT) {
     for (auto [agentId, pathOfAgent] : solution->getPositions()) {
-      for (int t = 0; t < pathOfAgent.size(); t++) {
+      for (int t = 0; t < (int)pathOfAgent.size(); t++) {
         vertexConflictAvoidanceTable.insert({agentId, pathOfAgent[t], t});
       }
-      for (int t = 1; t < pathOfAgent.size(); t++) {
+      for (int t = 1; t < (int)pathOfAgent.size(); t++) {
         edgeConflictAvoidanceTable.insert(
             {agentId, pathOfAgent[t], pathOfAgent[t - 1], t});
         // edgeConflictAvoidanceTable.insert({agentId, pathOfAgent[t-1],
@@ -187,32 +187,33 @@ bool SimpleIndependenceDetection<MultiAgentSolver>::mergeGroupsAndPlanNewGroup(
         for (auto [agentB, pathB] : newGroup->getSolution()->getPositions()) {
           // Vertex conflict
           if (pathA.size() < pathB.size()) {
-            for (int t = 0; t < pathA.size(); t++) {
+            for (int t = 0; t < (int)pathA.size(); t++) {
               if (pathA[t] == pathB[t]) {
                 setOfConflicts.insert({group, newGroup, t});
               }
             }
             int targetA = problem->getTargetOf(agentA);
-            for (int t = pathA.size(); t < pathB.size(); t++) {
+            for (int t = pathA.size(); t < (int)pathB.size(); t++) {
               if (targetA == pathB[t]) {
                 setOfConflicts.insert({group, newGroup, t});
               }
             }
           } else {
-            for (int t = 0; t < pathB.size(); t++) {
+            for (int t = 0; t < (int)pathB.size(); t++) {
               if (pathA[t] == pathB[t]) {
                 setOfConflicts.insert({group, newGroup, t});
               }
             }
             int targetB = problem->getTargetOf(agentB);
-            for (int t = pathB.size(); t < pathA.size(); t++) {
+            for (int t = pathB.size(); t < (int)pathA.size(); t++) {
               if (pathA[t] == targetB) {
                 setOfConflicts.insert({group, newGroup, t});
               }
             }
           }
           // Edge conflict
-          for (int t = 0; t < std::min(pathA.size(), pathB.size()) - 1; t++) {
+          for (int t = 0; t < (int)std::min(pathA.size(), pathB.size()) - 1;
+               t++) {
             if (pathA[t] == pathB[t + 1] and pathA[t + 1] == pathB[t]) {
               setOfConflicts.insert({group, newGroup, t + 1});
             }
