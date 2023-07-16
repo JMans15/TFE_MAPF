@@ -51,21 +51,21 @@ public:
   std::set<AgentConflict> getSetOfConflicts() const { return setOfConflicts; }
 
 private:
-  std::shared_ptr<ConflictTreeNode> parent; // parent node
   std::shared_ptr<EdgeConstraint>
       edgeConstraint; // constraint added in this node : either edgeConstraint
                       // is a nullptr, either vertexConstraint is a nullptr
   std::shared_ptr<VertexConstraint> vertexConstraint;
-
-  // solution and costs only contains the path (and its path) of the agent that
-  // just has been replanned but they contain the paths of all agents in the
-  // root node
   std::unordered_map<int, std::vector<int>>
       solution; // key = id of the agent, value = path of this agent
   std::unordered_map<int, int>
       costs; // key = id of the agent, value = cost of the path for this agent
+  int cost;  // cost of the current solution, the f-value of the node
+  std::shared_ptr<ConflictTreeNode> parent; // parent node
 
-  int cost; // cost of the current solution, the f-value of the node
+  // solution and costs only contains the path (and its path) of the agent that
+  // just has been replanned but they contain the paths of all agents in the
+  // root node
+
   std::set<AgentConflict> setOfConflicts; // set of conflicts (between the
                                           // paths) in the current solution
 };

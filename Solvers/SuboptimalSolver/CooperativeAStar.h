@@ -89,16 +89,16 @@ public:
         // We force that the next agents cannot go where the already planned
         // agents go
         for (int agent = a + 1; agent < problem->getNumberOfAgents(); agent++) {
-          for (int t = 0; t < pathOfAgent.size(); t++) {
+          for (long unsigned int t = 0; t < pathOfAgent.size(); t++) {
             // agent cannot go at position pathofagent[t] at time t
             verticesReservationTable.insert(
-                {problem->getAgentIds()[agent], pathOfAgent[t], t});
+                {problem->getAgentIds()[agent], pathOfAgent[t], (int)t});
           }
-          for (int t = 1; t < pathOfAgent.size(); t++) {
+          for (long unsigned int t = 1; t < pathOfAgent.size(); t++) {
             // to avoid edge conflict
             edgesReservationTable.insert({problem->getAgentIds()[agent],
                                           pathOfAgent[t], pathOfAgent[t - 1],
-                                          t});
+                                          (int)t});
           }
         }
         numberOfTimesteps =
@@ -114,7 +114,7 @@ public:
     }
     // We put the paths in the right format
     for (int agentId : problem->getAgentIds()) {
-      while (positions[agentId].size() < numberOfTimesteps) {
+      while ((int)positions[agentId].size() < numberOfTimesteps) {
         positions[agentId].emplace_back(problem->getTargetOf(agentId));
       }
     }

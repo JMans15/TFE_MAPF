@@ -26,7 +26,7 @@ public:
 
   bool operator==(Group other) const { return agents == other.getAgents(); }
 
-  const std::size_t getHash() const {
+  std::size_t getHash() const {
     std::size_t hash_value = agents.size();
     for (int agent : agents) {
       hash_value ^= std::hash<int>()(agent) + 0x9e3779b9 + (hash_value << 6) +

@@ -57,9 +57,8 @@ private:
   int agent1;
   int agent2;
   int position1;
-  int time;
-
   int position2;
+  int time;
 };
 
 #endif // TFE_MAPF_AGENTCONFLICT_H

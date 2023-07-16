@@ -69,7 +69,7 @@ public:
   int heuristicFunction(std::shared_ptr<S> state) override {
     int sum = 0;
     auto positions = state->getPositions();
-    for (int i = 0; i < positions.size(); i++) {
+    for (long unsigned int i = 0; i < positions.size(); i++) {
       sum += manhattanDistance(positions[i], targets[i], width);
     }
     return sum;
@@ -98,7 +98,8 @@ public:
       maxDistance = std::max(
           maxDistance, manhattanDistance(positions[i], targets[i], width));
     }
-    for (int i = state->getAgentToAssign(); i < positions.size(); i++) {
+    for (long unsigned int i = state->getAgentToAssign(); i < positions.size();
+         i++) {
       maxDistance = std::max(
           maxDistance, manhattanDistance(positions[i], targets[i], width) - 1);
     }
@@ -120,7 +121,7 @@ public:
   int heuristicFunction(std::shared_ptr<S> state) {
     int maxDistance = 0;
     auto positions = state->getPositions();
-    for (int i = 0; i < positions.size(); i++) {
+    for (long unsigned int i = 0; i < positions.size(); i++) {
       maxDistance = std::max(
           maxDistance, manhattanDistance(positions[i], targets[i], width));
     }

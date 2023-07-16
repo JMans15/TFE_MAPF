@@ -27,9 +27,9 @@ public:
 
 private:
   std::shared_ptr<S> state;        // state of the node
-  std::shared_ptr<Node<S>> parent; // parent node
   int cost;                        // path cost
   int heuristic;                   // heuristic value
+  std::shared_ptr<Node<S>> parent; // parent node
   int violationCount; // number of soft constraints that have been violated on
                       // the path leading up to this node
 };

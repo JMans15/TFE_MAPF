@@ -44,7 +44,7 @@ class SIOCheuristic : public Heuristic<S> {
 public:
   SIOCheuristic(std::vector<int> starts, std::vector<int> targets,
                 std::shared_ptr<Graph> graph) {
-    for (int i = 0; i < starts.size(); i++) {
+    for (long unsigned int i = 0; i < starts.size(); i++) {
       auto prob = std::make_shared<SingleAgentAStarProblem>(
           std::make_shared<SingleAgentProblem>(graph, starts[i], targets[i]));
       rraStarSearches.push_back(std::make_shared<ReverseResumableAStar>(prob));
@@ -54,7 +54,7 @@ public:
   int heuristicFunction(std::shared_ptr<S> state) {
     int sum = 0;
     auto positions = state->getPositions();
-    for (int i = 0; i < positions.size(); i++) {
+    for (long unsigned int i = 0; i < positions.size(); i++) {
       sum += rraStarSearches[i]->optimalDistance(positions[i]);
     }
     return sum;
@@ -76,7 +76,7 @@ class MIOCheuristic : public Heuristic<S> {
 public:
   MIOCheuristic(std::vector<int> starts, std::vector<int> targets,
                 std::shared_ptr<Graph> graph) {
-    for (int i = 0; i < starts.size(); i++) {
+    for (long unsigned int i = 0; i < starts.size(); i++) {
       auto prob = std::make_shared<SingleAgentAStarProblem>(
           std::make_shared<SingleAgentProblem>(graph, starts[i], targets[i]));
       rraStarSearches.push_back(std::make_shared<ReverseResumableAStar>(prob));
@@ -90,7 +90,8 @@ public:
       maxDistance = std::max(maxDistance,
                              rraStarSearches[i]->optimalDistance(positions[i]));
     }
-    for (int i = state->getAgentToAssign(); i < positions.size(); i++) {
+    for (long unsigned int i = state->getAgentToAssign(); i < positions.size();
+         i++) {
       maxDistance = std::max(
           maxDistance, rraStarSearches[i]->optimalDistance(positions[i]) - 1);
     }
@@ -107,7 +108,7 @@ class MIOCheuristic2 : public Heuristic<S> {
 public:
   MIOCheuristic2(std::vector<int> starts, std::vector<int> targets,
                  std::shared_ptr<Graph> graph) {
-    for (int i = 0; i < starts.size(); i++) {
+    for (long unsigned int i = 0; i < starts.size(); i++) {
       auto prob = std::make_shared<SingleAgentAStarProblem>(
           std::make_shared<SingleAgentProblem>(graph, starts[i], targets[i]));
       rraStarSearches.push_back(std::make_shared<ReverseResumableAStar>(prob));
@@ -117,7 +118,7 @@ public:
   int heuristicFunction(std::shared_ptr<S> state) {
     int maxDistance = 0;
     auto positions = state->getPositions();
-    for (int i = 0; i < positions.size(); i++) {
+    for (long unsigned int i = 0; i < positions.size(); i++) {
       maxDistance = std::max(maxDistance,
                              rraStarSearches[i]->optimalDistance(positions[i]));
     }
