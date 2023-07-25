@@ -1,8 +1,10 @@
-from multiprocessing import Pool, freeze_support, current_process
 import os
 import subprocess
-from matplotlib import pyplot as plt
 import time
+from multiprocessing import Pool, current_process, freeze_support  # noqa: F401
+
+from matplotlib import pyplot as plt
+
 import utils
 
 program = "../cmake-build/TFE_MAPF_visu"
@@ -43,9 +45,6 @@ errors = []
 
 def run_program(a, i, algo, to):
     try:
-        # print(
-        #     f"{program} --scen {problems[i][1]} --map {problems[i][0]} -n {a} -a {algo} --outfile ../Plotting/result_{algo}_{current_process().name}_{i}.txt"
-        # )
         ok = subprocess.run(
             [
                 program,
