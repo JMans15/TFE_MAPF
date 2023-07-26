@@ -74,23 +74,30 @@ def run_and_check(a, i, algo, to, problem):
 
 
 def get_alg_perf(alg, timeout, i, problem, nagents):
-    print(alg, nagents, problem[1])
-    start = time.time()
-    ok = run_and_check(nagents, i, alg, timeout, problem)
-    now = time.time()
-    return (ok, now - start)
+    results = []
+    for n in nagents:
+        print(alg, n, problem[1])
+        start = time.time()
+        ok = run_and_check(n, i, alg, timeout, problem)
+        now = time.time()
+        results.append((ok, now - start))
+        if not ok:
+            break
+    for _ in range(len(nagents) - len(results)):
+        results.append((False, timeout))
+    return results
 
 
 if __name__ == "__main__":
     freeze_support()
-    nagents = np.arange(1, 51, 1, dtype=int)
+    nagents = np.arange(5, 55, 5, dtype=int)
     tmax = 30
     num_threads = 1
     algs = [
         "AStar",
         "CBS",
         "CBSCAT",
-        "Coop",
+        # "Coop",
         "ID",
         "IDCAT",
         "SID",
@@ -119,14 +126,12 @@ if __name__ == "__main__":
     results = np.array(
         [
             [
-                [
-                    pool.apply_async(get_alg_perf, args=(a, tmax, i, p, n))
-                    for n in nagents
-                ]
+                pool.apply_async(get_alg_perf, args=(a, tmax, i, p, nagents))
                 for a in algs
             ]
             for i, p in enumerate(problems)
         ]
     )
-    results = np.array([[[r.get() for r in b] for b in a] for a in results])
+    results = np.array([[r.get() for r in a] for a in results])
+    print(results)
     np.save("results.npy", results)
