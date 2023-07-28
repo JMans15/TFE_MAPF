@@ -92,7 +92,25 @@ if __name__ == "__main__":
     freeze_support()
     nagents = np.arange(5, 55, 5, dtype=int)
     tmax = 30
-    num_threads = 12
+    num_threads = 1
+    algs = [
+        "AStar",
+        "CBS",
+        "CBSCAT",
+        # "Coop",
+        "ID",
+        "IDCAT",
+        "SID",
+        "SIDCAT",
+        "DSCBS",
+        "StandardAStar",
+        "EID",
+        "SIDAStar",
+        "SIDCBS",
+        "SIDCATAStar",
+        "SIDCATCBS",
+        "DSCBSCAT",
+    ]
 
     maps = [
         "../mapf-map/32-32-1",
@@ -108,15 +126,13 @@ if __name__ == "__main__":
     pool = Pool(num_threads)
     results = np.array(
         [
-            pool.apply_async(get_alg_perf, args=("DSCBSCAT", tmax, i, p, nagents))
+            [
+                pool.apply_async(get_alg_perf, args=(a, tmax, i, p, nagents))
+                for a in algs
+            ]
             for i, p in enumerate(problems)
         ]
     )
-    mat = np.load("results.npy")
-    results = np.array([r.get() for r in results])
-
-    newmat = np.empty((350, 15, 10, 2))
-    newmat[:, :-1, :, :] = mat
-    newmat[:, -1, :, :] = results
-    print(newmat)
-    np.save("results2.npy", newmat)
+    results = np.array([[r.get() for r in a] for a in results])
+    print(results)
+    np.save("results.npy", results)
