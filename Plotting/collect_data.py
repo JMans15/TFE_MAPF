@@ -104,12 +104,14 @@ if __name__ == "__main__":
         "SIDCAT",
         "DSCBS",
         "StandardAStar",
-        "EID",
+        "IDCBS",
         "SIDAStar",
         "SIDCBS",
         "SIDCATAStar",
         "SIDCATCBS",
         "DSCBSCAT",
+        "IDCBS",
+        "IDCBSCAT",
     ]
 
     maps = [

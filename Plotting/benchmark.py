@@ -32,12 +32,14 @@ def extract_problems(maps):
     return problems
 
 
-def run_and_check(a, i, algo, to, problem):
+def run_and_check(a, i, algo, to, problem, heuristic="Optimal"):
     try:
         filename = f"../Plotting/result_{algo}_{i}_{a}.txt"
         ok = subprocess.run(
             [
                 program,
+                "--heuristic",
+                heuristic,
                 "--scen",
                 f"{problem[1]}",
                 "--map",
@@ -73,12 +75,12 @@ def run_and_check(a, i, algo, to, problem):
         return False
 
 
-def get_alg_perf(alg, timeout, i, problem, nagents):
+def get_alg_perf(alg, timeout, i, problem, nagents, heuristic="Optimal"):
     results = []
     for n in nagents:
         print(alg, n, problem[1])
         start = time.time()
-        ok = run_and_check(n, i, alg, timeout, problem)
+        ok = run_and_check(n, i, alg, timeout, problem, heuristic)
         now = time.time()
         results.append((ok, now - start))
         if not ok:
@@ -108,15 +110,15 @@ if __name__ == "__main__":
     pool = Pool(num_threads)
     results = np.array(
         [
-            pool.apply_async(get_alg_perf, args=("DSCBSCAT", tmax, i, p, nagents))
+            pool.apply_async(get_alg_perf, args=("IDCBSCAT", tmax, i, p, nagents))
             for i, p in enumerate(problems)
         ]
     )
-    mat = np.load("results.npy")
+    mat = np.load("results3.npy")
     results = np.array([r.get() for r in results])
 
-    newmat = np.empty((350, 15, 10, 2))
+    newmat = np.empty((350, 17, 10, 2))
     newmat[:, :-1, :, :] = mat
     newmat[:, -1, :, :] = results
     print(newmat)
-    np.save("results2.npy", newmat)
+    np.save("results4.npy", newmat)
