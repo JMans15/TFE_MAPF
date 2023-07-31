@@ -3,6 +3,7 @@ import numpy as np
 import subprocess
 import time
 from multiprocessing import Pool, current_process, freeze_support  # noqa: F401
+import psutil
 
 import utils
 
@@ -32,9 +33,9 @@ def extract_problems(maps):
     return problems
 
 
-def run_and_check(a, i, algo, to, problem):
+def run_and_check(a, i, algo, to, problem, obj, heu):
     try:
-        filename = f"../Plotting/result_{algo}_{i}_{a}.txt"
+        filename = f"../Plotting/result_{algo}_{i}_{a}_{obj}_{heu}.txt"
         ok = subprocess.run(
             [
                 program,
@@ -44,6 +45,10 @@ def run_and_check(a, i, algo, to, problem):
                 f"{problem[0]}",
                 "-n",
                 f"{a}",
+                "-o",
+                obj,
+                "--heuristic",
+                heu,
                 "--outfile",
                 filename,
                 "-a",
@@ -73,12 +78,12 @@ def run_and_check(a, i, algo, to, problem):
         return False
 
 
-def get_alg_perf(alg, timeout, i, problem, nagents):
+def get_alg_perf(alg, timeout, i, problem, nagents, obj, heu):
     results = []
     for n in nagents:
         print(alg, n, problem[1])
         start = time.time()
-        ok = run_and_check(n, i, alg, timeout, problem)
+        ok = run_and_check(n, i, alg, timeout, problem, obj, heu)
         now = time.time()
         results.append((ok, now - start))
         if not ok:
@@ -92,26 +97,28 @@ if __name__ == "__main__":
     freeze_support()
     nagents = np.arange(5, 55, 5, dtype=int)
     tmax = 30
-    num_threads = 1
+    num_threads = 8
+
+    objectives = ["SumOfCosts", "Fuel", "Makespan"]
+
+    heuristics = ["Optimal", "Manhattan"]
+
     algs = [
-        "AStar",
+        "A*",
+        "A* OD",
+        # "Coop A*",
+        "ID A*",
+        "ID A* CAT",
+        "ID CBS",
+        "ID CBS CAT",
+        "SID A*",
+        "SID A* CAT",
+        "SID CBS",
+        "SID CBS CAT",
+        "CBS DS",
+        "CBS DS CAT",
         "CBS",
-        "CBSCAT",
-        # "Coop",
-        "ID",
-        "IDCAT",
-        "SID",
-        "SIDCAT",
-        "DSCBS",
-        "StandardAStar",
-        "IDCBS",
-        "SIDAStar",
-        "SIDCBS",
-        "SIDCATAStar",
-        "SIDCATCBS",
-        "DSCBSCAT",
-        "IDCBS",
-        "IDCBSCAT",
+        "CBS CAT",
     ]
 
     maps = [
@@ -124,17 +131,33 @@ if __name__ == "__main__":
         "../mapf-map/Paris",
     ]
     problems = extract_problems(maps)
+    # problems = problems[:4]
     print(f"{len(problems)} problems found")
     pool = Pool(num_threads)
-    results = np.array(
+    results = np.empty(
+        (len(problems), len(objectives), len(heuristics), len(algs), len(nagents), 2)
+    )
+    presults = np.array(
         [
             [
-                pool.apply_async(get_alg_perf, args=(a, tmax, i, p, nagents))
-                for a in algs
+                [
+                    [
+                        pool.apply_async(
+                            get_alg_perf, args=(a, tmax, i, p, nagents, o, h)
+                        )
+                        for a in algs
+                    ]
+                    for h in heuristics
+                ]
+                for o in objectives
             ]
             for i, p in enumerate(problems)
         ]
     )
-    results = np.array([[r.get() for r in a] for a in results])
-    print(results)
-    np.save("results.npy", results)
+    for pi, p in enumerate(presults):
+        for oi, o in enumerate(p):
+            for hi, h in enumerate(o):
+                for ai, a in enumerate(h):
+                    results[pi, oi, hi, ai] = a.get()
+    print(results.shape)
+    np.save("all_results.npy", results)

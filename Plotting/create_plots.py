@@ -1,5 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib import use as mpuse
+
+mpuse("QtAgg")
 
 mat = np.load("results4.npy")
 print(mat.shape)

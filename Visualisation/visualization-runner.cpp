@@ -53,38 +53,40 @@ int main(int argc, const char **argv) {
   auto result = options.parse(argc, argv);
 
   enum Algo {
-    ASTAR,
+    AStar,
+    AStarOD,
+    COOP,
+    IDAStar,
+    IDAStarCAT,
+    IDCBS,
+    IDCBSCAT,
+    SIDAStar,
+    SIDAStarCAT,
+    SIDCBS,
+    SIDCBSCAT,
+    CBSDS,
+    CBSDSCAT,
     CBS,
     CBSCAT,
-    COOP,
-    ID,
-    IDCAT,
-    SID,
-    SIDCAT,
-    DSCBS,
-    StandardAStar,
-    EID,
-    SIDAStar,
-    SIDCBS,
-    SIDCATAStar,
-    SIDCATCBS
   };
 
-  std::map<string, Algo> mAlgo({{"AStar", ASTAR},
-                                {"CBS", CBS},
-                                {"CBSCAT", CBSCAT},
-                                {"Coop", COOP},
-                                {"ID", ID},
-                                {"IDCAT", IDCAT},
-                                {"SID", SID},
-                                {"SIDCAT", SIDCAT},
-                                {"DSCBS", DSCBS},
-                                {"StandardAStar", StandardAStar},
-                                {"EID", EID},
-                                {"SIDAStar", SIDAStar},
-                                {"SIDCBS", SIDCBS},
-                                {"SIDCATAStar", SIDCATAStar},
-                                {"SIDCATCBS", SIDCATCBS}});
+  std::map<string, Algo> mAlgo({
+      {"A*", AStar},
+      {"A* OD", AStarOD},
+      {"Coop A*", COOP},
+      {"ID A*", IDAStar},
+      {"ID A* CAT", IDAStarCAT},
+      {"ID CBS", IDCBS},
+      {"ID CBS CAT", IDCBSCAT},
+      {"SID A*", SIDAStar},
+      {"SID A* CAT", SIDAStarCAT},
+      {"SID CBS", SIDCBS},
+      {"SID CBS CAT", SIDCBSCAT},
+      {"CBS DS", CBSDS},
+      {"CBS DS CAT", CBSDSCAT},
+      {"CBS", CBS},
+      {"CBS CAT", CBSCAT},
+  });
 
   if (mAlgo.count(result["algo"].as<string>()) == 0) {
     printf("Given algo is invalid, use -h or --help");
@@ -189,50 +191,50 @@ int main(int argc, const char **argv) {
       std::make_shared<ConflictBasedSearch>(heuristic, false, false);
 
   switch (algo) {
-  case ASTAR:
+  case AStar:
+    solution = GeneralAStar(heuristic, false, false).solve(problem);
+    break;
+  case AStarOD:
     solution = GeneralAStar(heuristic, false, true).solve(problem);
+    break;
+  case COOP:
+    solution = CooperativeAStar(problem, heuristic).solve();
+    break;
+  case IDAStar:
+    solution = IndependenceDetection(problem, astarsearch, false).solve();
+    break;
+  case IDAStarCAT:
+    solution = IndependenceDetection(problem, astarsearch, true).solve();
+    break;
+  case IDCBS:
+    solution = IndependenceDetection(problem, cbssearch, false).solve();
+    break;
+  case IDCBSCAT:
+    solution = IndependenceDetection(problem, cbssearch, true).solve();
+    break;
+  case SIDAStar:
+    solution = SimpleIndependenceDetection(problem, astarsearch, false).solve();
+    break;
+  case SIDAStarCAT:
+    solution = SimpleIndependenceDetection(problem, astarsearch, true).solve();
+    break;
+  case SIDCBS:
+    solution = SimpleIndependenceDetection(problem, cbssearch, false).solve();
+    break;
+  case SIDCBSCAT:
+    solution = SimpleIndependenceDetection(problem, cbssearch, true).solve();
+    break;
+  case CBSDS:
+    solution = ConflictBasedSearch(problem, heuristic, false, true).solve();
+    break;
+  case CBSDSCAT:
+    solution = ConflictBasedSearch(problem, heuristic, true, true).solve();
     break;
   case CBS:
     solution = ConflictBasedSearch(heuristic, false, false).solve(problem);
     break;
   case CBSCAT:
     solution = ConflictBasedSearch(heuristic, true, false).solve(problem);
-    break;
-  case COOP:
-    solution = CooperativeAStar(problem, heuristic).solve();
-    break;
-  case ID:
-    solution = IndependenceDetection(problem, astarsearch, false).solve();
-    break;
-  case IDCAT:
-    solution = IndependenceDetection(problem, astarsearch, true).solve();
-    break;
-  case EID:
-    solution = IndependenceDetection(problem, astarsearch, false).solve();
-    break;
-  case SID:
-    solution = SimpleIndependenceDetection(problem, astarsearch, false).solve();
-    break;
-  case SIDCAT:
-    solution = SimpleIndependenceDetection(problem, astarsearch, true).solve();
-    break;
-  case SIDAStar:
-    solution = SimpleIndependenceDetection(problem, astarsearch, false).solve();
-    break;
-  case SIDCATAStar:
-    solution = SimpleIndependenceDetection(problem, astarsearch, true).solve();
-    break;
-  case SIDCBS:
-    solution = SimpleIndependenceDetection(problem, cbssearch, false).solve();
-    break;
-  case SIDCATCBS:
-    solution = SimpleIndependenceDetection(problem, cbssearch, true).solve();
-    break;
-  case DSCBS:
-    solution = ConflictBasedSearch(problem, heuristic, false, true).solve();
-    break;
-  case StandardAStar:
-    solution = GeneralAStar(heuristic, false, false).solve(problem);
     break;
   }
 
