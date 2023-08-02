@@ -1,18 +1,22 @@
 import os
+import sys
 import numpy as np
 import subprocess
 import time
-from multiprocessing import Pool, current_process, freeze_support  # noqa: F401
-import psutil
+from multiprocessing import Pool, Value, freeze_support  # noqa: F401
 
 import utils
 
-program = "../cmake-build/TFE_MAPF_visu"
+program = "./cpp-projects/TFE_MAPF/cmake-build/TFE_MAPF_visu"
+
+
+counter = Value("i", 0)
 
 
 def extract_problems(maps):
     problems = []
     for mp in maps:
+        print(mp)
         wlk = os.walk(mp)
         tmp = wlk.__next__()
         mapfile = tmp[2][0]
@@ -35,7 +39,10 @@ def extract_problems(maps):
 
 def run_and_check(a, i, algo, to, problem, obj, heu):
     try:
-        filename = f"../Plotting/result_{algo}_{i}_{a}_{obj}_{heu}.txt"
+        # filename = f"./result_{algo}_{i}_{a}_{obj}_{heu}.txt"
+        filename = (
+            f"./cpp-projects/TFE_MAPF/Plotting/result_{algo}_{i}_{a}_{obj}_{heu}.txt"
+        )
         ok = subprocess.run(
             [
                 program,
@@ -60,7 +67,10 @@ def run_and_check(a, i, algo, to, problem, obj, heu):
         try:
             ok.check_returncode()
         except subprocess.CalledProcessError:
-            print("There was an error")
+            print(
+                f"There was an error with {algo} {obj} {heu} {a} {problem[1]}",
+                file=sys.stderr,
+            )
             return False
         # Check if solution is correct
         with open(filename, "r") as file:
@@ -80,8 +90,16 @@ def run_and_check(a, i, algo, to, problem, obj, heu):
 
 def get_alg_perf(alg, timeout, i, problem, nagents, obj, heu):
     results = []
+    global counter
+    counter.value += 1
+    print(
+        f"{counter.value:<5}",
+        f"{alg:<11}",
+        f"{obj:<10}",
+        f"{heu:<9}",
+        problem[1].split("/")[-1],
+    )
     for n in nagents:
-        print(alg, n, problem[1])
         start = time.time()
         ok = run_and_check(n, i, alg, timeout, problem, obj, heu)
         now = time.time()
@@ -93,11 +111,18 @@ def get_alg_perf(alg, timeout, i, problem, nagents, obj, heu):
     return results
 
 
+def init(cntr):
+    global counter
+    counter = cntr
+
+
 if __name__ == "__main__":
     freeze_support()
+    counter = Value("i", 0)
+
     nagents = np.arange(5, 55, 5, dtype=int)
     tmax = 30
-    num_threads = 8
+    num_threads = 10
 
     objectives = ["SumOfCosts", "Fuel", "Makespan"]
 
@@ -122,18 +147,18 @@ if __name__ == "__main__":
     ]
 
     maps = [
-        "../mapf-map/32-32-1",
-        "../mapf-map/32-32-2",
-        "../mapf-map/32-32-3",
-        "../mapf-map/32-32-4",
-        "../mapf-map/32-32-5",
-        "../mapf-map/32-32-6",
-        "../mapf-map/Paris",
+        "./cpp-projects/TFE_MAPF/mapf-map/32-32-1",
+        "./cpp-projects/TFE_MAPF/mapf-map/32-32-2",
+        "./cpp-projects/TFE_MAPF/mapf-map/32-32-3",
+        "./cpp-projects/TFE_MAPF/mapf-map/32-32-4",
+        "./cpp-projects/TFE_MAPF/mapf-map/32-32-5",
+        "./cpp-projects/TFE_MAPF/mapf-map/32-32-6",
+        "./cpp-projects/TFE_MAPF/mapf-map/Paris",
     ]
     problems = extract_problems(maps)
     # problems = problems[:4]
     print(f"{len(problems)} problems found")
-    pool = Pool(num_threads)
+    pool = Pool(num_threads, initializer=init, initargs=(counter,))
     results = np.empty(
         (len(problems), len(objectives), len(heuristics), len(algs), len(nagents), 2)
     )
@@ -160,4 +185,4 @@ if __name__ == "__main__":
                 for ai, a in enumerate(h):
                     results[pi, oi, hi, ai] = a.get()
     print(results.shape)
-    np.save("all_results.npy", results)
+    np.save("./cpp-projects/TFE_MAPF/Plotting/all_results.npy", results)
