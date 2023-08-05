@@ -7,6 +7,10 @@ Then open ./docs/html/index.html
 Or cd into ./docs/latex/ and run ```make all```
 This will generate a pdf version
 
+Running arch I had to install texlive
+```pacman -S texlive```
+To have all the tools and format files needed for the latex version, a similar package group may be needed under macos
+
 ## Files *.cpp and *.h
 <ul>
 <li> Parser: Takes a map file and returns a Graph instance. </li>
