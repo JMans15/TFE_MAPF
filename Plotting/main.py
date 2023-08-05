@@ -8,11 +8,11 @@ import numpy as np
 # Faire des plots sur le success rate de l'algorithme (étant donné un temps limite) en fonction du nombre d'agents
 
 directory = "../mapf-map/Paris/scen-random"
-program = "../cmake-build-debug/TFE_MAPF_visu"
-timeout = 10  # Timeout in seconds
+program = "../cmake-build/TFE_MAPF_visu"
+timeout = 5  # Timeout in seconds
 args = ["--map", "../mapf-map/Paris/Paris_1_256.map"]
 num_threads = (
-    1  # Number of threads to use (do not use too much because of RAM usage of mapf)
+    10  # Number of threads to use (do not use too much because of RAM usage of mapf)
 )
 
 
@@ -110,7 +110,7 @@ def run_program(file_path, a, i, algo):
 
 def data_for_algo(algo):
     data = []
-    for a in range(10, 25, 2):  # max 1002
+    for a in range(5, 100, 5):  # max 1002
         files = os.listdir(directory)
         with Pool(num_threads) as p:
             results = [
@@ -132,7 +132,7 @@ def data_for_algo(algo):
 if __name__ == "__main__":
     freeze_support()
     fig = plt.figure(figsize=(16, 8))
-    ax = fig.subplots(1, 1)
+    ax = fig.add_subplot()
 
     ax.set_title(f"Timeout = {timeout}s, random scenarios in orz900d.map")
     ax.set_xlabel("Number of agents")

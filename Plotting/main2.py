@@ -3,17 +3,16 @@ import subprocess
 import numpy as np
 from matplotlib import pyplot as plt
 from multiprocessing import freeze_support
-import os
 import time
 import random
 
-program = '../cmake-build-debug/TFE_MAPF_visu'
-timeout = 1  # Timeout in seconds
+program = "../cmake-build/TFE_MAPF_visu"
+timeout = 5  # Timeout in seconds
 
 
 def check_solution(file):
     file.seek(0)
-    agents, timesteps = list(map(int, file.readline().strip().split(' ')))
+    agents, timesteps = list(map(int, file.readline().strip().split(" ")))
     lines = list(map(lambda l: l.strip(), file.readlines()))
     # positions = list(map(lambda l: list(map(int, l.strip().split(','))), lines))
     per_timestep = np.array(lines).reshape((timesteps, agents))
@@ -47,14 +46,21 @@ def check_solution(file):
 
 def check_start_and_target(file, scenario_filename, nagents):
     file.seek(0)
-    agents, timesteps = list(map(int, file.readline().strip().split(' ')))
+    agents, timesteps = list(map(int, file.readline().strip().split(" ")))
     starts, targets = [], []
-    with open(scenario_filename, 'r') as scenario:
+    with open(scenario_filename, "r") as scenario:
         scenario.readline()
-        lines = np.array(list(map(lambda l: l.strip().split('\t'), scenario.readlines())))
-        starts = np.char.add(np.char.add(lines[:, 4], np.full_like(lines[:, 4], fill_value=',')), lines[:, 5])[:nagents]
-        targets = np.char.add(np.char.add(lines[:, 6], np.full_like(lines[:, 6], fill_value=',')), lines[:, 7])[
-                  :nagents]
+        lines = np.array(
+            list(map(lambda l: l.strip().split("\t"), scenario.readlines()))
+        )
+        starts = np.char.add(
+            np.char.add(lines[:, 4], np.full_like(lines[:, 4], fill_value=",")),
+            lines[:, 5],
+        )[:nagents]
+        targets = np.char.add(
+            np.char.add(lines[:, 6], np.full_like(lines[:, 6], fill_value=",")),
+            lines[:, 7],
+        )[:nagents]
     lines = list(map(lambda l: l.strip(), file.readlines()))
     per_timestep = np.array(lines).reshape((timesteps, agents))[:, :nagents]
 
@@ -71,10 +77,22 @@ def run_program(file_path, a, i, algo, args):
     try:
         start_time = time.time()
         subprocess.run(
-            [program, '--scen', f'{file_path}', '-n', f'{a}', '--outfile', f'../Plotting/result_{i}.txt', '-a',
-             f'{algo}'] + args, timeout=timeout)
+            [
+                program,
+                "--scen",
+                f"{file_path}",
+                "-n",
+                f"{a}",
+                "--outfile",
+                f"../Plotting/result_{i}.txt",
+                "-a",
+                f"{algo}",
+            ]
+            + args,
+            timeout=timeout,
+        )
         end_time = time.time()
-        with open(f"result_{i}.txt", 'r') as file:
+        with open(f"result_{i}.txt", "r") as file:
             if not check_solution(file):
                 print(f"failed with scenario {file_path}")
                 return False, None
@@ -86,20 +104,24 @@ def run_program(file_path, a, i, algo, args):
         return False, None
 
 
-a = [random.randint(2, 60) for _ in range(10000)]  # random number between 2 and 60 for the number of agents
+a = [
+    random.randint(20, 100) for _ in range(10000)
+]  # random number between 20 and 100 for the number of agents
 
 
 def data_for_algo(algo):
     data = []
     number_of_instances = 0
 
-    print('------------------- NEW ALGO')
+    print("------------------- NEW ALGO")
 
-    args = ['--map', '../mapf-map/32-32-1/empty-32-32.map']
-    directory = '../mapf-map/32-32-1/scen-random'
+    args = ["--map", "../mapf-map/32-32-1/empty-32-32.map"]
+    directory = "../mapf-map/32-32-1/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
@@ -107,11 +129,13 @@ def data_for_algo(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-2/maze-32-32-2.map']
-    directory = '../mapf-map/32-32-2/scen-random'
+    args = ["--map", "../mapf-map/32-32-2/maze-32-32-2.map"]
+    directory = "../mapf-map/32-32-2/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
@@ -119,11 +143,13 @@ def data_for_algo(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-3/maze-32-32-4.map']
-    directory = '../mapf-map/32-32-3/scen-random'
+    args = ["--map", "../mapf-map/32-32-3/maze-32-32-4.map"]
+    directory = "../mapf-map/32-32-3/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
@@ -131,11 +157,13 @@ def data_for_algo(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-4/random-32-32-10.map']
-    directory = '../mapf-map/32-32-4/scen-random'
+    args = ["--map", "../mapf-map/32-32-4/random-32-32-10.map"]
+    directory = "../mapf-map/32-32-4/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
@@ -143,11 +171,13 @@ def data_for_algo(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-5/random-32-32-20.map']
-    directory = '../mapf-map/32-32-5/scen-random'
+    args = ["--map", "../mapf-map/32-32-5/random-32-32-20.map"]
+    directory = "../mapf-map/32-32-5/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
@@ -155,11 +185,13 @@ def data_for_algo(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-6/room-32-32-4.map']
-    directory = '../mapf-map/32-32-6/scen-random'
+    args = ["--map", "../mapf-map/32-32-6/room-32-32-4.map"]
+    directory = "../mapf-map/32-32-6/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
@@ -170,17 +202,20 @@ def data_for_algo(algo):
     data.sort()
     return data, len(data) * 100.0 / number_of_instances
 
+
 def data_for_algo2(algo):
     data = []
     number_of_instances = 0
 
-    print('------------------- NEW ALGO')
+    print("------------------- NEW ALGO")
 
-    args = ['--map', '../mapf-map/32-32-1/empty-32-32.map']
-    directory = '../mapf-map/32-32-1/scen-random'
+    args = ["--map", "../mapf-map/32-32-1/empty-32-32.map"]
+    directory = "../mapf-map/32-32-1/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
@@ -195,15 +230,17 @@ def data_for_algo2(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-2/maze-32-32-2.map']
-    directory = '../mapf-map/32-32-2/scen-random'
+    args = ["--map", "../mapf-map/32-32-2/maze-32-32-2.map"]
+    directory = "../mapf-map/32-32-2/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
-    directory = '../mapf-map/32-32-2/scen-even'
+    directory = "../mapf-map/32-32-2/scen-even"
     # files = os.listdir(directory)
     # for i, filename in enumerate(files):
     #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
@@ -214,15 +251,17 @@ def data_for_algo2(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-3/maze-32-32-4.map']
-    directory = '../mapf-map/32-32-3/scen-random'
+    args = ["--map", "../mapf-map/32-32-3/maze-32-32-4.map"]
+    directory = "../mapf-map/32-32-3/scen-random"
     files = os.listdir(directory)
     for i, filename in enumerate(files):
-        bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
+        bool, time = run_program(
+            os.path.join(directory, filename), a[number_of_instances], i, algo, args
+        )
         if bool:
             data.append(time)
         number_of_instances += 1
-    directory = '../mapf-map/32-32-3/scen-even'
+    directory = "../mapf-map/32-32-3/scen-even"
     # files = os.listdir(directory)
     # for i, filename in enumerate(files):
     #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
@@ -233,15 +272,15 @@ def data_for_algo2(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-4/random-32-32-10.map']
-    directory = '../mapf-map/32-32-4/scen-random'
+    args = ["--map", "../mapf-map/32-32-4/random-32-32-10.map"]
+    directory = "../mapf-map/32-32-4/scen-random"
     # files = os.listdir(directory)
     # for i, filename in enumerate(files):
     #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
     #     if bool:
     #         data.append(time)
     #     number_of_instances += 1
-    directory = '../mapf-map/32-32-4/scen-even'
+    directory = "../mapf-map/32-32-4/scen-even"
     # files = os.listdir(directory)
     # for i, filename in enumerate(files):
     #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
@@ -252,8 +291,8 @@ def data_for_algo2(algo):
     print(number_of_instances)
     print(len(data) * 100.0 / number_of_instances, " %")
 
-    args = ['--map', '../mapf-map/32-32-5/random-32-32-20.map']
-    directory = '../mapf-map/32-32-5/scen-random'
+    args = ["--map", "../mapf-map/32-32-5/random-32-32-20.map"]
+    directory = "../mapf-map/32-32-5/scen-random"
     # files = os.listdir(directory)
     # for i, filename in enumerate(files):
     #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
@@ -279,7 +318,7 @@ def data_for_algo2(algo):
     #     if bool:
     #         data.append(time)
     #     number_of_instances += 1
-    directory = '../mapf-map/32-32-6/scen-even'
+    directory = "../mapf-map/32-32-6/scen-even"
     # files = os.listdir(directory)
     # for i, filename in enumerate(files):
     #     bool, time = run_program(os.path.join(directory, filename), a[number_of_instances], i, algo, args)
@@ -294,32 +333,58 @@ def data_for_algo2(algo):
     return data, len(data) * 100.0 / number_of_instances
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     freeze_support()
     fig = plt.figure(figsize=(16, 8))
-    ax = fig.subplots(1, 1)[0]
+    ax = fig.add_subplot()
 
-    ax.set_title(f"Performance curves (timeout={timeout}s, random scenarios in several 32x32 grids)")
+    ax.set_title(
+        f"Performance curves (timeout={timeout}s, random scenarios in several 32x32 grids)"
+    )
     ax.set_xlabel("Number of solved problems")
     ax.set_ylabel("Time [ms]")
 
-    data, success_rate = data_for_algo2('StandardAStar')
-    ax.text(list(range(1, len(data)+1))[-1], data[-1], str(success_rate)+" %", ha='left', va='bottom')
-    ax.plot(list(range(1, len(data)+1)), data, marker='x', label="S")
+    data, success_rate = data_for_algo2("StandardAStar")
+    if len(data) > 0:
+        ax.text(
+            len(data),
+            data[-1],
+            str(success_rate) + " %",
+            ha="left",
+            va="bottom",
+        )
+    if len(data) > 0:
+        ax.plot(len(data), data, marker="x", label="S")
 
-    data, success_rate = data_for_algo2('AStar')
-    ax.text(list(range(1, len(data)+1))[-1], data[-1], str(success_rate)+" %", ha='left', va='bottom')
-    ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="OD")
+    data, success_rate = data_for_algo2("AStar")
+    if len(data) > 0:
+        ax.text(
+            len(data),
+            data[-1],
+            str(success_rate) + " %",
+            ha="left",
+            va="bottom",
+        )
+    if len(data) > 0:
+        ax.plot(len(data), data, marker="x", label="OD")
 
     data, success_rate = data_for_algo2("SIDAStar")
-    ax.text(list(range(1, len(data)+1))[-1], data[-1], str(success_rate)+" %", ha='left', va='bottom')
-    ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="SID+OD")
+    if len(data) > 0:
+        ax.text(
+            len(data),
+            data[-1],
+            str(success_rate) + " %",
+            ha="left",
+            va="bottom",
+        )
+    if len(data) > 0:
+        ax.plot(len(data), data, marker="x", label="SID+OD")
 
     # data = data_for_algo("SIDCATAStar")
     # ax.plot(range(15, 30), data, marker='x', label="(SID+CAT)+A*")
 
-    #data, succes_rate = data_for_algo("SIDCBS")
-    #ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="SID+CBS")
+    # data, succes_rate = data_for_algo("SIDCBS")
+    # ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="SID+CBS")
 
     # data = data_for_algo("SIDCATCBS")
     # ax.plot(range(15, 30), data, marker='x', label="(SID+CAT)+CBS")
@@ -328,24 +393,40 @@ if __name__ == '__main__':
     # ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Enhanced version of ID (EID)")
 
     data, success_rate = data_for_algo2("ID")
-    ax.text(list(range(1, len(data)+1))[-1], data[-1], str(success_rate)+" %", ha='left', va='bottom')
-    ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="Refinement1=EID")
+    if len(data) > 0:
+        ax.text(
+            len(data),
+            data[-1],
+            str(success_rate) + " %",
+            ha="left",
+            va="bottom",
+        )
+    if len(data) > 0:
+        ax.plot(len(data), data, marker="x", label="Refinement1=EID")
 
     data, success_rate = data_for_algo2("IDCAT")
-    ax.text(list(range(1, len(data)+1))[-1], data[-1], str(success_rate)+" %", ha='left', va='bottom')
-    ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="Refinement2=EID+CAT")
+    if len(data) > 0:
+        ax.text(
+            len(data),
+            data[-1],
+            str(success_rate) + " %",
+            ha="left",
+            va="bottom",
+        )
+    if len(data) > 0:
+        ax.plot(len(data), data, marker="x", label="Refinement2=EID+CAT")
 
-    #data, succes_rate = data_for_algo("CBS")
-    #ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="CBS")
+    # data, succes_rate = data_for_algo("CBS")
+    # ax.plot(list(range(1, len(data) + 1)), data, marker='x', label="CBS")
 
     # data = data_for_algo("CBSCAT")
     # ax.plot(range(10, 25), data, marker='x', label="CBS+CAT")
 
     # data = data_for_algo("DSCBS")
     # ax.plot(list(range(1, len(data)+1)), data, marker='x', label="Disjoint Splitting CBS")
-    ax.set_yscale('log')
+    # ax.set_yscale("log")
 
-    ax.grid(axis='both')
+    ax.grid(axis="both")
 
     plt.legend()
     plt.show()

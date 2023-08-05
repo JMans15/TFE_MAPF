@@ -14,3 +14,5 @@ cmake-build-debug-coverage
 .vim
 Plotting/result*
 docs/
+*/__pycache__/*
+*.bak
