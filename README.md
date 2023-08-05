@@ -1,5 +1,12 @@
 # TFE_MAPF
 
+## Documentation
+The documentation for this project can be generated through doxygen
+```doxygen Doxyfile```
+Then open ./docs/html/index.html 
+Or cd into ./docs/latex/ and run ```make all```
+This will generate a pdf version
+
 ## Files *.cpp and *.h
 <ul>
 <li> Parser: Takes a map file and returns a Graph instance. </li>
