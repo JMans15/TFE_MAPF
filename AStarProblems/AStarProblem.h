@@ -5,9 +5,9 @@
 #ifndef TFE_MAPF_ASTARPROBLEM_H
 #define TFE_MAPF_ASTARPROBLEM_H
 
-#include "unordered_map"
 #include <iostream>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 template <class S> class AStarProblem {

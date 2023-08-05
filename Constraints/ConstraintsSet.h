@@ -8,8 +8,8 @@
 #include "EdgeConstraint.h"
 #include "VertexConstraint.h"
 
-#include "iostream"
 #include <boost/functional/hash.hpp>
+#include <iostream>
 #include <unordered_set>
 
 struct SoftVertexConstraintHash {

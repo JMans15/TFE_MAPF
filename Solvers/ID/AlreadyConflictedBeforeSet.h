@@ -6,21 +6,27 @@
 #define TFE_MAPF_ALREADYCONFLICTEDBEFORESET_H
 
 #include "Group.h"
-#include "set"
 #include <iostream>
+#include <set>
 
+/**
+ * Defines various classes useful for manipulating sets of conflicts
+ */
 struct PointerGroupHasher {
+  /** Defines the hashing function for Groups */
   std::size_t operator()(const std::shared_ptr<Group> &obj) const {
     return obj->getHash();
   }
 };
 struct PointerGroupEquality {
+  /** Defines equality between two Groups */
   bool operator()(const std::shared_ptr<Group> &lhs,
                   const std::shared_ptr<Group> &rhs) const {
     return *lhs == *rhs;
   }
 };
 struct SetOfPointersHasher {
+  /** Defines the hashing function for two sets of Groups */
   std::size_t operator()(
       const std::set<std::shared_ptr<Group>, PointerGroupEquality> &set) const {
     std::size_t hash_value = 0;
@@ -32,6 +38,7 @@ struct SetOfPointersHasher {
   }
 };
 struct SetOfPointersEquality {
+  /** Defines equality for two sets of Groups */
   bool operator()(
       const std::set<std::shared_ptr<Group>, PointerGroupEquality> &lhs,
       const std::set<std::shared_ptr<Group>, PointerGroupEquality> &rhs) const {
