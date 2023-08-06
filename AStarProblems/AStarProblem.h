@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
+// Search problem formulated the right way
+// to be solvable with the A* algorithm
 template <class S> class AStarProblem {
 public:
   AStarProblem() = default;
@@ -21,11 +23,10 @@ public:
   // Returns true if the state is a valid goal state
   virtual bool isGoalState(std::shared_ptr<S> state) const = 0;
 
-  // For a given state, getSuccessors returns a list of pairs (successor,
-  // stepcost, numberOfViolations) where successor is a successor state to the
-  // current state stepcost is the cost to go from state to successor
-  // numberOfViolations is the number of soft constraints that have been
-  // violated to go from state to successor
+  // For a given state, getSuccessors returns a list of tuples (successor, stepcost, numberOfViolations) where
+  // - successor is a successor state to the current state
+  // - stepcost is the cost to go from state to successor
+  // - numberOfViolations is the number of soft constraints that have been violated to go from state to successor
   virtual std::vector<std::tuple<std::shared_ptr<S>, int, int>>
   getSuccessors(std::shared_ptr<S> state) const = 0;
 

@@ -11,11 +11,9 @@
 #include "GroupConflict.h"
 
 /**
- * Only takes in account negative constraints of problem
+ * Simple Independence Detection (also called SID)
  *
- * If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to
- * avoid planned paths (if possible with optimal cost) lowLevelSearch is the
- * solver that will be used for the low-level searches
+ * Only takes in account negative constraints of problem
  *
  * Variable low-level search algorithm
  * Toggelable CAT enhancement

@@ -9,7 +9,9 @@
 #include "../States/ODMultiAgentSpaceTimeState.h"
 #include "AStarProblem.h"
 
-// Multi Agent Problem solved with Operator Decomposition A* (>< Standard A*)
+// Multi Agent Problem formulated as a search task
+// - Operator Decomposition (>< Standard A*)
+// - Space Time search (because of the external constraints)
 class ODMultiAgentAStarProblemWithConstraints
     : AStarProblem<ODMultiAgentSpaceTimeState> {
 public:

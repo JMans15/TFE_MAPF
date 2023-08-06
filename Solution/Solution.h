@@ -41,11 +41,11 @@ public:
   //! its goal
   int getSumOfCostsCost();
 
-  //! @return Whether all paths don't have any conflict (vertex and edge
+  //! @return true if all paths don't have any conflict (vertex and edge
   //! conflicts)
   bool isValid();
 
-  //! Map containing the positions of each agent
+  //! Map containing the paths of each agent
   std::unordered_map<int, std::vector<int>> getPositions() const;
 
   //! Lengthens the positions matrix so that the length of a path is length
@@ -90,6 +90,7 @@ private:
   std::unordered_map<int, std::vector<int>> positions;
 
   //! Whether a path was found or not
+  //! @return true if this solution contains a path
   bool foundPath;
 
   //! true if solution of ID, false if solution of CBS or A*

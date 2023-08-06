@@ -12,6 +12,9 @@
 #include <algorithm>
 #include <unordered_map>
 
+// Generic A*
+// Uses an instance of the abstract class AStarProblem
+// Uses an instance of the abstract class Heuristic
 template <class P, class S> class AStar {
 public:
   AStar(std::shared_ptr<P> problem, TypeOfHeuristic typeOfHeuristic)
@@ -28,6 +31,7 @@ public:
     auto start = problem->getStartState();
     fringe.insert(std::make_shared<Node<S>>(
         start, 0, heuristic->heuristicFunction(start)));
+    distance[start] = 0;
 
     while (!fringe.empty()) {
       auto it = fringe.begin();
@@ -48,17 +52,17 @@ public:
       }
 
       auto successors = problem->getSuccessors(nodeState);
-      for (auto &[successor, edgeCost, numberOfViolations] : successors) {
+      for (auto &[successor, edgeCost, edgeNumberOfViolations] : successors) {
         auto successorCost = node->getCost() + edgeCost;
         if (successorCost <= problem->getMaxCost()) {
           auto it = distance.find(successor);
           if (it == distance.end() || successorCost < it->second) {
             distance[successor] = successorCost;
             auto h = heuristic->heuristicFunction(successor);
-            auto violationCount =
-                node->getViolationCount() + numberOfViolations;
+            auto successorViolationCount =
+                node->getViolationCount() + edgeNumberOfViolations;
             fringe.insert(std::make_shared<Node<S>>(successor, successorCost, h,
-                                                    node, violationCount));
+                                                    node, successorViolationCount));
           }
         }
       }
@@ -72,9 +76,9 @@ private:
   std::shared_ptr<P> problem;
   std::shared_ptr<Heuristic<S>> heuristic;
   std::multiset<std::shared_ptr<Node<S>>, NodeComparator<S>>
-      fringe; // the open list
+      fringe; // the open list / frontier
   std::unordered_map<std::shared_ptr<S>, int, StateHasher<S>, StateEquality<S>>
-      distance; // the closed list
+      distance; // the closed list (-> graph search)
   int numberOfVisitedStates;
   int numberOfNodesLeftInTheFringe;
 

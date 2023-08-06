@@ -88,8 +88,8 @@ public:
 
   //! @param [in] newPosition The desired position
   //! @param [in] time At what time should we check for constraints?
-  //! @return true if the agent is allowed to go to newPosition
-  //! between time-1 and time (according to the hard vertex constraints of the
+  //! @return true if the agent is allowed to be at newPosition
+  //! at time (according to the hard vertex constraints of the
   //! problem)
   bool okForConstraints(int newPosition, int time) const;
 
@@ -104,7 +104,7 @@ public:
   //! @param [in] newPosition The desired position
   //! @param [in] time At what time should we check for constraints?
   //! @return The number of violated soft constraints if agent is at
-  //! newPosition between time-1 and time (according to the soft vertex
+  //! newPosition at time (according to the soft vertex
   //! constraints of the problem)
   int numberOfViolations(int newPosition, int time) const;
 
@@ -137,14 +137,16 @@ private:
   ObjectiveFunction objective;
 
   //! Set of hard constraints like (a, p, t) meaning agent a can't be at
-  //! position p at time t When planning agent agentId, the agent won't go at
+  //! position p at time t
+  //! When planning agent agentId, the agent won't go at
   //! position p at time t if a==agentId
   HardVertexConstraintsSet setOfHardVertexConstraints;
   //! Set of hard edge constraints (a, p, q, t)
   HardEdgeConstraintsSet setOfHardEdgeConstraints;
 
   //! Set of soft constraints like (a, p, t) meaning agent a is occupying
-  //! position p at time t When planning agent agentId, the agent will try to
+  //! position p at time t
+  //! When planning agent agentId, the agent will try to
   //! avoid position p at time t if a!=agentId
   SoftVertexConstraintsMultiSet setOfSoftVertexConstraints;
   //! Set of soft edge constraints (a, p, q, t)

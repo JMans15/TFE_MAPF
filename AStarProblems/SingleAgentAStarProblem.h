@@ -9,6 +9,8 @@
 #include "../States/SingleAgentState.h"
 #include "AStarProblem.h"
 
+// Single Agent Problem formulated as a search task
+// - Space search
 class SingleAgentAStarProblem : public AStarProblem<SingleAgentState> {
 public:
   SingleAgentAStarProblem(const std::shared_ptr<SingleAgentProblem> &problem);

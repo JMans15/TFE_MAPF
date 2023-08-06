@@ -10,9 +10,8 @@
 class EdgeConstraint {
 public:
   // IF IN A SET OF HARD CONSTRAINTS :
-  // agent cannot go from position1 to position2 between time-1 and time (if
-  // positive is false) agent has to go from position1 to position2 between
-  // time-1 and time (otherwise)
+  // agent cannot go from position1 to position2 between time-1 and time (if positive is false)
+  // agent has to go from position1 to position2 between time-1 and time (otherwise)
   //
   // IF IN A SET OF SOFT CONSTRAINTS :
   // agent is occupying the edge (position1, position2) between time-1 and time

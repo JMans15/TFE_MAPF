@@ -9,6 +9,8 @@
 #include "../States/SingleAgentSpaceTimeState.h"
 #include "AStarProblem.h"
 
+// Single Agent Problem formulated as a search task
+// - Space Time search (because of the external constraints)
 class SingleAgentAStarProblemWithConstraints
     : public AStarProblem<SingleAgentSpaceTimeState> {
 public:

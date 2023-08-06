@@ -5,7 +5,7 @@
 #include "ReverseResumableAStar.h"
 
 ReverseResumableAStar::ReverseResumableAStar(
-    std::shared_ptr<SingleAgentAStarProblem> problem)
+    const std::shared_ptr<SingleAgentAStarProblem>& problem)
     : problem(problem) {
   LOG("===== Reverse Resumable A* Search ====");
   heuristic = std::make_shared<ManhattanHeuristic<SingleAgentState>>(

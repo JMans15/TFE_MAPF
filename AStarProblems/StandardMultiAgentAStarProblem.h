@@ -9,7 +9,9 @@
 #include "../States/StandardMultiAgentState.h"
 #include "AStarProblem.h"
 
-// Multi Agent Problem solved with Standard A* (>< Operator Decomposition A*)
+// Multi Agent Problem formulated as a search task
+// - Standard A* (>< Operator Decomposition A*)
+// - Space search
 class StandardMultiAgentAStarProblem : AStarProblem<StandardMultiAgentState> {
 public:
   StandardMultiAgentAStarProblem(std::shared_ptr<MultiAgentProblem> problem);

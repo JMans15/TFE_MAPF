@@ -7,6 +7,7 @@
 
 #include <memory>
 
+// Node structure used in A*
 template <class S> class Node {
 public:
   Node(std::shared_ptr<S> state, int cost, int heuristic,
@@ -34,6 +35,7 @@ private:
                       // the path leading up to this node
 };
 
+// Node comparator used in the open list/frontier of A*
 template <class S> class NodeComparator {
 public:
   inline bool operator()(const std::shared_ptr<Node<S>> &a,
