@@ -1,0 +1,6 @@
+<map id="Solution::print" name="Solution::print">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,119,83"/>
+<area shape="rect" id="node2" href="$classSolution.html#abf90913431c8c9dd2c130b4ba0457c26" title="Fuel : Total amount of distance traveled by all agents." alt="" coords="193,5,353,32"/>
+<area shape="rect" id="node3" href="$classSolution.html#a97722ea3357d75b35017841666633fe1" title="Makespan : Total time for the last agent to reach its goal." alt="" coords="174,56,373,83"/>
+<area shape="rect" id="node4" href="$classSolution.html#aeb23218d4957d969d4d89252f3e31cdb" title=" " alt="" coords="167,107,380,133"/>
+</map>

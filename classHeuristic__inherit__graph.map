@@ -1,0 +1,11 @@
+<map id="Heuristic&lt; S &gt;" name="Heuristic&lt; S &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="652,5,811,97"/>
+<area shape="rect" id="node2" href="$classMICheuristic.html" title=" " alt="" coords="5,153,164,259"/>
+<area shape="rect" id="node3" href="$classMICheuristic2.html" title=" " alt="" coords="188,153,347,259"/>
+<area shape="rect" id="node4" href="$classMIOCheuristic.html" title=" " alt="" coords="371,160,529,252"/>
+<area shape="rect" id="node5" href="$classMIOCheuristic2.html" title=" " alt="" coords="554,160,717,252"/>
+<area shape="rect" id="node6" href="$classManhattanHeuristic.html" title=" " alt="" coords="741,145,916,267"/>
+<area shape="rect" id="node7" href="$classOptimalDistanceHeuristic.html" title=" " alt="" coords="940,153,1155,259"/>
+<area shape="rect" id="node8" href="$classSICheuristic.html" title=" " alt="" coords="1179,153,1337,259"/>
+<area shape="rect" id="node9" href="$classSIOCheuristic.html" title=" " alt="" coords="1361,160,1520,252"/>
+</map>

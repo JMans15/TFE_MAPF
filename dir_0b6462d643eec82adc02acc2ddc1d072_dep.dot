@@ -1,0 +1,10 @@
+digraph "AStarProblems" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_0b6462d643eec82adc02acc2ddc1d072 [shape=box, label="AStarProblems", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_0b6462d643eec82adc02acc2ddc1d072.html"];
+  dir_633db867517fc930a7645f2dac5f41c1 [shape=box label="States" URL="dir_633db867517fc930a7645f2dac5f41c1.html"];
+  dir_9568da6f45be3ef680f9a4c839aac725 [shape=box label="Problems" URL="dir_9568da6f45be3ef680f9a4c839aac725.html"];
+  dir_0b6462d643eec82adc02acc2ddc1d072->dir_633db867517fc930a7645f2dac5f41c1 [headlabel="6", labeldistance=1.5 headhref="dir_000004_000010.html"];
+  dir_0b6462d643eec82adc02acc2ddc1d072->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="6", labeldistance=1.5 headhref="dir_000004_000009.html"];
+}

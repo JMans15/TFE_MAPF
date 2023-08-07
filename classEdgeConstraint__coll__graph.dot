@@ -1,0 +1,8 @@
+digraph "EdgeConstraint"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{EdgeConstraint\n|- agent\l- position1\l- position2\l- time\l- positive\l|+ EdgeConstraint()\l+ ~EdgeConstraint()\l+ getAgent()\l+ getPosition1()\l+ getPosition2()\l+ getTime()\l+ print()\l+ isPositive()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+}

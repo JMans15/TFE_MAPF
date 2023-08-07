@@ -1,0 +1,10 @@
+digraph "IndependenceDetection&lt; MultiAgentSolver &gt;"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{IndependenceDetection\l\< MultiAgentSolver \>\n|- alreadyConflictedBefore\l|+ IndependenceDetection()\l+ solve()\l+ IndependenceDetection()\l+ solve()\l- replanGroupAAvoidingGroupB()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Independence Detection search."];
+  Node2 -> Node1 [dir="back",color="firebrick4",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{SimpleIndependenceDetection\l\< MultiAgentSolver \>\n|# problem\l# groups\l# setOfConflicts\l# vertexConflictAvoidanceTable\l# edgeConflictAvoidanceTable\l# CAT\l# lowLevelSearch\l# numberOfResolvedConflicts\l# sizeOfLargerGroup\l|+ SimpleIndependenceDetection()\l+ solve()\l+ SimpleIndependenceDetection()\l+ solve()\l# planSingletonGroups()\l# calculateSetOfConflicts()\l# mergeGroupsAndPlanNewGroup()\l# combineSolutions()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSimpleIndependenceDetection.html",tooltip="Simple Independent Detection search."];
+}

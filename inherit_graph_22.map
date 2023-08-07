@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classHeuristic.html" title=" " alt="" coords="5,187,124,213"/>
+<area shape="rect" id="node2" href="$classMICheuristic.html" title=" " alt="" coords="194,5,339,32"/>
+<area shape="rect" id="node3" href="$classMICheuristic2.html" title=" " alt="" coords="190,56,343,83"/>
+<area shape="rect" id="node4" href="$classMIOCheuristic.html" title=" " alt="" coords="189,107,344,133"/>
+<area shape="rect" id="node5" href="$classMIOCheuristic2.html" title=" " alt="" coords="185,157,348,184"/>
+<area shape="rect" id="node6" href="$classManhattanHeuristic.html" title=" " alt="" coords="191,209,342,250"/>
+<area shape="rect" id="node7" href="$classOptimalDistanceHeuristic.html" title=" " alt="" coords="172,274,361,315"/>
+<area shape="rect" id="node8" href="$classSICheuristic.html" title=" " alt="" coords="196,340,337,367"/>
+<area shape="rect" id="node9" href="$classSIOCheuristic.html" title=" " alt="" coords="191,391,342,417"/>
+</map>

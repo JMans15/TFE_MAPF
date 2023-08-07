@@ -1,0 +1,8 @@
+digraph "ConflictTreeNode"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{ConflictTreeNode\n|- edgeConstraint\l- vertexConstraint\l- solution\l- costs\l- cost\l- parent\l- setOfConflicts\l|+ ConflictTreeNode()\l+ ~ConflictTreeNode()\l+ getParent()\l+ getEdgeConstraint()\l+ getVertexConstraint()\l+ getSolution()\l+ getCosts()\l+ getCost()\l+ getNumberOfConflicts()\l+ getSetOfConflicts()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+}

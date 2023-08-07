@@ -1,0 +1,12 @@
+digraph "SingleAgentAStarProblemWithConstraints"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{SingleAgentAStarProblemWith\lConstraints\n|- problem\l|+ SingleAgentAStarProblemWith\lConstraints()\l+ getStartState()\l+ isGoalState()\l+ getSuccessors()\l+ getPositions()\l+ getMaxCost()\l+ getStartTime()\l+ getProblem()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{AStarProblem\< SingleAgent\lSpaceTimeState \>\n||+ AStarProblem()\l+ ~AStarProblem()\l+ getStartState()\l+ isGoalState()\l+ getSuccessors()\l+ getPositions()\l+ getMaxCost()\l+ getStartTime()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAStarProblem.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="orange",fontsize="10",style="solid",label=" \< SingleAgentSpaceTimeState \>" ,fontname="Helvetica"];
+  Node3 [label="{AStarProblem\< S \>\n||+ AStarProblem()\l+ ~AStarProblem()\l+ getStartState()\l+ isGoalState()\l+ getSuccessors()\l+ getPositions()\l+ getMaxCost()\l+ getStartTime()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAStarProblem.html",tooltip=" "];
+}

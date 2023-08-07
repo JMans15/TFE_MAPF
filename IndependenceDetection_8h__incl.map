@@ -1,0 +1,38 @@
+<map id="IndependenceDetection.h" name="IndependenceDetection.h">
+<area shape="rect" id="node1" title=" " alt="" coords="142,5,330,32"/>
+<area shape="rect" id="node2" href="$AlreadyConflictedBeforeSet_8h.html" title=" " alt="" coords="5,80,219,107"/>
+<area shape="rect" id="node6" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="243,80,477,107"/>
+<area shape="rect" id="node3" href="$Group_8h.html" title=" " alt="" coords="167,229,241,256"/>
+<area shape="rect" id="node4" href="$Solution_8h.html" title=" " alt="" coords="104,386,272,413"/>
+<area shape="rect" id="node5" href="$VertexConstraint_8h.html" title=" " alt="" coords="517,1004,750,1031"/>
+<area shape="rect" id="node7" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="1463,736,1646,777"/>
+<area shape="rect" id="node12" href="$SingleAgentProblem_8h.html" title=" " alt="" coords="448,736,637,777"/>
+<area shape="rect" id="node13" href="$GeneralAStar_8h.html" title=" " alt="" coords="405,229,576,256"/>
+<area shape="rect" id="node33" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="2031,155,2241,181"/>
+<area shape="rect" id="node36" href="$GroupConflict_8h.html" title=" " alt="" coords="149,155,272,181"/>
+<area shape="rect" id="node8" href="$Problem_8h.html" title=" " alt="" coords="461,833,549,859"/>
+<area shape="rect" id="node9" href="$ConstraintsSet_8h.html" title=" " alt="" coords="540,915,727,956"/>
+<area shape="rect" id="node11" href="$Graph_8h.html" title=" " alt="" coords="333,922,501,949"/>
+<area shape="rect" id="node10" href="$EdgeConstraint_8h.html" title=" " alt="" coords="783,1004,916,1031"/>
+<area shape="rect" id="node14" href="$AStar_8h.html" title=" " alt="" coords="465,304,533,331"/>
+<area shape="rect" id="node15" href="$AStarProblem_8h.html" title=" " alt="" coords="1063,736,1206,777"/>
+<area shape="rect" id="node16" href="$HeuristicOptimal_8h.html" title=" " alt="" coords="443,379,616,420"/>
+<area shape="rect" id="node17" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="456,468,635,509"/>
+<area shape="rect" id="node21" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="821,557,995,599"/>
+<area shape="rect" id="node18" href="$SingleAgentAStarProblem_8h.html" title=" " alt="" coords="448,647,653,688"/>
+<area shape="rect" id="node32" href="$Node_8h.html" title=" " alt="" coords="449,565,517,591"/>
+<area shape="rect" id="node19" href="$SingleAgentState_8h.html" title=" " alt="" coords="573,833,776,859"/>
+<area shape="rect" id="node20" href="$State_8h.html" title=" " alt="" coords="865,922,933,949"/>
+<area shape="rect" id="node22" href="$ODMultiAgentAStarProblem_8h.html" title=" " alt="" coords="1811,647,1997,688"/>
+<area shape="rect" id="node24" href="$ODMultiAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="1521,647,1786,688"/>
+<area shape="rect" id="node26" href="$SingleAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="677,647,904,688"/>
+<area shape="rect" id="node28" href="$StandardMultiAgentAStarProblem_8h.html" title=" " alt="" coords="928,647,1123,688"/>
+<area shape="rect" id="node30" href="$StandardMultiAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="1197,647,1496,688"/>
+<area shape="rect" id="node23" href="$ODMultiAgentState_8h.html" title=" " alt="" coords="1667,833,1883,859"/>
+<area shape="rect" id="node25" href="$ODMultiAgentSpaceTimeState_8h.html" title=" " alt="" coords="1670,736,1879,777"/>
+<area shape="rect" id="node27" href="$SingleAgentSpaceTimeState_8h.html" title=" " alt="" coords="801,825,997,867"/>
+<area shape="rect" id="node29" href="$StandardMultiAgentState_8h.html" title=" " alt="" coords="1021,825,1229,867"/>
+<area shape="rect" id="node31" href="$StandardMultiAgentSpaceTimeState_8h.html" title=" " alt="" coords="1231,736,1439,777"/>
+<area shape="rect" id="node34" href="$ConflictTreeNode_8h.html" title=" " alt="" coords="957,922,1101,949"/>
+<area shape="rect" id="node35" href="$AgentConflict_8h.html" title=" " alt="" coords="969,1004,1090,1031"/>
+</map>

@@ -1,0 +1,8 @@
+digraph "ReverseResumableAStar"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{ReverseResumableAStar\n|- problem\l- heuristic\l- fringe\l- distance\l- closed\l|+ ReverseResumableAStar()\l+ resume()\l+ optimalDistance()\l+ getDistance()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+}

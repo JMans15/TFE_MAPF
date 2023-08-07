@@ -1,0 +1,10 @@
+<map id="AgentConflict.h" name="AgentConflict.h">
+<area shape="rect" id="node1" title=" " alt="" coords="152,5,273,32"/>
+<area shape="rect" id="node2" href="$ConflictTreeNode_8h.html" title=" " alt="" coords="141,80,285,107"/>
+<area shape="rect" id="node3" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="129,155,296,181"/>
+<area shape="rect" id="node4" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,229,188,256"/>
+<area shape="rect" id="node5" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="212,229,445,256"/>
+<area shape="rect" id="node6" href="$IndependenceDetection_8h.html" title=" " alt="" coords="113,304,301,331"/>
+<area shape="rect" id="node8" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="326,304,574,331"/>
+<area shape="rect" id="node7" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="106,379,309,405"/>
+</map>

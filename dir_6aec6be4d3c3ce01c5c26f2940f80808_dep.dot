@@ -1,0 +1,13 @@
+digraph "Heuristics" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_6aec6be4d3c3ce01c5c26f2940f80808 [shape=box, label="Heuristics", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_6aec6be4d3c3ce01c5c26f2940f80808.html"];
+  dir_0b6462d643eec82adc02acc2ddc1d072 [shape=box label="AStarProblems" URL="dir_0b6462d643eec82adc02acc2ddc1d072.html"];
+  dir_b46252c81027d4122fff056403e62783 [shape=box label="GraphParser" URL="dir_b46252c81027d4122fff056403e62783.html"];
+  dir_bdfa83abd3770e9236d0774c4efb3ff7 [shape=box label="Solvers" fillcolor="white" style="filled" color="red" URL="dir_bdfa83abd3770e9236d0774c4efb3ff7.html"];
+  dir_bdfa83abd3770e9236d0774c4efb3ff7->dir_0b6462d643eec82adc02acc2ddc1d072 [headlabel="2", labeldistance=1.5 headhref="dir_000000_000004.html"];
+  dir_6aec6be4d3c3ce01c5c26f2940f80808->dir_0b6462d643eec82adc02acc2ddc1d072 [headlabel="6", labeldistance=1.5 headhref="dir_000008_000004.html"];
+  dir_6aec6be4d3c3ce01c5c26f2940f80808->dir_b46252c81027d4122fff056403e62783 [headlabel="1", labeldistance=1.5 headhref="dir_000008_000007.html"];
+  dir_6aec6be4d3c3ce01c5c26f2940f80808->dir_bdfa83abd3770e9236d0774c4efb3ff7 [headlabel="1", labeldistance=1.5 headhref="dir_000008_000000.html"];
+}

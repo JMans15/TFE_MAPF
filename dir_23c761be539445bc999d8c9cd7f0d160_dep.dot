@@ -1,0 +1,8 @@
+digraph "Solution" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_23c761be539445bc999d8c9cd7f0d160 [shape=box, label="Solution", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_23c761be539445bc999d8c9cd7f0d160.html"];
+  dir_0a4f1ba803caf780c2827f229c89a1b5 [shape=box label="Constraints" URL="dir_0a4f1ba803caf780c2827f229c89a1b5.html"];
+  dir_23c761be539445bc999d8c9cd7f0d160->dir_0a4f1ba803caf780c2827f229c89a1b5 [headlabel="1", labeldistance=1.5 headhref="dir_000011_000005.html"];
+}

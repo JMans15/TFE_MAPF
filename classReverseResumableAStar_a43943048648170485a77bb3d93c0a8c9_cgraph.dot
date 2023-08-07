@@ -1,0 +1,11 @@
+digraph "ReverseResumableAStar::optimalDistance"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ReverseResumableAStar\l::optimalDistance",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ReverseResumableAStar\l::resume",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classReverseResumableAStar.html#a12a7d3d3bdeb36f80fa1ae7c54a2a6cc",tooltip=" "];
+}

@@ -1,0 +1,11 @@
+digraph "Solution::getSumOfCostsCost"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Solution::getSumOfCostsCost",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Solution::print",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSolution.html#a22519dee8cecd124e2e112a3a9bc505c",tooltip=" "];
+}
