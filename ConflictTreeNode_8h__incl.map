@@ -1,6 +1,6 @@
-<map id="ConflictTreeNode.h" name="ConflictTreeNode.h">
-<area shape="rect" id="node1" title=" " alt="" coords="275,5,419,32"/>
-<area shape="rect" id="node2" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,87,240,114"/>
-<area shape="rect" id="node3" href="$VertexConstraint_8h.html" title=" " alt="" coords="263,80,430,121"/>
-<area shape="rect" id="node4" href="$AgentConflict_8h.html" title=" " alt="" coords="454,87,575,114"/>
+<map id="Solvers/CBS/ConflictTreeNode.h" name="Solvers/CBS/ConflictTreeNode.h">
+<area shape="rect" id="node1" title=" " alt="" coords="257,5,437,47"/>
+<area shape="rect" id="node2" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,102,240,129"/>
+<area shape="rect" id="node3" href="$VertexConstraint_8h.html" title=" " alt="" coords="263,95,430,136"/>
+<area shape="rect" id="node4" href="$AgentConflict_8h.html" title=" " alt="" coords="454,102,575,129"/>
 </map>

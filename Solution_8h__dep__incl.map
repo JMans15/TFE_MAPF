@@ -1,16 +1,16 @@
-<map id="Solution.h" name="Solution.h">
-<area shape="rect" id="node1" title=" " alt="" coords="267,5,353,32"/>
-<area shape="rect" id="node2" href="$Solution_8cpp.html" title=" " alt="" coords="149,80,252,107"/>
-<area shape="rect" id="node3" href="$AStar_8h.html" title=" " alt="" coords="276,80,344,107"/>
-<area shape="rect" id="node12" href="$Group_8h.html" title=" " alt="" coords="408,155,481,181"/>
-<area shape="rect" id="node4" href="$GeneralAStar_8h.html" title=" " alt="" coords="93,155,212,181"/>
-<area shape="rect" id="node11" href="$CooperativeAStar_8h.html" title=" " alt="" coords="237,155,383,181"/>
-<area shape="rect" id="node5" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="69,229,236,256"/>
-<area shape="rect" id="node7" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="212,304,445,331"/>
-<area shape="rect" id="node6" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,304,188,331"/>
-<area shape="rect" id="node8" href="$IndependenceDetection_8h.html" title=" " alt="" coords="480,379,668,405"/>
-<area shape="rect" id="node10" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="205,379,453,405"/>
-<area shape="rect" id="node9" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="473,453,675,480"/>
-<area shape="rect" id="node13" href="$AlreadyConflictedBeforeSet_8h.html" title=" " alt="" coords="470,304,683,331"/>
-<area shape="rect" id="node14" href="$GroupConflict_8h.html" title=" " alt="" coords="381,229,503,256"/>
+<map id="Solution/Solution.h" name="Solution/Solution.h">
+<area shape="rect" id="node1" title=" " alt="" coords="267,5,411,32"/>
+<area shape="rect" id="node2" href="$Solution_8cpp.html" title=" " alt="" coords="77,80,236,107"/>
+<area shape="rect" id="node3" href="$AStar_8h.html" title=" " alt="" coords="260,80,419,107"/>
+<area shape="rect" id="node12" href="$Group_8h.html" title=" " alt="" coords="459,162,601,189"/>
+<area shape="rect" id="node4" href="$GeneralAStar_8h.html" title=" " alt="" coords="10,162,221,189"/>
+<area shape="rect" id="node11" href="$CooperativeAStar_8h.html" title=" " alt="" coords="245,155,434,196"/>
+<area shape="rect" id="node5" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="19,244,212,285"/>
+<area shape="rect" id="node7" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="223,333,451,375"/>
+<area shape="rect" id="node6" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,333,199,375"/>
+<area shape="rect" id="node8" href="$IndependenceDetection_8h.html" title=" " alt="" coords="474,430,733,457"/>
+<area shape="rect" id="node10" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="221,423,449,464"/>
+<area shape="rect" id="node9" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="467,512,740,539"/>
+<area shape="rect" id="node13" href="$AlreadyConflictedBeforeSet_8h.html" title=" " alt="" coords="500,333,707,375"/>
+<area shape="rect" id="node14" href="$GroupConflict_8h.html" title=" " alt="" coords="374,251,566,278"/>
 </map>

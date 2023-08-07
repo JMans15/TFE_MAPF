@@ -1,5 +1,5 @@
-<map id="ODMultiAgentAStarProblemWithConstraints.h" name="ODMultiAgentAStarProblemWithConstraints.h">
-<area shape="rect" id="node1" title=" " alt="" coords="448,5,651,47"/>
+<map id="AStarProblems/ODMultiAgentAStarProblemWithConstraints.h" name="AStarProblems/ODMultiAgentAStarProblemWithConstraints.h">
+<area shape="rect" id="node1" title=" " alt="" coords="436,5,663,47"/>
 <area shape="rect" id="node2" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="185,102,421,129"/>
 <area shape="rect" id="node8" href="$ODMultiAgentSpaceTimeState_8h.html" title=" " alt="" coords="445,95,654,136"/>
 <area shape="rect" id="node11" href="$AStarProblem_8h.html" title=" " alt="" coords="679,102,801,129"/>

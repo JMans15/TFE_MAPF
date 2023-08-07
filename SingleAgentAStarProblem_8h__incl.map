@@ -1,12 +1,12 @@
-<map id="SingleAgentAStarProblem.h" name="SingleAgentAStarProblem.h">
-<area shape="rect" id="node1" title=" " alt="" coords="399,5,601,32"/>
-<area shape="rect" id="node2" href="$SingleAgentProblem_8h.html" title=" " alt="" coords="132,80,375,107"/>
-<area shape="rect" id="node8" href="$SingleAgentState_8h.html" title=" " alt="" coords="399,80,601,107"/>
-<area shape="rect" id="node10" href="$AStarProblem_8h.html" title=" " alt="" coords="625,80,748,107"/>
-<area shape="rect" id="node3" href="$Problem_8h.html" title=" " alt="" coords="209,155,297,181"/>
-<area shape="rect" id="node4" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,229,247,271"/>
-<area shape="rect" id="node7" href="$Graph_8h.html" title=" " alt="" coords="271,237,439,263"/>
-<area shape="rect" id="node5" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,319,139,345"/>
-<area shape="rect" id="node6" href="$VertexConstraint_8h.html" title=" " alt="" coords="163,319,306,345"/>
-<area shape="rect" id="node9" href="$State_8h.html" title=" " alt="" coords="466,155,534,181"/>
+<map id="AStarProblems/SingleAgentAStarProblem.h" name="AStarProblems/SingleAgentAStarProblem.h">
+<area shape="rect" id="node1" title=" " alt="" coords="400,5,600,47"/>
+<area shape="rect" id="node2" href="$SingleAgentProblem_8h.html" title=" " alt="" coords="132,95,375,121"/>
+<area shape="rect" id="node8" href="$SingleAgentState_8h.html" title=" " alt="" coords="399,95,601,121"/>
+<area shape="rect" id="node10" href="$AStarProblem_8h.html" title=" " alt="" coords="625,95,748,121"/>
+<area shape="rect" id="node3" href="$Problem_8h.html" title=" " alt="" coords="209,169,297,196"/>
+<area shape="rect" id="node4" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,244,247,285"/>
+<area shape="rect" id="node7" href="$Graph_8h.html" title=" " alt="" coords="271,251,439,278"/>
+<area shape="rect" id="node5" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,333,139,360"/>
+<area shape="rect" id="node6" href="$VertexConstraint_8h.html" title=" " alt="" coords="163,333,306,360"/>
+<area shape="rect" id="node9" href="$State_8h.html" title=" " alt="" coords="466,169,534,196"/>
 </map>

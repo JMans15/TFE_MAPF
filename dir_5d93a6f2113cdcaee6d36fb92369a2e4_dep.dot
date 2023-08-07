@@ -1,4 +1,4 @@
-digraph "AStar" {
+digraph "Solvers/AStar" {
   compound=true
   node [ fontsize="10", fontname="Helvetica"];
   edge [ labelfontsize="10", labelfontname="Helvetica"];
@@ -10,11 +10,11 @@ digraph "AStar" {
   dir_23c761be539445bc999d8c9cd7f0d160 [shape=box label="Solution" URL="dir_23c761be539445bc999d8c9cd7f0d160.html"];
   dir_6aec6be4d3c3ce01c5c26f2940f80808 [shape=box label="Heuristics" URL="dir_6aec6be4d3c3ce01c5c26f2940f80808.html"];
   dir_9568da6f45be3ef680f9a4c839aac725 [shape=box label="Problems" URL="dir_9568da6f45be3ef680f9a4c839aac725.html"];
-  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_0b6462d643eec82adc02acc2ddc1d072 [headlabel="2", labeldistance=1.5 headhref="dir_000003_000004.html"];
-  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_23c761be539445bc999d8c9cd7f0d160 [headlabel="1", labeldistance=1.5 headhref="dir_000003_000011.html"];
-  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_6aec6be4d3c3ce01c5c26f2940f80808 [headlabel="2", labeldistance=1.5 headhref="dir_000003_000008.html"];
-  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="1", labeldistance=1.5 headhref="dir_000003_000009.html"];
-  dir_6aec6be4d3c3ce01c5c26f2940f80808->dir_0b6462d643eec82adc02acc2ddc1d072 [headlabel="6", labeldistance=1.5 headhref="dir_000008_000004.html"];
-  dir_6aec6be4d3c3ce01c5c26f2940f80808->dir_5d93a6f2113cdcaee6d36fb92369a2e4 [headlabel="1", labeldistance=1.5 headhref="dir_000008_000003.html"];
-  dir_0b6462d643eec82adc02acc2ddc1d072->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="6", labeldistance=1.5 headhref="dir_000004_000009.html"];
+  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_0b6462d643eec82adc02acc2ddc1d072 [headlabel="2", labeldistance=1.5 headhref="dir_000007_000000.html"];
+  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_23c761be539445bc999d8c9cd7f0d160 [headlabel="1", labeldistance=1.5 headhref="dir_000007_000005.html"];
+  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_6aec6be4d3c3ce01c5c26f2940f80808 [headlabel="2", labeldistance=1.5 headhref="dir_000007_000003.html"];
+  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="1", labeldistance=1.5 headhref="dir_000007_000004.html"];
+  dir_6aec6be4d3c3ce01c5c26f2940f80808->dir_0b6462d643eec82adc02acc2ddc1d072 [headlabel="6", labeldistance=1.5 headhref="dir_000003_000000.html"];
+  dir_6aec6be4d3c3ce01c5c26f2940f80808->dir_5d93a6f2113cdcaee6d36fb92369a2e4 [headlabel="1", labeldistance=1.5 headhref="dir_000003_000007.html"];
+  dir_0b6462d643eec82adc02acc2ddc1d072->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="6", labeldistance=1.5 headhref="dir_000000_000004.html"];
 }

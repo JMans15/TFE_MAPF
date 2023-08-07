@@ -1,9 +1,9 @@
-<map id="ConflictTreeNode.h" name="ConflictTreeNode.h">
-<area shape="rect" id="node1" title=" " alt="" coords="141,5,285,32"/>
-<area shape="rect" id="node2" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="129,80,296,107"/>
-<area shape="rect" id="node3" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,155,188,181"/>
-<area shape="rect" id="node4" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="212,155,445,181"/>
-<area shape="rect" id="node5" href="$IndependenceDetection_8h.html" title=" " alt="" coords="113,229,301,256"/>
-<area shape="rect" id="node7" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="326,229,574,256"/>
-<area shape="rect" id="node6" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="106,304,309,331"/>
+<map id="Solvers/CBS/ConflictTreeNode.h" name="Solvers/CBS/ConflictTreeNode.h">
+<area shape="rect" id="node1" title=" " alt="" coords="129,5,309,47"/>
+<area shape="rect" id="node2" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="123,95,316,136"/>
+<area shape="rect" id="node3" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,184,199,225"/>
+<area shape="rect" id="node4" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="223,184,451,225"/>
+<area shape="rect" id="node5" href="$IndependenceDetection_8h.html" title=" " alt="" coords="74,281,333,307"/>
+<area shape="rect" id="node7" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="357,273,585,315"/>
+<area shape="rect" id="node6" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="67,363,340,389"/>
 </map>

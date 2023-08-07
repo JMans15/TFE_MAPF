@@ -1,5 +1,5 @@
-<map id="HeuristicOptimal.h" name="HeuristicOptimal.h">
-<area shape="rect" id="node1" title=" " alt="" coords="704,5,848,32"/>
+<map id="Heuristics/HeuristicOptimal.h" name="Heuristics/HeuristicOptimal.h">
+<area shape="rect" id="node1" title=" " alt="" coords="669,5,883,32"/>
 <area shape="rect" id="node2" href="$Graph_8h.html" title=" " alt="" coords="81,534,249,561"/>
 <area shape="rect" id="node3" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="823,80,1001,121"/>
 <area shape="rect" id="node13" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="689,169,863,211"/>

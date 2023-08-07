@@ -1,5 +1,5 @@
-<map id="SingleAgentProblem.h" name="SingleAgentProblem.h">
-<area shape="rect" id="node1" title=" " alt="" coords="170,5,337,32"/>
+<map id="Problems/SingleAgentProblem.h" name="Problems/SingleAgentProblem.h">
+<area shape="rect" id="node1" title=" " alt="" coords="138,5,369,32"/>
 <area shape="rect" id="node2" href="$Problem_8h.html" title=" " alt="" coords="209,80,297,107"/>
 <area shape="rect" id="node3" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,155,247,196"/>
 <area shape="rect" id="node6" href="$Graph_8h.html" title=" " alt="" coords="271,162,439,189"/>

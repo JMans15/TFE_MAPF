@@ -1,5 +1,5 @@
-<map id="IndependenceDetection.cpp" name="IndependenceDetection.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="135,5,337,32"/>
+<map id="Solvers/ID/IndependenceDetection.cpp" name="Solvers/ID/IndependenceDetection.cpp">
+<area shape="rect" id="node1" title=" " alt="" coords="99,5,373,32"/>
 <area shape="rect" id="node2" href="$IndependenceDetection_8h.html" title=" " alt="" coords="142,80,330,107"/>
 <area shape="rect" id="node3" href="$AlreadyConflictedBeforeSet_8h.html" title=" " alt="" coords="5,155,219,181"/>
 <area shape="rect" id="node7" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="243,155,477,181"/>

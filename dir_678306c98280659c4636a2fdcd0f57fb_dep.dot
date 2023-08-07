@@ -1,4 +1,4 @@
-digraph "SuboptimalSolver" {
+digraph "Solvers/SuboptimalSolver" {
   compound=true
   node [ fontsize="10", fontname="Helvetica"];
   edge [ labelfontsize="10", labelfontname="Helvetica"];
@@ -8,7 +8,7 @@ digraph "SuboptimalSolver" {
   dir_678306c98280659c4636a2fdcd0f57fb [shape=box, label="SuboptimalSolver", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_678306c98280659c4636a2fdcd0f57fb.html"];
   }
   dir_9568da6f45be3ef680f9a4c839aac725 [shape=box label="Problems" URL="dir_9568da6f45be3ef680f9a4c839aac725.html"];
-  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="1", labeldistance=1.5 headhref="dir_000003_000009.html"];
-  dir_678306c98280659c4636a2fdcd0f57fb->dir_5d93a6f2113cdcaee6d36fb92369a2e4 [headlabel="1", labeldistance=1.5 headhref="dir_000006_000003.html"];
-  dir_678306c98280659c4636a2fdcd0f57fb->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="2", labeldistance=1.5 headhref="dir_000006_000009.html"];
+  dir_5d93a6f2113cdcaee6d36fb92369a2e4->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="1", labeldistance=1.5 headhref="dir_000007_000004.html"];
+  dir_678306c98280659c4636a2fdcd0f57fb->dir_5d93a6f2113cdcaee6d36fb92369a2e4 [headlabel="1", labeldistance=1.5 headhref="dir_000010_000007.html"];
+  dir_678306c98280659c4636a2fdcd0f57fb->dir_9568da6f45be3ef680f9a4c839aac725 [headlabel="2", labeldistance=1.5 headhref="dir_000010_000004.html"];
 }

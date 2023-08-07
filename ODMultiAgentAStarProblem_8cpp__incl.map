@@ -1,13 +1,13 @@
-<map id="ODMultiAgentAStarProblem.cpp" name="ODMultiAgentAStarProblem.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="389,5,619,32"/>
-<area shape="rect" id="node2" href="$ODMultiAgentAStarProblem_8h.html" title=" " alt="" coords="397,80,611,107"/>
-<area shape="rect" id="node3" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="135,155,371,181"/>
-<area shape="rect" id="node9" href="$ODMultiAgentState_8h.html" title=" " alt="" coords="396,155,612,181"/>
-<area shape="rect" id="node11" href="$AStarProblem_8h.html" title=" " alt="" coords="636,155,759,181"/>
-<area shape="rect" id="node4" href="$Problem_8h.html" title=" " alt="" coords="209,229,297,256"/>
-<area shape="rect" id="node5" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,304,247,345"/>
-<area shape="rect" id="node8" href="$Graph_8h.html" title=" " alt="" coords="271,311,439,338"/>
-<area shape="rect" id="node6" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,393,139,420"/>
-<area shape="rect" id="node7" href="$VertexConstraint_8h.html" title=" " alt="" coords="163,393,306,420"/>
-<area shape="rect" id="node10" href="$State_8h.html" title=" " alt="" coords="470,229,538,256"/>
+<map id="AStarProblems/ODMultiAgentAStarProblem.cpp" name="AStarProblems/ODMultiAgentAStarProblem.cpp">
+<area shape="rect" id="node1" title=" " alt="" coords="397,5,611,47"/>
+<area shape="rect" id="node2" href="$ODMultiAgentAStarProblem_8h.html" title=" " alt="" coords="397,95,611,121"/>
+<area shape="rect" id="node3" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="135,169,371,196"/>
+<area shape="rect" id="node9" href="$ODMultiAgentState_8h.html" title=" " alt="" coords="396,169,612,196"/>
+<area shape="rect" id="node11" href="$AStarProblem_8h.html" title=" " alt="" coords="636,169,759,196"/>
+<area shape="rect" id="node4" href="$Problem_8h.html" title=" " alt="" coords="209,244,297,271"/>
+<area shape="rect" id="node5" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,319,247,360"/>
+<area shape="rect" id="node8" href="$Graph_8h.html" title=" " alt="" coords="271,326,439,353"/>
+<area shape="rect" id="node6" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,408,139,435"/>
+<area shape="rect" id="node7" href="$VertexConstraint_8h.html" title=" " alt="" coords="163,408,306,435"/>
+<area shape="rect" id="node10" href="$State_8h.html" title=" " alt="" coords="470,244,538,271"/>
 </map>

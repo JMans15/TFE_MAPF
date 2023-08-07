@@ -1,19 +1,19 @@
-<map id="StandardMultiAgentSpaceTimeState.h" name="StandardMultiAgentSpaceTimeState.h">
-<area shape="rect" id="node1" title=" " alt="" coords="316,5,539,47"/>
-<area shape="rect" id="node2" href="$StandardMultiAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="179,95,419,136"/>
-<area shape="rect" id="node17" href="$StandardMultiAgentSpaceTimeState_8cpp.html" title=" " alt="" coords="444,95,667,136"/>
-<area shape="rect" id="node3" href="$StandardMultiAgentAStarProblemWithConstraints_8cpp.html" title=" " alt="" coords="67,184,307,225"/>
-<area shape="rect" id="node4" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="331,191,494,218"/>
-<area shape="rect" id="node5" href="$HeuristicOptimal_8h.html" title=" " alt="" coords="274,348,418,375"/>
-<area shape="rect" id="node15" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="383,273,578,300"/>
-<area shape="rect" id="node6" href="$AStar_8h.html" title=" " alt="" coords="312,423,380,449"/>
-<area shape="rect" id="node7" href="$GeneralAStar_8h.html" title=" " alt="" coords="208,497,327,524"/>
-<area shape="rect" id="node14" href="$CooperativeAStar_8h.html" title=" " alt="" coords="351,497,498,524"/>
-<area shape="rect" id="node8" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="124,572,291,599"/>
-<area shape="rect" id="node10" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="212,647,445,673"/>
-<area shape="rect" id="node9" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,647,188,673"/>
-<area shape="rect" id="node11" href="$IndependenceDetection_8h.html" title=" " alt="" coords="113,721,301,748"/>
-<area shape="rect" id="node13" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="326,721,574,748"/>
-<area shape="rect" id="node12" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="106,796,309,823"/>
-<area shape="rect" id="node16" href="$ReverseResumableAStar_8cpp.html" title=" " alt="" coords="443,348,652,375"/>
+<map id="States/StandardMultiAgentSpaceTimeState.h" name="States/StandardMultiAgentSpaceTimeState.h">
+<area shape="rect" id="node1" title=" " alt="" coords="348,5,544,47"/>
+<area shape="rect" id="node2" href="$StandardMultiAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="187,95,452,136"/>
+<area shape="rect" id="node17" href="$StandardMultiAgentSpaceTimeState_8cpp.html" title=" " alt="" coords="476,95,672,136"/>
+<area shape="rect" id="node3" href="$StandardMultiAgentAStarProblemWithConstraints_8cpp.html" title=" " alt="" coords="39,184,319,225"/>
+<area shape="rect" id="node4" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="344,191,575,218"/>
+<area shape="rect" id="node5" href="$HeuristicOptimal_8h.html" title=" " alt="" coords="274,370,487,397"/>
+<area shape="rect" id="node15" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="419,273,657,315"/>
+<area shape="rect" id="node6" href="$AStar_8h.html" title=" " alt="" coords="301,452,460,479"/>
+<area shape="rect" id="node7" href="$GeneralAStar_8h.html" title=" " alt="" coords="163,534,374,561"/>
+<area shape="rect" id="node14" href="$CooperativeAStar_8h.html" title=" " alt="" coords="398,527,587,568"/>
+<area shape="rect" id="node8" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="105,616,299,657"/>
+<area shape="rect" id="node10" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="223,705,451,747"/>
+<area shape="rect" id="node9" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,705,199,747"/>
+<area shape="rect" id="node11" href="$IndependenceDetection_8h.html" title=" " alt="" coords="74,802,333,829"/>
+<area shape="rect" id="node13" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="357,795,585,836"/>
+<area shape="rect" id="node12" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="67,884,340,911"/>
+<area shape="rect" id="node16" href="$ReverseResumableAStar_8cpp.html" title=" " alt="" coords="512,363,751,404"/>
 </map>
