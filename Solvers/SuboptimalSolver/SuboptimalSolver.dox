@@ -1,0 +1,5 @@
+/**
+ * @dir Solvers/SuboptimalSolver
+ * @brief Everithing related to the Coop A* algorithm (suboptimal)
+ */
+

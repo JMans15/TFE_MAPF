@@ -1,0 +1,4 @@
+/**
+ * @dir Solvers/CBS
+ * @brief Everithing related to the Conflict Based Search algorithm
+ */

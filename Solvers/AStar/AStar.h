@@ -1,6 +1,4 @@
-//
-// Created by Arthur Mahy on 27/02/2023.
-//
+//! Generic A*
 
 #ifndef TFE_MAPF_ASTAR_H
 #define TFE_MAPF_ASTAR_H
@@ -12,17 +10,21 @@
 #include <algorithm>
 #include <unordered_map>
 
-// Generic A*
 // Uses an instance of the abstract class AStarProblem
 // Uses an instance of the abstract class Heuristic
 template <class P, class S> class AStar {
 public:
+  //! Constructor for A* solver
+  //! @param [in] problem Problem to be solved by A* (can be single agent or
+  //! multi agent)
+  //! @param [in] typeOfHeuristic Type of heuristic to use
   AStar(std::shared_ptr<P> problem, TypeOfHeuristic typeOfHeuristic)
       : problem(problem),
         heuristic(getHeuristic<P, S>(
             problem, std::make_shared<TypeOfHeuristic>(typeOfHeuristic))),
         numberOfVisitedStates(0) {}
 
+  //! Solve problem and return Solution
   std::shared_ptr<Solution> solve() {
     LOG("===== A* Search ====");
 
@@ -61,8 +63,8 @@ public:
             auto h = heuristic->heuristicFunction(successor);
             auto successorViolationCount =
                 node->getViolationCount() + edgeNumberOfViolations;
-            fringe.insert(std::make_shared<Node<S>>(successor, successorCost, h,
-                                                    node, successorViolationCount));
+            fringe.insert(std::make_shared<Node<S>>(
+                successor, successorCost, h, node, successorViolationCount));
           }
         }
       }
@@ -73,15 +75,17 @@ public:
   }
 
 private:
-  std::shared_ptr<P> problem;
-  std::shared_ptr<Heuristic<S>> heuristic;
+  std::shared_ptr<P>
+      problem; //!< Problem to be solved, multi agebt or single agent
+  std::shared_ptr<Heuristic<S>>
+      heuristic; //!< Heuristic to use (which definition of State)
   std::multiset<std::shared_ptr<Node<S>>, NodeComparator<S>>
-      fringe; // the open list / frontier
+      fringe; //!< the open list / frontier
   std::unordered_map<std::shared_ptr<S>, int, StateHasher<S>, StateEquality<S>>
-      distance; // the closed list (-> graph search)
-  int numberOfVisitedStates;
-  int numberOfNodesLeftInTheFringe;
-
+      distance;                     //!< the closed list (-> graph search)
+  int numberOfVisitedStates;        //!< Number of visited states
+  int numberOfNodesLeftInTheFringe; //!< Number of nodes left in the fringe
+  //! Goes from the Node node to the root and extract the Solution
   std::shared_ptr<Solution> retrieveSolution(std::shared_ptr<Node<S>> node) {
     int cost = node->getCost();
 
