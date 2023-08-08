@@ -1,5 +1,4 @@
 //! Basic A* search
-//! \ingroup utils
 #ifndef TFE_MAPF_GENERALASTAR_H
 #define TFE_MAPF_GENERALASTAR_H
 
