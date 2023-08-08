@@ -13,13 +13,14 @@ var searchData=
   ['alreadyconflictedbefore_10',['alreadyConflictedBefore',['../classIndependenceDetection.html#a1d7491e8b02b4dc62c6fb32196abf81f',1,'IndependenceDetection']]],
   ['alreadyconflictedbeforeset_2eh_11',['AlreadyConflictedBeforeSet.h',['../AlreadyConflictedBeforeSet_8h.html',1,'']]],
   ['astar_12',['AStar',['../classAStar.html',1,'AStar&lt; P, S &gt;'],['../classAStar.html#a5a628216662ffa214b90691609e6db18',1,'AStar::AStar()']]],
-  ['astar_2eh_13',['AStar.h',['../AStar_8h.html',1,'']]],
-  ['astarproblem_14',['AStarProblem',['../classAStarProblem.html',1,'AStarProblem&lt; S &gt;'],['../classAStarProblem.html#abca569e9ccd852c4cfcfbeb980a70434',1,'AStarProblem::AStarProblem()']]],
-  ['astarproblem_2eh_15',['AStarProblem.h',['../AStarProblem_8h.html',1,'']]],
-  ['astarproblem_3c_20odmultiagentspacetimestate_20_3e_16',['AStarProblem&lt; ODMultiAgentSpaceTimeState &gt;',['../classAStarProblem.html',1,'']]],
-  ['astarproblem_3c_20odmultiagentstate_20_3e_17',['AStarProblem&lt; ODMultiAgentState &gt;',['../classAStarProblem.html',1,'']]],
-  ['astarproblem_3c_20singleagentspacetimestate_20_3e_18',['AStarProblem&lt; SingleAgentSpaceTimeState &gt;',['../classAStarProblem.html',1,'']]],
-  ['astarproblem_3c_20singleagentstate_20_3e_19',['AStarProblem&lt; SingleAgentState &gt;',['../classAStarProblem.html',1,'']]],
-  ['astarproblem_3c_20standardmultiagentspacetimestate_20_3e_20',['AStarProblem&lt; StandardMultiAgentSpaceTimeState &gt;',['../classAStarProblem.html',1,'']]],
-  ['astarproblem_3c_20standardmultiagentstate_20_3e_21',['AStarProblem&lt; StandardMultiAgentState &gt;',['../classAStarProblem.html',1,'']]]
+  ['astar_2edox_13',['AStar.dox',['../AStar_8dox.html',1,'']]],
+  ['astar_2eh_14',['AStar.h',['../AStar_8h.html',1,'']]],
+  ['astarproblem_15',['AStarProblem',['../classAStarProblem.html',1,'AStarProblem&lt; S &gt;'],['../classAStarProblem.html#abca569e9ccd852c4cfcfbeb980a70434',1,'AStarProblem::AStarProblem()']]],
+  ['astarproblem_2eh_16',['AStarProblem.h',['../AStarProblem_8h.html',1,'']]],
+  ['astarproblem_3c_20odmultiagentspacetimestate_20_3e_17',['AStarProblem&lt; ODMultiAgentSpaceTimeState &gt;',['../classAStarProblem.html',1,'']]],
+  ['astarproblem_3c_20odmultiagentstate_20_3e_18',['AStarProblem&lt; ODMultiAgentState &gt;',['../classAStarProblem.html',1,'']]],
+  ['astarproblem_3c_20singleagentspacetimestate_20_3e_19',['AStarProblem&lt; SingleAgentSpaceTimeState &gt;',['../classAStarProblem.html',1,'']]],
+  ['astarproblem_3c_20singleagentstate_20_3e_20',['AStarProblem&lt; SingleAgentState &gt;',['../classAStarProblem.html',1,'']]],
+  ['astarproblem_3c_20standardmultiagentspacetimestate_20_3e_21',['AStarProblem&lt; StandardMultiAgentSpaceTimeState &gt;',['../classAStarProblem.html',1,'']]],
+  ['astarproblem_3c_20standardmultiagentstate_20_3e_22',['AStarProblem&lt; StandardMultiAgentState &gt;',['../classAStarProblem.html',1,'']]]
 ];

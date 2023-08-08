@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['independencedetection_354',['IndependenceDetection',['../classIndependenceDetection.html',1,'']]]
+  ['independencedetection_358',['IndependenceDetection',['../classIndependenceDetection.html',1,'']]]
 ];
