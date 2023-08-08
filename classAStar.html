@@ -90,6 +90,9 @@ $(document).ready(function(){initNavTree('classAStar.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 
+<p>Generic A*.  
+ <a href="classAStar.html#details">More...</a></p>
+
 <p><code>#include &lt;AStar.h&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for AStar&lt; P, S &gt;:</div>
@@ -103,29 +106,41 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5a628216662ffa214b90691609e6db18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#a5a628216662ffa214b90691609e6db18">AStar</a> (std::shared_ptr&lt; P &gt; <a class="el" href="classAStar.html#a15c5d722bb255c8dfc2da5d06d80174e">problem</a>, <a class="el" href="HeuristicManhattan_8h.html#a90a57a0b4606011ed5b1f67a278aa9e6">TypeOfHeuristic</a> typeOfHeuristic)</td></tr>
 <tr class="separator:a5a628216662ffa214b90691609e6db18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee8daf3c1ab228779d19a62fe4b9ceea"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolution.html">Solution</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#aee8daf3c1ab228779d19a62fe4b9ceea">solve</a> ()</td></tr>
+<tr class="memdesc:aee8daf3c1ab228779d19a62fe4b9ceea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve problem and return <a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a>.  <a href="classAStar.html#aee8daf3c1ab228779d19a62fe4b9ceea">More...</a><br /></td></tr>
 <tr class="separator:aee8daf3c1ab228779d19a62fe4b9ceea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:aad923ebe077dc466a454e290ba36342c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolution.html">Solution</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#aad923ebe077dc466a454e290ba36342c">retrieveSolution</a> (std::shared_ptr&lt; <a class="el" href="classNode.html">Node</a>&lt; S &gt;&gt; node)</td></tr>
+<tr class="memdesc:aad923ebe077dc466a454e290ba36342c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Goes from the <a class="el" href="classNode.html" title="Node structure used in A*.">Node</a> node to the root and extract the <a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a>.  <a href="classAStar.html#aad923ebe077dc466a454e290ba36342c">More...</a><br /></td></tr>
 <tr class="separator:aad923ebe077dc466a454e290ba36342c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a15c5d722bb255c8dfc2da5d06d80174e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; P &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#a15c5d722bb255c8dfc2da5d06d80174e">problem</a></td></tr>
+<tr class="memdesc:a15c5d722bb255c8dfc2da5d06d80174e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classProblem.html">Problem</a> to be solved, multi agebt or single agent.  <a href="classAStar.html#a15c5d722bb255c8dfc2da5d06d80174e">More...</a><br /></td></tr>
 <tr class="separator:a15c5d722bb255c8dfc2da5d06d80174e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba526ee11098c8aa14676b9f01c1b8ac"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classHeuristic.html">Heuristic</a>&lt; S &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#aba526ee11098c8aa14676b9f01c1b8ac">heuristic</a></td></tr>
+<tr class="memdesc:aba526ee11098c8aa14676b9f01c1b8ac"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classHeuristic.html">Heuristic</a> to use (which definition of <a class="el" href="classState.html">State</a>)  <a href="classAStar.html#aba526ee11098c8aa14676b9f01c1b8ac">More...</a><br /></td></tr>
 <tr class="separator:aba526ee11098c8aa14676b9f01c1b8ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a028e3747fe937617bb64e8431ad8ecf1"><td class="memItemLeft" align="right" valign="top">std::multiset&lt; std::shared_ptr&lt; <a class="el" href="classNode.html">Node</a>&lt; S &gt; &gt;, <a class="el" href="classNodeComparator.html">NodeComparator</a>&lt; S &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#a028e3747fe937617bb64e8431ad8ecf1">fringe</a></td></tr>
+<tr class="memdesc:a028e3747fe937617bb64e8431ad8ecf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">the open list / frontier  <a href="classAStar.html#a028e3747fe937617bb64e8431ad8ecf1">More...</a><br /></td></tr>
 <tr class="separator:a028e3747fe937617bb64e8431ad8ecf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5194aa53b40fedd039fbef5cb98a482a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::shared_ptr&lt; S &gt;, int, <a class="el" href="structStateHasher.html">StateHasher</a>&lt; S &gt;, <a class="el" href="structStateEquality.html">StateEquality</a>&lt; S &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#a5194aa53b40fedd039fbef5cb98a482a">distance</a></td></tr>
+<tr class="memdesc:a5194aa53b40fedd039fbef5cb98a482a"><td class="mdescLeft">&#160;</td><td class="mdescRight">the closed list (-&gt; graph search)  <a href="classAStar.html#a5194aa53b40fedd039fbef5cb98a482a">More...</a><br /></td></tr>
 <tr class="separator:a5194aa53b40fedd039fbef5cb98a482a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a926f03daa011391ed2a1eb46728ab2de"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#a926f03daa011391ed2a1eb46728ab2de">numberOfVisitedStates</a></td></tr>
+<tr class="memdesc:a926f03daa011391ed2a1eb46728ab2de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of visited states.  <a href="classAStar.html#a926f03daa011391ed2a1eb46728ab2de">More...</a><br /></td></tr>
 <tr class="separator:a926f03daa011391ed2a1eb46728ab2de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab10c42355e83af8b361aafafa40c49f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStar.html#aab10c42355e83af8b361aafafa40c49f">numberOfNodesLeftInTheFringe</a></td></tr>
 <tr class="separator:aab10c42355e83af8b361aafafa40c49f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class P, class S&gt;<br />
+class AStar&lt; P, S &gt;</h3>
+
+<p>Generic A*. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5a628216662ffa214b90691609e6db18"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a628216662ffa214b90691609e6db18">&#9670;&nbsp;</a></span>AStar()</h2>
 
@@ -161,6 +176,13 @@ template&lt;class P , class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Constructor for A* solver </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">problem</td><td><a class="el" href="classProblem.html">Problem</a> to be solved by A* (can be single agent or multi agent) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">typeOfHeuristic</td><td>Type of heuristic to use </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -190,6 +212,8 @@ template&lt;class P , class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Goes from the <a class="el" href="classNode.html" title="Node structure used in A*.">Node</a> node to the root and extract the <a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a>. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -223,6 +247,8 @@ template&lt;class P , class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Solve problem and return <a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a>. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -261,6 +287,8 @@ template&lt;class P , class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>the closed list (-&gt; graph search) </p>
+
 </div>
 </div>
 <a id="a028e3747fe937617bb64e8431ad8ecf1"></a>
@@ -284,6 +312,8 @@ template&lt;class P , class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>the open list / frontier </p>
 
 </div>
 </div>
@@ -309,6 +339,8 @@ template&lt;class P , class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p><a class="el" href="classHeuristic.html">Heuristic</a> to use (which definition of <a class="el" href="classState.html">State</a>) </p>
+
 </div>
 </div>
 <a id="aab10c42355e83af8b361aafafa40c49f"></a>
@@ -332,6 +364,7 @@ template&lt;class P , class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Number of nodes left in the fringe </p>
 
 </div>
 </div>
@@ -357,6 +390,8 @@ template&lt;class P , class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Number of visited states. </p>
+
 </div>
 </div>
 <a id="a15c5d722bb255c8dfc2da5d06d80174e"></a>
@@ -380,6 +415,8 @@ template&lt;class P , class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><a class="el" href="classProblem.html">Problem</a> to be solved, multi agebt or single agent. </p>
 
 </div>
 </div>

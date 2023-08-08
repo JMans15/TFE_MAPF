@@ -89,6 +89,9 @@ $(document).ready(function(){initNavTree('classNode.html',''); initResizable(); 
 </div><!--header-->
 <div class="contents">
 
+<p><a class="el" href="classNode.html" title="Node structure used in A*.">Node</a> structure used in A*.  
+ <a href="classNode.html#details">More...</a></p>
+
 <p><code>#include &lt;Node.h&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for Node&lt; S &gt;:</div>
@@ -100,23 +103,30 @@ Collaboration diagram for Node&lt; S &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a446302b3360d7c515092f9b15e04be06"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#a446302b3360d7c515092f9b15e04be06">Node</a> (std::shared_ptr&lt; S &gt; <a class="el" href="classNode.html#a1897ce0129afe1be53dc106a2a4ede63">state</a>, int <a class="el" href="classNode.html#ab0c10a8f32c5891776a84f28644b5f98">cost</a>, int <a class="el" href="classNode.html#a3fcc6a12dd9f07a7a002ac72d2ba9925">heuristic</a>, std::shared_ptr&lt; <a class="el" href="classNode.html">Node</a>&lt; S &gt;&gt; <a class="el" href="classNode.html#a5bcf95543b6a3fe809e7a08ec846b21d">parent</a>=nullptr, int <a class="el" href="classNode.html#a5cfdc9aad04a0d2020cc559c8c12e866">violationCount</a>=0)</td></tr>
+<tr class="memdesc:a446302b3360d7c515092f9b15e04be06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="classNode.html" title="Node structure used in A*.">Node</a>.  <a href="classNode.html#a446302b3360d7c515092f9b15e04be06">More...</a><br /></td></tr>
 <tr class="separator:a446302b3360d7c515092f9b15e04be06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abab464e45a8e923fbad5e5f3842da301"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#abab464e45a8e923fbad5e5f3842da301">~Node</a> ()=default</td></tr>
 <tr class="separator:abab464e45a8e923fbad5e5f3842da301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf64e2e7dc712d08430345fde65ae7f3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; S &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#aaf64e2e7dc712d08430345fde65ae7f3">getState</a> () const</td></tr>
+<tr class="memdesc:aaf64e2e7dc712d08430345fde65ae7f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for state.  <a href="classNode.html#aaf64e2e7dc712d08430345fde65ae7f3">More...</a><br /></td></tr>
 <tr class="separator:aaf64e2e7dc712d08430345fde65ae7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af12116a76f5baecae3092da73405601a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classNode.html">Node</a>&lt; S &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#af12116a76f5baecae3092da73405601a">getParent</a> () const</td></tr>
+<tr class="memdesc:af12116a76f5baecae3092da73405601a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for parent <a class="el" href="classNode.html" title="Node structure used in A*.">Node</a>.  <a href="classNode.html#af12116a76f5baecae3092da73405601a">More...</a><br /></td></tr>
 <tr class="separator:af12116a76f5baecae3092da73405601a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abee1121d3dc9df646d2f7a4e71dd488d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#abee1121d3dc9df646d2f7a4e71dd488d">getCost</a> () const</td></tr>
+<tr class="memdesc:abee1121d3dc9df646d2f7a4e71dd488d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for cost.  <a href="classNode.html#abee1121d3dc9df646d2f7a4e71dd488d">More...</a><br /></td></tr>
 <tr class="separator:abee1121d3dc9df646d2f7a4e71dd488d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95f94d6b884f016814d95f2e1f6749fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#a95f94d6b884f016814d95f2e1f6749fd">getHeuristic</a> () const</td></tr>
+<tr class="memdesc:a95f94d6b884f016814d95f2e1f6749fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for heuristic value.  <a href="classNode.html#a95f94d6b884f016814d95f2e1f6749fd">More...</a><br /></td></tr>
 <tr class="separator:a95f94d6b884f016814d95f2e1f6749fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43bc342b0b0f22ad8ce924c09f7400d6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#a43bc342b0b0f22ad8ce924c09f7400d6">getViolationCount</a> () const</td></tr>
+<tr class="memdesc:a43bc342b0b0f22ad8ce924c09f7400d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for number of violated contraints.  <a href="classNode.html#a43bc342b0b0f22ad8ce924c09f7400d6">More...</a><br /></td></tr>
 <tr class="separator:a43bc342b0b0f22ad8ce924c09f7400d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a1897ce0129afe1be53dc106a2a4ede63"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; S &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#a1897ce0129afe1be53dc106a2a4ede63">state</a></td></tr>
+<tr class="memdesc:a1897ce0129afe1be53dc106a2a4ede63"><td class="mdescLeft">&#160;</td><td class="mdescRight">state of the node  <a href="classNode.html#a1897ce0129afe1be53dc106a2a4ede63">More...</a><br /></td></tr>
 <tr class="separator:a1897ce0129afe1be53dc106a2a4ede63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0c10a8f32c5891776a84f28644b5f98"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#ab0c10a8f32c5891776a84f28644b5f98">cost</a></td></tr>
 <tr class="separator:ab0c10a8f32c5891776a84f28644b5f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,7 +137,12 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a5cfdc9aad04a0d2020cc559c8c12e866"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNode.html#a5cfdc9aad04a0d2020cc559c8c12e866">violationCount</a></td></tr>
 <tr class="separator:a5cfdc9aad04a0d2020cc559c8c12e866"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class S&gt;<br />
+class Node&lt; S &gt;</h3>
+
+<p><a class="el" href="classNode.html" title="Node structure used in A*.">Node</a> structure used in A*. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a446302b3360d7c515092f9b15e04be06"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a446302b3360d7c515092f9b15e04be06">&#9670;&nbsp;</a></span>Node()</h2>
 
@@ -181,6 +196,18 @@ template&lt;class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Constructor for <a class="el" href="classNode.html" title="Node structure used in A*.">Node</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>Which definition of <a class="el" href="classState.html">State</a> to use, see <a class="el" href="dir_633db867517fc930a7645f2dac5f41c1.html">States</a> </td></tr>
+    <tr><td class="paramname">cost</td><td>Cost of the path </td></tr>
+    <tr><td class="paramname">heuristic</td><td>Value of the heuristic for the node </td></tr>
+    <tr><td class="paramname">parent</td><td>Parent <a class="el" href="classNode.html" title="Node structure used in A*.">Node</a> (can be nullptr) </td></tr>
+    <tr><td class="paramname">violationCount</td><td>Number of violated soft constraints (tie-breaking heuristic) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -237,6 +264,8 @@ template&lt;class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for cost. </p>
+
 </div>
 </div>
 <a id="a95f94d6b884f016814d95f2e1f6749fd"></a>
@@ -263,6 +292,8 @@ template&lt;class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Getter for heuristic value. </p>
 
 </div>
 </div>
@@ -291,6 +322,8 @@ template&lt;class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for parent <a class="el" href="classNode.html" title="Node structure used in A*.">Node</a>. </p>
+
 </div>
 </div>
 <a id="aaf64e2e7dc712d08430345fde65ae7f3"></a>
@@ -318,6 +351,8 @@ template&lt;class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for state. </p>
+
 </div>
 </div>
 <a id="a43bc342b0b0f22ad8ce924c09f7400d6"></a>
@@ -344,6 +379,8 @@ template&lt;class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Getter for number of violated contraints. </p>
 
 </div>
 </div>
@@ -441,6 +478,8 @@ template&lt;class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>state of the node </p>
 
 </div>
 </div>

@@ -106,22 +106,34 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a43943048648170485a77bb3d93c0a8c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReverseResumableAStar.html#a43943048648170485a77bb3d93c0a8c9">optimalDistance</a> (int position)</td></tr>
 <tr class="separator:a43943048648170485a77bb3d93c0a8c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a248f33d4d4a55bba2061d9bb55b48acf"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;, int, <a class="el" href="structStateHasher.html">StateHasher</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;, <a class="el" href="structStateEquality.html">StateEquality</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReverseResumableAStar.html#a248f33d4d4a55bba2061d9bb55b48acf">getDistance</a> ()</td></tr>
+<tr class="memdesc:a248f33d4d4a55bba2061d9bb55b48acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a hash map of the distance for each state.  <a href="classReverseResumableAStar.html#a248f33d4d4a55bba2061d9bb55b48acf">More...</a><br /></td></tr>
 <tr class="separator:a248f33d4d4a55bba2061d9bb55b48acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a3e90b049cef5780610b0ed4b1ff7b759"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSingleAgentAStarProblem.html">SingleAgentAStarProblem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReverseResumableAStar.html#a3e90b049cef5780610b0ed4b1ff7b759">problem</a></td></tr>
+<tr class="memdesc:a3e90b049cef5780610b0ed4b1ff7b759"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classProblem.html">Problem</a> to solve.  <a href="classReverseResumableAStar.html#a3e90b049cef5780610b0ed4b1ff7b759">More...</a><br /></td></tr>
 <tr class="separator:a3e90b049cef5780610b0ed4b1ff7b759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad613091cd81e5ec87167217d4ebbce28"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classHeuristic.html">Heuristic</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReverseResumableAStar.html#ad613091cd81e5ec87167217d4ebbce28">heuristic</a></td></tr>
+<tr class="memdesc:ad613091cd81e5ec87167217d4ebbce28"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classHeuristic.html">Heuristic</a> to use.  <a href="classReverseResumableAStar.html#ad613091cd81e5ec87167217d4ebbce28">More...</a><br /></td></tr>
 <tr class="separator:ad613091cd81e5ec87167217d4ebbce28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e48ede1bab4c581774410bd9603dd8c"><td class="memItemLeft" align="right" valign="top">std::multiset&lt; std::shared_ptr&lt; <a class="el" href="classNode.html">Node</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; &gt;, <a class="el" href="classNodeComparator.html">NodeComparator</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReverseResumableAStar.html#a4e48ede1bab4c581774410bd9603dd8c">fringe</a></td></tr>
+<tr class="memdesc:a4e48ede1bab4c581774410bd9603dd8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fringe used in A*.  <a href="classReverseResumableAStar.html#a4e48ede1bab4c581774410bd9603dd8c">More...</a><br /></td></tr>
 <tr class="separator:a4e48ede1bab4c581774410bd9603dd8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5954c6a78b7df9c6370d01fcbf4c64f"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;, int, <a class="el" href="structStateHasher.html">StateHasher</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;, <a class="el" href="structStateEquality.html">StateEquality</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReverseResumableAStar.html#ab5954c6a78b7df9c6370d01fcbf4c64f">distance</a></td></tr>
+<tr class="memdesc:ab5954c6a78b7df9c6370d01fcbf4c64f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of the distances from each state to the target.  <a href="classReverseResumableAStar.html#ab5954c6a78b7df9c6370d01fcbf4c64f">More...</a><br /></td></tr>
 <tr class="separator:ab5954c6a78b7df9c6370d01fcbf4c64f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b6cd6097d8c30ea3f239bde12be73d9"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;, <a class="el" href="structStateHasher.html">StateHasher</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;, <a class="el" href="structStateEquality.html">StateEquality</a>&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReverseResumableAStar.html#a8b6cd6097d8c30ea3f239bde12be73d9">closed</a></td></tr>
+<tr class="memdesc:a8b6cd6097d8c30ea3f239bde12be73d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closed set used in A*.  <a href="classReverseResumableAStar.html#a8b6cd6097d8c30ea3f239bde12be73d9">More...</a><br /></td></tr>
 <tr class="separator:a8b6cd6097d8c30ea3f239bde12be73d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Reverse Resumable A* search</p>
+<p>Only for single agent problem</p>
+<p>Consists of a single agent search where the beginning of the search is the goal state (target position) of the problem</p>
+<p>Possibility to continue the search (with the resume method) even when the start state of the problem is goal tested (<a href="https://www.davidsilver.uk/wp-content/uploads/2020/03/coop-path-AIWisdom.pdf">https://www.davidsilver.uk/wp-content/uploads/2020/03/coop-path-AIWisdom.pdf</a>)</p>
+<p>We don't take into account the maxCost attribute of problem </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8fdd8e57c4b23177a467d1520cf26904"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8fdd8e57c4b23177a467d1520cf26904">&#9670;&nbsp;</a></span>ReverseResumableAStar()</h2>
 
@@ -145,6 +157,12 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Constructor for RRA* solver </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">problem</td><td><a class="el" href="classProblem.html">Problem</a> to solve </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -164,6 +182,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Returns a hash map of the distance for each state. </p>
+
 </div>
 </div>
 <a id="a43943048648170485a77bb3d93c0a8c9"></a>
@@ -181,6 +201,12 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Returns the optimal distance (walls are taken into account) between position and target </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>Start position from where to compute the cost of the path to the target </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -205,6 +231,13 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Resumes the search from target to start until state is met </p><dl class="section return"><dt>Returns</dt><dd>the optimal cost between goal state and state </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td><a class="el" href="classSingleAgentState.html">SingleAgentState</a> to pause at </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -235,6 +268,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Closed set used in A*. </p>
+
 </div>
 </div>
 <a id="ab5954c6a78b7df9c6370d01fcbf4c64f"></a>
@@ -256,6 +291,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Map of the distances from each state to the target. </p>
 
 </div>
 </div>
@@ -279,6 +316,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Fringe used in A*. </p>
+
 </div>
 </div>
 <a id="ad613091cd81e5ec87167217d4ebbce28"></a>
@@ -301,6 +340,8 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p><a class="el" href="classHeuristic.html">Heuristic</a> to use. </p>
+
 </div>
 </div>
 <a id="a3e90b049cef5780610b0ed4b1ff7b759"></a>
@@ -322,6 +363,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><a class="el" href="classProblem.html">Problem</a> to solve. </p>
 
 </div>
 </div>

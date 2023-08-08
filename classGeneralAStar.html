@@ -111,15 +111,20 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ad6d9baa0ad419ea1291e267e2e9430cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="HeuristicManhattan_8h.html#a90a57a0b4606011ed5b1f67a278aa9e6">TypeOfHeuristic</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeneralAStar.html#ad6d9baa0ad419ea1291e267e2e9430cc">typeOfHeuristic</a></td></tr>
+<tr class="memdesc:ad6d9baa0ad419ea1291e267e2e9430cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of heuristic to be used.  <a href="classGeneralAStar.html#ad6d9baa0ad419ea1291e267e2e9430cc">More...</a><br /></td></tr>
 <tr class="separator:ad6d9baa0ad419ea1291e267e2e9430cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d0884da5e3e83d5c7bf85b7c9ee4b9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeneralAStar.html#a0d0884da5e3e83d5c7bf85b7c9ee4b9b">fixedParameters</a></td></tr>
 <tr class="separator:a0d0884da5e3e83d5c7bf85b7c9ee4b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ef17b9eaeacff52316506f13644ae8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeneralAStar.html#a1ef17b9eaeacff52316506f13644ae8a">spaceTimeSearch</a></td></tr>
 <tr class="separator:a1ef17b9eaeacff52316506f13644ae8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad68787b92edfbd3c72078b6d9853f7f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGeneralAStar.html#ad68787b92edfbd3c72078b6d9853f7f5">operatorDecomposition</a></td></tr>
+<tr class="memdesc:ad68787b92edfbd3c72078b6d9853f7f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">OperatorDecomposition or Standard (for multi)  <a href="classGeneralAStar.html#ad68787b92edfbd3c72078b6d9853f7f5">More...</a><br /></td></tr>
 <tr class="separator:ad68787b92edfbd3c72078b6d9853f7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Basic A* search Can be applied for multi agent and single agent problems</p>
+<p>Only takes in account negative constraints of problem </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae296225c872d148fe6f05936d01bc58f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae296225c872d148fe6f05936d01bc58f">&#9670;&nbsp;</a></span>GeneralAStar() <span class="overload">[1/2]</span></h2>
 
@@ -159,6 +164,14 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Constructor for the general A* search </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">typeOfHeuristic</td><td>TypeOfHeuristic to use </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">spaceTimeSearch</td><td>true if space-time search, false if simple space search </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">operatorDecomposition</td><td>true if OD is to be used </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -185,6 +198,12 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Constructor for the general A* search Uses determines whether space-time search should be used depending on the presence of external constraints, shouldn't be used by the user </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">typeOfHeuristic</td><td>TypeOfHeuristic to use </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -212,6 +231,12 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Launches a multi-agent search and returns the <a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">problem</td><td><a class="el" href="classProblem.html">Problem</a> to solve </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -250,6 +275,12 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Launches a single-agent search and returns the <a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">problem</td><td><a class="el" href="classProblem.html">Problem</a> to solve </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -279,6 +310,7 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>false when space-time search has to be used automatically in presence of external constraints </p>
 
 </div>
 </div>
@@ -302,6 +334,8 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>OperatorDecomposition or Standard (for multi) </p>
+
 </div>
 </div>
 <a id="a1ef17b9eaeacff52316506f13644ae8a"></a>
@@ -323,6 +357,7 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>SpaceTimeSearch or SpaceSearch (for single and multi) </p>
 
 </div>
 </div>
@@ -345,6 +380,8 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Type of heuristic to be used. </p>
 
 </div>
 </div>
