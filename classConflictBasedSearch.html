@@ -151,7 +151,13 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a3f60374e0c681147068bfc5e02b2467d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictBasedSearch.html#a3f60374e0c681147068bfc5e02b2467d">disjointSplitting</a></td></tr>
 <tr class="separator:a3f60374e0c681147068bfc5e02b2467d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Conflict Based Search</p><ul>
+<li>high level of the algorithm - Conflict Tree (CT) as a best first search</li>
+</ul>
+<p>Only takes in account negative constraints of problem</p>
+<p>typeOfHeuristic is the heuristic for the A* searches If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to avoid planned paths (if possible with optimal cost) If disjointSplitting is true, we use a disjoint splitting strategy (branches on 1 positive and 1 negative constraint instead of 2 negative constraints) (DS is a technique designed to ensure that expanding a CT node N creates a disjoint partition of the space of solutions that satisfy the constraints of N. That is, every solution that satisfies the constraints of N is in exactly one of its children.) </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1341d35ab9529ad6f4a471281c7e4cb3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1341d35ab9529ad6f4a471281c7e4cb3">&#9670;&nbsp;</a></span>ConflictBasedSearch() <span class="overload">[1/2]</span></h2>
 
@@ -189,6 +195,15 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Constructor for <a class="el" href="classConflictBasedSearch.html">ConflictBasedSearch</a> solver for a specified <a class="el" href="classProblem.html">Problem</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">typeOfHeuristic</td><td>Type of heuristic to use </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CAT</td><td>true if CAT is to be used </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">disjointSplitting</td><td>true if DS is to be used </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">problem</td><td><a class="el" href="classProblem.html">Problem</a> to solve </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -231,6 +246,14 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Constructor for <a class="el" href="classConflictBasedSearch.html">ConflictBasedSearch</a> solver, no problem specified yet </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">typeOfHeuristic</td><td>Type of heuristic to use </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CAT</td><td>true if CAT is to be used </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">disjointSplitting</td><td>true if DS is to be used </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -258,6 +281,13 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a></td><td>found for each agent </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the set of conflicts between the paths of solutions </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -290,6 +320,13 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the solution in node with the right format (<a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a> class and same size for all paths) </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>node to retreive the solution from </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -327,6 +364,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Runs disjoint splitting </p><dl class="section return"><dt>Returns</dt><dd>the solution found by disjoint splitting </dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -393,6 +431,17 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if agent with id agentId can be at position between t1 and t2 according to the setOfVertexConstraints </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">setOfVertexConstraints</td><td>The set of hard constraint to be respected </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t1</td><td>start of time frame to check the constraint for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">t2</td><td>end of time frame to check the constraint for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>Position at which to check the constraints for </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">agentId</td><td>Id of agent to check the constraints for </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -424,6 +473,12 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Plans a path for each agent individually </p><dl class="section return"><dt>Returns</dt><dd>a tuple {solutions, cost, costs} where<ul>
+<li>solutions is a map from the id of an agent to the path of this agent</li>
+<li>cost is the cost of all the paths (-1 if it didn't find a solution for one agent)</li>
+<li>costs is a map from the id an agent to the cost of the path of this agent </li>
+</ul>
+</dd></dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -462,6 +517,18 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Retrieves information from the parent nodes </p><dl class="section return"><dt>Returns</dt><dd>a tuple {fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions}<ul>
+<li>fullSetOfVertexConstraints and fullSetOfEdgeConstraints are the sets of constraints from the root node to this node</li>
+<li>fullCosts is a map from the id of an agent to the cost of the latest path of this agent</li>
+<li>fullSolutions is a map from the id of an agent to the latest path of this agent </li>
+</ul>
+</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>node to retreive informations about </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -494,6 +561,16 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a tuple {fullSetOfVertexConstraints, fullSetOfEdgeConstraints, fullCosts, fullSolutions, setOfPositiveConstraints}<ul>
+<li>setOfPositiveConstraints is the set of positive constraints from the root node to this node </li>
+</ul>
+</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>node to retreive informations about </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -526,6 +603,16 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Retrieves the paths from the parent nodes </p><dl class="section return"><dt>Returns</dt><dd>fullSolutions<ul>
+<li>fullSolutions is a map from the id of an agent to the latest path of this agent </li>
+</ul>
+</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">node</td><td>node to retreive the solution from </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -579,6 +666,13 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Solve a particular <a class="el" href="classProblem.html">Problem</a> </p><dl class="section return"><dt>Returns</dt><dd>found <a class="el" href="classSolution.html" title="class containing the solution to a problem">Solution</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">problem</td><td><a class="el" href="classProblem.html">Problem</a> to solve </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -633,6 +727,16 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>an updated set of conflicts after having replanned agent agentId </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">fullSolutions</td><td>contains the paths of the agents </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">setOfConflicts</td><td>is the old set of conflicts </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">agentId</td><td>is the id of the replanned agent </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">newPath</td><td>is the new path of agentId </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -662,6 +766,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>true if CAT is to be used </p>
 
 </div>
 </div>
@@ -684,6 +789,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>true if DS is to be used </p>
 
 </div>
 </div>
@@ -706,6 +812,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The open list </p>
 
 </div>
 </div>
@@ -728,6 +835,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Number of nodes currently in the fringe </p>
 
 </div>
 </div>
@@ -750,6 +858,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>number of nodes for which we tested if the set of conflicts is empty or not </p>
 
 </div>
 </div>
@@ -772,6 +881,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Multi agent problem to solve </p>
 
 </div>
 </div>
@@ -794,6 +904,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Type of heuristic to use </p>
 
 </div>
 </div>

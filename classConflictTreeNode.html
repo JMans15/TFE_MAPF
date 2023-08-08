@@ -89,6 +89,9 @@ $(document).ready(function(){initNavTree('classConflictTreeNode.html',''); initR
 </div><!--header-->
 <div class="contents">
 
+<p>Node for a conflict tree  
+ <a href="classConflictTreeNode.html#details">More...</a></p>
+
 <p><code>#include &lt;ConflictTreeNode.h&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for ConflictTreeNode:</div>
@@ -100,44 +103,60 @@ Collaboration diagram for ConflictTreeNode:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9a36c3a102d16731b8e2c64303d25c1f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a9a36c3a102d16731b8e2c64303d25c1f">ConflictTreeNode</a> (std::shared_ptr&lt; <a class="el" href="classEdgeConstraint.html">EdgeConstraint</a> &gt; <a class="el" href="classConflictTreeNode.html#a4f28ba19f4f3f08561d625acea739344">edgeConstraint</a>, std::shared_ptr&lt; <a class="el" href="classVertexConstraint.html">VertexConstraint</a> &gt; <a class="el" href="classConflictTreeNode.html#a0c2003e877478830d037ba5a0331a565">vertexConstraint</a>, std::unordered_map&lt; int, std::vector&lt; int &gt;&gt; <a class="el" href="classConflictTreeNode.html#a44a4210ed846f01662f0b2f165d0897c">solution</a>, std::unordered_map&lt; int, int &gt; <a class="el" href="classConflictTreeNode.html#a797ea5df5b1ecdd24a73260e4af909bf">costs</a>, int <a class="el" href="classConflictTreeNode.html#a0677e405eeab9b5c60c2d2ee1bf61b12">cost</a>, std::shared_ptr&lt; <a class="el" href="classConflictTreeNode.html">ConflictTreeNode</a> &gt; <a class="el" href="classConflictTreeNode.html#a5800d67ae44fe24a5e0997b8fa23a7f4">parent</a>=nullptr, std::set&lt; <a class="el" href="classAgentConflict.html">AgentConflict</a> &gt; <a class="el" href="classConflictTreeNode.html#a9106e4f3efd3a04b4c9fe3910c10786f">setOfConflicts</a>=std::set&lt; <a class="el" href="classAgentConflict.html">AgentConflict</a> &gt;())</td></tr>
+<tr class="memdesc:a9a36c3a102d16731b8e2c64303d25c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a <a class="el" href="classConflictTreeNode.html" title="Node for a conflict tree">ConflictTreeNode</a>.  <a href="classConflictTreeNode.html#a9a36c3a102d16731b8e2c64303d25c1f">More...</a><br /></td></tr>
 <tr class="separator:a9a36c3a102d16731b8e2c64303d25c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3af2d7cb286e8c73114cdfa906c87e0a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a3af2d7cb286e8c73114cdfa906c87e0a">~ConflictTreeNode</a> ()=default</td></tr>
 <tr class="separator:a3af2d7cb286e8c73114cdfa906c87e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4672683cea3220755ba405883ea79b37"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classConflictTreeNode.html">ConflictTreeNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a4672683cea3220755ba405883ea79b37">getParent</a> () const</td></tr>
+<tr class="memdesc:a4672683cea3220755ba405883ea79b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for parent node.  <a href="classConflictTreeNode.html#a4672683cea3220755ba405883ea79b37">More...</a><br /></td></tr>
 <tr class="separator:a4672683cea3220755ba405883ea79b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b49c7180e1423b7a07f4ab1f67b02f5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classEdgeConstraint.html">EdgeConstraint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a4b49c7180e1423b7a07f4ab1f67b02f5">getEdgeConstraint</a> ()</td></tr>
+<tr class="memdesc:a4b49c7180e1423b7a07f4ab1f67b02f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for edgeConstraint.  <a href="classConflictTreeNode.html#a4b49c7180e1423b7a07f4ab1f67b02f5">More...</a><br /></td></tr>
 <tr class="separator:a4b49c7180e1423b7a07f4ab1f67b02f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f187a25a25fb61ebd268e5a0d1e1baa"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classVertexConstraint.html">VertexConstraint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a2f187a25a25fb61ebd268e5a0d1e1baa">getVertexConstraint</a> ()</td></tr>
+<tr class="memdesc:a2f187a25a25fb61ebd268e5a0d1e1baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for vertexConstraint.  <a href="classConflictTreeNode.html#a2f187a25a25fb61ebd268e5a0d1e1baa">More...</a><br /></td></tr>
 <tr class="separator:a2f187a25a25fb61ebd268e5a0d1e1baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a376728567b3963972f04caa2927d970e"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a376728567b3963972f04caa2927d970e">getSolution</a> () const</td></tr>
+<tr class="memdesc:a376728567b3963972f04caa2927d970e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for solution.  <a href="classConflictTreeNode.html#a376728567b3963972f04caa2927d970e">More...</a><br /></td></tr>
 <tr class="separator:a376728567b3963972f04caa2927d970e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac57403cea5ec780506efb16871d6a3ad"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#ac57403cea5ec780506efb16871d6a3ad">getCosts</a> () const</td></tr>
+<tr class="memdesc:ac57403cea5ec780506efb16871d6a3ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for costs.  <a href="classConflictTreeNode.html#ac57403cea5ec780506efb16871d6a3ad">More...</a><br /></td></tr>
 <tr class="separator:ac57403cea5ec780506efb16871d6a3ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a958c5253d4b08d67eb6f59c597c7f39c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a958c5253d4b08d67eb6f59c597c7f39c">getCost</a> () const</td></tr>
+<tr class="memdesc:a958c5253d4b08d67eb6f59c597c7f39c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for cost.  <a href="classConflictTreeNode.html#a958c5253d4b08d67eb6f59c597c7f39c">More...</a><br /></td></tr>
 <tr class="separator:a958c5253d4b08d67eb6f59c597c7f39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09ef1d9e9c28712bfb23eef81ef4a140"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a09ef1d9e9c28712bfb23eef81ef4a140">getNumberOfConflicts</a> () const</td></tr>
+<tr class="memdesc:a09ef1d9e9c28712bfb23eef81ef4a140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of conflicts.  <a href="classConflictTreeNode.html#a09ef1d9e9c28712bfb23eef81ef4a140">More...</a><br /></td></tr>
 <tr class="separator:a09ef1d9e9c28712bfb23eef81ef4a140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ff46c7c78f4746d143c91efe0faec3f"><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="classAgentConflict.html">AgentConflict</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a3ff46c7c78f4746d143c91efe0faec3f">getSetOfConflicts</a> () const</td></tr>
+<tr class="memdesc:a3ff46c7c78f4746d143c91efe0faec3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for The set of conflicts.  <a href="classConflictTreeNode.html#a3ff46c7c78f4746d143c91efe0faec3f">More...</a><br /></td></tr>
 <tr class="separator:a3ff46c7c78f4746d143c91efe0faec3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a4f28ba19f4f3f08561d625acea739344"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classEdgeConstraint.html">EdgeConstraint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a4f28ba19f4f3f08561d625acea739344">edgeConstraint</a></td></tr>
+<tr class="memdesc:a4f28ba19f4f3f08561d625acea739344"><td class="mdescLeft">&#160;</td><td class="mdescRight">Edge constraint added in this node (can be nullptr)  <a href="classConflictTreeNode.html#a4f28ba19f4f3f08561d625acea739344">More...</a><br /></td></tr>
 <tr class="separator:a4f28ba19f4f3f08561d625acea739344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c2003e877478830d037ba5a0331a565"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classVertexConstraint.html">VertexConstraint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a0c2003e877478830d037ba5a0331a565">vertexConstraint</a></td></tr>
 <tr class="separator:a0c2003e877478830d037ba5a0331a565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44a4210ed846f01662f0b2f165d0897c"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a44a4210ed846f01662f0b2f165d0897c">solution</a></td></tr>
+<tr class="memdesc:a44a4210ed846f01662f0b2f165d0897c"><td class="mdescLeft">&#160;</td><td class="mdescRight">key = id of the agent, value = path of this agent  <a href="classConflictTreeNode.html#a44a4210ed846f01662f0b2f165d0897c">More...</a><br /></td></tr>
 <tr class="separator:a44a4210ed846f01662f0b2f165d0897c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a797ea5df5b1ecdd24a73260e4af909bf"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a797ea5df5b1ecdd24a73260e4af909bf">costs</a></td></tr>
+<tr class="memdesc:a797ea5df5b1ecdd24a73260e4af909bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">key = id of the agent, value = cost of the path for this agent  <a href="classConflictTreeNode.html#a797ea5df5b1ecdd24a73260e4af909bf">More...</a><br /></td></tr>
 <tr class="separator:a797ea5df5b1ecdd24a73260e4af909bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0677e405eeab9b5c60c2d2ee1bf61b12"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a0677e405eeab9b5c60c2d2ee1bf61b12">cost</a></td></tr>
+<tr class="memdesc:a0677e405eeab9b5c60c2d2ee1bf61b12"><td class="mdescLeft">&#160;</td><td class="mdescRight">cost of the current solution, the f-value of the node  <a href="classConflictTreeNode.html#a0677e405eeab9b5c60c2d2ee1bf61b12">More...</a><br /></td></tr>
 <tr class="separator:a0677e405eeab9b5c60c2d2ee1bf61b12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5800d67ae44fe24a5e0997b8fa23a7f4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classConflictTreeNode.html">ConflictTreeNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a5800d67ae44fe24a5e0997b8fa23a7f4">parent</a></td></tr>
+<tr class="memdesc:a5800d67ae44fe24a5e0997b8fa23a7f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parent node.  <a href="classConflictTreeNode.html#a5800d67ae44fe24a5e0997b8fa23a7f4">More...</a><br /></td></tr>
 <tr class="separator:a5800d67ae44fe24a5e0997b8fa23a7f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9106e4f3efd3a04b4c9fe3910c10786f"><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="classAgentConflict.html">AgentConflict</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConflictTreeNode.html#a9106e4f3efd3a04b4c9fe3910c10786f">setOfConflicts</a></td></tr>
 <tr class="separator:a9106e4f3efd3a04b4c9fe3910c10786f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Node for a conflict tree </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9a36c3a102d16731b8e2c64303d25c1f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a36c3a102d16731b8e2c64303d25c1f">&#9670;&nbsp;</a></span>ConflictTreeNode()</h2>
 
@@ -202,6 +221,20 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Constructor for a <a class="el" href="classConflictTreeNode.html" title="Node for a conflict tree">ConflictTreeNode</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">edgeConstraint</td><td>Edge constraint added by this node </td></tr>
+    <tr><td class="paramname">vertexConstraint</td><td>Vertex constraint added by this node </td></tr>
+    <tr><td class="paramname">solution</td><td>Solutions for each agent of this node </td></tr>
+    <tr><td class="paramname">costs</td><td>Costs for each agent </td></tr>
+    <tr><td class="paramname">cost</td><td>Total cost of this node </td></tr>
+    <tr><td class="paramname">parent</td><td>Parent node of this node </td></tr>
+    <tr><td class="paramname">setOfConflicts</td><td>Set of conflicts found in this node </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a3af2d7cb286e8c73114cdfa906c87e0a"></a>
@@ -253,6 +286,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for cost. </p>
+
 </div>
 </div>
 <a id="ac57403cea5ec780506efb16871d6a3ad"></a>
@@ -277,6 +312,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Getter for costs. </p>
 
 </div>
 </div>
@@ -303,6 +340,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for edgeConstraint. </p>
+
 </div>
 </div>
 <a id="a09ef1d9e9c28712bfb23eef81ef4a140"></a>
@@ -327,6 +366,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Get the number of conflicts. </p>
 
 </div>
 </div>
@@ -353,6 +394,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for parent node. </p>
+
 </div>
 </div>
 <a id="a3ff46c7c78f4746d143c91efe0faec3f"></a>
@@ -377,6 +420,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Getter for The set of conflicts. </p>
 
 </div>
 </div>
@@ -403,6 +448,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for solution. </p>
+
 </div>
 </div>
 <a id="a2f187a25a25fb61ebd268e5a0d1e1baa"></a>
@@ -428,6 +475,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Getter for vertexConstraint. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
@@ -451,6 +500,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>cost of the current solution, the f-value of the node </p>
+
 </div>
 </div>
 <a id="a797ea5df5b1ecdd24a73260e4af909bf"></a>
@@ -472,6 +523,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>key = id of the agent, value = cost of the path for this agent </p>
 
 </div>
 </div>
@@ -495,6 +548,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Edge constraint added in this node (can be nullptr) </p>
+
 </div>
 </div>
 <a id="a5800d67ae44fe24a5e0997b8fa23a7f4"></a>
@@ -517,6 +572,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Parent node. </p>
+
 </div>
 </div>
 <a id="a9106e4f3efd3a04b4c9fe3910c10786f"></a>
@@ -538,6 +595,7 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>set of conflicts (between the paths) in the current solution </p>
 
 </div>
 </div>
@@ -561,6 +619,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>key = id of the agent, value = path of this agent </p>
+
 </div>
 </div>
 <a id="a0c2003e877478830d037ba5a0331a565"></a>
@@ -582,6 +642,7 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Vertex constrain added in this node (can be nullptr) </p>
 
 </div>
 </div>
