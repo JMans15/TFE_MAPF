@@ -5,7 +5,6 @@ def filter_doxygen_skip(filename):
     try:
         with open(filename, "r") as file:
             for line in file:
-                # Check if the line contains "DOXYGEN_SKIP" and replace it with an empty line
                 if "#include <" in line:
                     line = "\n"
                 print(line, end="")

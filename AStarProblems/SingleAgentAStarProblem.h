@@ -1,6 +1,4 @@
-//
-// Created by Arthur Mahy on 16/01/2023.
-//
+//! SAPF problem with space search only
 
 #ifndef TFE_MAPF_SINGLEAGENTASTARPROBLEM_H
 #define TFE_MAPF_SINGLEAGENTASTARPROBLEM_H
@@ -9,10 +7,12 @@
 #include "../States/SingleAgentState.h"
 #include "AStarProblem.h"
 
-// Single Agent Problem formulated as a search task
-// - Space search
+//! Single Agent Problem formulated as a search task
+//! - Space search
 class SingleAgentAStarProblem : public AStarProblem<SingleAgentState> {
 public:
+  //! Constructor
+  //! @param [in] base SingleAgentProblem
   SingleAgentAStarProblem(const std::shared_ptr<SingleAgentProblem> &problem);
 
   std::shared_ptr<SingleAgentState> getStartState() const override;
@@ -25,9 +25,11 @@ public:
   int getMaxCost() const override;
   int getStartTime() const override;
 
+  //! Get the base SingleAgentProblem
   std::shared_ptr<SingleAgentProblem> getProblem();
 
 private:
+  //! Base SingleAgentProblem
   std::shared_ptr<SingleAgentProblem> problem;
 };
 

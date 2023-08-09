@@ -1,6 +1,4 @@
-//
-// Created by Arthur Mahy on 11/06/2023.
-//
+//! SAPF problem with space-time search
 
 #ifndef TFE_MAPF_SINGLEAGENTASTARPROBLEMWITHCONSTRAINTS_H
 #define TFE_MAPF_SINGLEAGENTASTARPROBLEMWITHCONSTRAINTS_H
@@ -9,11 +7,13 @@
 #include "../States/SingleAgentSpaceTimeState.h"
 #include "AStarProblem.h"
 
-// Single Agent Problem formulated as a search task
-// - Space Time search (because of the external constraints)
+//! Single Agent Problem formulated as a search task
+//! - Space Time search (because of the external constraints)
 class SingleAgentAStarProblemWithConstraints
     : public AStarProblem<SingleAgentSpaceTimeState> {
 public:
+  //! Constructor
+  //! @param [in] problem base SingleAgentProblem
   SingleAgentAStarProblemWithConstraints(
       std::shared_ptr<SingleAgentProblem> problem);
 
@@ -29,9 +29,11 @@ public:
   int getMaxCost() const override;
   int getStartTime() const override;
 
+  //! Get base SingleAgentProblem
   std::shared_ptr<SingleAgentProblem> getProblem();
 
 private:
+  //! Base SingleAgentProblem
   std::shared_ptr<SingleAgentProblem> problem;
 };
 

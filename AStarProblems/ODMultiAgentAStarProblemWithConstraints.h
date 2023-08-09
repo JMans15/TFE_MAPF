@@ -1,6 +1,4 @@
-//
-// Created by Arthur Mahy on 11/06/2023.
-//
+//! MAPF problem with space-time search and OD
 
 #ifndef TFE_MAPF_ODMULTIAGENTASTARPROBLEMWITHCONSTRAINTS_H
 #define TFE_MAPF_ODMULTIAGENTASTARPROBLEMWITHCONSTRAINTS_H
@@ -9,12 +7,14 @@
 #include "../States/ODMultiAgentSpaceTimeState.h"
 #include "AStarProblem.h"
 
-// Multi Agent Problem formulated as a search task
-// - Operator Decomposition (>< Standard A*)
-// - Space Time search (because of the external constraints)
+//! Multi Agent Problem formulated as a search task
+//! - Operator Decomposition (>< Standard A*)
+//! - Space Time search (because of the external constraints)
 class ODMultiAgentAStarProblemWithConstraints
     : AStarProblem<ODMultiAgentSpaceTimeState> {
 public:
+  //! Constructor
+  //! @param [in] problem MultiAgentProblem to solve
   ODMultiAgentAStarProblemWithConstraints(
       std::shared_ptr<MultiAgentProblem> problem);
 
@@ -30,17 +30,19 @@ public:
   int getMaxCost() const override;
   int getStartTime() const override;
 
+  //! Get the base problem
   std::shared_ptr<MultiAgentProblem> getProblem();
 
 private:
+  //! Base problem
   std::shared_ptr<MultiAgentProblem> problem;
 
-  // Returns true if position is not already occupied by assigned agents
+  //! @return true if position is not already occupied by assigned agents
   bool notAlreadyOccupiedPosition(int position, std::vector<int> &positions,
                                   int agentToAssign) const;
 
-  // Returns true if the edge (position, positions[agentToAssign]) is not
-  // already occupied by assigned agents
+  //! @return true if the edge (position, positions[agentToAssign]) is not
+  //! already occupied by assigned agents
   bool notAlreadyOccupiedEdge(int position, const std::vector<int> &positions,
                               int agentToAssign,
                               const std::vector<int> &prePositions) const;
