@@ -28,6 +28,7 @@ public:
   //! Constructor for the general A* search
   //! Uses determines whether space-time search should be used depending on the
   //! presence of external constraints, shouldn't be used by the user
+  //! OD is automatically used
   //! @param [in] typeOfHeuristic TypeOfHeuristic to use
   GeneralAStar(TypeOfHeuristic typeOfHeuristic)
       : typeOfHeuristic(typeOfHeuristic), fixedParameters(false) {

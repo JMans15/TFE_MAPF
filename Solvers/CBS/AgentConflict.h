@@ -8,7 +8,7 @@
 #include <iostream>
 class AgentConflict {
 public:
-  //! Constructor for an edge conflict
+  //! Constructor for a vertex conflict
   //! @param [in] agent1 First agent involved in the conflict
   //! @param [in] agent2 Second agent involved in the conflict
   //! @param [in] position Conflicting position of the two agents
@@ -56,10 +56,6 @@ public:
     }
   }
 
-  // TODO : think about what to put here
-  // first the conflict with the lower time
-  // and then ??
-
   //! Defines comparison between conflicts as comparison between times
   bool operator<(const AgentConflict &other) const {
     if (time == other.time) {
@@ -75,7 +71,7 @@ private:
   int position1; /**< start position of an edge conflict or position of a vertex
                     conflict */
   int position2; /**< end position of an edge conflict */
-  int time;      /**< Timestep at wchich the conflict occurs */
+  int time;      /**< Timestep at which the conflict occurs */
 };
 
 #endif // TFE_MAPF_AGENTCONFLICT_H

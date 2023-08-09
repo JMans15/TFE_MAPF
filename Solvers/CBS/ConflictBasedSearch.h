@@ -95,7 +95,7 @@ protected:
   //! latest path of this agent
   //! - fullSolutions is a map from the id of an agent to the latest
   //! path of this agent
-  //! @param [in] node node to retreive informations about
+  //! @param [in] node node to retrieve informations about
   std::tuple<HardVertexConstraintsSet, HardEdgeConstraintsSet,
              std::unordered_map<int, int>, std::unordered_map<int, vector<int>>>
   retrieveSetsOfConstraintsAndCostsAndSolutions(
@@ -105,7 +105,7 @@ protected:
   //! fullCosts, fullSolutions, setOfPositiveConstraints}
   //! - setOfPositiveConstraints is the set of positive constraints from the
   //! root node to this node
-  //! @param [in] node node to retreive informations about
+  //! @param [in] node node to retrieve informations about
   std::tuple<HardVertexConstraintsSet, HardEdgeConstraintsSet,
              std::unordered_map<int, int>, std::unordered_map<int, vector<int>>,
              std::set<VertexConstraint>>
@@ -116,7 +116,7 @@ protected:
   //! @return fullSolutions
   //! - fullSolutions is a map from the id of an agent to the latest path of
   //! this agent
-  //! @param [in] node node to retreive the solution from
+  //! @param [in] node node to retrieve the solution from
   std::unordered_map<int, vector<int>>
   retrieveSolutions(std::shared_ptr<ConflictTreeNode> node);
 
