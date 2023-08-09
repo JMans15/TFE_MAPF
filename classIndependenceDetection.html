@@ -289,18 +289,6 @@ template&lt;class MultiAgentSolver &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Searches for another optimal solution for groupA</p><ul>
-<li>with the same cost as the previous one</li>
-<li>avoiding the solution of groupB with an illegal move table <dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">groupA</td><td>The group for which to search for an alternative optimal solution </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">groupB</td><td>The group that groupA has now to avoid </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if success, false otherwise </dd></dl>
-</li>
-</ul>
 
 </div>
 </div>
@@ -390,7 +378,18 @@ template&lt;class MultiAgentSolver &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A custom ordered set containing the previous conflicts </p>
+<p>A custom ordered set containing the previous conflicts Searches for another optimal solution for groupA</p><ul>
+<li>with the same cost as the previous one</li>
+<li>avoiding the solution of groupB with an illegal move table <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">groupA</td><td>The group for which to search for an alternative optimal solution </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">groupB</td><td>The group that groupA has now to avoid </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if success, false otherwise </dd></dl>
+</li>
+</ul>
 
 </div>
 </div>
