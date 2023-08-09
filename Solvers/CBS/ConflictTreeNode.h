@@ -72,6 +72,9 @@ private:
   std::shared_ptr<VertexConstraint>
       vertexConstraint; //!< Vertex  constrain added in this node (can be
                         //!< nullptr)
+                        //!< just one constraint added per node :
+                        //!< either edgeConstraint is a nullptr,
+                        //!< either vertexConstraint is a nullptr
   std::unordered_map<int, std::vector<int>>
       solution; //!< key = id of the agent, value = path of this agent
   std::unordered_map<int, int>

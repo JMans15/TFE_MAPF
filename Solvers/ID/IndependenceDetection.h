@@ -54,23 +54,20 @@ private:
       alreadyConflictedBefore; /**< A custom ordered set containing the previous
                                   conflicts */
 
-  // Find another optimal solution for groupA
-  // - with the same cost as the previous one
-  // - avoiding the solution of groupB with an illegal move table
-  // Returns true if success (false otherwise)
+    /**<
+     * Searches for another optimal solution for groupA
+     * - with the same cost as the previous one
+     * - avoiding the solution of groupB with an illegal move
+     * table
+     * @param [in] groupA The group for which to search for an
+     * alternative optimal solution
+     * @param [in] groupB The group that groupA has now to avoid
+     * @return true if success, false otherwise
+     */
   bool replanGroupAAvoidingGroupB(
       const std::shared_ptr<Group> &groupA,
       const std::shared_ptr<Group>
-          &groupB); /**<
-                     * Searches for another optimal solution for groupA
-                     * - with the same cost as the previous one
-                     * - avoiding the solution of groupB with an illegal move
-                     * table
-                     * @param [in] groupA The group for which to search for an
-                     * alternative optimal solution
-                     * @param [in] groupB The group that groupA has now to avoid
-                     * @return true if success, false otherwise
-                     */
+          &groupB);
 
   using SimpleIndependenceDetection<MultiAgentSolver>::problem;
   using SimpleIndependenceDetection<MultiAgentSolver>::lowLevelSearch;
