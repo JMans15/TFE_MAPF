@@ -7,5 +7,5 @@ digraph "Graphical Class Hierarchy"
   rankdir="LR";
   Node0 [label="AStarProblem\< ODMultiAgent\lState \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAStarProblem.html",tooltip=" "];
   Node0 -> Node1 [dir="back",color="firebrick4",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 [label="ODMultiAgentAStarProblem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classODMultiAgentAStarProblem.html",tooltip=" "];
+  Node1 [label="ODMultiAgentAStarProblem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classODMultiAgentAStarProblem.html",tooltip="MAPF problem with space search only and OD."];
 }

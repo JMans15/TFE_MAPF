@@ -22,7 +22,7 @@
 <!-- Node1 -->
 <g id="node2" class="node">
 <title>Node1</title>
-<g id="a_node2"><a xlink:href="classSingleAgentAStarProblemWithConstraints.html" target="_top" xlink:title=" ">
+<g id="a_node2"><a xlink:href="classSingleAgentAStarProblemWithConstraints.html" target="_top" xlink:title="SAPF problem with space&#45;time search.">
 <polygon fill="white" stroke="black" points="189,-0.5 189,-30.5 353,-30.5 353,-0.5 189,-0.5"/>
 <text text-anchor="start" x="197" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">SingleAgentAStarProblemWith</text>
 <text text-anchor="middle" x="271" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Constraints</text>

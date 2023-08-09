@@ -22,7 +22,7 @@
 <!-- Node1 -->
 <g id="node2" class="node">
 <title>Node1</title>
-<g id="a_node2"><a xlink:href="classStandardMultiAgentAStarProblem.html" target="_top" xlink:title=" ">
+<g id="a_node2"><a xlink:href="classStandardMultiAgentAStarProblem.html" target="_top" xlink:title="MAPF problem with space search only (no OD)">
 <polygon fill="white" stroke="black" points="199,-6 199,-25 379,-25 379,-6 199,-6"/>
 <text text-anchor="middle" x="289" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">StandardMultiAgentAStarProblem</text>
 </a>

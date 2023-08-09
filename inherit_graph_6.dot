@@ -7,5 +7,5 @@ digraph "Graphical Class Hierarchy"
   rankdir="LR";
   Node0 [label="AStarProblem\< SingleAgent\lState \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classAStarProblem.html",tooltip=" "];
   Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 [label="SingleAgentAStarProblem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSingleAgentAStarProblem.html",tooltip=" "];
+  Node1 [label="SingleAgentAStarProblem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSingleAgentAStarProblem.html",tooltip="SAPF problem with space search only."];
 }

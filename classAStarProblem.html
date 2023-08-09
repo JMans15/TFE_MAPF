@@ -88,6 +88,9 @@ $(document).ready(function(){initNavTree('classAStarProblem.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
+<p>Search problem formulated for the A* algorithm.  
+ <a href="classAStarProblem.html#details">More...</a></p>
+
 <p><code>#include &lt;AStarProblem.h&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for AStarProblem&lt; S &gt;:</div>
@@ -109,19 +112,29 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab03a683d1be3bdf305bf6b1b261d09d9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#ab03a683d1be3bdf305bf6b1b261d09d9">~AStarProblem</a> ()=default</td></tr>
 <tr class="separator:ab03a683d1be3bdf305bf6b1b261d09d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5fffa4d5f70ad4299e864e14b8ab229"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; S &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#ae5fffa4d5f70ad4299e864e14b8ab229">getStartState</a> () const =0</td></tr>
+<tr class="memdesc:ae5fffa4d5f70ad4299e864e14b8ab229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the start state for the search problem.  <a href="classAStarProblem.html#ae5fffa4d5f70ad4299e864e14b8ab229">More...</a><br /></td></tr>
 <tr class="separator:ae5fffa4d5f70ad4299e864e14b8ab229"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad32a6801664c9f9423dbfe741c38ff3a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#ad32a6801664c9f9423dbfe741c38ff3a">isGoalState</a> (std::shared_ptr&lt; S &gt; state) const =0</td></tr>
+<tr class="memdesc:ad32a6801664c9f9423dbfe741c38ff3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the state is a valid goal state.  <a href="classAStarProblem.html#ad32a6801664c9f9423dbfe741c38ff3a">More...</a><br /></td></tr>
 <tr class="separator:ad32a6801664c9f9423dbfe741c38ff3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a6e2359cd9537c3b941d36071fae662"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::tuple&lt; std::shared_ptr&lt; S &gt;, int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#a8a6e2359cd9537c3b941d36071fae662">getSuccessors</a> (std::shared_ptr&lt; S &gt; state) const =0</td></tr>
 <tr class="separator:a8a6e2359cd9537c3b941d36071fae662"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b954d639b27cb86abdfd4d9a532a2a1"><td class="memItemLeft" align="right" valign="top">virtual std::unordered_map&lt; int, std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#a0b954d639b27cb86abdfd4d9a532a2a1">getPositions</a> (std::vector&lt; std::shared_ptr&lt; S &gt;&gt; states) const =0</td></tr>
+<tr class="memdesc:a0b954d639b27cb86abdfd4d9a532a2a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the positions (paths) of each agent in the state.  <a href="classAStarProblem.html#a0b954d639b27cb86abdfd4d9a532a2a1">More...</a><br /></td></tr>
 <tr class="separator:a0b954d639b27cb86abdfd4d9a532a2a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd6cbb3748e0631882e3c6608529779a"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#afd6cbb3748e0631882e3c6608529779a">getMaxCost</a> () const =0</td></tr>
+<tr class="memdesc:afd6cbb3748e0631882e3c6608529779a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the max cost bound.  <a href="classAStarProblem.html#afd6cbb3748e0631882e3c6608529779a">More...</a><br /></td></tr>
 <tr class="separator:afd6cbb3748e0631882e3c6608529779a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c5276b63633981d01f74f3dff350716"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#a5c5276b63633981d01f74f3dff350716">getStartTime</a> () const =0</td></tr>
+<tr class="memdesc:a5c5276b63633981d01f74f3dff350716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the starting time step of the search.  <a href="classAStarProblem.html#a5c5276b63633981d01f74f3dff350716">More...</a><br /></td></tr>
 <tr class="separator:a5c5276b63633981d01f74f3dff350716"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class S&gt;<br />
+class AStarProblem&lt; S &gt;</h3>
+
+<p>Search problem formulated for the A* algorithm. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abca569e9ccd852c4cfcfbeb980a70434"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abca569e9ccd852c4cfcfbeb980a70434">&#9670;&nbsp;</a></span>AStarProblem()</h2>
 
@@ -202,6 +215,8 @@ template&lt;class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the max cost bound. </p>
+
 <p>Implemented in <a class="el" href="classStandardMultiAgentAStarProblemWithConstraints.html#a595a1a1ab726a33d07004e5ddf47e6a7">StandardMultiAgentAStarProblemWithConstraints</a>, <a class="el" href="classStandardMultiAgentAStarProblem.html#aece5421dfffac769d69108b9f8fdaf50">StandardMultiAgentAStarProblem</a>, <a class="el" href="classSingleAgentAStarProblemWithConstraints.html#a0ca07a53be94e843e21a33d9b371d066">SingleAgentAStarProblemWithConstraints</a>, <a class="el" href="classSingleAgentAStarProblem.html#a31883750127b3bac1ae17ec489f94533">SingleAgentAStarProblem</a>, <a class="el" href="classODMultiAgentAStarProblemWithConstraints.html#a92fe87d9f057c6b660331a926b5ab78c">ODMultiAgentAStarProblemWithConstraints</a>, and <a class="el" href="classODMultiAgentAStarProblem.html#af763f474e930ab8cd1d3bfd67281aa33">ODMultiAgentAStarProblem</a>.</p>
 
 </div>
@@ -232,6 +247,8 @@ template&lt;class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Retrieves the positions (paths) of each agent in the state. </p>
+
 <p>Implemented in <a class="el" href="classStandardMultiAgentAStarProblem.html#abf59a60de6cd8b484545b7d778226c74">StandardMultiAgentAStarProblem</a>, <a class="el" href="classStandardMultiAgentAStarProblemWithConstraints.html#a74745716bb798df29ffe6a025f1d908c">StandardMultiAgentAStarProblemWithConstraints</a>, <a class="el" href="classSingleAgentAStarProblem.html#a257942ba587943ae4f59cccaf2f203ec">SingleAgentAStarProblem</a>, <a class="el" href="classSingleAgentAStarProblemWithConstraints.html#a395a04cc71023321267f80951da1c2b8">SingleAgentAStarProblemWithConstraints</a>, <a class="el" href="classODMultiAgentAStarProblem.html#a66e09eafe88fec56741935fe01f32f2d">ODMultiAgentAStarProblem</a>, and <a class="el" href="classODMultiAgentAStarProblemWithConstraints.html#a047ae683496fef7242f2af591dd5808b">ODMultiAgentAStarProblemWithConstraints</a>.</p>
 
 </div>
@@ -260,6 +277,8 @@ template&lt;class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the start state for the search problem. </p>
 
 <p>Implemented in <a class="el" href="classStandardMultiAgentAStarProblemWithConstraints.html#afef9a640f92c4f51bd4b54887d5cdc6e">StandardMultiAgentAStarProblemWithConstraints</a>, <a class="el" href="classStandardMultiAgentAStarProblem.html#a5e41e7ce5d19cdd8d4ab86f4ea8daa69">StandardMultiAgentAStarProblem</a>, <a class="el" href="classSingleAgentAStarProblemWithConstraints.html#a14034ea8bd30f5d00f5904bac34df6b7">SingleAgentAStarProblemWithConstraints</a>, <a class="el" href="classSingleAgentAStarProblem.html#ae75c26bc4897293aa0a1dc2172806fd0">SingleAgentAStarProblem</a>, <a class="el" href="classODMultiAgentAStarProblemWithConstraints.html#acd3711b4a6f33988a75db838e8222e4a">ODMultiAgentAStarProblemWithConstraints</a>, and <a class="el" href="classODMultiAgentAStarProblem.html#a55c0d8f7af9afc76deaea81c0a7147e9">ODMultiAgentAStarProblem</a>.</p>
 
@@ -290,6 +309,8 @@ template&lt;class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the starting time step of the search. </p>
+
 <p>Implemented in <a class="el" href="classStandardMultiAgentAStarProblemWithConstraints.html#a9fbbed177063a988ade414b863171151">StandardMultiAgentAStarProblemWithConstraints</a>, <a class="el" href="classStandardMultiAgentAStarProblem.html#a22be442b346788096e98257b8a326fa2">StandardMultiAgentAStarProblem</a>, <a class="el" href="classSingleAgentAStarProblemWithConstraints.html#ab717aa675597b75230353c7db44e8194">SingleAgentAStarProblemWithConstraints</a>, <a class="el" href="classSingleAgentAStarProblem.html#ace2d14e0a5846700095768e430aa0994">SingleAgentAStarProblem</a>, <a class="el" href="classODMultiAgentAStarProblemWithConstraints.html#a44bc8398d5e5aa638f7a684de356e170">ODMultiAgentAStarProblemWithConstraints</a>, and <a class="el" href="classODMultiAgentAStarProblem.html#ad372ca09f91200fe38d8a621c5d78c84">ODMultiAgentAStarProblem</a>.</p>
 
 </div>
@@ -319,6 +340,11 @@ template&lt;class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given state, getSuccessors returns a list of tuples (successor, stepcost, numberOfViolations) where</p><ul>
+<li>successor is a successor state to the current state</li>
+<li>stepcost is the cost to go from state to successor</li>
+<li>numberOfViolations is the number of soft constraints that have been violated to go from state to successor </li>
+</ul>
 
 <p>Implemented in <a class="el" href="classStandardMultiAgentAStarProblem.html#a150f39b059994eec58855f173b3a03fa">StandardMultiAgentAStarProblem</a>, <a class="el" href="classStandardMultiAgentAStarProblemWithConstraints.html#a9bf01223bd67b62edc3473e6605e94ab">StandardMultiAgentAStarProblemWithConstraints</a>, <a class="el" href="classSingleAgentAStarProblem.html#aff5e5cb98567a5efe007383b24671015">SingleAgentAStarProblem</a>, <a class="el" href="classSingleAgentAStarProblemWithConstraints.html#aa4d4b43027811e162d7ce37e32791bfb">SingleAgentAStarProblemWithConstraints</a>, <a class="el" href="classODMultiAgentAStarProblem.html#a8aa902b954786290f38294763b0776b8">ODMultiAgentAStarProblem</a>, and <a class="el" href="classODMultiAgentAStarProblemWithConstraints.html#a0d6cef00b9154f2fc032cf5b7318819d">ODMultiAgentAStarProblemWithConstraints</a>.</p>
 
@@ -349,6 +375,8 @@ template&lt;class S &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns true if the state is a valid goal state. </p>
 
 <p>Implemented in <a class="el" href="classStandardMultiAgentAStarProblem.html#a015d4e47a26550c1f88100f3f9c22641">StandardMultiAgentAStarProblem</a>, <a class="el" href="classStandardMultiAgentAStarProblemWithConstraints.html#ab47c3589a4be1ff12bd0fef438413443">StandardMultiAgentAStarProblemWithConstraints</a>, <a class="el" href="classSingleAgentAStarProblem.html#a24d1fd32ee92d58fa7668dcdfd66777f">SingleAgentAStarProblem</a>, <a class="el" href="classSingleAgentAStarProblemWithConstraints.html#a0e72380766a2d51d7482b9901cdbcd51">SingleAgentAStarProblemWithConstraints</a>, <a class="el" href="classODMultiAgentAStarProblem.html#a64c093eea7d18edaf9b484b53258b777">ODMultiAgentAStarProblem</a>, and <a class="el" href="classODMultiAgentAStarProblemWithConstraints.html#a3dba2aacc680217b99a3f26daf41a927">ODMultiAgentAStarProblemWithConstraints</a>.</p>
 

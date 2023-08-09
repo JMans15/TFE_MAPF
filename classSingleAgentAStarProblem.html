@@ -89,6 +89,9 @@ $(document).ready(function(){initNavTree('classSingleAgentAStarProblem.html','')
 </div><!--header-->
 <div class="contents">
 
+<p>SAPF problem with space search only.  
+ <a href="classSingleAgentAStarProblem.html#details">More...</a></p>
+
 <p><code>#include &lt;SingleAgentAStarProblem.h&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SingleAgentAStarProblem:</div>
@@ -108,20 +111,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ada896c2f0df1e148aa7b6cbe15c5d18d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#ada896c2f0df1e148aa7b6cbe15c5d18d">SingleAgentAStarProblem</a> (const std::shared_ptr&lt; <a class="el" href="classSingleAgentProblem.html">SingleAgentProblem</a> &gt; &amp;<a class="el" href="classSingleAgentAStarProblem.html#a9ff4687756e8935f9141b962e30ee8d3">problem</a>)</td></tr>
 <tr class="separator:ada896c2f0df1e148aa7b6cbe15c5d18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae75c26bc4897293aa0a1dc2172806fd0"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#ae75c26bc4897293aa0a1dc2172806fd0">getStartState</a> () const override</td></tr>
+<tr class="memdesc:ae75c26bc4897293aa0a1dc2172806fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the start state for the search problem.  <a href="classSingleAgentAStarProblem.html#ae75c26bc4897293aa0a1dc2172806fd0">More...</a><br /></td></tr>
 <tr class="separator:ae75c26bc4897293aa0a1dc2172806fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4cbe67cd0b1f48605512fe7434cbdca"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#aa4cbe67cd0b1f48605512fe7434cbdca">getGoalState</a> () const</td></tr>
 <tr class="separator:aa4cbe67cd0b1f48605512fe7434cbdca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24d1fd32ee92d58fa7668dcdfd66777f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#a24d1fd32ee92d58fa7668dcdfd66777f">isGoalState</a> (std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; state) const override</td></tr>
+<tr class="memdesc:a24d1fd32ee92d58fa7668dcdfd66777f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the state is a valid goal state.  <a href="classSingleAgentAStarProblem.html#a24d1fd32ee92d58fa7668dcdfd66777f">More...</a><br /></td></tr>
 <tr class="separator:a24d1fd32ee92d58fa7668dcdfd66777f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff5e5cb98567a5efe007383b24671015"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::tuple&lt; std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;, int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#aff5e5cb98567a5efe007383b24671015">getSuccessors</a> (std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt; state) const override</td></tr>
 <tr class="separator:aff5e5cb98567a5efe007383b24671015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a257942ba587943ae4f59cccaf2f203ec"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#a257942ba587943ae4f59cccaf2f203ec">getPositions</a> (std::vector&lt; std::shared_ptr&lt; <a class="el" href="classSingleAgentState.html">SingleAgentState</a> &gt;&gt; states) const override</td></tr>
+<tr class="memdesc:a257942ba587943ae4f59cccaf2f203ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the positions (paths) of each agent in the state.  <a href="classSingleAgentAStarProblem.html#a257942ba587943ae4f59cccaf2f203ec">More...</a><br /></td></tr>
 <tr class="separator:a257942ba587943ae4f59cccaf2f203ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31883750127b3bac1ae17ec489f94533"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#a31883750127b3bac1ae17ec489f94533">getMaxCost</a> () const override</td></tr>
+<tr class="memdesc:a31883750127b3bac1ae17ec489f94533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the max cost bound.  <a href="classSingleAgentAStarProblem.html#a31883750127b3bac1ae17ec489f94533">More...</a><br /></td></tr>
 <tr class="separator:a31883750127b3bac1ae17ec489f94533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace2d14e0a5846700095768e430aa0994"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#ace2d14e0a5846700095768e430aa0994">getStartTime</a> () const override</td></tr>
+<tr class="memdesc:ace2d14e0a5846700095768e430aa0994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the starting time step of the search.  <a href="classSingleAgentAStarProblem.html#ace2d14e0a5846700095768e430aa0994">More...</a><br /></td></tr>
 <tr class="separator:ace2d14e0a5846700095768e430aa0994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa637efe5c1a3fdd64b37231813c2a1f0"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSingleAgentProblem.html">SingleAgentProblem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#aa637efe5c1a3fdd64b37231813c2a1f0">getProblem</a> ()</td></tr>
+<tr class="memdesc:aa637efe5c1a3fdd64b37231813c2a1f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the base <a class="el" href="classSingleAgentProblem.html" title="Specific class for single-agent problems.">SingleAgentProblem</a>.  <a href="classSingleAgentAStarProblem.html#aa637efe5c1a3fdd64b37231813c2a1f0">More...</a><br /></td></tr>
 <tr class="separator:aa637efe5c1a3fdd64b37231813c2a1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAStarProblem"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAStarProblem')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classAStarProblem.html">AStarProblem&lt; SingleAgentState &gt;</a></td></tr>
 <tr class="memitem:abca569e9ccd852c4cfcfbeb980a70434 inherit pub_methods_classAStarProblem"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAStarProblem.html#abca569e9ccd852c4cfcfbeb980a70434">AStarProblem</a> ()=default</td></tr>
@@ -132,9 +141,15 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a9ff4687756e8935f9141b962e30ee8d3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSingleAgentProblem.html">SingleAgentProblem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSingleAgentAStarProblem.html#a9ff4687756e8935f9141b962e30ee8d3">problem</a></td></tr>
+<tr class="memdesc:a9ff4687756e8935f9141b962e30ee8d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base <a class="el" href="classSingleAgentProblem.html" title="Specific class for single-agent problems.">SingleAgentProblem</a>.  <a href="classSingleAgentAStarProblem.html#a9ff4687756e8935f9141b962e30ee8d3">More...</a><br /></td></tr>
 <tr class="separator:a9ff4687756e8935f9141b962e30ee8d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>SAPF problem with space search only. </p>
+<p>Single Agent <a class="el" href="classProblem.html">Problem</a> formulated as a search task</p><ul>
+<li>Space search </li>
+</ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ada896c2f0df1e148aa7b6cbe15c5d18d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada896c2f0df1e148aa7b6cbe15c5d18d">&#9670;&nbsp;</a></span>SingleAgentAStarProblem()</h2>
 
@@ -150,6 +165,12 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Constructor </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">base</td><td><a class="el" href="classSingleAgentProblem.html" title="Specific class for single-agent problems.">SingleAgentProblem</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -194,6 +215,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the max cost bound. </p>
+
 <p>Implements <a class="el" href="classAStarProblem.html#afd6cbb3748e0631882e3c6608529779a">AStarProblem&lt; SingleAgentState &gt;</a>.</p>
 
 </div>
@@ -222,6 +245,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Retrieves the positions (paths) of each agent in the state. </p>
+
 <p>Implements <a class="el" href="classAStarProblem.html#a0b954d639b27cb86abdfd4d9a532a2a1">AStarProblem&lt; SingleAgentState &gt;</a>.</p>
 
 </div>
@@ -240,6 +265,8 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Get the base <a class="el" href="classSingleAgentProblem.html" title="Specific class for single-agent problems.">SingleAgentProblem</a>. </p>
 
 </div>
 </div>
@@ -265,6 +292,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the start state for the search problem. </p>
 
 <p>Implements <a class="el" href="classAStarProblem.html#ae5fffa4d5f70ad4299e864e14b8ab229">AStarProblem&lt; SingleAgentState &gt;</a>.</p>
 
@@ -293,6 +322,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the starting time step of the search. </p>
+
 <p>Implements <a class="el" href="classAStarProblem.html#a5c5276b63633981d01f74f3dff350716">AStarProblem&lt; SingleAgentState &gt;</a>.</p>
 
 </div>
@@ -320,6 +351,11 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given state, getSuccessors returns a list of tuples (successor, stepcost, numberOfViolations) where</p><ul>
+<li>successor is a successor state to the current state</li>
+<li>stepcost is the cost to go from state to successor</li>
+<li>numberOfViolations is the number of soft constraints that have been violated to go from state to successor </li>
+</ul>
 
 <p>Implements <a class="el" href="classAStarProblem.html#a8a6e2359cd9537c3b941d36071fae662">AStarProblem&lt; SingleAgentState &gt;</a>.</p>
 
@@ -349,6 +385,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns true if the state is a valid goal state. </p>
+
 <p>Implements <a class="el" href="classAStarProblem.html#ad32a6801664c9f9423dbfe741c38ff3a">AStarProblem&lt; SingleAgentState &gt;</a>.</p>
 
 </div>
@@ -373,6 +411,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Base <a class="el" href="classSingleAgentProblem.html" title="Specific class for single-agent problems.">SingleAgentProblem</a>. </p>
 
 </div>
 </div>

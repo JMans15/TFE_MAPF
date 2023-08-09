@@ -1,5 +1,5 @@
 <map id="ODMultiAgentAStarProblem" name="ODMultiAgentAStarProblem">
-<area shape="rect" id="node1" title=" " alt="" coords="5,492,232,701"/>
+<area shape="rect" id="node1" title="MAPF problem with space search only and OD." alt="" coords="5,492,232,701"/>
 <area shape="rect" id="node2" href="$classAStarProblem.html" title=" " alt="" coords="10,248,227,443"/>
-<area shape="rect" id="node3" href="$classAStarProblem.html" title=" " alt="" coords="44,5,193,185"/>
+<area shape="rect" id="node3" href="$classAStarProblem.html" title="Search problem formulated for the A* algorithm." alt="" coords="44,5,193,185"/>
 </map>

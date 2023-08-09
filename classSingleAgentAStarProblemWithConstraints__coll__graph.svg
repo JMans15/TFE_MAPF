@@ -58,7 +58,7 @@ var sectionId = 'dynsection-1';
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_node1"><a xlink:title="SAPF problem with space&#45;time search.">
 <polygon fill="#bfbfbf" stroke="black" points="0,-0.5 0,-156.5 176,-156.5 176,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-144.5" font-family="Helvetica,sans-Serif" font-size="10.00">SingleAgentAStarProblemWith</text>
 <text text-anchor="middle" x="88" y="-133.5" font-family="Helvetica,sans-Serif" font-size="10.00">Constraints</text>
@@ -107,7 +107,7 @@ var sectionId = 'dynsection-1';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="classAStarProblem.html" target="_top" xlink:title=" ">
+<g id="a_node3"><a xlink:href="classAStarProblem.html" target="_top" xlink:title="Search problem formulated for the A* algorithm.">
 <polygon fill="white" stroke="black" points="32,-387.5 32,-521.5 144,-521.5 144,-387.5 32,-387.5"/>
 <text text-anchor="middle" x="88" y="-509.5" font-family="Helvetica,sans-Serif" font-size="10.00">AStarProblem&lt; S &gt;</text>
 <polyline fill="none" stroke="black" points="32,-502.5 144,-502.5 "/>

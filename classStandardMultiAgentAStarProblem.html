@@ -90,6 +90,9 @@ $(document).ready(function(){initNavTree('classStandardMultiAgentAStarProblem.ht
 </div><!--header-->
 <div class="contents">
 
+<p>MAPF problem with space search only (no OD)  
+ <a href="classStandardMultiAgentAStarProblem.html#details">More...</a></p>
+
 <p><code>#include &lt;StandardMultiAgentAStarProblem.h&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for StandardMultiAgentAStarProblem:</div>
@@ -109,18 +112,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a139bdc8442eeba19f07258f4ce026a38"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#a139bdc8442eeba19f07258f4ce026a38">StandardMultiAgentAStarProblem</a> (std::shared_ptr&lt; <a class="el" href="classMultiAgentProblem.html">MultiAgentProblem</a> &gt; <a class="el" href="classStandardMultiAgentAStarProblem.html#a03970d0d72f703a0db82edeb133b88df">problem</a>)</td></tr>
 <tr class="separator:a139bdc8442eeba19f07258f4ce026a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e41e7ce5d19cdd8d4ab86f4ea8daa69"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classStandardMultiAgentState.html">StandardMultiAgentState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#a5e41e7ce5d19cdd8d4ab86f4ea8daa69">getStartState</a> () const override</td></tr>
+<tr class="memdesc:a5e41e7ce5d19cdd8d4ab86f4ea8daa69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the start state for the search problem.  <a href="classStandardMultiAgentAStarProblem.html#a5e41e7ce5d19cdd8d4ab86f4ea8daa69">More...</a><br /></td></tr>
 <tr class="separator:a5e41e7ce5d19cdd8d4ab86f4ea8daa69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a015d4e47a26550c1f88100f3f9c22641"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#a015d4e47a26550c1f88100f3f9c22641">isGoalState</a> (std::shared_ptr&lt; <a class="el" href="classStandardMultiAgentState.html">StandardMultiAgentState</a> &gt; state) const override</td></tr>
+<tr class="memdesc:a015d4e47a26550c1f88100f3f9c22641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the state is a valid goal state.  <a href="classStandardMultiAgentAStarProblem.html#a015d4e47a26550c1f88100f3f9c22641">More...</a><br /></td></tr>
 <tr class="separator:a015d4e47a26550c1f88100f3f9c22641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a150f39b059994eec58855f173b3a03fa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::tuple&lt; std::shared_ptr&lt; <a class="el" href="classStandardMultiAgentState.html">StandardMultiAgentState</a> &gt;, int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#a150f39b059994eec58855f173b3a03fa">getSuccessors</a> (std::shared_ptr&lt; <a class="el" href="classStandardMultiAgentState.html">StandardMultiAgentState</a> &gt; state) const override</td></tr>
 <tr class="separator:a150f39b059994eec58855f173b3a03fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf59a60de6cd8b484545b7d778226c74"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#abf59a60de6cd8b484545b7d778226c74">getPositions</a> (std::vector&lt; std::shared_ptr&lt; <a class="el" href="classStandardMultiAgentState.html">StandardMultiAgentState</a> &gt;&gt; states) const override</td></tr>
+<tr class="memdesc:abf59a60de6cd8b484545b7d778226c74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the positions (paths) of each agent in the state.  <a href="classStandardMultiAgentAStarProblem.html#abf59a60de6cd8b484545b7d778226c74">More...</a><br /></td></tr>
 <tr class="separator:abf59a60de6cd8b484545b7d778226c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aece5421dfffac769d69108b9f8fdaf50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#aece5421dfffac769d69108b9f8fdaf50">getMaxCost</a> () const override</td></tr>
+<tr class="memdesc:aece5421dfffac769d69108b9f8fdaf50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the max cost bound.  <a href="classStandardMultiAgentAStarProblem.html#aece5421dfffac769d69108b9f8fdaf50">More...</a><br /></td></tr>
 <tr class="separator:aece5421dfffac769d69108b9f8fdaf50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22be442b346788096e98257b8a326fa2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#a22be442b346788096e98257b8a326fa2">getStartTime</a> () const override</td></tr>
+<tr class="memdesc:a22be442b346788096e98257b8a326fa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the starting time step of the search.  <a href="classStandardMultiAgentAStarProblem.html#a22be442b346788096e98257b8a326fa2">More...</a><br /></td></tr>
 <tr class="separator:a22be442b346788096e98257b8a326fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5238fd05b86ba8c0119ba705471942f1"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classMultiAgentProblem.html">MultiAgentProblem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#a5238fd05b86ba8c0119ba705471942f1">getProblem</a> ()</td></tr>
+<tr class="memdesc:a5238fd05b86ba8c0119ba705471942f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get base <a class="el" href="classMultiAgentProblem.html" title="Specific problem class for multi-agent problems.">MultiAgentProblem</a>.  <a href="classStandardMultiAgentAStarProblem.html#a5238fd05b86ba8c0119ba705471942f1">More...</a><br /></td></tr>
 <tr class="separator:a5238fd05b86ba8c0119ba705471942f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -140,9 +149,16 @@ Private Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a03970d0d72f703a0db82edeb133b88df"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classMultiAgentProblem.html">MultiAgentProblem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStandardMultiAgentAStarProblem.html#a03970d0d72f703a0db82edeb133b88df">problem</a></td></tr>
+<tr class="memdesc:a03970d0d72f703a0db82edeb133b88df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base <a class="el" href="classMultiAgentProblem.html" title="Specific problem class for multi-agent problems.">MultiAgentProblem</a>.  <a href="classStandardMultiAgentAStarProblem.html#a03970d0d72f703a0db82edeb133b88df">More...</a><br /></td></tr>
 <tr class="separator:a03970d0d72f703a0db82edeb133b88df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>MAPF problem with space search only (no OD) </p>
+<p>Multi Agent <a class="el" href="classProblem.html">Problem</a> formulated as a search task</p><ul>
+<li>Standard A* (&gt;&lt; Operator Decomposition A*)</li>
+<li>Space search </li>
+</ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a139bdc8442eeba19f07258f4ce026a38"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a139bdc8442eeba19f07258f4ce026a38">&#9670;&nbsp;</a></span>StandardMultiAgentAStarProblem()</h2>
 
@@ -158,6 +174,7 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Constructor @problem [in] problem Base <a class="el" href="classMultiAgentProblem.html" title="Specific problem class for multi-agent problems.">MultiAgentProblem</a> </p>
 
 </div>
 </div>
@@ -184,6 +201,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the max cost bound. </p>
 
 <p>Implements <a class="el" href="classAStarProblem.html#afd6cbb3748e0631882e3c6608529779a">AStarProblem&lt; StandardMultiAgentState &gt;</a>.</p>
 
@@ -213,6 +232,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Retrieves the positions (paths) of each agent in the state. </p>
+
 <p>Implements <a class="el" href="classAStarProblem.html#a0b954d639b27cb86abdfd4d9a532a2a1">AStarProblem&lt; StandardMultiAgentState &gt;</a>.</p>
 
 </div>
@@ -231,6 +252,8 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Get base <a class="el" href="classMultiAgentProblem.html" title="Specific problem class for multi-agent problems.">MultiAgentProblem</a>. </p>
 
 </div>
 </div>
@@ -256,6 +279,8 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the start state for the search problem. </p>
 
 <p>Implements <a class="el" href="classAStarProblem.html#ae5fffa4d5f70ad4299e864e14b8ab229">AStarProblem&lt; StandardMultiAgentState &gt;</a>.</p>
 
@@ -284,6 +309,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the starting time step of the search. </p>
+
 <p>Implements <a class="el" href="classAStarProblem.html#a5c5276b63633981d01f74f3dff350716">AStarProblem&lt; StandardMultiAgentState &gt;</a>.</p>
 
 </div>
@@ -311,6 +338,11 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given state, getSuccessors returns a list of tuples (successor, stepcost, numberOfViolations) where</p><ul>
+<li>successor is a successor state to the current state</li>
+<li>stepcost is the cost to go from state to successor</li>
+<li>numberOfViolations is the number of soft constraints that have been violated to go from state to successor </li>
+</ul>
 
 <p>Implements <a class="el" href="classAStarProblem.html#a8a6e2359cd9537c3b941d36071fae662">AStarProblem&lt; StandardMultiAgentState &gt;</a>.</p>
 <div class="dynheader">
@@ -345,6 +377,8 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns true if the state is a valid goal state. </p>
 
 <p>Implements <a class="el" href="classAStarProblem.html#ad32a6801664c9f9423dbfe741c38ff3a">AStarProblem&lt; StandardMultiAgentState &gt;</a>.</p>
 
@@ -395,6 +429,7 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if the edge (position, positions[agentToAssign]) is not already occupied by assigned agents </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -443,6 +478,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if position is not already occupied by assigned agents </dd></dl>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -509,6 +545,14 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Recursive function used in the getSuccessors(state) method Branches on all possibles moves for agentToAssign (from 0 to numberOfAgents-1) If agentToAssign is the last agent, we add a successor to the list of successors for every possible move for agentToAssign If agentToAssign isn't the last agent, we call recursiveAssignAMoveToAnAgent for every possible move for agentToAssign</p>
+<p>positions[:agentToAssign] are the assigned positions positions[agentToAssign:] are the not yet assigned positions positions[agentToAssign] is not yet assigned but will be in this function</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">prePositions</td><td>is the positions of the agents in state cost is the cost of assigning the agents from 0 to agentToAssign cannotMove[i] is true if agent i is at its target position and cannot move anymore (for the SumOfCosts objective function) </td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -544,6 +588,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Base <a class="el" href="classMultiAgentProblem.html" title="Specific problem class for multi-agent problems.">MultiAgentProblem</a>. </p>
 
 </div>
 </div>

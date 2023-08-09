@@ -1,5 +1,5 @@
 <map id="SingleAgentAStarProblem" name="SingleAgentAStarProblem">
-<area shape="rect" id="node1" title=" " alt="" coords="5,492,220,687"/>
+<area shape="rect" id="node1" title="SAPF problem with space search only." alt="" coords="5,492,220,687"/>
 <area shape="rect" id="node2" href="$classAStarProblem.html" title=" " alt="" coords="11,248,215,443"/>
-<area shape="rect" id="node3" href="$classAStarProblem.html" title=" " alt="" coords="38,5,187,185"/>
+<area shape="rect" id="node3" href="$classAStarProblem.html" title="Search problem formulated for the A* algorithm." alt="" coords="38,5,187,185"/>
 </map>

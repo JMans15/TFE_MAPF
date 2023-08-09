@@ -58,7 +58,7 @@ var sectionId = 'dynsection-0';
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_node1"><a xlink:title="MAPF problem with space search only (no OD)">
 <polygon fill="#bfbfbf" stroke="black" points="0,-0.5 0,-178.5 199,-178.5 199,-0.5 0,-0.5"/>
 <text text-anchor="middle" x="99.5" y="-166.5" font-family="Helvetica,sans-Serif" font-size="10.00">StandardMultiAgentAStarProblem</text>
 <polyline fill="none" stroke="black" points="0,-159.5 199,-159.5 "/>
@@ -109,7 +109,7 @@ var sectionId = 'dynsection-0';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="classAStarProblem.html" target="_top" xlink:title=" ">
+<g id="a_node3"><a xlink:href="classAStarProblem.html" target="_top" xlink:title="Search problem formulated for the A* algorithm.">
 <polygon fill="white" stroke="black" points="43.5,-409.5 43.5,-543.5 155.5,-543.5 155.5,-409.5 43.5,-409.5"/>
 <text text-anchor="middle" x="99.5" y="-531.5" font-family="Helvetica,sans-Serif" font-size="10.00">AStarProblem&lt; S &gt;</text>
 <polyline fill="none" stroke="black" points="43.5,-524.5 155.5,-524.5 "/>
