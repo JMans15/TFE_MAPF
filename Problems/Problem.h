@@ -1,4 +1,3 @@
-//! A generic problem class
 
 #ifndef TFE_MAPF_PROBLEM_H
 #define TFE_MAPF_PROBLEM_H
@@ -24,6 +23,7 @@ enum ObjectiveFunction {
   SumOfCosts,
 };
 
+//! A generic problem class
 class Problem {
 public:
   virtual bool
