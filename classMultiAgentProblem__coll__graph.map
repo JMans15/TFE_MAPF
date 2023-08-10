@@ -1,4 +1,4 @@
 <map id="MultiAgentProblem" name="MultiAgentProblem">
 <area shape="rect" id="node1" title="Specific problem class for multi&#45;agent problems." alt="" coords="5,160,219,589"/>
-<area shape="rect" id="node2" href="$classProblem.html" title=" " alt="" coords="13,5,211,112"/>
+<area shape="rect" id="node2" href="$classProblem.html" title="A generic problem class." alt="" coords="13,5,211,112"/>
 </map>

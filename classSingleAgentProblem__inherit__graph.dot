@@ -6,5 +6,5 @@ digraph "SingleAgentProblem"
   node [fontname="Helvetica",fontsize="10",shape=record];
   Node1 [label="{SingleAgentProblem\n|- graph\l- start\l- target\l- agentId\l- maxCost\l- impossible\l- externalConstraints\l- objective\l- setOfHardVertexConstraints\l- setOfHardEdgeConstraints\l- setOfSoftVertexConstraints\l- setOfSoftEdgeConstraints\l- startTime\l|+ SingleAgentProblem()\l+ SingleAgentProblem()\l+ getGraph()\l+ getStart()\l+ getTarget()\l+ getAgentId()\l+ getMaxCost()\l+ print()\l+ getNumberOfAgents()\l+ isImpossible()\land 11 more...\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Specific class for single-agent problems."];
   Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
-  Node2 [label="{Problem\n||+ hasExternalConstraints()\l+ getNumberOfAgents()\l+ isImpossible()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classProblem.html",tooltip=" "];
+  Node2 [label="{Problem\n||+ hasExternalConstraints()\l+ getNumberOfAgents()\l+ isImpossible()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classProblem.html",tooltip="A generic problem class."];
 }
