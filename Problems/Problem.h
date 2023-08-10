@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 // #define DEBUG
-
+//! Logging function active only when DEBUG is set
 #ifdef DEBUG
 #define LOG(str) std::cout << str << std::endl;
 #else
