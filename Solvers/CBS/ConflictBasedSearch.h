@@ -16,13 +16,15 @@
 //!
 //! typeOfHeuristic is the heuristic for the A* searches
 //! If CAT is true, we use a Conflict Avoidance Table (CAT) when replanning to
-//! avoid planned paths (if possible with optimal cost) If disjointSplitting is
-//! true, we use a disjoint splitting strategy (branches on 1 positive and 1
-//! negative constraint instead of 2 negative constraints) (DS is a technique
-//! designed to ensure that expanding a CT node N creates a disjoint partition
-//! of the space of solutions that satisfy the constraints of N. That is, every
-//! solution that satisfies the constraints of N is in exactly one of its
-//! children.)
+//! avoid planned paths (if possible with optimal cost)
+//! If disjointSplitting is true, we use a disjoint splitting strategy
+//! (branches on 1 positive and 1 negative constraint instead of 2 negative constraints)
+//! (DS is a technique designed to ensure that expanding a CT node N creates a
+//! disjoint partition of the space of solutions that satisfy the constraints of N. That is, every
+//! solution that satisfies the constraints of N is in exactly one of its children.)
+//!
+//! CBS with disjoint splitting is not optimal with the Fuel objective function, but well
+//! with the other objective functions
 class ConflictBasedSearch {
 public:
   //! Constructor for ConflictBasedSearch solver for a specified Problem

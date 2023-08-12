@@ -82,7 +82,7 @@ private:
   int cost;  //!< cost of the current solution, the f-value of the node
   std::shared_ptr<ConflictTreeNode> parent; //!< Parent node
 
-  // solution and costs only contains the path (and its path) of the agent that
+  // solution and costs only contains the path (and its cost) of the agent that
   // just has been replanned but they contain the paths of all agents in the
   // root node
 
