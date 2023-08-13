@@ -7,7 +7,7 @@ from multiprocessing import Pool, Value, freeze_support  # noqa: F401
 
 import utils
 
-program = "./cpp-projects/TFE_MAPF/cmake-build/TFE_MAPF_visu"
+program = "../cmake-build/TFE_MAPF_visu"
 
 
 counter = Value("i", 0)
@@ -30,19 +30,20 @@ def extract_problems(maps):
         tmp = wlk.__next__()
         scendir = tmp[0]
         scenfiles = tmp[2]
+        scens = 0
         for scenfile in scenfiles:
             problems.append(
                 [os.path.join(mp, mapfile), os.path.join(scendir, scenfile)]
             )
+            scens += 1
+        print(f"{scens} scenari for map {mp}")
     return problems
 
 
 def run_and_check(a, i, algo, to, problem, obj, heu):
     try:
         # filename = f"./result_{algo}_{i}_{a}_{obj}_{heu}.txt"
-        filename = (
-            f"./cpp-projects/TFE_MAPF/Plotting/result_{algo}_{i}_{a}_{obj}_{heu}.txt"
-        )
+        filename = f"../Plotting/result_{algo}_{i}_{a}_{obj}_{heu}.txt"
         ok = subprocess.run(
             [
                 program,
@@ -120,40 +121,52 @@ if __name__ == "__main__":
     freeze_support()
     counter = Value("i", 0)
 
-    nagents = np.arange(5, 55, 5, dtype=int)
-    tmax = 30
-    num_threads = 10
+    nagents = np.arange(5, 105, 5, dtype=int)
+    tmax = 60
+    num_threads = 12
 
-    objectives = ["SumOfCosts", "Fuel", "Makespan"]
+    objectives = ["SumOfCosts"]
 
-    heuristics = ["Optimal", "Manhattan"]
+    heuristics = ["Optimal"]
 
     algs = [
-        "A*",
-        "A* OD",
+        # "A*",
+        # "A* OD",
         # "Coop A*",
-        "ID A*",
-        "ID A* CAT",
+        # "ID A*",
+        # "ID A* CAT",
         "ID CBS",
         "ID CBS CAT",
-        "SID A*",
-        "SID A* CAT",
+        # "SID A*",
+        # "SID A* CAT",
         "SID CBS",
         "SID CBS CAT",
-        "CBS DS",
-        "CBS DS CAT",
-        "CBS",
-        "CBS CAT",
+        # "CBS DS",
+        # "CBS DS CAT",
+        # "CBS",
+        # "CBS CAT",
     ]
 
     maps = [
-        "./cpp-projects/TFE_MAPF/mapf-map/32-32-1",
-        "./cpp-projects/TFE_MAPF/mapf-map/32-32-2",
-        "./cpp-projects/TFE_MAPF/mapf-map/32-32-3",
-        "./cpp-projects/TFE_MAPF/mapf-map/32-32-4",
-        "./cpp-projects/TFE_MAPF/mapf-map/32-32-5",
-        "./cpp-projects/TFE_MAPF/mapf-map/32-32-6",
-        "./cpp-projects/TFE_MAPF/mapf-map/Paris",
+        "../mapf-map/32-32-1",
+        "../mapf-map/32-32-2",
+        "../mapf-map/32-32-3",
+        "../mapf-map/32-32-4",
+        "../mapf-map/32-32-5",
+        "../mapf-map/32-32-6",
+        "../mapf-map/Berlin_1_256",
+        "../mapf-map/Boston_0_256",
+        "../mapf-map/brc202d",
+        "../mapf-map/lt_gallowstemplar_n",
+        "../mapf-map/maze-128-128-10",
+        "../mapf-map/maze-128-128-2/",
+        "../mapf-map/orz900d",
+        "../mapf-map/random-64-64-20",
+        "../mapf-map/warehouse-10-20-10-2-1",
+        "../mapf-map/warehouse-10-20-10-2-2",
+        "../mapf-map/warehouse-20-40-10-2-1",
+        "../mapf-map/warehouse-20-40-10-2-2",
+        "../mapf-map/Paris",
     ]
     problems = extract_problems(maps)
     # problems = problems[:4]
@@ -185,4 +198,4 @@ if __name__ == "__main__":
                 for ai, a in enumerate(h):
                     results[pi, oi, hi, ai] = a.get()
     print(results.shape)
-    np.save("./cpp-projects/TFE_MAPF/Plotting/all_results.npy", results)
+    np.save("./IDCBS_results.npy", results)
