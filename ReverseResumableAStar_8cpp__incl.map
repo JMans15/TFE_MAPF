@@ -1,27 +1,7 @@
 <map id="Solvers/AStar/ReverseResumableAStar.cpp" name="Solvers/AStar/ReverseResumableAStar.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="1081,5,1319,47"/>
-<area shape="rect" id="node2" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="1103,95,1297,121"/>
-<area shape="rect" id="node3" href="$SingleAgentAStarProblem_8h.html" title=" " alt="" coords="1299,259,1504,300"/>
-<area shape="rect" id="node13" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="788,169,961,211"/>
-<area shape="rect" id="node25" href="$Node_8h.html" title=" " alt="" coords="1238,177,1306,203"/>
-<area shape="rect" id="node4" href="$SingleAgentProblem_8h.html" title=" " alt="" coords="1119,355,1361,382"/>
-<area shape="rect" id="node10" href="$SingleAgentState_8h.html" title=" " alt="" coords="1251,445,1453,471"/>
-<area shape="rect" id="node12" href="$AStarProblem_8h.html" title=" " alt="" coords="688,355,811,382"/>
-<area shape="rect" id="node5" href="$Problem_8h.html" title=" " alt="" coords="545,445,633,471"/>
-<area shape="rect" id="node6" href="$ConstraintsSet_8h.html" title=" " alt="" coords="396,527,583,568"/>
-<area shape="rect" id="node9" href="$Graph_8h.html" title=" " alt="" coords="607,534,775,561"/>
-<area shape="rect" id="node7" href="$EdgeConstraint_8h.html" title=" " alt="" coords="341,616,475,643"/>
-<area shape="rect" id="node8" href="$VertexConstraint_8h.html" title=" " alt="" coords="499,616,642,643"/>
-<area shape="rect" id="node11" href="$State_8h.html" title=" " alt="" coords="934,534,1002,561"/>
-<area shape="rect" id="node14" href="$ODMultiAgentAStarProblem_8h.html" title=" " alt="" coords="5,259,192,300"/>
-<area shape="rect" id="node17" href="$ODMultiAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="217,259,482,300"/>
-<area shape="rect" id="node19" href="$SingleAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="1048,259,1275,300"/>
-<area shape="rect" id="node21" href="$StandardMultiAgentAStarProblem_8h.html" title=" " alt="" coords="507,259,701,300"/>
-<area shape="rect" id="node23" href="$StandardMultiAgentAStarProblemWithConstraints_8h.html" title=" " alt="" coords="725,259,1024,300"/>
-<area shape="rect" id="node15" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="378,355,614,382"/>
-<area shape="rect" id="node16" href="$ODMultiAgentState_8h.html" title=" " alt="" coords="141,445,357,471"/>
-<area shape="rect" id="node18" href="$ODMultiAgentSpaceTimeState_8h.html" title=" " alt="" coords="145,348,354,389"/>
-<area shape="rect" id="node20" href="$SingleAgentSpaceTimeState_8h.html" title=" " alt="" coords="983,437,1179,479"/>
-<area shape="rect" id="node22" href="$StandardMultiAgentState_8h.html" title=" " alt="" coords="751,437,959,479"/>
-<area shape="rect" id="node24" href="$StandardMultiAgentSpaceTimeState_8h.html" title=" " alt="" coords="835,348,1043,389"/>
+<area shape="rect" id="node1" title=" " alt="" coords="51,5,290,47"/>
+<area shape="rect" id="node2" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="73,95,268,121"/>
+<area shape="rect" id="node3" href="$SingleAgentAStarProblem_8h.html" title=" " alt="" coords="5,259,211,300"/>
+<area shape="rect" id="node4" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="84,169,257,211"/>
+<area shape="rect" id="node5" href="$Node_8h.html" title=" " alt="" coords="282,177,350,203"/>
 </map>

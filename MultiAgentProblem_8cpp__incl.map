@@ -1,9 +1,5 @@
 <map id="Problems/MultiAgentProblem.cpp" name="Problems/MultiAgentProblem.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="134,5,373,32"/>
-<area shape="rect" id="node2" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="174,80,333,107"/>
-<area shape="rect" id="node3" href="$Problem_8h.html" title=" " alt="" coords="209,155,297,181"/>
-<area shape="rect" id="node4" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,229,247,271"/>
-<area shape="rect" id="node7" href="$Graph_8h.html" title=" " alt="" coords="271,237,439,263"/>
-<area shape="rect" id="node5" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,319,139,345"/>
-<area shape="rect" id="node6" href="$VertexConstraint_8h.html" title=" " alt="" coords="163,319,306,345"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,244,32"/>
+<area shape="rect" id="node2" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="45,80,204,107"/>
+<area shape="rect" id="node3" href="$Problem_8h.html" title=" " alt="" coords="81,155,169,181"/>
 </map>

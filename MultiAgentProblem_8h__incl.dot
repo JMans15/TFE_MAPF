@@ -8,11 +8,7 @@ digraph "Problems/MultiAgentProblem.h"
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 [label="Problem.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Problem_8h.html",tooltip=" "];
   Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node3 [label="../Constraints/Constraints\lSet.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ConstraintsSet_8h.html",tooltip=" "];
-  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="EdgeConstraint.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$EdgeConstraint_8h.html",tooltip=" "];
-  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node5 [label="VertexConstraint.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$VertexConstraint_8h.html",tooltip=" "];
+  Node3 [label="../Constraints/Constraints\lSet.h",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$ConstraintsSet_8h.html",tooltip=" "];
   Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node6 [label="../GraphParser/Graph.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Graph_8h.html",tooltip=" "];
 }

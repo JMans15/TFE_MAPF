@@ -1,12 +1,6 @@
 <map id="Heuristics/HeuristicOptimal.h" name="Heuristics/HeuristicOptimal.h">
-<area shape="rect" id="node1" title=" " alt="" coords="274,5,487,32"/>
-<area shape="rect" id="node2" href="$AStar_8h.html" title=" " alt="" coords="301,80,460,107"/>
-<area shape="rect" id="node3" href="$GeneralAStar_8h.html" title=" " alt="" coords="163,162,374,189"/>
-<area shape="rect" id="node10" href="$CooperativeAStar_8h.html" title=" " alt="" coords="398,155,587,196"/>
-<area shape="rect" id="node4" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="105,244,299,285"/>
-<area shape="rect" id="node6" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="223,333,451,375"/>
-<area shape="rect" id="node5" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,333,199,375"/>
-<area shape="rect" id="node7" href="$IndependenceDetection_8h.html" title=" " alt="" coords="73,430,331,457"/>
-<area shape="rect" id="node9" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="356,423,584,464"/>
-<area shape="rect" id="node8" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="65,512,339,539"/>
+<area shape="rect" id="node1" title=" " alt="" coords="116,5,329,32"/>
+<area shape="rect" id="node2" href="$AStar_8h.html" title=" " alt="" coords="143,80,302,107"/>
+<area shape="rect" id="node3" href="$GeneralAStar_8h.html" title=" " alt="" coords="5,162,216,189"/>
+<area shape="rect" id="node4" href="$CooperativeAStar_8h.html" title=" " alt="" coords="240,155,429,196"/>
 </map>

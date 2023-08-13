@@ -8,15 +8,5 @@ digraph "Solvers/CBS/AgentConflict.h"
   Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 [label="Solvers/CBS/ConflictTree\lNode.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ConflictTreeNode_8h.html",tooltip=" "];
   Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node3 [label="Solvers/CBS/ConflictBased\lSearch.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ConflictBasedSearch_8h.html",tooltip=" "];
-  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="Solvers/CBS/ConflictBased\lSearch.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ConflictBasedSearch_8cpp.html",tooltip=" "];
-  Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node5 [label="Solvers/ID/SimpleIndependence\lDetection.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$SimpleIndependenceDetection_8h.html",tooltip=" "];
-  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node6 [label="Solvers/ID/IndependenceDetection.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$IndependenceDetection_8h.html",tooltip=" "];
-  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node7 [label="Solvers/ID/IndependenceDetection.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$IndependenceDetection_8cpp.html",tooltip=" "];
-  Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node8 [label="Solvers/ID/SimpleIndependence\lDetection.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$SimpleIndependenceDetection_8cpp.html",tooltip=" "];
+  Node3 [label="Solvers/CBS/ConflictBased\lSearch.h",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$ConflictBasedSearch_8h.html",tooltip=" "];
 }

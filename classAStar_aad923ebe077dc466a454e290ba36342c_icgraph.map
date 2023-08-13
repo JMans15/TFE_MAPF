@@ -1,6 +1,5 @@
 <map id="AStar::retrieveSolution" name="AStar::retrieveSolution">
-<area shape="rect" id="node1" title="Goes from the Node node to the root and extract the Solution." alt="" coords="551,5,720,32"/>
-<area shape="rect" id="node2" href="$classAStar.html#aee8daf3c1ab228779d19a62fe4b9ceea" title="Solve problem and return Solution." alt="" coords="403,5,503,32"/>
-<area shape="rect" id="node3" href="$classGeneralAStar.html#a51f6f9e1d855becaada1943dc5d9be76" title=" " alt="" coords="204,5,355,32"/>
-<area shape="rect" id="node4" href="$classGeneralAStar.html#aae659c79e694be1be67a2893762f8410" title=" " alt="" coords="5,5,156,32"/>
+<area shape="rect" id="node1" title="Goes from the Node node to the root and extract the Solution." alt="" coords="352,5,521,32"/>
+<area shape="rect" id="node2" href="$classAStar.html#aee8daf3c1ab228779d19a62fe4b9ceea" title="Solve problem and return Solution." alt="" coords="204,5,304,32"/>
+<area shape="rect" id="node3" href="$classGeneralAStar.html#a51f6f9e1d855becaada1943dc5d9be76" title=" " alt="" coords="5,5,156,32"/>
 </map>

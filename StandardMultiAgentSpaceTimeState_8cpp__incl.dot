@@ -8,7 +8,5 @@ digraph "States/StandardMultiAgentSpaceTimeState.cpp"
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 [label="StandardMultiAgentSpaceTime\lState.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$StandardMultiAgentSpaceTimeState_8h.html",tooltip=" "];
   Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node3 [label="StandardMultiAgentState.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$StandardMultiAgentState_8h.html",tooltip=" "];
-  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="State.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$State_8h.html",tooltip=" "];
+  Node3 [label="StandardMultiAgentState.h",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$StandardMultiAgentState_8h.html",tooltip=" "];
 }

@@ -1,11 +1,7 @@
 <map id="Solvers/AStar/AStar.h" name="Solvers/AStar/AStar.h">
-<area shape="rect" id="node1" title=" " alt="" coords="301,5,460,32"/>
-<area shape="rect" id="node2" href="$GeneralAStar_8h.html" title=" " alt="" coords="163,87,374,114"/>
-<area shape="rect" id="node9" href="$CooperativeAStar_8h.html" title=" " alt="" coords="398,80,587,121"/>
-<area shape="rect" id="node3" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="105,169,299,211"/>
-<area shape="rect" id="node5" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="223,259,451,300"/>
-<area shape="rect" id="node4" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,259,199,300"/>
-<area shape="rect" id="node6" href="$IndependenceDetection_8h.html" title=" " alt="" coords="73,355,331,382"/>
-<area shape="rect" id="node8" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="356,348,584,389"/>
-<area shape="rect" id="node7" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="65,437,339,464"/>
+<area shape="rect" id="node1" title=" " alt="" coords="201,5,360,32"/>
+<area shape="rect" id="node2" href="$GeneralAStar_8h.html" title=" " alt="" coords="63,87,274,114"/>
+<area shape="rect" id="node5" href="$CooperativeAStar_8h.html" title=" " alt="" coords="298,80,487,121"/>
+<area shape="rect" id="node3" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="5,169,199,211"/>
+<area shape="rect" id="node4" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="55,259,283,300"/>
 </map>

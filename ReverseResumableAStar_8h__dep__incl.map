@@ -1,14 +1,6 @@
 <map id="Solvers/AStar/ReverseResumableAStar.h" name="Solvers/AStar/ReverseResumableAStar.h">
-<area shape="rect" id="node1" title=" " alt="" coords="387,5,625,47"/>
-<area shape="rect" id="node2" href="$HeuristicOptimal_8h.html" title=" " alt="" coords="274,102,487,129"/>
-<area shape="rect" id="node12" href="$ReverseResumableAStar_8cpp.html" title=" " alt="" coords="512,95,751,136"/>
-<area shape="rect" id="node3" href="$AStar_8h.html" title=" " alt="" coords="301,184,460,211"/>
-<area shape="rect" id="node4" href="$GeneralAStar_8h.html" title=" " alt="" coords="163,266,374,293"/>
-<area shape="rect" id="node11" href="$CooperativeAStar_8h.html" title=" " alt="" coords="398,259,587,300"/>
-<area shape="rect" id="node5" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="105,348,299,389"/>
-<area shape="rect" id="node7" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="223,437,451,479"/>
-<area shape="rect" id="node6" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,437,199,479"/>
-<area shape="rect" id="node8" href="$IndependenceDetection_8h.html" title=" " alt="" coords="73,534,331,561"/>
-<area shape="rect" id="node10" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="356,527,584,568"/>
-<area shape="rect" id="node9" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="65,616,339,643"/>
+<area shape="rect" id="node1" title=" " alt="" coords="118,5,357,47"/>
+<area shape="rect" id="node2" href="$HeuristicOptimal_8h.html" title=" " alt="" coords="5,102,219,129"/>
+<area shape="rect" id="node4" href="$ReverseResumableAStar_8cpp.html" title=" " alt="" coords="243,95,482,136"/>
+<area shape="rect" id="node3" href="$AStar_8h.html" title=" " alt="" coords="33,184,191,211"/>
 </map>

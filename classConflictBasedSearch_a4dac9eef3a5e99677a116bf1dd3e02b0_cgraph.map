@@ -1,16 +1,10 @@
 <map id="ConflictBasedSearch::solve" name="ConflictBasedSearch::solve">
-<area shape="rect" id="node1" title=" " alt="" coords="5,336,160,377"/>
-<area shape="rect" id="node2" href="$classConflictBasedSearch.html#a6aadc55f462faad9ce67903a59b96c62" title=" " alt="" coords="208,336,363,377"/>
-<area shape="rect" id="node3" href="$classConflictBasedSearch.html#a6070f03e97d9e3ea822f5ed1a0bfe9a1" title=" " alt="" coords="703,5,884,47"/>
-<area shape="rect" id="node4" href="$classConflictBasedSearch.html#a6d17a328ed4bd26bf58503a87761164c" title=" " alt="" coords="716,71,871,112"/>
-<area shape="rect" id="node6" href="$classConflictBasedSearch.html#a1e9a1fbd7e074039fee97bc5ad4c6b55" title=" " alt="" coords="426,300,594,341"/>
-<area shape="rect" id="node11" href="$classConflictBasedSearch.html#a2d4ce8cb5d44727d73f4489b39ad1d54" title=" " alt="" coords="715,435,872,476"/>
-<area shape="rect" id="node13" href="$classConflictBasedSearch.html#a727a9172ea3f3fbf4eca9f247d3f5356" title=" " alt="" coords="710,500,877,541"/>
-<area shape="rect" id="node14" href="$classConflictBasedSearch.html#adfcf0b5e67e17a8eada77fed4ed4ea20" title=" " alt="" coords="411,491,609,547"/>
-<area shape="rect" id="node5" href="$classConflictBasedSearch.html#a3a9f295491df3b7ceec1b1d2ce7bacf3" title=" " alt="" coords="977,71,1132,112"/>
-<area shape="rect" id="node7" href="$Solution_8cpp.html#a1668e5fa72e047531e95f29f5deaf233" title=" " alt="" coords="755,282,831,309"/>
-<area shape="rect" id="node8" href="$classVertexConstraint.html#ae4a5ede3e21dcbc4dec0060a90682c15" title=" " alt="" coords="697,333,890,359"/>
-<area shape="rect" id="node9" href="$Solution_8cpp.html#a88b7fad200133f09ed5879a14d0171c6" title=" " alt="" coords="734,383,853,410"/>
-<area shape="rect" id="node10" href="$classConflictBasedSearch.html#a9a97b362b4e2df901352732921975454" title=" " alt="" coords="708,136,879,177"/>
-<area shape="rect" id="node12" href="$classConflictBasedSearch.html#aeea91c6d2aa04bbd44b4f6a1382d81d4" title=" " alt="" coords="657,202,929,258"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,139,160,180"/>
+<area shape="rect" id="node2" href="$classConflictBasedSearch.html#a6aadc55f462faad9ce67903a59b96c62" title=" " alt="" coords="208,139,363,180"/>
+<area shape="rect" id="node3" href="$classConflictBasedSearch.html#a6070f03e97d9e3ea822f5ed1a0bfe9a1" title=" " alt="" coords="657,5,839,47"/>
+<area shape="rect" id="node4" href="$classConflictBasedSearch.html#a6d17a328ed4bd26bf58503a87761164c" title=" " alt="" coords="671,92,825,133"/>
+<area shape="rect" id="node5" href="$classConflictBasedSearch.html#a1e9a1fbd7e074039fee97bc5ad4c6b55" title=" " alt="" coords="426,103,594,144"/>
+<area shape="rect" id="node6" href="$classConflictBasedSearch.html#a2d4ce8cb5d44727d73f4489b39ad1d54" title=" " alt="" coords="669,171,827,212"/>
+<area shape="rect" id="node7" href="$classConflictBasedSearch.html#a727a9172ea3f3fbf4eca9f247d3f5356" title=" " alt="" coords="665,236,831,277"/>
+<area shape="rect" id="node8" href="$classConflictBasedSearch.html#adfcf0b5e67e17a8eada77fed4ed4ea20" title=" " alt="" coords="411,294,609,350"/>
 </map>

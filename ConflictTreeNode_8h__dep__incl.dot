@@ -10,11 +10,5 @@ digraph "Solvers/CBS/ConflictTreeNode.h"
   Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="Solvers/CBS/ConflictBased\lSearch.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$ConflictBasedSearch_8cpp.html",tooltip=" "];
   Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="Solvers/ID/SimpleIndependence\lDetection.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$SimpleIndependenceDetection_8h.html",tooltip=" "];
-  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node5 [label="Solvers/ID/IndependenceDetection.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$IndependenceDetection_8h.html",tooltip=" "];
-  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node6 [label="Solvers/ID/IndependenceDetection.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$IndependenceDetection_8cpp.html",tooltip=" "];
-  Node4 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node7 [label="Solvers/ID/SimpleIndependence\lDetection.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$SimpleIndependenceDetection_8cpp.html",tooltip=" "];
+  Node4 [label="Solvers/ID/SimpleIndependence\lDetection.h",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$SimpleIndependenceDetection_8h.html",tooltip=" "];
 }

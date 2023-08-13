@@ -1,13 +1,7 @@
 <map id="AStarProblems/SingleAgentAStarProblem.cpp" name="AStarProblems/SingleAgentAStarProblem.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="400,5,600,47"/>
-<area shape="rect" id="node2" href="$SingleAgentAStarProblem_8h.html" title=" " alt="" coords="399,95,601,121"/>
-<area shape="rect" id="node3" href="$SingleAgentProblem_8h.html" title=" " alt="" coords="132,169,375,196"/>
-<area shape="rect" id="node9" href="$SingleAgentState_8h.html" title=" " alt="" coords="399,169,601,196"/>
-<area shape="rect" id="node11" href="$AStarProblem_8h.html" title=" " alt="" coords="625,169,748,196"/>
-<area shape="rect" id="node4" href="$Problem_8h.html" title=" " alt="" coords="209,244,297,271"/>
-<area shape="rect" id="node5" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,319,247,360"/>
-<area shape="rect" id="node8" href="$Graph_8h.html" title=" " alt="" coords="271,326,439,353"/>
-<area shape="rect" id="node6" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,408,139,435"/>
-<area shape="rect" id="node7" href="$VertexConstraint_8h.html" title=" " alt="" coords="163,408,306,435"/>
-<area shape="rect" id="node10" href="$State_8h.html" title=" " alt="" coords="466,244,534,271"/>
+<area shape="rect" id="node1" title=" " alt="" coords="273,5,473,47"/>
+<area shape="rect" id="node2" href="$SingleAgentAStarProblem_8h.html" title=" " alt="" coords="273,95,474,121"/>
+<area shape="rect" id="node3" href="$SingleAgentProblem_8h.html" title=" " alt="" coords="5,169,248,196"/>
+<area shape="rect" id="node4" href="$SingleAgentState_8h.html" title=" " alt="" coords="272,169,475,196"/>
+<area shape="rect" id="node5" href="$AStarProblem_8h.html" title=" " alt="" coords="499,169,621,196"/>
 </map>

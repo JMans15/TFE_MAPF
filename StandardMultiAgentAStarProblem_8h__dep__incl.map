@@ -1,17 +1,7 @@
 <map id="AStarProblems/StandardMultiAgentAStarProblem.h" name="AStarProblems/StandardMultiAgentAStarProblem.h">
-<area shape="rect" id="node1" title=" " alt="" coords="229,5,442,47"/>
-<area shape="rect" id="node2" href="$StandardMultiAgentAStarProblem_8cpp.html" title=" " alt="" coords="106,95,319,136"/>
-<area shape="rect" id="node3" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="344,102,575,129"/>
-<area shape="rect" id="node4" href="$HeuristicOptimal_8h.html" title=" " alt="" coords="274,281,487,307"/>
-<area shape="rect" id="node14" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="419,184,657,225"/>
-<area shape="rect" id="node5" href="$AStar_8h.html" title=" " alt="" coords="301,363,460,389"/>
-<area shape="rect" id="node6" href="$GeneralAStar_8h.html" title=" " alt="" coords="163,445,374,471"/>
-<area shape="rect" id="node13" href="$CooperativeAStar_8h.html" title=" " alt="" coords="398,437,587,479"/>
-<area shape="rect" id="node7" href="$ConflictBasedSearch_8h.html" title=" " alt="" coords="105,527,299,568"/>
-<area shape="rect" id="node9" href="$SimpleIndependenceDetection_8h.html" title=" " alt="" coords="223,616,451,657"/>
-<area shape="rect" id="node8" href="$ConflictBasedSearch_8cpp.html" title=" " alt="" coords="5,616,199,657"/>
-<area shape="rect" id="node10" href="$IndependenceDetection_8h.html" title=" " alt="" coords="74,713,333,739"/>
-<area shape="rect" id="node12" href="$SimpleIndependenceDetection_8cpp.html" title=" " alt="" coords="357,705,585,747"/>
-<area shape="rect" id="node11" href="$IndependenceDetection_8cpp.html" title=" " alt="" coords="67,795,340,821"/>
-<area shape="rect" id="node15" href="$ReverseResumableAStar_8cpp.html" title=" " alt="" coords="512,273,751,315"/>
+<area shape="rect" id="node1" title=" " alt="" coords="128,5,341,47"/>
+<area shape="rect" id="node2" href="$StandardMultiAgentAStarProblem_8cpp.html" title=" " alt="" coords="5,95,219,136"/>
+<area shape="rect" id="node3" href="$HeuristicManhattan_8h.html" title=" " alt="" coords="243,102,474,129"/>
+<area shape="rect" id="node4" href="$HeuristicOptimal_8h.html" title=" " alt="" coords="252,273,465,300"/>
+<area shape="rect" id="node5" href="$ReverseResumableAStar_8h.html" title=" " alt="" coords="318,184,557,225"/>
 </map>

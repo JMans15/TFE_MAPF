@@ -1,13 +1,8 @@
 <map id="AStarProblems/ODMultiAgentAStarProblemWithConstraints.h" name="AStarProblems/ODMultiAgentAStarProblemWithConstraints.h">
-<area shape="rect" id="node1" title=" " alt="" coords="436,5,663,47"/>
-<area shape="rect" id="node2" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="185,102,421,129"/>
-<area shape="rect" id="node8" href="$ODMultiAgentSpaceTimeState_8h.html" title=" " alt="" coords="445,95,654,136"/>
-<area shape="rect" id="node11" href="$AStarProblem_8h.html" title=" " alt="" coords="679,102,801,129"/>
-<area shape="rect" id="node3" href="$Problem_8h.html" title=" " alt="" coords="259,184,347,211"/>
-<area shape="rect" id="node4" href="$ConstraintsSet_8h.html" title=" " alt="" coords="60,259,247,300"/>
-<area shape="rect" id="node7" href="$Graph_8h.html" title=" " alt="" coords="271,266,439,293"/>
-<area shape="rect" id="node5" href="$EdgeConstraint_8h.html" title=" " alt="" coords="5,348,139,375"/>
-<area shape="rect" id="node6" href="$VertexConstraint_8h.html" title=" " alt="" coords="163,348,306,375"/>
-<area shape="rect" id="node9" href="$ODMultiAgentState_8h.html" title=" " alt="" coords="470,184,629,211"/>
-<area shape="rect" id="node10" href="$State_8h.html" title=" " alt="" coords="515,266,583,293"/>
+<area shape="rect" id="node1" title=" " alt="" coords="257,5,483,47"/>
+<area shape="rect" id="node2" href="$MultiAgentProblem_8h.html" title=" " alt="" coords="5,102,241,129"/>
+<area shape="rect" id="node4" href="$ODMultiAgentSpaceTimeState_8h.html" title=" " alt="" coords="265,95,475,136"/>
+<area shape="rect" id="node6" href="$AStarProblem_8h.html" title=" " alt="" coords="499,102,622,129"/>
+<area shape="rect" id="node3" href="$Problem_8h.html" title=" " alt="" coords="79,184,167,211"/>
+<area shape="rect" id="node5" href="$ODMultiAgentState_8h.html" title=" " alt="" coords="291,184,449,211"/>
 </map>
