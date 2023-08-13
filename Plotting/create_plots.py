@@ -7,7 +7,7 @@ mpuse("QtAgg")
 
 mat = np.load("all_results.npy")
 mat_AStar = np.load("astar_results.npy")
-mat_CBS = np.load("all_results_v2.npy")
+mat_CBS = np.load("CBS_results.npy")
 mat_IDAstar = np.load("IDastar_results.npy")
 mat_IDCBS = np.load("IDCBS_results.npy")
 
@@ -38,36 +38,6 @@ algs = [
     "CBS CAT",
 ]
 nagents = np.arange(5, 55, 5, dtype=int)
-
-
-def mkplot_big(mat, idx, labels, title, nagents):
-    fig = plt.figure(figsize=(16, 8))
-    ax1, ax2 = fig.subplots(2, 1)
-    fig.suptitle(title)
-    ax1.set_title("Success rate")
-    ax1.tick_params("x", labelbottom=False)
-    ax2.set_title("Running time")
-    ax2.set_xlabel("# agents")
-    ax1.set_ylabel("Success rate [1]")
-    ax2.set_ylabel("Running time [s]")
-    for i, label in zip(idx, labels):
-        succ = mat[:, 0, 0, i, :, 0].sum(axis=0)
-        time = mat[:, 0, 0, i, :, 1].sum(axis=0)
-        ax1.plot(nagents, succ / 950, label=label)
-        ax2.plot(nagents, time / 950, label=label)
-
-    box = ax2.get_position()
-    ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-    box = ax1.get_position()
-    ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-
-    ax2.legend(
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.2),
-        fancybox=True,
-        shadow=True,
-        ncol=6,
-    )
 
 
 # (350, 3, 2, 14, 10, 2)
@@ -133,110 +103,6 @@ CBS = ["CBS", "CBS CAT", "CBS DS", "CBS DS CAT"]
 ID = ["ID A*", "ID A* CAT", "ID CBS", "ID CBS CAT"]
 SID = ["SID A*", "SID A* CAT", "SID CBS", "SID CBS CAT"]
 
-# A* vs OD
-
-# fig = plt.figure(figsize=(16, 8))
-# ax1, ax2 = fig.subplots(2, 1)
-# fig.suptitle(
-#     "Comparison between A* w/ and w/o OD, Optimal objective, Fuel and SumOfCosts heuristics"
-# )
-# ax1.set_title("Success rate")
-# ax1.tick_params("x", labelbottom=False)
-# ax2.set_title("Running time")
-# ax2.set_xlabel("# agents")
-# ax1.set_ylabel("Success rate [1]")
-# ax2.set_ylabel("Running time [s]")
-# for i, alg in enumerate(algs):
-#     if alg not in AStar:
-#         continue
-#     succ = mat[:, :2, 0, i, :, 0].sum(axis=(0, 1))
-#     time = mat[:, :2, 0, i, :, 1].sum(axis=(0, 1))
-#     ax1.plot(nagents, succ / 350 / 2, label=alg)
-#     ax2.plot(nagents, time / 350 / 2, label=alg)
-#
-# box = ax2.get_position()
-# ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-# box = ax1.get_position()
-# ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-#
-# ax2.legend(
-#     loc="upper center",
-#     bbox_to_anchor=(0.5, -0.2),
-#     fancybox=True,
-#     shadow=True,
-#     ncol=6,
-# )
-
-# Comparison IDS
-
-# fig = plt.figure(figsize=(16, 8))
-# ax1, ax2 = fig.subplots(2, 1)
-# fig.suptitle("Global comparison between ID variations")
-# ax1.set_title("Success rate")
-# ax1.tick_params("x", labelbottom=False)
-# ax2.set_title("Running time")
-# ax2.set_xlabel("# agents")
-# ax1.set_ylabel("Success rate [1]")
-# ax2.set_ylabel("Running time [s]")
-# for i, alg in enumerate(algs):
-#     if alg not in ID and alg not in SID:
-#         continue
-#     linestyle = ""
-#     if alg in ID:
-#         linestyle = "solid"
-#     if alg in SID:
-#         linestyle = "dashed"
-#     succ = mat[:, :, :, i, :, 0].sum(axis=(0, 1, 2))
-#     time = mat[:, :, :, i, :, 1].sum(axis=(0, 1, 2))
-#     ax1.plot(nagents, succ / 350 / 6, label=alg, linestyle=linestyle)
-#     ax2.plot(nagents, time / 350 / 6, label=alg, linestyle=linestyle)
-#
-# box = ax2.get_position()
-# ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-# box = ax1.get_position()
-# ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-#
-# ax2.legend(
-#     loc="upper center",
-#     bbox_to_anchor=(0.5, -0.2),
-#     fancybox=True,
-#     shadow=True,
-#     ncol=8,
-# )
-
-
-# Comparison CBS
-
-# fig = plt.figure(figsize=(16, 8))
-# ax1, ax2 = fig.subplots(2, 1)
-# fig.suptitle("Global comparison between CBS variations")
-# ax1.set_title("Success rate")
-# ax1.tick_params("x", labelbottom=False)
-# ax2.set_title("Running time")
-# ax2.set_xlabel("# agents")
-# ax1.set_ylabel("Success rate [1]")
-# ax2.set_ylabel("Running time [s]")
-# for i, alg in enumerate(algs):
-#     if alg not in CBS:
-#         continue
-#     succ = mat[:, :, :, i, :, 0].sum(axis=(0, 1, 2))
-#     time = mat[:, :, :, i, :, 1].sum(axis=(0, 1, 2))
-#     ax1.plot(nagents, succ / 350 / 6, label=alg)
-#     ax2.plot(nagents, time / 350 / 6, label=alg)
-#
-# box = ax2.get_position()
-# ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-# box = ax1.get_position()
-# ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-#
-# ax2.legend(
-#     loc="upper center",
-#     bbox_to_anchor=(0.5, -0.2),
-#     fancybox=True,
-#     shadow=True,
-#     ncol=8,
-# )
-
 # Comparison between maps
 
 # fig = plt.figure(figsize=(16, 8))
@@ -274,11 +140,126 @@ warehouse_maps = [14, 15, 16, 17]
 maze_maps = [1, 2, 10, 11]
 random_maps = [3, 4, 13]
 city_maps = [6, 7, 18]
-videogame_maps = ([8, 9, 12],)
+videogame_maps = [8, 9, 12]
 empty_maps = [0]
 room_maps = [5]
 
 nagents = range(5, 105, 5)
+
+
+def mkplot_big(mat, idx, labels, title, nagents, maps=list(range(19))):
+    fig = plt.figure(figsize=(16, 8))
+    ax1, ax2 = fig.subplots(2, 1)
+    fig.suptitle(title)
+    ax1.set_title("Success rate")
+    ax1.tick_params("x", labelbottom=False)
+    ax2.set_title("Running time")
+    ax2.set_xlabel("# agents")
+    ax1.set_ylabel("Success rate [1]")
+    ax2.set_ylabel("Running time [s]")
+    scens = np.arange(950, dtype=int).reshape((19, 50))[maps, :].flatten()
+    for i, label in zip(idx, labels):
+        succ = mat[scens, 0, 0, i, :, 0].sum(axis=0)
+        mask = mat[scens, 0, 0, i, :, 0] == 1
+        time = np.mean(mat[scens, 0, 0, i, :, 1], where=mask, axis=0)
+        # time = mat[scens, 0, 0, i, :, 1].sum(axis=0)
+        ax1.plot(nagents, succ / scens.size, label=label)
+        ax2.plot(nagents, time, label=label)
+
+    box = ax2.get_position()
+    ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
+    box = ax1.get_position()
+    ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
+
+    ax2.legend(
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.2),
+        fancybox=True,
+        shadow=True,
+        ncol=6,
+    )
+
+
+def mkplot_for_map(maps, mapslabel, mat, algidx, ax1, ax2, linestyle="solid"):
+    scens = np.arange(950, dtype=int).reshape((19, 50))[maps, :].flatten()
+    succ = mat[scens, 0, 0, algidx, :, 0].sum(axis=0)
+    mask = mat[scens, 0, 0, algidx, :, 0] == 1
+    time = np.mean(mat_CBS[scens, 0, 0, 0, :, 1], where=mask, axis=0)
+    ax1.plot(nagents, succ / scens.size, label=mapslabel, linestyle=linestyle)
+    ax2.plot(nagents, time, label=mapslabel, linestyle=linestyle)
+
+
+def mkplot_for_maps(mat, algidx, title, algidx_dotted=None, mat_dotted=None):
+    fig = plt.figure(figsize=(16, 8))
+    ax1, ax2 = fig.subplots(2, 1)
+    fig.suptitle(title)
+    ax1.set_title("Success rate")
+    ax1.tick_params("x", labelbottom=False)
+    ax2.set_title("Running time")
+    ax2.set_xlabel("# agents")
+    ax1.set_ylabel("Success rate [1]")
+    ax2.set_ylabel("Running time [s]")
+
+    mkplot_for_map(maze_maps, "Maze maps", mat, algidx, ax1, ax2)
+    mkplot_for_map(warehouse_maps, "Warehouse maps", mat, algidx, ax1, ax2)
+    mkplot_for_map(random_maps, "Random maps", mat, algidx, ax1, ax2)
+    mkplot_for_map(city_maps, "City maps", mat, algidx, ax1, ax2)
+    mkplot_for_map(videogame_maps, "Videogame maps", mat, algidx, ax1, ax2)
+    mkplot_for_map(empty_maps, "Empty maps", mat, algidx, ax1, ax2)
+    mkplot_for_map(room_maps, "Room maps", mat, algidx, ax1, ax2)
+
+    ax1.set_prop_cycle(None)
+    ax2.set_prop_cycle(None)
+    if algidx_dotted is not None and mat_dotted is not None:
+        mkplot_for_map(maze_maps, None, mat_dotted, algidx_dotted, ax1, ax2, "dashed")
+        mkplot_for_map(
+            warehouse_maps,
+            None,
+            mat_dotted,
+            algidx_dotted,
+            ax1,
+            ax2,
+            "dashed",
+        )
+        mkplot_for_map(random_maps, None, mat_dotted, algidx_dotted, ax1, ax2, "dashed")
+        mkplot_for_map(city_maps, None, mat_dotted, algidx_dotted, ax1, ax2, "dashed")
+        mkplot_for_map(
+            videogame_maps,
+            None,
+            mat_dotted,
+            algidx_dotted,
+            ax1,
+            ax2,
+            "dashed",
+        )
+        mkplot_for_map(empty_maps, None, mat_dotted, algidx_dotted, ax1, ax2, "dashed")
+        mkplot_for_map(room_maps, None, mat_dotted, algidx_dotted, ax1, ax2, "dashed")
+
+    box = ax2.get_position()
+    ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
+    box = ax1.get_position()
+    ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
+
+    ax2.legend(
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.2),
+        fancybox=True,
+        shadow=True,
+        ncol=7,
+    )
+
+
+mkplot_for_maps(
+    mat_CBS, 0, "CBS DS (solid) and CBS (dashed) in different maps", 2, mat_CBS
+)
+
+mkplot_for_maps(
+    mat_IDAstar,
+    1,
+    "ID A* CAT (solid) and CBS DS CAT (dashed) in different maps",
+    1,
+    mat_CBS,
+)
 
 mkplot_big(
     mat_AStar,
