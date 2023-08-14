@@ -69,13 +69,13 @@ for (i, o), (j, h) in iterprod(enumerate(objectives), enumerate(heuristics)):
         case "Optimal":
             linestyle = "solid"
     succ = mat[:, i, j, :, :, 0].sum(axis=0).sum(axis=0)
-    time = mat[:, i, j, :, :, 1].sum(axis=0).sum(axis=0)
+    mask = mat[:, i, j, :, :, 0] == 1
+    time = np.mean(mat[:, i, j, :, :, 1], where=mask, axis=(0, 1))
+    # time = mat[:, i, j, :, :, 1].sum(axis=0).sum(axis=0)
     ax1.plot(
         nagents, succ / 350 / 14, label=f"{o}, {h}", color=color, linestyle=linestyle
     )
-    ax2.plot(
-        nagents, time / 350 / 14, label=f"{o}, {h}", color=color, linestyle=linestyle
-    )
+    ax2.plot(nagents, time, label=f"{o}, {h}", color=color, linestyle=linestyle)
 
 box = ax2.get_position()
 ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
@@ -102,39 +102,6 @@ AStar = ["A*", "A* OD"]
 CBS = ["CBS", "CBS CAT", "CBS DS", "CBS DS CAT"]
 ID = ["ID A*", "ID A* CAT", "ID CBS", "ID CBS CAT"]
 SID = ["SID A*", "SID A* CAT", "SID CBS", "SID CBS CAT"]
-
-# Comparison between maps
-
-# fig = plt.figure(figsize=(16, 8))
-# ax1, ax2 = fig.subplots(2, 1)
-# fig.suptitle("Comparison between maps, CBS DS CATn SumOfCosts, Optimal")
-# ax1.set_title("Success rate")
-# ax1.tick_params("x", labelbottom=False)
-# ax2.set_title("Running time")
-# ax2.set_xlabel("# agents")
-# ax1.set_ylabel("Success rate [1]")
-# ax2.set_ylabel("Running time [s]")
-# for i, alg in enumerate(algs):
-#     if alg not in CBS:
-#         continue
-#     for j in range(7):
-#         succ = mat[:, :, :, i, :, 0].sum(axis=(0, 1, 2))
-#         time = mat[:, :, :, i, :, 1].sum(axis=(0, 1, 2))
-#         ax1.plot(nagents, succ / 350 / 6, label=alg)
-#         ax2.plot(nagents, time / 350 / 6, label=alg)
-#
-# box = ax2.get_position()
-# ax2.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-# box = ax1.get_position()
-# ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
-#
-# ax2.legend(
-#     loc="upper center",
-#     bbox_to_anchor=(0.5, -0.2),
-#     fancybox=True,
-#     shadow=True,
-#     ncol=8,
-# )
 
 warehouse_maps = [14, 15, 16, 17]
 maze_maps = [1, 2, 10, 11]
@@ -180,16 +147,22 @@ def mkplot_big(mat, idx, labels, title, nagents, maps=list(range(19))):
     )
 
 
-def mkplot_for_map(maps, mapslabel, mat, algidx, ax1, ax2, linestyle="solid"):
+def mkplot_for_map(
+    maps, mapslabel, mat, algidx, ax1, ax2, linestyle="solid", runningtimes=True
+):
     scens = np.arange(950, dtype=int).reshape((19, 50))[maps, :].flatten()
     succ = mat[scens, 0, 0, algidx, :, 0].sum(axis=0)
     mask = mat[scens, 0, 0, algidx, :, 0] == 1
     time = np.mean(mat_CBS[scens, 0, 0, 0, :, 1], where=mask, axis=0)
     ax1.plot(nagents, succ / scens.size, label=mapslabel, linestyle=linestyle)
+    if not runningtimes:
+        return
     ax2.plot(nagents, time, label=mapslabel, linestyle=linestyle)
 
 
-def mkplot_for_maps(mat, algidx, title, algidx_dotted=None, mat_dotted=None):
+def mkplot_for_maps(
+    mat, algidx, title, algidx_dotted=None, mat_dotted=None, runningtimes=True
+):
     fig = plt.figure(figsize=(16, 8))
     ax1, ax2 = fig.subplots(2, 1)
     fig.suptitle(title)
@@ -240,18 +213,35 @@ def mkplot_for_maps(mat, algidx, title, algidx_dotted=None, mat_dotted=None):
     box = ax1.get_position()
     ax1.set_position([box.x0, box.y0 + box.height * 0.05, box.width, box.height * 0.95])
 
-    ax2.legend(
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.2),
-        fancybox=True,
-        shadow=True,
-        ncol=7,
-    )
+    if runningtimes:
+        ax2.legend(
+            loc="upper center",
+            bbox_to_anchor=(0.5, -0.2),
+            fancybox=True,
+            shadow=True,
+            ncol=7,
+        )
+    else:
+        ax1.set_xlabel("# agents")
+        ax1.legend(
+            loc="upper center",
+            bbox_to_anchor=(0.5, -0.2),
+            fancybox=True,
+            shadow=True,
+            ncol=7,
+        )
+        ax2.remove()
+        box = ax1.get_position()
+        ax1.set_position(
+            [box.x0, box.y0 + box.height * -1.05, box.width, box.height * 1.95]
+        )
 
 
 mkplot_for_maps(
     mat_CBS, 0, "CBS DS (solid) and CBS (dashed) in different maps", 2, mat_CBS
 )
+
+mkplot_for_maps(mat_CBS, 0, "CBS DS in different maps")
 
 mkplot_for_maps(
     mat_IDAstar,
@@ -264,8 +254,8 @@ mkplot_for_maps(
 mkplot_big(
     mat_AStar,
     [0, 1],
-    ["No OD", "OD"],
-    "Comparison OD, 950 problems, 60s timeout, SumOfCosts objective, Optimal Heuristic",
+    ["w/o OD", "w/ OD"],
+    "A* w/ and w/o OD, 950 problems, 60s timeout, SumOfCosts objective, Optimal Heuristic",
     nagents,
 )
 
@@ -278,6 +268,15 @@ mkplot_big(
     nagents,
 )
 
+mkplot_for_maps(
+    mat_IDAstar,
+    1,
+    "ID A* algorithm in different map types, SID (dashed) vs EID (solid)",
+    3,
+    mat_IDAstar,
+    runningtimes=False,
+)
+
 mkplot_big(
     mat_IDCBS,
     list(range(4)),
@@ -287,6 +286,15 @@ mkplot_big(
     nagents,
 )
 
+mkplot_for_maps(
+    mat_IDCBS,
+    1,
+    "ID CBS algorithm in different map types, SID (dashed) vs EID (solid)",
+    3,
+    mat_IDCBS,
+    runningtimes=False,
+)
+
 mkplot_big(
     mat_CBS,
     list(range(4)),
@@ -294,6 +302,24 @@ mkplot_big(
     "Comparison between CBS variants, 950 problems, \
 60s timeout, SumOfCosts objective, Optimal heuristic",
     nagents,
+)
+
+mkplot_big(
+    mat100,
+    [13, 9],
+    ["SID CBS CAT", "SID A* CAT"],
+    "Comparison between CBS and A* SID low-level searches, 950 problems, \
+60s timeout, SumOfCosts objective, Optimal Heuristic",
+    nagents,
+)
+
+mkplot_for_maps(
+    mat100,
+    9,
+    "A* and CBS ID variants in different map types, SID CBS CAT (dashed) vs SID A* CAT (solid)",
+    13,
+    mat100,
+    runningtimes=False,
 )
 
 mkplot_big(
