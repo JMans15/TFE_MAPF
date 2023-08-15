@@ -53,6 +53,7 @@ ax2.set_title("Running time")
 ax2.set_xlabel("# agents")
 ax1.set_ylabel("Success rate [1]")
 ax2.set_ylabel("Running time [s]")
+ax1.set_yscale("log")
 for (i, o), (j, h) in iterprod(enumerate(objectives), enumerate(heuristics)):
     color = ""
     match o:
@@ -124,6 +125,7 @@ def mkplot_big(mat, idx, labels, title, nagents, maps=list(range(19))):
     ax2.set_xlabel("# agents")
     ax1.set_ylabel("Success rate [1]")
     ax2.set_ylabel("Running time [s]")
+    ax1.set_yscale("log")
     scens = np.arange(950, dtype=int).reshape((19, 50))[maps, :].flatten()
     for i, label in zip(idx, labels):
         succ = mat[scens, 0, 0, i, :, 0].sum(axis=0)
@@ -167,7 +169,8 @@ def mkplot_for_maps(
     ax1, ax2 = fig.subplots(2, 1)
     fig.suptitle(title)
     ax1.set_title("Success rate")
-    ax1.tick_params("x", labelbottom=False)
+    if runningtimes:
+        ax1.tick_params("x", labelbottom=False)
     ax2.set_title("Running time")
     ax2.set_xlabel("# agents")
     ax1.set_ylabel("Success rate [1]")
@@ -304,6 +307,31 @@ mkplot_big(
     nagents,
 )
 
+mkplot_for_maps(
+    mat_CBS,
+    0,
+    "Comparison between CBS performances with (solid) and without (dashed) Disjoint Splitting",
+    2,
+    mat_CBS,
+    runningtimes=False,
+)
+mkplot_for_maps(
+    mat_CBS,
+    3,
+    "Comparison between CBS performances with (solid) and without (dashed) using CAT",
+    2,
+    mat_CBS,
+    runningtimes=False,
+)
+mkplot_for_maps(
+    mat_CBS,
+    1,
+    "Comparison between CBS performances with (solid) and without (dashed) all enhancements",
+    2,
+    mat_CBS,
+    runningtimes=False,
+)
+
 mkplot_big(
     mat100,
     [13, 9],
@@ -324,11 +352,19 @@ mkplot_for_maps(
 
 mkplot_big(
     mat100,
-    [1, 3, 7, 11],
-    ["A* OD", "CBS DS CAT", "EID A* CAT", "EID CBS CAT"],
+    [1, 3, 7, 13],
+    ["A* OD", "CBS DS CAT", "EID A* CAT", "SID CBS CAT"],
     "Comparison between best variants of each algorithm, \
 950 problems, 60s timeout, SumOfCosts objective, Optimal heuristic",
     nagents,
 )
 
+mkplot_for_maps(
+    mat100,
+    3,
+    "Performances of EID A* CAT (dashed) vs CBS DS CAT (solid) on different map types",
+    7,
+    mat100,
+    runningtimes=True,
+)
 plt.show()
